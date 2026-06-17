@@ -6,11 +6,6 @@ const kSignatureSize = 1 + 64 + 1;
 
 BigInt _max(BigInt a, BigInt b) => a > b ? a : b;
 
-enum Kip9Version {
-  alpha,
-  beta,
-}
-
 class MassCalculator {
   final int massPerTxByte;
   final int massPerScriptPubKeyByte;
@@ -35,19 +30,14 @@ class MassCalculator {
 
   BigInt calcTxOverallMass({
     required Transaction tx,
-    Kip9Version version = Kip9Version.beta,
   }) {
     final computeMass = BigInt.from(calcTxComputeMass(tx: tx));
     final storageMass = calcTxStorageMass(tx: tx);
-    return switch (version) {
-      Kip9Version.alpha => computeMass + storageMass,
-      Kip9Version.beta => _max(computeMass, storageMass),
-    };
+    return _max(computeMass, storageMass);
   }
 
   BigInt calcTxStorageMass({
     required Transaction tx,
-    Kip9Version version = Kip9Version.beta,
   }) {
     if (tx.isCoinbase) {
       return BigInt.zero;
@@ -67,7 +57,7 @@ class MassCalculator {
 
     final isRelaxed =
         outsLen == 1 || insLen == 1 || (outsLen == 2 && insLen == 2);
-    if (version == Kip9Version.beta && isRelaxed) {
+    if (isRelaxed) {
       final harmonicIns = tx.inputs
           .map(
             (input) => storageMassParameter ~/ input.utxoEntry.amount,
