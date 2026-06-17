@@ -29,11 +29,8 @@ class BiometricUtil {
 
     return localAuth.authenticate(
       localizedReason: message,
-      options: AuthenticationOptions(
-        useErrorDialogs: false,
-        biometricOnly: true,
-        sensitiveTransaction: true,
-      ),
+      biometricOnly: true,
+      sensitiveTransaction: true,
     );
   }
 }

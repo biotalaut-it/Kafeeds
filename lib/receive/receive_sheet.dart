@@ -41,7 +41,7 @@ class ReceiveSheet extends HookConsumerWidget {
     final shareCardKey = useRef(GlobalKey());
     final showShareCard = useState(false);
 
-    Future<Uint8List?> _capturePng() async {
+    Future<Uint8List?> capturePng() async {
       if (shareCardKey.value.currentContext == null) {
         return null;
       }
@@ -90,17 +90,20 @@ class ReceiveSheet extends HookConsumerWidget {
         if (!showShareCard.value) {
           return;
         }
-        final byteData = await _capturePng();
-        if (byteData != null) {
-          final file = await XFile.fromData(
-            byteData,
-            name: '${address}.png',
-            mimeType: 'image/png',
-          );
-          Share.shareXFiles([file], text: address);
-        } else {
-          Share.share(address);
-        }
+        final byteData = await capturePng();
+        final box = context.findRenderObject() as RenderBox?;
+        final params = ShareParams(
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+          text: address,
+          files: [
+            if (byteData != null)
+              XFile.fromData(byteData, mimeType: 'image/png'),
+          ],
+          fileNameOverrides: [
+            if (byteData != null) '$address.png',
+          ],
+        );
+        SharePlus.instance.share(params);
         showShareCard.value = false;
       } catch (e, st) {
         final log = ref.read(loggerProvider);

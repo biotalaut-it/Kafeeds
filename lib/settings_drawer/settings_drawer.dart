@@ -277,12 +277,19 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
       void contactSupport() =>
           openUrl('mailto:$kSupportEmail?subject=Kaspium support');
 
-      void share() {
-        Share.share(
-          l10n.shareKaspiumText,
-          subject: l10n.shareKaspiumSubject,
-        );
-      }
+        void share() {
+          try {
+            final box = context.findRenderObject() as RenderBox?;
+            final params = ShareParams(
+              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+              text: l10n.shareKaspiumText,
+              subject: l10n.shareKaspiumSubject,
+            );
+            SharePlus.instance.share(params);
+          } catch (e) {
+            UIUtil.showSnackbar('Could not share Kaspium', context);
+          }
+        }
 
       void logout() {
         AppDialogs.showConfirmDialog(

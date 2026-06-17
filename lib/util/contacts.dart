@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../contacts/contact.dart';
@@ -29,16 +28,29 @@ Future<void> exportContacts(WidgetRef ref, BuildContext context) async {
   contacts.forEach((contact) {
     jsonList.add(contact.toJson());
   });
-  final exportTime = DateTime.now();
-  final format = DateFormat('yyyyMMdd_HHmmss');
-  final filename = "kaspium_contacts_${format.format(exportTime)}.txt";
-  final baseDirectory = await getTemporaryDirectory();
-  final contactsFile = File("${baseDirectory.path}/$filename");
-  await contactsFile.writeAsString(json.encode(jsonList));
-
   final lockDisabled = ref.read(lockDisabledProvider.notifier);
   lockDisabled.state = true;
-  await Share.shareXFiles([XFile(contactsFile.path)]);
+
+  try {
+    final exportTime = DateTime.now();
+    final format = DateFormat('yyyyMMdd_HHmmss');
+    final filename = "kaspium_contacts_${format.format(exportTime)}.txt";
+    final file = XFile.fromData(
+      stringToBytesUtf8(json.encode(jsonList)),
+      mimeType: 'text/plain',
+    );
+
+    final box = context.findRenderObject() as RenderBox?;
+    final params = ShareParams(
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      files: [file],
+      fileNameOverrides: [filename],
+    );
+    await SharePlus.instance.share(params);
+  } catch (e) {
+    UIUtil.showSnackbar('Failed to export contacts', context);
+  }
+
   lockDisabled.state = false;
 }
 
@@ -47,15 +59,17 @@ Future<void> importContacts(WidgetRef ref, BuildContext context) async {
 
   final lockDisabled = ref.read(lockDisabledProvider.notifier);
   lockDisabled.state = true;
-  FilePickerResult? result = await FilePicker.platform.pickFiles(
-    allowMultiple: false,
-    type: FileType.custom,
-    allowedExtensions: ["txt"],
+
+  const XTypeGroup typeGroup = XTypeGroup(
+    extensions: ['txt'],
+    mimeTypes: ['text/plain'],
+    uniformTypeIdentifiers: ['public.data'],
   );
+  final result = await openFile(acceptedTypeGroups: [typeGroup]);
   lockDisabled.state = false;
 
   if (result != null) {
-    File f = File(result.files.single.path!);
+    File f = File(result.path);
 
     if (!await f.exists()) {
       UIUtil.showSnackbar(l10n.contactsImportErr, context);

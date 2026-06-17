@@ -111,6 +111,9 @@ class DownloadTxsDialog extends HookConsumerWidget {
     }, const []);
 
     Future<void> downloadCsv(BuildContext context) async {
+      final lockDisabled = ref.read(lockDisabledProvider.notifier);
+      lockDisabled.state = true;
+
       try {
         final exportTime = DateTime.now();
         final format = DateFormat('yyyyMMdd_HHmmss');
@@ -120,16 +123,17 @@ class DownloadTxsDialog extends HookConsumerWidget {
         final txFile = File('${baseDiractory.path}/$fileName');
         await txFile.writeAsString(csv.value);
 
-        final lockDisabled = ref.read(lockDisabledProvider.notifier);
         final box = context.findRenderObject() as RenderBox?;
-        lockDisabled.state = true;
-        await Share.shareXFiles([
-          XFile(txFile.path),
-        ], sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-        lockDisabled.state = false;
+        final params = ShareParams(
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+          files: [XFile(txFile.path)],
+        );
+        await SharePlus.instance.share(params);
       } catch (e) {
         UIUtil.showSnackbar(l10n.txReportError, context);
       }
+
+      lockDisabled.state = false;
     }
 
     return AppAlertDialog(
