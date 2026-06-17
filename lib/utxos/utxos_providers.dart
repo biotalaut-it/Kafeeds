@@ -78,7 +78,7 @@ final spendableUtxosProvider = Provider.autoDispose((ref) {
     if (!utxo.utxoEntry.isCoinbase) {
       return true;
     }
-    return utxo.utxoEntry.blockDaaScore + BigInt.from(100) < virtualDaaScore;
+    return utxo.utxoEntry.blockDaaScore + BigInt.from(1000) < virtualDaaScore;
   }).toList();
 
   spendableUtxos.sort(
