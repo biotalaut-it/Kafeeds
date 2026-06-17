@@ -66,7 +66,7 @@ class SplashScreen extends HookConsumerWidget {
       final walletAuthNotifier = ref.read(walletAuthNotifierProvider);
       if (walletAuthNotifier == null) {
         final l10n = l10nOf(context);
-        UIUtil.showSnackbar(l10n.somethingWentWrong, context);
+        UIUtil.showSnackbar(l10n.somethingWentWrong);
         appRouter.startIntro(context);
         return;
       }

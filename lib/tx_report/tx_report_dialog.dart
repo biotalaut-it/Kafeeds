@@ -104,7 +104,7 @@ class DownloadTxsDialog extends HookConsumerWidget {
           subMessage.value = l10n.txReportNoTxs(csvLines.length);
           loading.value = false;
         } catch (e) {
-          UIUtil.showSnackbar(l10n.txReportError, context);
+          UIUtil.showSnackbar(l10n.txReportError);
         }
       });
       return null;
@@ -130,7 +130,7 @@ class DownloadTxsDialog extends HookConsumerWidget {
         );
         await SharePlus.instance.share(params);
       } catch (e) {
-        UIUtil.showSnackbar(l10n.txReportError, context);
+        UIUtil.showSnackbar(l10n.txReportError);
       }
 
       lockDisabled.state = false;

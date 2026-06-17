@@ -60,7 +60,7 @@ class SetupFailedPage extends ConsumerWidget {
                       await Clipboard.setData(
                         ClipboardData(text: error.toString()),
                       );
-                      UIUtil.showSnackbar(l10n.errorMessageCopied, context);
+                      UIUtil.showSnackbar(l10n.errorMessageCopied);
                     },
                   ),
                   const SizedBox(height: 16),

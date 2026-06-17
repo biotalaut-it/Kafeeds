@@ -42,9 +42,9 @@ class AddressDetailsSheet extends HookConsumerWidget {
     Future<void> copyAddress() async {
       try {
         await Clipboard.setData(ClipboardData(text: address.encoded));
-        UIUtil.showSnackbar(l10n.addressCopied, context);
+        UIUtil.showSnackbar(l10n.addressCopied);
       } catch (_) {
-        UIUtil.showSnackbar(l10n.addressCopiedFailed, context);
+        UIUtil.showSnackbar(l10n.addressCopiedFailed);
       }
     }
 

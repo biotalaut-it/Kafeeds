@@ -32,9 +32,9 @@ class KpubSheet extends ConsumerWidget {
     Future<void> copyKpub() async {
       try {
         await Clipboard.setData(ClipboardData(text: kpub));
-        UIUtil.showSnackbar(l10n.kpubCopied, context);
+        UIUtil.showSnackbar(l10n.kpubCopied);
       } catch (_) {
-        UIUtil.showSnackbar(l10n.kpubCopyFailed, context);
+        UIUtil.showSnackbar(l10n.kpubCopyFailed);
       }
     }
 

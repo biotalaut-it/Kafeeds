@@ -41,7 +41,7 @@ class MainCard extends ConsumerWidget {
       final uri = KaspaUri.tryParse(data, prefix: prefix);
 
       if (uri == null) {
-        UIUtil.showSnackbar(l10n.scanQrCodeError, context);
+        UIUtil.showSnackbar(l10n.scanQrCodeError);
         return;
       }
 

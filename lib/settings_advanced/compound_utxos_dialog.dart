@@ -44,7 +44,7 @@ class CompoundUtxosDialog extends ConsumerWidget {
 
         final spendableUtxos = ref.read(spendableUtxosProvider);
         if (spendableUtxos.length <= 1) {
-          UIUtil.showSnackbar(l10n.compoundTooFewUtxos, context);
+          UIUtil.showSnackbar(l10n.compoundTooFewUtxos);
           appRouter.pop(context);
           return;
         }
@@ -71,9 +71,9 @@ class CompoundUtxosDialog extends ConsumerWidget {
           appRouter.pop(context);
         }
 
-        UIUtil.showSnackbar(l10n.compoundSuccess, context);
+        UIUtil.showSnackbar(l10n.compoundSuccess);
       } catch (e) {
-        UIUtil.showSnackbar(l10n.compoundFailure, context);
+        UIUtil.showSnackbar(l10n.compoundFailure);
       } finally {
         appRouter.pop(context);
       }

@@ -21,7 +21,7 @@ Future<void> exportContacts(WidgetRef ref, BuildContext context) async {
   List<Contact> contacts = await ref.read(contactsProvider).contacts;
 
   if (contacts.length == 0) {
-    UIUtil.showSnackbar(l10n.noContactsExport, context);
+    UIUtil.showSnackbar(l10n.noContactsExport);
     return;
   }
   List<Map<String, dynamic>> jsonList = [];
@@ -48,7 +48,7 @@ Future<void> exportContacts(WidgetRef ref, BuildContext context) async {
     );
     await SharePlus.instance.share(params);
   } catch (e) {
-    UIUtil.showSnackbar('Failed to export contacts', context);
+    UIUtil.showSnackbar('Failed to export contacts');
   }
 
   lockDisabled.state = false;
@@ -72,7 +72,7 @@ Future<void> importContacts(WidgetRef ref, BuildContext context) async {
     File f = File(result.path);
 
     if (!await f.exists()) {
-      UIUtil.showSnackbar(l10n.contactsImportErr, context);
+      UIUtil.showSnackbar(l10n.contactsImportErr);
       return;
     }
     try {
@@ -100,14 +100,14 @@ Future<void> importContacts(WidgetRef ref, BuildContext context) async {
       int numSaved = await contactsManager.saveContacts(contactsToAdd);
       if (numSaved > 0) {
         final message = l10n.contactsImportSuccess('$numSaved');
-        UIUtil.showSnackbar(message, context);
+        UIUtil.showSnackbar(message);
       } else {
-        UIUtil.showSnackbar(l10n.noContactsImport, context);
+        UIUtil.showSnackbar(l10n.noContactsImport);
       }
     } catch (e) {
       final log = ref.read(loggerProvider);
       log.e('Failed to import contacts', error: e);
-      UIUtil.showSnackbar(l10n.contactsImportErr, context);
+      UIUtil.showSnackbar(l10n.contactsImportErr);
     }
   }
 }

@@ -65,18 +65,18 @@ class ReceiveSheet extends HookConsumerWidget {
     Future<void> copyAddress() async {
       try {
         await Clipboard.setData(ClipboardData(text: address));
-        UIUtil.showSnackbar(l10n.addressCopied, context);
+        UIUtil.showSnackbar(l10n.addressCopied);
       } catch (_) {
-        UIUtil.showSnackbar(l10n.addressCopiedFailed, context);
+        UIUtil.showSnackbar(l10n.addressCopiedFailed);
       }
     }
 
     Future<void> copyUri() async {
       try {
         await Clipboard.setData(ClipboardData(text: kaspaUri.toString()));
-        UIUtil.showSnackbar(l10n.kaspaUriCopied, context);
+        UIUtil.showSnackbar(l10n.kaspaUriCopied);
       } catch (_) {
-        UIUtil.showSnackbar(l10n.kaspaUriCopyFailed, context);
+        UIUtil.showSnackbar(l10n.kaspaUriCopyFailed);
       }
     }
 

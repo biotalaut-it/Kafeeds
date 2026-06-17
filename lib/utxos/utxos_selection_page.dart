@@ -162,7 +162,7 @@ class UtxosSelectionPage extends HookConsumerWidget {
         );
         appRouter.pop(context, withResult: selectedUtxos);
       } catch (e) {
-        UIUtil.showSnackbar(l10n.utxoSelectionHint, context);
+        UIUtil.showSnackbar(l10n.utxoSelectionHint);
       }
     }
 

@@ -46,7 +46,7 @@ class AddressListItem extends ConsumerWidget {
       final message = address.type == AddressType.receive
           ? l10n.receiveAddressCopied
           : l10n.changeAddressCopied;
-      UIUtil.showSnackbar(message, context);
+      UIUtil.showSnackbar(message);
     }
 
     return Column(

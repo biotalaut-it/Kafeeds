@@ -85,9 +85,9 @@ class WalletAddressesSheet extends HookConsumerWidget {
       try {
         final encoded = addresses.map((address) => address.encoded).join('\n');
         await Clipboard.setData(ClipboardData(text: encoded));
-        UIUtil.showSnackbar(l10n.walletAddressesCopied(typeStr), context);
+        UIUtil.showSnackbar(l10n.walletAddressesCopied(typeStr));
       } catch (_) {
-        UIUtil.showSnackbar(l10n.walletAddressesCopyFailed(typeStr), context);
+        UIUtil.showSnackbar(l10n.walletAddressesCopyFailed(typeStr));
       }
     }
 

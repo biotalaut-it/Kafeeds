@@ -25,13 +25,11 @@ abstract class UIUtil {
     return (width < 375) ? width * 0.94 : width * 0.85;
   }
 
-  static void showSnackbar(String content, BuildContext context) {
-    showToastWidget(
-      ToastWidget(content: content),
-      dismissOtherToast: true,
-      duration: Duration(milliseconds: 3000),
-    );
-  }
+  static void showSnackbar(String content) => showToastWidget(
+    ToastWidget(content: content),
+    dismissOtherToast: true,
+    duration: Duration(milliseconds: 3000),
+  );
 
   static Future<void> showUpdateFeeFlow(
     BuildContext context, {
@@ -59,7 +57,7 @@ abstract class UIUtil {
       );
 
       if (toAddress == null) {
-        UIUtil.showSnackbar(l10n.feeUpdateAddressError, context);
+        UIUtil.showSnackbar(l10n.feeUpdateAddressError);
         return;
       }
 
@@ -75,7 +73,7 @@ abstract class UIUtil {
       );
 
       if (newTx == null) {
-        UIUtil.showSnackbar(l10n.feeUpdateRebuildError, context);
+        UIUtil.showSnackbar(l10n.feeUpdateRebuildError);
         return;
       }
 
@@ -131,7 +129,7 @@ abstract class UIUtil {
       }
 
       if (replacementTx == null) {
-        UIUtil.showSnackbar(l10n.feeUpdateRebuildError2, context);
+        UIUtil.showSnackbar(l10n.feeUpdateRebuildError2);
         return;
       }
 
@@ -190,11 +188,11 @@ abstract class UIUtil {
           widget: sheet,
         );
       } catch (e) {
-        UIUtil.showSnackbar(l10n.feeUpdateError, context);
+        UIUtil.showSnackbar(l10n.feeUpdateError);
         appRouter.pop(context);
       }
     } catch (e) {
-      UIUtil.showSnackbar(l10n.feeUpdateError, context);
+      UIUtil.showSnackbar(l10n.feeUpdateError);
     }
   }
 
@@ -281,7 +279,7 @@ abstract class UIUtil {
         widget: SendConfirmSheet(sendTx: sendTx, rbf: rbf),
       );
     } catch (e) {
-      UIUtil.showSnackbar(e.toString(), context);
+      UIUtil.showSnackbar(e.toString());
       return;
     }
   }

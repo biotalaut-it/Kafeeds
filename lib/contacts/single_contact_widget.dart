@@ -36,7 +36,7 @@ class SingleContactWidget extends ConsumerWidget {
       await Clipboard.setData(ClipboardData(text: contact.address));
       final l10n = l10nOf(context);
       final message = l10n.contactAddressCopied(contact.address);
-      UIUtil.showSnackbar(message, context);
+      UIUtil.showSnackbar(message);
     }
 
     return TextButton(

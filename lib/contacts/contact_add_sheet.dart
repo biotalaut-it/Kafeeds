@@ -154,7 +154,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
                 final scanResult = await UserDataUtil.scanQrCode(context);
                 final data = scanResult?.code;
                 if (data == null) {
-                  UIUtil.showSnackbar(l10n.qrInvalidAddress, context);
+                  UIUtil.showSnackbar(l10n.qrInvalidAddress);
                 } else {
                   final address = Address.tryParse(
                     data,
@@ -282,7 +282,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
     final contacts = ref.read(contactsProvider);
     await contacts.addContact(newContact);
     final l10n = l10nOf(context);
-    UIUtil.showSnackbar(l10n.contactAdded(newContact.name), context);
+    UIUtil.showSnackbar(l10n.contactAdded(newContact.name));
     appRouter.pop(context);
   }
 

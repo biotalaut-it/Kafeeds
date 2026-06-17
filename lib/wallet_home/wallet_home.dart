@@ -53,7 +53,7 @@ class WalletHome extends HookConsumerWidget {
 
         Future.microtask(() {
           if (uri == null) {
-            UIUtil.showSnackbar(l10n.kaspaUriInvalid, context);
+            UIUtil.showSnackbar(l10n.kaspaUriInvalid);
             return;
           }
 

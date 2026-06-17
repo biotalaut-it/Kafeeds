@@ -223,7 +223,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       final uri = KaspaUri.tryParse(qrData, prefix: prefix);
       final address = uri?.address;
       if (address == null) {
-        UIUtil.showSnackbar(l10n.qrInvalidAddress, context);
+        UIUtil.showSnackbar(l10n.qrInvalidAddress);
         return;
       }
 
@@ -296,12 +296,12 @@ class _SendSheetState extends ConsumerState<SendSheet> {
         expectedPrefix: prefix,
       );
       if (toAddress == null) {
-        UIUtil.showSnackbar('Invalid destination address', context);
+        UIUtil.showSnackbar('Invalid destination address');
         return;
       }
 
       if (amountRaw == null) {
-        UIUtil.showSnackbar('Invalid amount', context);
+        UIUtil.showSnackbar('Invalid amount');
         return;
       }
 

@@ -156,9 +156,9 @@ class NodeAddSheet extends HookConsumerWidget {
           if (success) {
             // pop sheet
             appRouter.pop(context);
-            UIUtil.showSnackbar(l10n.addNodeSuccess, context);
+            UIUtil.showSnackbar(l10n.addNodeSuccess);
           } else {
-            UIUtil.showSnackbar(l10n.addNodeFailed, context);
+            UIUtil.showSnackbar(l10n.addNodeFailed);
           }
         }
       } catch (e, st) {
@@ -170,7 +170,7 @@ class NodeAddSheet extends HookConsumerWidget {
         log.e('Failed to add node', error: e, stackTrace: st);
 
         final message = l10n.addNodeFailedMessage('$e');
-        UIUtil.showSnackbar(message, context);
+        UIUtil.showSnackbar(message);
       } finally {
         client?.close();
       }

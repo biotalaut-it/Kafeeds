@@ -81,10 +81,7 @@ class FeeSheet extends HookConsumerWidget {
       if (rbf && (amount.value ?? Amount.zero).raw < priorityFee.raw) {
         final symbol = ref.watch(kasSymbolProvider);
         final amountStr = NumberUtil.formatedAmount(priorityFee);
-        UIUtil.showSnackbar(
-          l10n.feeSheetPriorityFeeWarning(amountStr, symbol),
-          context,
-        );
+        UIUtil.showSnackbar(l10n.feeSheetPriorityFeeWarning(amountStr, symbol));
         return;
       }
       appRouter.pop(context, withResult: amount.value ?? Amount.zero);

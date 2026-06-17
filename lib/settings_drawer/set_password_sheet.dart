@@ -54,14 +54,14 @@ class SetPasswordSheet extends HookConsumerWidget {
         final auth = ref.read(walletAuthProvider.notifier);
         await auth.setPassword(password);
 
-        UIUtil.showSnackbar(l10n.setPasswordSuccess, context);
+        UIUtil.showSnackbar(l10n.setPasswordSuccess);
         appRouter.pop(context);
       } catch (e, st) {
         final log = ref.read(loggerProvider);
         log.e('Failed to set password', error: e, stackTrace: st);
 
         appRouter.pop(context);
-        UIUtil.showSnackbar(l10n.encryptionFailedError, context);
+        UIUtil.showSnackbar(l10n.encryptionFailedError);
       }
     }
 

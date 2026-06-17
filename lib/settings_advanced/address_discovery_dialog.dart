@@ -95,7 +95,7 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
           await txNotifier.reload();
         }
       } catch (e) {
-        UIUtil.showSnackbar(l10n.scanFailedMessage, context);
+        UIUtil.showSnackbar(l10n.scanFailedMessage);
       } finally {
         appRouter.pop(context);
       }

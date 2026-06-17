@@ -77,7 +77,7 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
         // appRouter.pop(context, withResult: result);
         throw Exception('Barcode Finder temporarily unavailable.');
       } catch (e) {
-        UIUtil.showSnackbar(l10n.noQrCodeFound, context);
+        UIUtil.showSnackbar(l10n.noQrCodeFound);
       }
       _shouldScan = true;
     }
@@ -178,7 +178,7 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
       }
 
       final l10n = l10nOf(context);
-      UIUtil.showSnackbar(l10n.checkCameraPermission, context);
+      UIUtil.showSnackbar(l10n.checkCameraPermission);
     }
   }
 

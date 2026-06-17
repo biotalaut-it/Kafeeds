@@ -18,7 +18,7 @@ class IntroActionsWidget extends ConsumerWidget {
       try {
         notifier.newWallet();
       } catch (e) {
-        UIUtil.showSnackbar(l10n.somethingWentWrong, context);
+        UIUtil.showSnackbar(l10n.somethingWentWrong);
         appRouter.reload(context);
       }
     }

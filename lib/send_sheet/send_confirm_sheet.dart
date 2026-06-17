@@ -87,7 +87,7 @@ class SendConfirmSheet extends HookConsumerWidget {
         final log = ref.read(loggerProvider);
         log.e('Failed to send transaction', error: e, stackTrace: st);
 
-        UIUtil.showSnackbar(l10n.sendError, context);
+        UIUtil.showSnackbar(l10n.sendError);
         appRouter.pop(context);
       }
     }
@@ -181,7 +181,7 @@ class SendConfirmSheet extends HookConsumerWidget {
           // if (tx.userSelected) {
           //   selectUtxos(priorityFee: newPriorityFee);
           // } else {
-          UIUtil.showSnackbar(l10n.insufficientBalance, context);
+          UIUtil.showSnackbar(l10n.insufficientBalance);
           appRouter.pop(context);
           //}
         }

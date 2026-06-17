@@ -263,7 +263,7 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
           return;
         }
         if (mnemonic.isEmpty) {
-          UIUtil.showSnackbar(l10n.missingSecretPhrase, context);
+          UIUtil.showSnackbar(l10n.missingSecretPhrase);
           return;
         }
 
@@ -287,7 +287,7 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
             );
             SharePlus.instance.share(params);
           } catch (e) {
-            UIUtil.showSnackbar('Could not share Kaspium', context);
+            UIUtil.showSnackbar('Could not share Kaspium');
           }
         }
 

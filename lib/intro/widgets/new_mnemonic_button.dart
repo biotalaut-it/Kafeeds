@@ -27,7 +27,7 @@ class NewMnemonicButton extends ConsumerWidget {
         try {
           notifier.generateNewMnemonic(strength: strength);
         } catch (e) {
-          UIUtil.showSnackbar(l10n.somethingWentWrong, context);
+          UIUtil.showSnackbar(l10n.somethingWentWrong);
           appRouter.reload(context);
         }
       });

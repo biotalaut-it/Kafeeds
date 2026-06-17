@@ -43,7 +43,7 @@ class ContactDetails extends HookConsumerWidget {
     void deleteContact() {
       ref.read(contactsProvider).removeContact(contact);
       final message = l10n.contactRemoved(contact.name);
-      UIUtil.showSnackbar(message, context);
+      UIUtil.showSnackbar(message);
       appRouter.pop(context);
     }
 

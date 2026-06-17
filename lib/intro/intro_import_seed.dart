@@ -138,7 +138,7 @@ class IntroImportSeed extends HookConsumerWidget {
         ref.read(wordPrefixProvider.notifier).update((state) => '');
         return;
       }
-      UIUtil.showSnackbar(l10n.qrMnemonicError, context);
+      UIUtil.showSnackbar(l10n.qrMnemonicError);
     }
 
     Future<void> pasteFromClipboard() async {
@@ -149,7 +149,7 @@ class IntroImportSeed extends HookConsumerWidget {
 
       final data = await Clipboard.getData(Clipboard.kTextPlain);
       if (data == null || data.text == null) {
-        UIUtil.showSnackbar(l10n.clipboardEmpty, context);
+        UIUtil.showSnackbar(l10n.clipboardEmpty);
         return;
       }
       final text = data.text!.trim().toLowerCase();
@@ -162,7 +162,7 @@ class IntroImportSeed extends HookConsumerWidget {
         ref.read(wordPrefixProvider.notifier).update((state) => '');
         return;
       }
-      UIUtil.showSnackbar(l10n.pasteMnemonicError, context);
+      UIUtil.showSnackbar(l10n.pasteMnemonicError);
     }
 
     Future<void> submitMnemonic() async {
@@ -188,7 +188,7 @@ class IntroImportSeed extends HookConsumerWidget {
         try {
           intro.setMnemonic(mnemonic);
         } catch (e) {
-          UIUtil.showSnackbar(l10n.somethingWentWrong, context);
+          UIUtil.showSnackbar(l10n.somethingWentWrong);
           appRouter.reload(context);
         }
       }

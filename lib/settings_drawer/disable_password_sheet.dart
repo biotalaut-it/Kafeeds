@@ -33,7 +33,7 @@ class DisablePasswordSheet extends HookConsumerWidget {
         final auth = ref.read(walletAuthProvider.notifier);
         await auth.removePassword(password);
 
-        UIUtil.showSnackbar(l10n.disablePasswordSuccess, context);
+        UIUtil.showSnackbar(l10n.disablePasswordSuccess);
         appRouter.pop(context);
       } catch (e) {
         passwordError.value = l10n.invalidPassword;

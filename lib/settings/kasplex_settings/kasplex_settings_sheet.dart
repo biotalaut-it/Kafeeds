@@ -42,7 +42,7 @@ class KasplexSettingsSheet extends HookConsumerWidget {
       final uri = Uri.tryParse(url);
 
       if (uri == null) {
-        UIUtil.showSnackbar('Invalid URL', context);
+        UIUtil.showSnackbar('Invalid URL');
         return;
       }
 
@@ -75,7 +75,7 @@ class KasplexSettingsSheet extends HookConsumerWidget {
         log.e('Failed to set API URL', error: e, stackTrace: st);
 
         final message = l10n.addNodeFailedMessage('$e');
-        UIUtil.showSnackbar(message, context);
+        UIUtil.showSnackbar(message);
       }
     }
 

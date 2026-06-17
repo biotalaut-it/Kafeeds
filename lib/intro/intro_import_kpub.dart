@@ -58,7 +58,7 @@ class IntroImportKpub extends HookConsumerWidget {
         kpubController.text = kpub;
         return;
       }
-      UIUtil.showSnackbar(l10n.importKpubQrCodeError, context);
+      UIUtil.showSnackbar(l10n.importKpubQrCodeError);
     }
 
     Future<void> pasteFromClipboard() async {
@@ -68,7 +68,7 @@ class IntroImportKpub extends HookConsumerWidget {
 
       final data = await Clipboard.getData(Clipboard.kTextPlain);
       if (data == null || data.text == null) {
-        UIUtil.showSnackbar(l10n.clipboardEmpty, context);
+        UIUtil.showSnackbar(l10n.clipboardEmpty);
         return;
       }
       final text = data.text!.trim();
@@ -76,7 +76,7 @@ class IntroImportKpub extends HookConsumerWidget {
         kpubController.text = text;
         return;
       }
-      UIUtil.showSnackbar(l10n.importKpubClipboardError, context);
+      UIUtil.showSnackbar(l10n.importKpubClipboardError);
     }
 
     void submitKpub() {

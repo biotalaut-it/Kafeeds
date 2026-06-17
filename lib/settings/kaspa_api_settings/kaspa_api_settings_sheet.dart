@@ -43,7 +43,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
       final uri = Uri.tryParse(url);
 
       if (uri == null) {
-        UIUtil.showSnackbar('Invalid URL', context);
+        UIUtil.showSnackbar('Invalid URL');
         return;
       }
 
@@ -73,7 +73,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
         }
 
         final message = l10n.addNodeFailedMessage('$e');
-        UIUtil.showSnackbar(message, context);
+        UIUtil.showSnackbar(message);
       }
     }
 
