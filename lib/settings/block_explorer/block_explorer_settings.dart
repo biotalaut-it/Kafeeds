@@ -14,7 +14,6 @@ sealed class BlockExplorerSettings with _$BlockExplorerSettings {
     @Default(const {
       kKaspaNetworkIdMainnet: kKaspaExplorerMainnet,
       kKaspaNetworkIdTestnet10: kKaspaExplorerTestnet10,
-      kKaspaNetworkIdTestnet11: kKaspaExplorerTestnet11,
     })
     Map<String, BlockExplorer> selection,
   }) = _BlockExplorerSettings;

@@ -203,7 +203,7 @@ return $default(_that.selection);case _:
 @JsonSerializable()
 
 class _BlockExplorerSettings extends BlockExplorerSettings {
-  const _BlockExplorerSettings({final  Map<String, BlockExplorer> selection = const {kKaspaNetworkIdMainnet : kKaspaExplorerMainnet, kKaspaNetworkIdTestnet10 : kKaspaExplorerTestnet10, kKaspaNetworkIdTestnet11 : kKaspaExplorerTestnet11}}): _selection = selection,super._();
+  const _BlockExplorerSettings({final  Map<String, BlockExplorer> selection = const {kKaspaNetworkIdMainnet : kKaspaExplorerMainnet, kKaspaNetworkIdTestnet10 : kKaspaExplorerTestnet10}}): _selection = selection,super._();
   factory _BlockExplorerSettings.fromJson(Map<String, dynamic> json) => _$BlockExplorerSettingsFromJson(json);
 
  final  Map<String, BlockExplorer> _selection;

@@ -7,7 +7,6 @@ part 'kaspa_api_settings_types.g.dart';
 
 const kKaspaApiUrlMainnet = 'https://api.kaspa.org';
 const kKaspaApiUrlTestnet10 = 'https://api-tn10.kaspa.org';
-const kKaspaApiUrlTestnet11 = 'https://api-tn11.kaspa.org';
 
 @freezed
 sealed class KaspaApiSettings with _$KaspaApiSettings {
@@ -24,7 +23,6 @@ sealed class KaspaApiSettings with _$KaspaApiSettings {
     return switch (networkId) {
       kKaspaNetworkIdMainnet => kKaspaApiUrlMainnet,
       kKaspaNetworkIdTestnet10 => kKaspaApiUrlTestnet10,
-      kKaspaNetworkIdTestnet11 => kKaspaApiUrlTestnet11,
       _ => '',
     };
   }

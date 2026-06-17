@@ -18,7 +18,6 @@ _BlockExplorerSettings _$BlockExplorerSettingsFromJson(Map json) =>
           const {
             kKaspaNetworkIdMainnet: kKaspaExplorerMainnet,
             kKaspaNetworkIdTestnet10: kKaspaExplorerTestnet10,
-            kKaspaNetworkIdTestnet11: kKaspaExplorerTestnet11,
           },
     );
 

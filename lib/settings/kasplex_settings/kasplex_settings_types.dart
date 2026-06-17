@@ -7,7 +7,6 @@ part 'kasplex_settings_types.g.dart';
 
 const kKasplexApiUrlMainnet = 'https://api.kasplex.org/v1';
 const kKasplexApiUrlTestnet10 = 'https://tn10api.kasplex.org/v1';
-const kKasplexApiUrlTestnet11 = 'https://tn11api.kasplex.org/v1';
 
 @freezed
 sealed class KasplexSettings with _$KasplexSettings {
@@ -26,7 +25,6 @@ sealed class KasplexSettings with _$KasplexSettings {
     return switch (networkId) {
       kKaspaNetworkIdMainnet => kKasplexApiUrlMainnet,
       kKaspaNetworkIdTestnet10 => kKasplexApiUrlTestnet10,
-      kKaspaNetworkIdTestnet11 => kKasplexApiUrlTestnet11,
       _ => '',
     };
   }

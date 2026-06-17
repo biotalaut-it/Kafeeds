@@ -43,14 +43,6 @@ const kKaspaExplorerTestnet10 = BlockExplorer(
   txUrl: 'https://explorer-tn10.kaspa.org/txs/$kParamPattern',
 );
 
-const kKaspaExplorerTestnet11 = BlockExplorer(
-  network: KaspaNetwork.testnet,
-  name: 'Kaspa Explorer',
-  url: 'explorer-tn11.kaspa.org',
-  addressUrl: 'https://explorer-tn11.kaspa.org/addresses/$kParamPattern',
-  txUrl: 'https://explorer-tn11.kaspa.org/txs/$kParamPattern',
-);
-
 const kKasFyiMainnet = BlockExplorer(
   network: KaspaNetwork.mainnet,
   name: 'Kas.fyi',
@@ -90,9 +82,6 @@ const kBlockExplorersOptions = <String, List<BlockExplorer>>{
   ],
   kKaspaNetworkIdTestnet10: [
     kKaspaExplorerTestnet10,
-  ],
-  kKaspaNetworkIdTestnet11: [
-    kKaspaExplorerTestnet11,
   ],
   kKaspaNetworkIdDevnet: [],
   kKaspaNetworkIdSimnet: [],
