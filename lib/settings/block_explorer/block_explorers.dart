@@ -28,7 +28,7 @@ sealed class BlockExplorer with _$BlockExplorer {
 }
 
 const kKaspaExplorerMainnet = BlockExplorer(
-  network: KaspaNetwork.mainnet,
+  network: .mainnet,
   name: 'Kaspa Explorer',
   url: 'explorer.kaspa.org',
   addressUrl: 'https://explorer.kaspa.org/addresses/$kParamPattern',
@@ -36,7 +36,7 @@ const kKaspaExplorerMainnet = BlockExplorer(
 );
 
 const kKaspaExplorerTestnet10 = BlockExplorer(
-  network: KaspaNetwork.testnet,
+  network: .testnet,
   name: 'Kaspa Explorer',
   url: 'explorer-tn10.kaspa.org',
   addressUrl: 'https://explorer-tn10.kaspa.org/addresses/$kParamPattern',
@@ -44,7 +44,7 @@ const kKaspaExplorerTestnet10 = BlockExplorer(
 );
 
 const kKasFyiMainnet = BlockExplorer(
-  network: KaspaNetwork.mainnet,
+  network: .mainnet,
   name: 'Kas.fyi',
   url: 'kas.fyi',
   addressUrl: 'https://kas.fyi/address/$kParamPattern',
@@ -52,7 +52,7 @@ const kKasFyiMainnet = BlockExplorer(
 );
 
 const kKasFyiTestnet = BlockExplorer(
-  network: KaspaNetwork.testnet,
+  network: .testnet,
   name: 'Kas.fyi Testnet',
   url: 'testnet.kas.fyi',
   addressUrl: 'https://testnet.kas.fyi/address/$kParamPattern',
@@ -60,7 +60,7 @@ const kKasFyiTestnet = BlockExplorer(
 );
 
 const kKatnipMainnet = BlockExplorer(
-  network: KaspaNetwork.mainnet,
+  network: .mainnet,
   name: 'Katnip',
   url: 'katnip.kaspad.net',
   addressUrl: 'https://katnip.kaspad.net/addr/$kParamPattern',
@@ -68,20 +68,38 @@ const kKatnipMainnet = BlockExplorer(
 );
 
 const kKatnipTestnet = BlockExplorer(
-  network: KaspaNetwork.testnet,
+  network: .testnet,
   name: 'Katnip Testnet',
   url: 'katnip-testnet.kaspad.net',
   addressUrl: 'https://katnip-testnet.kaspad.net/addr/$kParamPattern',
   txUrl: 'https://katnip-testnet.kaspad.net/tx/$kParamPattern',
 );
 
+const kKaspaStreamMainnet = BlockExplorer(
+  network: .mainnet,
+  name: 'Kaspa.stream',
+  url: 'kaspa.stream',
+  addressUrl: 'https://kaspa.stream/addresses/$kParamPattern',
+  txUrl: 'https://kaspa.stream/transactions/$kParamPattern',
+);
+
+const kKaspaStreamTestnet10 = BlockExplorer(
+  network: .testnet,
+  name: 'Kaspa.steam',
+  url: 'tn10.kaspa.stream',
+  addressUrl: 'https://tn10.kaspa.stream/addresses/$kParamPattern',
+  txUrl: 'https://tn10.kaspa.stream/transactions/$kParamPattern',
+);
+
 const kBlockExplorersOptions = <String, List<BlockExplorer>>{
   kKaspaNetworkIdMainnet: [
     kKaspaExplorerMainnet,
+    kKaspaStreamMainnet,
     kKasFyiMainnet,
   ],
   kKaspaNetworkIdTestnet10: [
     kKaspaExplorerTestnet10,
+    kKaspaStreamTestnet10,
   ],
   kKaspaNetworkIdDevnet: [],
   kKaspaNetworkIdSimnet: [],

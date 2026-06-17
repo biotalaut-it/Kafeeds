@@ -11,7 +11,7 @@ sealed class BlockExplorerSettings with _$BlockExplorerSettings {
   const BlockExplorerSettings._();
 
   const factory BlockExplorerSettings({
-    @Default(const {
+    @Default({
       kKaspaNetworkIdMainnet: kKaspaExplorerMainnet,
       kKaspaNetworkIdTestnet10: kKaspaExplorerTestnet10,
     })
