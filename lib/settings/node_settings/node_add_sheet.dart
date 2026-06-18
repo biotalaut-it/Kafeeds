@@ -38,21 +38,19 @@ class NodeAddSheet extends HookConsumerWidget {
     final urlFocusNode = useFocusNode();
 
     useEffect(() {
-      final listener = () {
-        stateNotifier.value = state.copyWith(
-          showNameHint: !nameFocusNode.hasFocus,
-        );
-      };
+      void listener() => stateNotifier.value = state.copyWith(
+        showNameHint: !nameFocusNode.hasFocus,
+      );
+
       nameFocusNode.addListener(listener);
       return () => nameFocusNode.removeListener(listener);
     }, [nameFocusNode]);
 
     useEffect(() {
-      final listener = () {
-        stateNotifier.value = state.copyWith(
-          showUrlHint: !urlFocusNode.hasFocus,
-        );
-      };
+      void listener() => stateNotifier.value = state.copyWith(
+        showUrlHint: !urlFocusNode.hasFocus,
+      );
+
       urlFocusNode.addListener(listener);
       return () => urlFocusNode.removeListener(listener);
     }, [urlFocusNode]);

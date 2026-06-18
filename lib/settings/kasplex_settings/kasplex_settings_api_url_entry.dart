@@ -23,11 +23,14 @@ class KasplexSettingsApiUrlEntry extends ConsumerWidget {
       );
     }
 
+    final schemeIndex = kasplexApiUrl.indexOf('://');
+    final displayUrl = schemeIndex != -1
+        ? kasplexApiUrl.substring(schemeIndex + 3)
+        : kasplexApiUrl;
+
     return DoubleLineItem(
       heading: 'Kasplex API',
-      defaultMethod: StringSelectionItem(
-        kasplexApiUrl.substring(kasplexApiUrl.indexOf('://') + 3),
-      ),
+      defaultMethod: StringSelectionItem(displayUrl),
       icon: Icons.token,
       onPressed: changeApiUrl,
     );

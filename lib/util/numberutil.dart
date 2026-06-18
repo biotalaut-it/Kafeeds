@@ -147,7 +147,7 @@ class NumberUtil {
           int.parse(input[i]);
           sanitized = sanitized + input[i];
         }
-      } catch (e) {}
+      } catch (_) {}
     }
     return sanitized;
   }

@@ -18,18 +18,18 @@ import '../util/ui_util.dart';
 Future<void> exportContacts(WidgetRef ref, BuildContext context) async {
   final l10n = l10nOf(context);
 
-  List<Contact> contacts = await ref.read(contactsProvider).contacts;
+  List<Contact> contacts = ref.read(contactsProvider).contacts;
 
   if (!context.mounted) return;
 
-  if (contacts.length == 0) {
+  if (contacts.isEmpty) {
     UIUtil.showSnackbar(l10n.noContactsExport);
     return;
   }
   List<Map<String, dynamic>> jsonList = [];
-  contacts.forEach((contact) {
+  for (final contact in contacts) {
     jsonList.add(contact.toJson());
-  });
+  }
   final lockDisabled = ref.read(lockDisabledProvider.notifier);
   lockDisabled.state = true;
 
@@ -82,13 +82,13 @@ Future<void> importContacts(WidgetRef ref, BuildContext context) async {
       Iterable contactsJson = json.decode(contents);
       List<Contact> contacts = [];
       List<Contact> contactsToAdd = [];
-      contactsJson.forEach((contact) {
-        contacts.add(Contact.fromJson(contact));
-      });
+      for (final contact in contactsJson) {
+        contacts.add(.fromJson(contact));
+      }
       final contactsManager = ref.read(contactsProvider);
       for (Contact contact in contacts) {
-        if (!await contactsManager.contactExistsWithName(contact.name) &&
-            !await contactsManager.contactExistsWithAddress(contact.address)) {
+        if (!contactsManager.contactExistsWithName(contact.name) &&
+            !contactsManager.contactExistsWithAddress(contact.address)) {
           // Contact doesnt exist, make sure name and address are valid
           final prefix = ref.read(addressPrefixProvider);
           if (Address.isValid(contact.address, prefix)) {

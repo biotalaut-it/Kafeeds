@@ -5,8 +5,7 @@ import '../settings_providers.dart';
 import 'kasplex_settings_notifier.dart';
 import 'kasplex_settings_types.dart';
 
-final kasplexSettingsProvider =
-    StateNotifierProvider<KasplexSettingsNotifier, KasplexSettings>((ref) {
+final kasplexSettingsProvider = StateNotifierProvider((ref) {
   final repository = ref.watch(settingsRepositoryProvider);
   return KasplexSettingsNotifier(repository);
 });

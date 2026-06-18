@@ -33,7 +33,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
     final urlValue = useValueListenable(controller);
 
     useEffect(() {
-      final listener = () => showUrlHint.value = !focusNode.hasFocus;
+      bool listener() => showUrlHint.value = !focusNode.hasFocus;
       focusNode.addListener(listener);
       return () => focusNode.removeListener(listener);
     }, [focusNode]);

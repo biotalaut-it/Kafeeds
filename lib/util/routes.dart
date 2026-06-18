@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 /// Custom route which has no transitions
 class NoTransitionRoute<T> extends MaterialPageRoute<T> {
   NoTransitionRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
-  }) : super(builder: builder, settings: settings);
+    required super.builder,
+    super.settings,
+  });
 
   @override
   Widget buildTransitions(
@@ -23,9 +23,9 @@ class NoTransitionRoute<T> extends MaterialPageRoute<T> {
 /// Custom route which has no transition when pushed, but has a pop animation
 class NoPushTransitionRoute<T> extends MaterialPageRoute<T> {
   NoPushTransitionRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
-  }) : super(builder: builder, settings: settings);
+    required super.builder,
+    super.settings,
+  });
 
   @override
   Widget buildTransitions(
@@ -51,13 +51,17 @@ class NoPushTransitionRoute<T> extends MaterialPageRoute<T> {
 /// Custom route which has no transition when popped, but has a push animation
 class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
   NoPopTransitionRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
-  }) : super(builder: builder, settings: settings);
+    required super.builder,
+    super.settings,
+  });
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     // is pushing
     if (animation.status == AnimationStatus.forward) {
       return super.buildTransitions(
@@ -88,7 +92,8 @@ class RouteUtils {
       if (route.settings.name != null &&
           route.settings.name!.contains('/home')) {}
 
-      final result = route.willHandlePopInternally ||
+      final result =
+          route.willHandlePopInternally ||
           (route is ModalRoute &&
               route.settings.name != null &&
               route.settings.name!.contains(name));

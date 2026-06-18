@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/core_providers.dart';
@@ -7,14 +6,12 @@ import 'coingecko_price_notifier.dart';
 import 'coingecko_repository.dart';
 import 'coingecko_types.dart';
 
-final _kaspaPriceCacheProvider =
-    StateNotifierProvider<CoinGeckoPriceNotifier, CoinGeckoPrice>((ref) {
+final _kaspaPriceCacheProvider = StateNotifierProvider((ref) {
   final repository = ref.watch(settingsRepositoryProvider);
   return CoinGeckoPriceNotifier(repository);
 });
 
-final _kaspaPriceRemoteProvider =
-    FutureProvider.autoDispose<CoinGeckoPrice>((ref) async {
+final _kaspaPriceRemoteProvider = FutureProvider.autoDispose((ref) async {
   ref.watch(remoteRefreshProvider);
   ref.watch(timeProvider);
 
@@ -36,16 +33,14 @@ final _kaspaPriceRemoteProvider =
   try {
     var price = await getCoinGeckoApiPrice(fiat);
     // fallback to Kaspium API if CoinGecko API fails
-    if (price == null) {
-      price = await getKaspiumApiPrice(fiat);
-    }
+    price ??= await getKaspiumApiPrice(fiat);
     if (price == null) {
       throw Exception('Failed to fetch remote exchange rate');
     }
 
     return CoinGeckoPrice(
       currency: currency.currency,
-      price: Decimal.parse(price.toString()),
+      price: .parse(price.toString()),
       timestamp: timestamp,
     );
   } catch (e, st) {
@@ -55,7 +50,7 @@ final _kaspaPriceRemoteProvider =
     }
     return CoinGeckoPrice(
       currency: currency.currency,
-      price: Decimal.zero,
+      price: .zero,
       timestamp: timestamp,
     );
   }
@@ -65,9 +60,9 @@ final coingeckoKaspaPriceProvider = Provider.autoDispose((ref) {
   final cache = ref.watch(_kaspaPriceCacheProvider.notifier);
   final remote = ref.watch(_kaspaPriceRemoteProvider);
 
-  remote.whenOrNull(data: (data) {
-    Future.microtask(() => cache.updatePrice(data));
-  });
+  remote.whenOrNull(
+    data: (price) => Future.microtask(() => cache.updatePrice(price)),
+  );
 
   return remote.asData?.value ?? cache.price;
 });

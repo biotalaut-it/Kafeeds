@@ -105,7 +105,7 @@ class AuthUtil {
     final walletAuth = ref.read(walletAuthProvider.notifier);
 
     if (walletAuth.walletIsEncrypted) {
-      List<String>? mnemonic = null;
+      List<String>? mnemonic;
       await authenticateWithPassword(context, validator: (password) async {
         try {
           mnemonic = await walletAuth.getMnemonic(password: password);

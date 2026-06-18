@@ -32,7 +32,7 @@ class KasplexSettingsSheet extends HookConsumerWidget {
     final urlValue = useValueListenable(controller);
 
     useEffect(() {
-      final listener = () => showUrlHint.value = !focusNode.hasFocus;
+      bool listener() => showUrlHint.value = !focusNode.hasFocus;
       focusNode.addListener(listener);
       return () => focusNode.removeListener(listener);
     }, [focusNode]);
@@ -144,17 +144,16 @@ class KasplexSettingsSheet extends HookConsumerWidget {
       ),
       bottomWidget: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(children: [
-          PrimaryButton(
-            title: l10n.confirm,
-            onPressed: setApiUrl,
-          ),
-          const SizedBox(height: 16),
-          PrimaryOutlineButton(
-            title: l10n.cancel,
-            onPressed: () => appRouter.pop(context),
-          ),
-        ]),
+        child: Column(
+          children: [
+            PrimaryButton(title: l10n.confirm, onPressed: setApiUrl),
+            const SizedBox(height: 16),
+            PrimaryOutlineButton(
+              title: l10n.cancel,
+              onPressed: () => appRouter.pop(context),
+            ),
+          ],
+        ),
       ),
     );
   }

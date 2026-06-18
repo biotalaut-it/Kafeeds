@@ -24,11 +24,14 @@ class KaspaApiSettingsUrlEntry extends ConsumerWidget {
       );
     }
 
+    final schemeIndex = kaspaApiUrl.indexOf('://');
+    final displayUrl = schemeIndex != -1
+        ? kaspaApiUrl.substring(schemeIndex + 3)
+        : kaspaApiUrl;
+
     return DoubleLineItem(
       heading: 'Kaspa API',
-      defaultMethod: StringSelectionItem(
-        kaspaApiUrl.substring(kaspaApiUrl.indexOf('://') + 3),
-      ),
+      defaultMethod: StringSelectionItem(displayUrl),
       icon: Icons.api,
       onPressed: _changeKaspaApiUrl,
     );

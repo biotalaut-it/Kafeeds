@@ -19,7 +19,7 @@ const mainnetNodeConfig = NodeConfig(
 @freezed
 sealed class NodeConfigSettings with _$NodeConfigSettings {
   const factory NodeConfigSettings({
-    @Default(const IListConst([mainnetNodeConfig])) IList<NodeConfig> options,
+    @Default(IListConst([mainnetNodeConfig])) IList<NodeConfig> options,
     @Default(mainnetNodeConfig) NodeConfig selected,
   }) = _NodeConfigSettings;
 

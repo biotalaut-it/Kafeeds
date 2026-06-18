@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 class SingleSpaceFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (newValue.selection.baseOffset == 0) {
       return newValue;
     }
@@ -12,7 +14,7 @@ class SingleSpaceFormatter extends TextInputFormatter {
     // Don't allow first character to be a space
     if (newValue.text.length < oldValue.text.length) {
       return newValue;
-    } else if (oldValue.text.length == 0 && newValue.text == ' ') {
+    } else if (oldValue.text.isEmpty && newValue.text == ' ') {
       return oldValue;
     } else if (oldValue.text.endsWith(' ') && newValue.text.endsWith('  ')) {
       return oldValue;

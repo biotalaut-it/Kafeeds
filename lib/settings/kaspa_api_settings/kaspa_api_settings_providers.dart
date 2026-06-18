@@ -5,8 +5,7 @@ import '../settings_providers.dart';
 import 'kaspa_api_settings_notifier.dart';
 import 'kaspa_api_settings_types.dart';
 
-final kaspaApiSettingsProvider =
-    StateNotifierProvider<KaspaApiSettingsNotifier, KaspaApiSettings>((ref) {
+final kaspaApiSettingsProvider = StateNotifierProvider((ref) {
   final repository = ref.watch(settingsRepositoryProvider);
   return KaspaApiSettingsNotifier(repository);
 });

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -43,7 +45,7 @@ class SharedPrefsUtil {
 
   T get<T>(String key, {required T defaultValue}) {
     final value = sharedPrefs.get(key);
-    if (value == null || !(value is T)) return defaultValue;
+    if (value == null || value is! T) return defaultValue;
     return value as T;
   }
 
