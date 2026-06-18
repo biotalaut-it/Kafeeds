@@ -115,6 +115,6 @@ sealed class KaspaUri with _$KaspaUri {
       ...others.map((param) => escape(param.key, param.value)),
     ].where((param) => param.isNotEmpty).join('&');
 
-    return '$address' + (params.isNotEmpty ? '?$params' : '');
+    return '$address${params.isNotEmpty ? '?$params' : ''}';
   }
 }

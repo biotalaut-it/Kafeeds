@@ -31,7 +31,7 @@ class SplashScreen extends HookConsumerWidget {
       if (noticeShown.state) {
         return;
       }
-      final version = (await PackageInfo.fromPlatform()).version + " (Beta)";
+      final version = "${(await PackageInfo.fromPlatform()).version} (Beta)";
       if (!context.mounted) return;
       noticeShown.state = true;
       await showDialog(

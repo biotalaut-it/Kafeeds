@@ -100,7 +100,7 @@ class MainCard extends ConsumerWidget {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '$kaspaBalance',
+                                kaspaBalance,
                                 textAlign: TextAlign.end,
                                 style: styles.textStyleCurrency,
                               ),

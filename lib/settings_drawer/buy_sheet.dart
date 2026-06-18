@@ -101,7 +101,7 @@ class BuySheet extends ConsumerWidget {
           Container(
             margin: .symmetric(horizontal: horizontal),
             child: Text(
-              l10n.buyKaspaMessage + '\n' + l10n.buyKaspaMessageSecondary,
+              '${l10n.buyKaspaMessage}\n${l10n.buyKaspaMessageSecondary}',
               style: styles.textStyleAccount,
               textAlign: TextAlign.center,
             ),

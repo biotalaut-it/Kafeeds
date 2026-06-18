@@ -115,7 +115,7 @@ class TransactionCard extends ConsumerWidget {
                                     .copyWith(fontSize: AppFontSizes.small),
                               ),
                               TextSpan(
-                                text: ' ${kasSymbol}',
+                                text: ' $kasSymbol',
                                 style: styles.textStyleTransactionUnit
                                     .copyWith(fontSize: AppFontSizes.small),
                               ),
@@ -159,7 +159,7 @@ class TransactionCard extends ConsumerWidget {
                           ],
                         ),
                         Text(
-                          '${tx.id}',
+                          tx.id,
                           style: styles.textStyleTransactionType
                               .copyWith(color: theme.text60),
                           maxLines: 2,
@@ -169,14 +169,14 @@ class TransactionCard extends ConsumerWidget {
                           children: [
                             if (isThisWallet && isSendType) ...[
                               Text(
-                                '${l10n.thisWallet}',
+                                l10n.thisWallet,
                                 style: styles.textStyleTransactionAmountSmall,
                               ),
                               const SizedBox(width: 8),
                             ],
                             if (isContact) ...[
                               Text(
-                                '${contact.name}',
+                                contact.name,
                                 style: styles.textStyleTransactionAmountSmall,
                               ),
                             ],

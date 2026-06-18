@@ -21,7 +21,7 @@ class TxNoteWidget extends ConsumerWidget {
         RichText(
           text: TextSpan(children: [
             TextSpan(
-              text: l10n.noteLabel + ' ',
+              text: '${l10n.noteLabel} ',
               style: styles.textStyleTransactionAmountSmall
                   .copyWith(color: theme.primary),
             ),

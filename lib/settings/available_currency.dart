@@ -61,7 +61,7 @@ class AvailableCurrency extends SettingSelectionItem {
 
   @override
   String getDisplayName(BuildContext context) {
-    return symbol + ' ' + getDisplayNameNoSymbol();
+    return '$symbol ${getDisplayNameNoSymbol()}';
   }
 
   String getDisplayNameNoSymbol() {

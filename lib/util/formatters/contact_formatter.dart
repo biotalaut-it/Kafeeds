@@ -11,13 +11,13 @@ class ContactFormatter extends TextInputFormatter {
 
     String workingText = newValue.text;
     if (!workingText.startsWith('@')) {
-      workingText = '@' + workingText;
+      workingText = '@$workingText';
     }
 
     List<String> splitStr = workingText.split('@');
     // If this string contains more than 1 @, remove all but the first one
     if (splitStr.length > 2) {
-      workingText = '@' + workingText.replaceAll(r'@', '');
+      workingText = '@${workingText.replaceAll(r'@', '')}';
     }
 
     // If nothing changed, return original

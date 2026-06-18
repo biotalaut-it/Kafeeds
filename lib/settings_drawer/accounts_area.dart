@@ -47,7 +47,7 @@ class AccountsArea extends ConsumerWidget {
                       alignment: Alignment.centerLeft,
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        '${wallet.name}',
+                        wallet.name,
                         style: styles.textStyleAppTextFieldSimple.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

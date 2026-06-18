@@ -79,7 +79,7 @@ class CurrencyFormatter extends TextInputFormatter {
     if (decimalSeparator.allMatches(workingText).length > 1) {
       return oldValue;
     } else if (workingText.startsWith(decimalSeparator)) {
-      workingText = '0' + workingText;
+      workingText = '0$workingText';
     }
 
     // If contains decimal separator with zero maxDecimalDigits, return oldValue

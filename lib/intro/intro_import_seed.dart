@@ -111,7 +111,7 @@ class IntroImportSeed extends HookConsumerWidget {
       final index = value.data.isEmpty
           ? text.trim().lastIndexOf(' ')
           : text.lastIndexOf(' ');
-      final word = value.data.isEmpty ? '' : value.data + ' ';
+      final word = value.data.isEmpty ? '' : '${value.data} ';
       mnemonic.state = text.substring(0, index + 1) + word;
 
       final offset = mnemonic.state.length;
@@ -134,7 +134,7 @@ class IntroImportSeed extends HookConsumerWidget {
       final length = mData.split(' ').length;
       if (isValidMnemonic(mData, verifyChecksum: false) &&
           allowedLengths.contains(length)) {
-        ref.read(_mnemonicProvider.notifier).state = mData + ' ';
+        ref.read(_mnemonicProvider.notifier).state = '$mData ';
         updateFocus(mData.length + 1);
         ref.read(wordPrefixProvider.notifier).update((state) => '');
         return;
@@ -158,7 +158,7 @@ class IntroImportSeed extends HookConsumerWidget {
       if (isValidMnemonic(text, verifyChecksum: false) &&
           allowedLengths.contains(length)) {
         final mnemonic = ref.read(_mnemonicProvider.notifier);
-        mnemonic.state = text + ' ';
+        mnemonic.state = '$text ';
         updateFocus(text.length + 1);
         ref.read(wordPrefixProvider.notifier).update((state) => '');
         return;

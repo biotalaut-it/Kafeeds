@@ -79,7 +79,7 @@ class _AppShareCardState extends State<AppShareCard> {
                               size: 80,
                               padding: EdgeInsets.zero,
                               gapless: false,
-                              data: '${selected.encoded}',
+                              data: selected.encoded,
                               errorCorrectionLevel: QrErrorCorrectLevel.Q,
                             ),
                           ),

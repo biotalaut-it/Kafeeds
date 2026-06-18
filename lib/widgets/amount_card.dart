@@ -32,11 +32,11 @@ class AmountCard extends HookConsumerWidget {
     }, [amount]);
 
     final exactAmount = useMemoized(() {
-      return NumberUtil.approx(
-            amount: amount,
-            precision: amount.decimals,
-          ) +
-          ' $symbol';
+      final value = NumberUtil.approx(
+        amount: amount,
+        precision: amount.decimals,
+      );
+      return '$value $symbol';
     }, [amount]);
 
     final horizontal = MediaQuery.widthOf(context) * 0.105;
@@ -78,7 +78,7 @@ class AmountCard extends HookConsumerWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: '$formatedAmount',
+                            text: formatedAmount,
                             style: styles.textStyleParagraphPrimary,
                           ),
                           TextSpan(

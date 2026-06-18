@@ -5,10 +5,10 @@ const String kKaspaNetworkTestnet = 'testnet';
 const String kKaspaNetworkSimnet = 'simnet';
 const String kKaspaNetworkDevnet = 'devnet';
 
-const String kKaspaNetworkIdMainnet = '$kKaspaNetworkMainnet';
+const String kKaspaNetworkIdMainnet = kKaspaNetworkMainnet;
 const String kKaspaNetworkIdTestnet10 = '$kKaspaNetworkTestnet-10';
-const String kKaspaNetworkIdSimnet = '$kKaspaNetworkSimnet';
-const String kKaspaNetworkIdDevnet = '$kKaspaNetworkDevnet';
+const String kKaspaNetworkIdSimnet = kKaspaNetworkSimnet;
+const String kKaspaNetworkIdDevnet = kKaspaNetworkDevnet;
 
 const int kMainnetRpcPort = 16110;
 const int kTestnetPpcPort = 16210;
@@ -33,7 +33,7 @@ enum KaspaNetwork {
 
   String idWithSuffix([String suffix = '']) {
     if (suffix.isNotEmpty) {
-      return name + '-$suffix';
+      return '$name-$suffix';
     }
     return name;
   }
