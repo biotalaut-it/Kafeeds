@@ -42,6 +42,8 @@ class ContactsWidget extends ConsumerWidget {
       );
     }
 
+    final bottom = MediaQuery.heightOf(context) * 0.035;
+
     return Container(
       decoration: BoxDecoration(
         color: theme.backgroundDark,
@@ -54,10 +56,7 @@ class ContactsWidget extends ConsumerWidget {
         ],
       ),
       child: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-          top: 60,
-        ),
+        minimum: .only(bottom: bottom, top: 60),
         child: Column(
           children: [
             Container(

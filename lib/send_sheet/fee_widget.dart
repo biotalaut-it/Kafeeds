@@ -20,17 +20,12 @@ class FeeWidget extends ConsumerWidget {
 
     final symbol = ref.watch(symbolProvider(amount));
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.105,
-        right: MediaQuery.of(context).size.width * 0.105,
-        top: 5,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 15,
-      ),
+      margin: .only(left: horizontal, right: horizontal, top: 5),
+      padding: const .symmetric(horizontal: 25, vertical: 15),
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
         borderRadius: BorderRadius.circular(25),

@@ -16,14 +16,15 @@ class IntroWallets extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
+    final height = MediaQuery.heightOf(context);
+    final top = height * 0.12;
+    final bottom = height * 0.035;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.backgroundDark,
       body: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-          top: MediaQuery.of(context).size.height * 0.12,
-        ),
+        minimum: .only(top: top, bottom: bottom),
         child: Column(
           children: [
             Flexible(

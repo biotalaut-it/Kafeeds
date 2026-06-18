@@ -89,14 +89,16 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
 
     final addressPrefix = ref.watch(addressPrefixProvider);
 
+    final topMargin = MediaQuery.heightOf(context) * 0.14;
+
     return SheetWidget(
       title: l10n.addContact,
       mainWidget: Column(
         children: [
           // Enter Name Container
           AppTextField(
-            topMargin: MediaQuery.of(context).size.height * 0.14,
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            topMargin: topMargin,
+            padding: const .symmetric(horizontal: 30),
             focusNode: _nameFocusNode,
             controller: _nameController,
             textInputAction: widget.address != null

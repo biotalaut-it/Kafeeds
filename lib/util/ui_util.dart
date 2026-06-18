@@ -21,7 +21,7 @@ import 'numberutil.dart';
 
 abstract class UIUtil {
   static double drawerWidth(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
+    final width = MediaQuery.widthOf(context);
     return (width < 375) ? width * 0.94 : width * 0.85;
   }
 
@@ -285,7 +285,7 @@ abstract class UIUtil {
   }
 
   static bool smallScreen(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.heightOf(context);
     return height < 667;
   }
 

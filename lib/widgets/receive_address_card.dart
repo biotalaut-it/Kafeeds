@@ -37,11 +37,10 @@ class ReceiveAddressCard extends HookConsumerWidget {
       return '#$name';
     }, [address, showLabel]);
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.105,
-        right: MediaQuery.of(context).size.width * 0.105,
-      ),
+      margin: .symmetric(horizontal: horizontal),
       width: double.infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,

@@ -37,10 +37,10 @@ class SendCompleteSheet extends HookConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
+    final bottom = MediaQuery.heightOf(context) * 0.035;
+
     return SafeArea(
-      minimum: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height * 0.035,
-      ),
+      minimum: .only(bottom: bottom),
       child: Column(
         children: [
           const SheetHandle(),

@@ -68,10 +68,10 @@ class TransactionDetailsSheet extends ConsumerWidget {
       );
     }
 
+    final bottom = MediaQuery.heightOf(context) * 0.035;
+
     return SafeArea(
-      minimum: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height * 0.035,
-      ),
+      minimum: .only(bottom: bottom),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

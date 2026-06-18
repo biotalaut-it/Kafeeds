@@ -34,13 +34,14 @@ class LogoutScreen extends HookConsumerWidget {
       return null;
     }, const []);
 
+    final height = MediaQuery.heightOf(context);
+    final top = height * 0.075;
+    final bottom = height * 0.035;
+
     return Scaffold(
       backgroundColor: theme.backgroundDark,
       body: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-          top: MediaQuery.of(context).size.height * 0.075,
-        ),
+        minimum: .only(top: top, bottom: bottom),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

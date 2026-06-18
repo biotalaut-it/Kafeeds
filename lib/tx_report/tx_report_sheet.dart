@@ -31,11 +31,12 @@ class TxReportSheet extends HookConsumerWidget {
       );
     }
 
+    final horizontal = MediaQuery.widthOf(context) * 0.10;
+
     return SheetWidget(
       title: l10n.txReport,
       mainWidget: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.10, vertical: 30),
+        padding: .symmetric(horizontal: horizontal, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,

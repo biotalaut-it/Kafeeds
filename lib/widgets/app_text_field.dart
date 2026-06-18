@@ -105,10 +105,12 @@ class AppTextField extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return Container(
       margin: EdgeInsets.only(
-        left: leftMargin ?? MediaQuery.of(context).size.width * 0.105,
-        right: rightMargin ?? MediaQuery.of(context).size.width * 0.105,
+        left: leftMargin ?? horizontal,
+        right: rightMargin ?? horizontal,
         top: topMargin,
       ),
       padding: padding,

@@ -69,19 +69,17 @@ class Dialog extends StatelessWidget {
     return Theme.of(context).dialogBackgroundColor;
   }
 
-  double _getHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
-  }
-
   static const RoundedRectangleBorder _defaultDialogShape =
       RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0)));
   @override
   Widget build(BuildContext context) {
     final dialogTheme = DialogTheme.of(context);
+    final viewInsets = MediaQuery.viewInsetsOf(context);
+    final height = MediaQuery.heightOf(context);
+
     return AnimatedPadding(
-      padding: MediaQuery.of(context).viewInsets +
-          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      padding: viewInsets + const .symmetric(horizontal: 20, vertical: 20),
       duration: insetAnimationDuration,
       curve: insetAnimationCurve,
       child: MediaQuery.removeViewInsets(
@@ -93,10 +91,9 @@ class Dialog extends StatelessWidget {
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-                minWidth: 280.0,
-                maxHeight: _getHeight(context) < 667
-                    ? _getHeight(context) * 0.75
-                    : _getHeight(context) * 0.65),
+              minWidth: 280,
+              maxHeight: height < 667 ? height * 0.75 : height * 0.65,
+            ),
             child: Material(
               elevation: 24.0,
               color: _getColor(context),

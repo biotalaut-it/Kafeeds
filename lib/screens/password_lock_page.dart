@@ -56,6 +56,10 @@ class PasswordLockPage extends HookConsumerWidget {
       }
     }
 
+    final height = MediaQuery.heightOf(context);
+    final bottom = height * 0.035;
+    final top = height * 0.1;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: TapOutsideUnfocus(
@@ -63,9 +67,7 @@ class PasswordLockPage extends HookConsumerWidget {
           color: theme.backgroundDark,
           width: double.infinity,
           child: SafeArea(
-            minimum: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.035,
-            ),
+            minimum: .only(bottom: bottom),
             child: Column(children: [
               Row(children: [
                 Padding(
@@ -76,13 +78,11 @@ class PasswordLockPage extends HookConsumerWidget {
               Expanded(
                 child: Column(children: [
                   Container(
+                    margin: .only(top: top),
                     child: Icon(
                       AppIcons.lock,
                       size: 80,
                       color: theme.primary,
-                    ),
-                    margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.1,
                     ),
                   ),
                   Container(

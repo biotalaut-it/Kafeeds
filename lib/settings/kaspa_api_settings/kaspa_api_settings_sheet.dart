@@ -97,6 +97,8 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
       controller.text = '';
     }
 
+    final horizontal = MediaQuery.widthOf(context) * 0.115;
+
     return SheetWidget(
       title: 'Kaspa Api',
       mainWidget: Column(
@@ -104,10 +106,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
         children: [
           const SizedBox(height: 30),
           Container(
-            margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.115,
-              right: MediaQuery.of(context).size.width * 0.115,
-            ),
+            margin: .symmetric(horizontal: horizontal),
             child: Text(
               'Set a custom Kaspa API URL or leave blank to use the default one.',
               style: styles.textStyleAccount,

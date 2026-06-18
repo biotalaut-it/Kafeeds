@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,14 +28,16 @@ class IntroBackupSeed extends ConsumerWidget {
       intro.showIntroBackupConfirm();
     }
 
+    final size = MediaQuery.sizeOf(context);
+    final top = size.height * 0.075;
+    final bottom = size.height * 0.035;
+    final maxWidth = max<double>(size.width - 140, 0);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.backgroundDark,
       body: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-          top: MediaQuery.of(context).size.height * 0.075,
-        ),
+        minimum: .only(top: top, bottom: bottom),
         child: Column(
           children: [
             //A widget that holds the header, the paragraph, the seed, "seed copied" text and the back button
@@ -83,9 +87,7 @@ class IntroBackupSeed extends ConsumerWidget {
                     child: Row(
                       children: [
                         Container(
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width - 140,
-                          ),
+                          constraints: BoxConstraints(maxWidth: maxWidth),
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(

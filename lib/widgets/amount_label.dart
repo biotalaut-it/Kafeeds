@@ -31,17 +31,13 @@ class AmountLabel extends HookConsumerWidget {
           ' $symbol';
     }, [amount]);
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return FiatValueContainer(
       amount: amount,
       child: Container(
-        margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * 0.105,
-          right: MediaQuery.of(context).size.width * 0.105,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 15,
-        ),
+        margin: .symmetric(horizontal: horizontal),
+        padding: const .symmetric(horizontal: 25, vertical: 15),
         width: double.infinity,
         decoration: BoxDecoration(
           color: theme.backgroundDarkest,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -242,14 +244,17 @@ class _LockScreenState extends ConsumerState<LockScreen> {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
+    final size = MediaQuery.sizeOf(context);
+    final bottom = size.height * 0.035;
+    final top = size.height * 0.1;
+    final containerWidth = max<double>(size.width - 100, 0);
+
     return Scaffold(
       body: Container(
         color: theme.backgroundDark,
         width: double.infinity,
         child: SafeArea(
-          minimum: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height * 0.035,
-          ),
+          minimum: .only(bottom: bottom),
           child: Column(
             children: [
               Row(children: [
@@ -262,13 +267,11 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                 child: _showLock
                     ? Column(children: [
                         Container(
+                          margin: .only(top: top),
                           child: Icon(
                             AppIcons.lock,
                             size: 80,
                             color: theme.primary,
-                          ),
-                          margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.1,
                           ),
                         ),
                         Container(
@@ -283,7 +286,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
               ),
               _lockedOut
                   ? Container(
-                      width: MediaQuery.of(context).size.width - 100,
+                      width: containerWidth,
                       margin: EdgeInsets.symmetric(horizontal: 50),
                       child: Text(
                         l10n.tooManyFailedAttempts,

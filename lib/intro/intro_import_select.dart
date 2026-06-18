@@ -88,14 +88,15 @@ class IntroImportSelect extends ConsumerWidget {
       intro.goBack();
     }
 
+    final height = MediaQuery.heightOf(context);
+    final top = height * 0.075;
+    final bottom = height * 0.035;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.backgroundDark,
       body: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-          top: MediaQuery.of(context).size.height * 0.075,
-        ),
+        minimum: .only(top: top, bottom: bottom),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,

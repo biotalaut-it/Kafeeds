@@ -22,6 +22,8 @@ class NetworkMenu extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
+    final bottom = MediaQuery.heightOf(context) * 0.035;
+
     return Container(
       decoration: BoxDecoration(
         color: theme.backgroundDark,
@@ -34,10 +36,7 @@ class NetworkMenu extends ConsumerWidget {
         ],
       ),
       child: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-          top: 60,
-        ),
+        minimum: .only(top: 60, bottom: bottom),
         child: Column(
           children: [
             Container(

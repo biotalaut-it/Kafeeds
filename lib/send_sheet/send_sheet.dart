@@ -318,10 +318,14 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       UIUtil.showSendFlow(context, ref: ref, uri: uri, useRbf: widget.rbf);
     }
 
+    final viewInsets = MediaQuery.viewInsetsOf(context);
+    final size = MediaQuery.sizeOf(context);
+    final bottom = size.height * 0.035;
+    final maxWidth = max<double>(size.width - 140, 0);
+    final horizontal = size.width * 0.105;
+
     return SafeArea(
-      minimum: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height * 0.035,
-      ),
+      minimum: .only(bottom: bottom),
       child: TapOutsideUnfocus(
         child: Column(
           children: [
@@ -335,9 +339,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                     const SheetHandle(),
                     Container(
                       margin: const EdgeInsets.only(top: 15),
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width - 140,
-                      ),
+                      constraints: BoxConstraints(maxWidth: maxWidth),
                       child: Column(
                         children: [
                           FittedBox(
@@ -383,12 +385,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                   children: [
                     // A column for Enter Amount, Enter Address, Error containers and the pop up list
                     SingleChildScrollView(
-                      padding: EdgeInsets.only(
-                        bottom: max(
-                          0,
-                          MediaQuery.of(context).viewInsets.bottom - 180,
-                        ),
-                      ),
+                      padding: .only(bottom: max(0, viewInsets.bottom - 180)),
                       child: Stack(
                         children: [
                           Column(
@@ -421,13 +418,8 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                                   alignment: Alignment.topCenter,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.105,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.105,
+                                      margin: .symmetric(
+                                        horizontal: horizontal,
                                       ),
                                       alignment: Alignment.bottomCenter,
                                       constraints: const BoxConstraints(

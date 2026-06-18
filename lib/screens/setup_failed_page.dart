@@ -23,13 +23,13 @@ class SetupFailedPage extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
+    final bottom = MediaQuery.heightOf(context) * 0.035;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.backgroundDark,
       body: SafeArea(
-        minimum: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height * 0.035,
-        ),
+        minimum: .only(bottom: bottom),
         child: Column(
           children: [
             Expanded(

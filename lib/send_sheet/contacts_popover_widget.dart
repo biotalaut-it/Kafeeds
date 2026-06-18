@@ -21,11 +21,10 @@ class ContactsPopoverWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.105,
-        right: MediaQuery.of(context).size.width * 0.105,
-      ),
+      margin: .symmetric(horizontal: horizontal),
       alignment: Alignment.bottomCenter,
       constraints: const BoxConstraints(
         maxHeight: 174,

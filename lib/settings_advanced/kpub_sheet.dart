@@ -38,6 +38,8 @@ class KpubSheet extends ConsumerWidget {
       }
     }
 
+    final horizontal = MediaQuery.widthOf(context) * 0.115;
+
     return SheetWidget(
       title: l10n.kpubTitle,
       mainWidget: Stack(
@@ -47,10 +49,7 @@ class KpubSheet extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.115,
-                    vertical: 30,
-                  ),
+                  padding: .symmetric(horizontal: horizontal, vertical: 30),
                   child: Text(
                     l10n.kpubDescription,
                     style: styles.textStyleAccount,
@@ -59,11 +58,8 @@ class KpubSheet extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.105,
-                  ),
+                  padding: const .symmetric(horizontal: 25, vertical: 15),
+                  margin: .symmetric(horizontal: horizontal),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: theme.backgroundDarkest,

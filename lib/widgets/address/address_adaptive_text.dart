@@ -19,8 +19,9 @@ class AddressAdaptiveText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final height = MediaQuery.heightOf(context);
     // One line for small displays
-    if (MediaQuery.of(context).size.height < 667) {
+    if (height < 667) {
       return AddressOneLineText(address: address, type: type, label: label);
     }
     // Three lines for large displays

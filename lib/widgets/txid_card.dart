@@ -25,10 +25,10 @@ class TxIdCard extends HookConsumerWidget {
       openUrl(explorer.urlForTx(txId));
     }
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.105,
-      ),
+      margin: .symmetric(horizontal: horizontal),
       width: double.infinity,
       child: Material(
         shape: RoundedRectangleBorder(

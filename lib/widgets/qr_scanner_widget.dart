@@ -43,11 +43,9 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final scanArea =
-        (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 250.0
-        : 300.0;
+    final size = MediaQuery.sizeOf(context);
+
+    final scanArea = (size.width < 400 || size.height < 400) ? 250.0 : 300.0;
 
     Future<void> scanFromImage() async {
       final lockDisabled = ref.read(lockDisabledProvider.notifier);

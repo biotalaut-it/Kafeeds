@@ -91,16 +91,15 @@ class BuySheet extends ConsumerWidget {
       openUri(uri);
     }
 
+    final horizontal = MediaQuery.widthOf(context) * 0.115;
+
     return SheetWidget(
       title: l10n.buyKaspaTitle,
       mainWidget: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.115,
-              right: MediaQuery.of(context).size.width * 0.115,
-            ),
+            margin: .symmetric(horizontal: horizontal),
             child: Text(
               l10n.buyKaspaMessage + '\n' + l10n.buyKaspaMessageSecondary,
               style: styles.textStyleAccount,

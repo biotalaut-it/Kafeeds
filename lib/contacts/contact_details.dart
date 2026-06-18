@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,10 +81,13 @@ class ContactDetails extends HookConsumerWidget {
       }
     }
 
+    final size = MediaQuery.sizeOf(context);
+    final horizontal = size.width * 0.105;
+    final bottom = size.height * 0.035;
+    final maxWidth = max<double>(size.width - 140, 0);
+
     return SafeArea(
-      minimum: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height * 0.035,
-      ),
+      minimum: .only(bottom: bottom),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,8 +102,7 @@ class ContactDetails extends HookConsumerWidget {
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 15),
-                  constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width - 140),
+                  constraints: BoxConstraints(maxWidth: maxWidth),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
@@ -137,10 +140,7 @@ class ContactDetails extends HookConsumerWidget {
                       // Contact Name container
                       Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.105,
-                          right: MediaQuery.of(context).size.width * 0.105,
-                        ),
+                        margin: .symmetric(horizontal: horizontal),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 25,
                           vertical: 12,
@@ -160,9 +160,9 @@ class ContactDetails extends HookConsumerWidget {
                         onTap: copyAddress,
                         child: Container(
                           width: double.infinity,
-                          margin: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.105,
-                            right: MediaQuery.of(context).size.width * 0.105,
+                          margin: .only(
+                            left: horizontal,
+                            right: horizontal,
                             top: 15,
                           ),
                           padding: const EdgeInsets.symmetric(

@@ -259,26 +259,23 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
   }
 
   Widget _buildOverlayContent(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     switch (type) {
       case AnimationType.TRANSFER_SEARCHING_QR:
         return Center(
           child: Container(
-            margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.15,
-            ),
-            width: MediaQuery.of(context).size.width / 1.1,
-            height: MediaQuery.of(context).size.width / 1.1,
+            margin: EdgeInsets.only(bottom: size.height * 0.15),
+            width: size.width / 1.1,
+            height: size.width / 1.1,
             child: _getAnimation(context),
           ),
         );
       case AnimationType.TRANSFER_SEARCHING_MANUAL:
         return Center(
           child: Container(
-            margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.15,
-            ),
-            width: MediaQuery.of(context).size.width / 1.1,
-            height: MediaQuery.of(context).size.width / 1.1,
+            margin: EdgeInsets.only(bottom: size.height * 0.15),
+            width: size.width / 1.1,
+            height: size.width / 1.1,
             child: _getAnimation(context),
           ),
         );
@@ -289,15 +286,15 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
             children: [
               Container(
                 alignment: AlignmentDirectional(0, -0.5),
-                width: MediaQuery.of(context).size.width / 1.4,
-                height: MediaQuery.of(context).size.width / 1.4 / 2,
+                width: size.width / 1.4,
+                height: size.width / 1.4 / 2,
                 child: _getAnimation(context),
               ),
               Container(
                 margin: EdgeInsetsDirectional.only(
                   start: 10,
                   top: 20,
-                  bottom: MediaQuery.of(context).size.height * 0.15,
+                  bottom: size.height * 0.15,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -325,10 +322,9 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
       case AnimationType.MANTA:
         return Center(
           child: Container(
-            margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height * 0.05),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(bottom: size.height * 0.05),
+            width: size.width,
+            height: size.width,
             child: _getAnimation(context),
           ),
         );
@@ -345,9 +341,7 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
                   : EdgeInsets.zero,
               //Widgth/Height ratio is needed because BoxFit is not working as expected
               width: type == AnimationType.SEND ? double.infinity : 100,
-              height: type == AnimationType.SEND
-                  ? MediaQuery.of(context).size.width
-                  : 100,
+              height: type == AnimationType.SEND ? size.width : 100,
               child: _getAnimation(context),
             ),
           ],

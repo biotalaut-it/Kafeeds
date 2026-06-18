@@ -41,11 +41,11 @@ class AddressCard extends HookConsumerWidget {
       return contact?.name;
     }, [address, showLabel]);
 
+    final horizontal = MediaQuery.widthOf(context) * 0.105;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-      margin: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.105,
-      ),
+      padding: const .symmetric(horizontal: 25, vertical: 15),
+      margin: .symmetric(horizontal: horizontal),
       width: double.infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
