@@ -65,7 +65,7 @@ class WordsWidget extends ConsumerWidget {
     final words = ref.watch(wordSuggestionsProvider);
     final prefix = ref.watch(wordPrefixProvider);
 
-    return Container(
+    return SizedBox(
       height: 48,
       child: ListView.builder(
         padding: const EdgeInsetsDirectional.only(start: 4),
@@ -91,13 +91,15 @@ class WordsWidget extends ConsumerWidget {
                 foregroundColor: theme.text,
               ),
               child: Text.rich(
-                TextSpan(children: [
-                  TextSpan(
-                    text: prefix,
-                    style: styles.textStyleKeyboardWord,
-                  ),
-                  TextSpan(text: word.substring(prefix.length)),
-                ]),
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: prefix,
+                      style: styles.textStyleKeyboardWord,
+                    ),
+                    TextSpan(text: word.substring(prefix.length)),
+                  ],
+                ),
               ),
               onPressed: () {
                 final notifier = ref.read(wordSelectedProvider.notifier);
@@ -141,12 +143,6 @@ class KeyWidget extends ConsumerWidget {
             backgroundColor: theme.background,
             foregroundColor: theme.text,
           ),
-          child: Center(
-            child: Text(
-              keyId,
-              style: styles.textStyleKeyboardKey,
-            ),
-          ),
           onPressed: !enabled
               ? null
               : () {
@@ -165,6 +161,12 @@ class KeyWidget extends ConsumerWidget {
                     notifier.update((state) => state + keyId);
                   }
                 },
+          child: Center(
+            child: Text(
+              keyId,
+              style: styles.textStyleKeyboardKey,
+            ),
+          ),
         ),
       );
     });

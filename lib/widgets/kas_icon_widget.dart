@@ -13,22 +13,20 @@ class KasIconWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(size.width / 2),
-            child: Image.asset(
-              kKasIconPath,
-              width: size.width,
-              height: size.height,
-              filterQuality: FilterQuality.medium,
-              isAntiAlias: true,
-            ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(size.width / 2),
+          child: Image.asset(
+            kKasIconPath,
+            width: size.width,
+            height: size.height,
+            filterQuality: FilterQuality.medium,
+            isAntiAlias: true,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

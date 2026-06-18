@@ -86,26 +86,24 @@ class MainCard extends ConsumerWidget {
                         textAlign: TextAlign.end,
                         style: styles.textStyleAccount,
                       ),
-                      Container(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/kaspa_transparent_180.png',
-                                width: 30,
-                                color: theme is KaspiumLightTheme
-                                    ? theme.primary
-                                    : null,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                kaspaBalance,
-                                textAlign: TextAlign.end,
-                                style: styles.textStyleCurrency,
-                              ),
-                            ],
-                          ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/kaspa_transparent_180.png',
+                              width: 30,
+                              color: theme is KaspiumLightTheme
+                                  ? theme.primary
+                                  : null,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              kaspaBalance,
+                              textAlign: TextAlign.end,
+                              style: styles.textStyleCurrency,
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 4),

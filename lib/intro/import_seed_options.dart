@@ -53,7 +53,7 @@ class ImportSeedOptionsButton extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
 
-    return Container(
+    return SizedBox(
       height: 50,
       width: 50,
       child: TextButton(

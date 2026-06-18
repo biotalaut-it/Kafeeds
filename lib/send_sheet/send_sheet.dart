@@ -366,13 +366,11 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                 right: 30,
                 bottom: 4,
               ),
-              child: Container(
-                child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    text: l10n.available,
-                    style: styles.textStyleAccount,
-                  ),
+              child: RichText(
+                textAlign: TextAlign.start,
+                text: TextSpan(
+                  text: l10n.available,
+                  style: styles.textStyleAccount,
                 ),
               ),
             ),
@@ -527,43 +525,45 @@ class _SendSheetState extends ConsumerState<SendSheet> {
 
   // Build contact items for the list
   Widget _buildContactItem(Contact contact) {
-    return Consumer(builder: (context, ref, _) {
-      final theme = ref.watch(themeProvider);
-      final styles = ref.watch(stylesProvider);
+    return Consumer(
+      builder: (context, ref, _) {
+        final theme = ref.watch(themeProvider);
+        final styles = ref.watch(stylesProvider);
 
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            height: 42,
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () {
-                _addressController.text = contact.name;
-                FocusManager.instance.primaryFocus?.unfocus();
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 42,
+              width: double.infinity,
+              child: TextButton(
+                onPressed: () {
+                  _addressController.text = contact.name;
+                  FocusManager.instance.primaryFocus?.unfocus();
 
-                setState(() {
-                  _isContact = true;
-                  _contactButtonVisible = false;
-                  _pasteButtonVisible = false;
-                  _sendAddressStyle = AddressStyle.PRIMARY;
-                });
-              },
-              child: Text(
-                contact.name,
-                textAlign: TextAlign.center,
-                style: styles.textStyleAddressPrimary,
+                  setState(() {
+                    _isContact = true;
+                    _contactButtonVisible = false;
+                    _pasteButtonVisible = false;
+                    _sendAddressStyle = AddressStyle.PRIMARY;
+                  });
+                },
+                child: Text(
+                  contact.name,
+                  textAlign: TextAlign.center,
+                  style: styles.textStyleAddressPrimary,
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 25),
-            height: 1,
-            color: theme.text03,
-          ),
-        ],
-      );
-    });
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              height: 1,
+              color: theme.text03,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Validate form data to see if valid
@@ -1035,13 +1035,11 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           ),
           Visibility(
             visible: _noteHint == null && _noteController.text.isEmpty,
-            child: Container(
               child: Text(
                 l10n.optionalLabel,
                 style: styles.textStyleTransactionAmount.copyWith(
                   color: theme.text30,
                   fontWeight: FontWeight.w100,
-                ),
               ),
             ),
           ),

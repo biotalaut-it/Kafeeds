@@ -57,16 +57,16 @@ class SelectedWalletButton extends ConsumerWidget {
           ),
         ),
         Center(
-          child: Container(
+          child: SizedBox(
             width: size.width,
             height: size.height,
             child: TextButton(
               style: styles.walletButtonStyle,
+              onPressed: showAccountDetails,
               child: SizedBox(
                 width: size.width,
                 height: size.height,
               ),
-              onPressed: showAccountDetails,
             ),
           ),
         ),

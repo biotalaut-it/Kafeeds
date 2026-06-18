@@ -21,7 +21,7 @@ class ContactWidget extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
+        SizedBox(
           height: 42,
           width: double.infinity,
           child: TextButton(

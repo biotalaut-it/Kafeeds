@@ -36,6 +36,7 @@ class NewMnemonicButton extends ConsumerWidget {
 
     return TextButton(
       style: styles.smallOutlinedPrimaryButtonStyle,
+      onPressed: generateNewMnemonic,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(
@@ -47,7 +48,6 @@ class NewMnemonicButton extends ConsumerWidget {
           ],
         ),
       ),
-      onPressed: generateNewMnemonic,
     );
   }
 }

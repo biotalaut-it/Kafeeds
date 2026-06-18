@@ -41,39 +41,35 @@ class DoubleLineItemTwo extends ConsumerWidget {
               Container(
                 margin: const EdgeInsetsDirectional.only(end: 13),
                 child: Container(
+                  margin: const EdgeInsets.all(3),
                   child: Icon(
                     icon,
                     color: disabled ? theme.primary45 : theme.primary,
                     size: iconSize,
                   ),
-                  margin: const EdgeInsets.all(3),
                 ),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: AutoSizeText(
-                      heading,
-                      style: disabled
-                          ? styles.textStyleSettingItemHeader45
-                          : styles.textStyleSettingItemHeader,
-                      maxLines: 1,
-                      stepGranularity: 0.1,
-                      minFontSize: 8,
-                    ),
+                  AutoSizeText(
+                    heading,
+                    style: disabled
+                        ? styles.textStyleSettingItemHeader45
+                        : styles.textStyleSettingItemHeader,
+                    maxLines: 1,
+                    stepGranularity: 0.1,
+                    minFontSize: 8,
                   ),
-                  Container(
-                    child: AutoSizeText(
-                      text,
-                      style: disabled
-                          ? styles.textStyleSettingItemSubheader30
-                          : styles.textStyleSettingItemSubheader,
-                      maxLines: 1,
-                      stepGranularity: 0.1,
-                      minFontSize: 8,
-                    ),
+                  AutoSizeText(
+                    text,
+                    style: disabled
+                        ? styles.textStyleSettingItemSubheader30
+                        : styles.textStyleSettingItemSubheader,
+                    maxLines: 1,
+                    stepGranularity: 0.1,
+                    minFontSize: 8,
                   ),
                 ],
               ),

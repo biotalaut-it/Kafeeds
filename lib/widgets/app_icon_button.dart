@@ -22,13 +22,13 @@ class AppIconButton extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
 
-    return Container(
+    return SizedBox(
       height: size.height,
       width: size.width,
       child: TextButton(
         style: styles.appIconButtonStyle,
-        child: Icon(icon, color: color ?? theme.text),
         onPressed: onPressed,
+        child: Icon(icon, color: color ?? theme.text),
       ),
     );
   }

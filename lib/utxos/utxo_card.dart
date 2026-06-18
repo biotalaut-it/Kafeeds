@@ -97,60 +97,58 @@ class UtxoCard extends ConsumerWidget {
                   children: [
                     Flexible(
                       flex: 1,
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              addressNotifier.nameForAddress(item.address) ??
-                                  l10n.address,
-                              style: styles.textStyleTransactionAmountSmall,
-                            ),
-                            Text(
-                              item.address,
-                              style: styles.textStyleCurrencyAlt,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              l10n.transactionId,
-                              style: styles.textStyleTransactionAmountSmall,
-                            ),
-                            Text(
-                              item.outpoint.transactionId,
-                              textAlign: TextAlign.start,
-                              style: styles.textStyleCurrencyAlt,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              l10n.amount,
-                              style: styles.textStyleTransactionAmountSmall,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                RichText(
-                                  maxLines: 2,
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: formatedValue,
-                                        style: styles.textStyleCurrencyAlt,
-                                      ),
-                                      TextSpan(
-                                        text: ' $kasSymbol',
-                                        style: styles.textStyleCurrencyAlt,
-                                      ),
-                                    ],
-                                  ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            addressNotifier.nameForAddress(item.address) ??
+                                l10n.address,
+                            style: styles.textStyleTransactionAmountSmall,
+                          ),
+                          Text(
+                            item.address,
+                            style: styles.textStyleCurrencyAlt,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.transactionId,
+                            style: styles.textStyleTransactionAmountSmall,
+                          ),
+                          Text(
+                            item.outpoint.transactionId,
+                            textAlign: TextAlign.start,
+                            style: styles.textStyleCurrencyAlt,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.amount,
+                            style: styles.textStyleTransactionAmountSmall,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RichText(
+                                maxLines: 2,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: formatedValue,
+                                      style: styles.textStyleCurrencyAlt,
+                                    ),
+                                    TextSpan(
+                                      text: ' $kasSymbol',
+                                      style: styles.textStyleCurrencyAlt,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '≈ $fiatValue',
-                                  style: styles.textStyleTransactionAmount,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                              Text(
+                                '≈ $fiatValue',
+                                style: styles.textStyleTransactionAmount,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],

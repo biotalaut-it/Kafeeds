@@ -44,20 +44,18 @@ class BalanceRowWidget extends ConsumerWidget {
       children: [
         Row(
           children: [
-            Container(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: balance,
-                      style: styles.textStyleBalanceAmountSmall,
-                    ),
-                    TextSpan(
-                      text: ' $kasSymbol',
-                      style: styles.textStyleTransactionUnitSmall,
-                    ),
-                  ],
-                ),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: balance,
+                    style: styles.textStyleBalanceAmountSmall,
+                  ),
+                  TextSpan(
+                    text: ' $kasSymbol',
+                    style: styles.textStyleTransactionUnitSmall,
+                  ),
+                ],
               ),
             ),
           ],
@@ -99,20 +97,18 @@ class BalanceTextWidget extends ConsumerWidget {
 
     return Column(
       children: [
-        Container(
-          child: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: balance,
-                  style: styles.textStyleBalanceAmountMedium,
-                ),
-                TextSpan(
-                  text: ' $kasSymbol',
-                  style: styles.textStyleTransactionUnitMedium,
-                ),
-              ],
-            ),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: balance,
+                style: styles.textStyleBalanceAmountMedium,
+              ),
+              TextSpan(
+                text: ' $kasSymbol',
+                style: styles.textStyleTransactionUnitMedium,
+              ),
+            ],
           ),
         ),
         RichText(

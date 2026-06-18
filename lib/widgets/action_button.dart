@@ -31,6 +31,7 @@ class ActionButton extends ConsumerWidget {
       height: 55,
       child: TextButton(
         style: styles.primaryButtonStyle,
+        onPressed: onPressed,
         child: FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(
@@ -40,7 +41,6 @@ class ActionButton extends ConsumerWidget {
             maxLines: 1,
           ),
         ),
-        onPressed: onPressed,
       ),
     );
   }

@@ -58,27 +58,23 @@ class DoubleLineItem extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: AutoSizeText(
-                      heading,
-                      style: disabled
-                          ? styles.textStyleSettingItemHeader45
-                          : styles.textStyleSettingItemHeader,
-                      maxLines: 1,
-                      stepGranularity: 0.1,
-                      minFontSize: 8,
-                    ),
+                  AutoSizeText(
+                    heading,
+                    style: disabled
+                        ? styles.textStyleSettingItemHeader45
+                        : styles.textStyleSettingItemHeader,
+                    maxLines: 1,
+                    stepGranularity: 0.1,
+                    minFontSize: 8,
                   ),
-                  Container(
-                    child: AutoSizeText(
-                      defaultMethod.getDisplayName(context),
-                      style: disabled
-                          ? styles.textStyleSettingItemSubheader30
-                          : styles.textStyleSettingItemSubheader,
-                      maxLines: 1,
-                      stepGranularity: 0.1,
-                      minFontSize: 8,
-                    ),
+                  AutoSizeText(
+                    defaultMethod.getDisplayName(context),
+                    style: disabled
+                        ? styles.textStyleSettingItemSubheader30
+                        : styles.textStyleSettingItemSubheader,
+                    maxLines: 1,
+                    stepGranularity: 0.1,
+                    minFontSize: 8,
                   ),
                 ],
               ),

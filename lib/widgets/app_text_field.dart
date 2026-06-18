@@ -21,7 +21,7 @@ class TextFieldButton extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
 
-    return Container(
+    return SizedBox(
       height: 48,
       width: 48,
       child: TextButton(

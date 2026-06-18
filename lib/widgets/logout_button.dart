@@ -29,15 +29,15 @@ class LogoutButton extends ConsumerWidget {
     return TextButton(
       style: styles.dialogButtonStyle,
       onPressed: confirmLogout,
-      child: Container(
-        child: Row(children: [
+      child: Row(
+        children: [
           Icon(AppIcons.logout, size: 16, color: theme.text),
           const SizedBox(width: 4),
           Text(
             l10n.logout,
             style: styles.textStyleLogoutButton,
           ),
-        ]),
+        ],
       ),
     );
   }

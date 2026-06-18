@@ -35,34 +35,35 @@ class SingleLineItem extends ConsumerWidget {
             Container(
               margin: const EdgeInsetsDirectional.only(end: 13),
               child: Container(
-                child: Icon(
-                  settingIcon,
-                  color: theme.primary,
-                  size: iconSize,
-                ),
                 margin: EdgeInsetsDirectional.only(
                   top: 3,
                   start: settingIcon == AppIcons.logout
                       ? 6
                       : settingIcon == AppIcons.changerepresentative ||
-                              settingIcon == Icons.settings_applications
-                          ? 0
-                          : settingIcon == AppIcons.backupseed
-                              ? 1
-                              : settingIcon == AppIcons.transferfunds
-                                  ? 2
-                                  : 3,
+                            settingIcon == Icons.settings_applications
+                      ? 0
+                      : settingIcon == AppIcons.backupseed
+                      ? 1
+                      : settingIcon == AppIcons.transferfunds
+                      ? 2
+                      : 3,
                   bottom: 3,
-                  end: settingIcon == AppIcons.logout ||
+                  end:
+                      settingIcon == AppIcons.logout ||
                           settingIcon == Icons.settings_applications
                       ? 0
                       : settingIcon == AppIcons.changerepresentative
-                          ? 6
-                          : settingIcon == AppIcons.backupseed
-                              ? 5
-                              : settingIcon == AppIcons.transferfunds
-                                  ? 4
-                                  : 3,
+                      ? 6
+                      : settingIcon == AppIcons.backupseed
+                      ? 5
+                      : settingIcon == AppIcons.transferfunds
+                      ? 4
+                      : 3,
+                ),
+                child: Icon(
+                  settingIcon,
+                  color: theme.primary,
+                  size: iconSize,
                 ),
               ),
             ),

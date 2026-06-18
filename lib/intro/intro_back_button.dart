@@ -18,7 +18,7 @@ class IntroBackButton extends ConsumerWidget {
       intro.goBack();
     }
 
-    return Container(
+    return SizedBox(
       height: 50,
       width: 50,
       child: TextButton(

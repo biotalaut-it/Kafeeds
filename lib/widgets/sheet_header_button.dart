@@ -20,7 +20,7 @@ class SheetHeaderButton extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
 
-    return Container(
+    return SizedBox(
       width: 50,
       height: 50,
       child: Visibility(

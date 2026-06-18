@@ -56,7 +56,7 @@ class SingleContactWidget extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
-                  child: Container(
+                  child: SizedBox(
                     height: 80,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,

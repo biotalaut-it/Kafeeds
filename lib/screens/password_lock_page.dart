@@ -87,11 +87,11 @@ class PasswordLockPage extends HookConsumerWidget {
                     ),
                   ),
                   Container(
+                    margin: const EdgeInsets.only(top: 10),
                     child: Text(
                       CaseChange.toUpperCase(l10n.locked, ref),
                       style: styles.textStyleHeaderColored,
                     ),
-                    margin: const EdgeInsets.only(top: 10),
                   ),
                   Expanded(
                     child: Column(children: [

@@ -134,24 +134,19 @@ class CompoundUtxosDialog extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Text(
-                          '${utxos.length}',
-                          style: styles.textStyleSettingItemHeader,
-                        ),
+                      Text(
+                        '${utxos.length}',
+                        style: styles.textStyleSettingItemHeader,
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          '$balance $kasSymbol',
-                          style: styles.textStyleSettingItemHeader,
-                        ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '$balance $kasSymbol',
+                        style: styles.textStyleSettingItemHeader,
                       ),
-                      Container(
-                        child: Text(
-                          '$maxSend $kasSymbol',
-                          style: styles.textStyleSettingItemHeader,
-                        ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '$maxSend $kasSymbol',
+                        style: styles.textStyleSettingItemHeader,
                       ),
                     ],
                   ),
@@ -169,11 +164,11 @@ class CompoundUtxosDialog extends ConsumerWidget {
         ),
         TextButton(
           style: styles.dialogButtonStyle,
+          onPressed: compound,
           child: Text(
             l10n.compoundUppercased,
             style: styles.textStyleDialogOptions,
           ),
-          onPressed: compound,
         ),
       ],
     );

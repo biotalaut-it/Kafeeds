@@ -38,11 +38,9 @@ class FiatValueWidget extends ConsumerWidget {
                 fontWeight: FontWeight.w100,
               ),
             ),
-      child: Container(
-        child: Text(
-          showAmount ? '≈ $amountValue $symbol' : '≈ $fiatValue',
-          style: styles.textStyleTransactionAmount,
-        ),
+      child: Text(
+        showAmount ? '≈ $amountValue $symbol' : '≈ $fiatValue',
+        style: styles.textStyleTransactionAmount,
       ),
     );
   }

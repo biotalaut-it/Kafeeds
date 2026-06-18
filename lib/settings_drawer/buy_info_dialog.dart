@@ -48,11 +48,11 @@ class BuyInfoDialog extends ConsumerWidget {
         ),
         TextButton(
           style: styles.dialogButtonStyle,
+          onPressed: openTopperWebsite,
           child: Text(
             l10n.moreInfo.toUpperCase(),
             style: styles.textStyleDialogOptions,
           ),
-          onPressed: openTopperWebsite,
         ),
       ],
     );

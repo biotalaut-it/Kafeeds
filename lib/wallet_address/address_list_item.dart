@@ -62,31 +62,29 @@ class AddressListItem extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Icon(
-                          AppIcons.accountwallet,
-                          size: 30,
-                          color: accounts.isAddressSelected(address)
-                              ? theme.success
-                              : theme.primary,
+                Stack(
+                  children: [
+                    Center(
+                      child: Icon(
+                        AppIcons.accountwallet,
+                        size: 30,
+                        color: accounts.isAddressSelected(address)
+                            ? theme.success
+                            : theme.primary,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 30,
+                        alignment: AlignmentDirectional(0, 0.3),
+                        child: Text(
+                          address.getShortName().toUpperCase(),
+                          style: styles.textStyleAccountShortName,
                         ),
                       ),
-                      Center(
-                        child: Container(
-                          width: 40,
-                          height: 30,
-                          alignment: AlignmentDirectional(0, 0.3),
-                          child: Text(
-                            address.getShortName().toUpperCase(),
-                            style: styles.textStyleAccountShortName,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 // Account name and address
                 Expanded(
@@ -118,13 +116,13 @@ class AddressListItem extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: 40,
                             width: 40,
                             child: TextButton(
                               style: styles.roundedTextButtonStyle,
-                              child: Icon(Icons.copy, color: theme.text),
                               onPressed: copyAddress,
+                              child: Icon(Icons.copy, color: theme.text),
                             ),
                           ),
                         ],

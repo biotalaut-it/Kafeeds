@@ -98,8 +98,8 @@ class Dialog extends StatelessWidget {
               elevation: 24.0,
               color: _getColor(context),
               type: MaterialType.card,
-              child: child,
               shape: shape ?? dialogTheme.shape ?? _defaultDialogShape,
+              child: child,
             ),
           ),
         ),
@@ -268,7 +268,7 @@ class AppAlertDialog extends StatelessWidget {
                 24.0, 24.0, 24.0, content == null ? 20.0 : 0.0),
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.titleLarge!,
-          child: Semantics(child: title, namesRoute: true),
+          child: Semantics(namesRoute: true, child: title),
         ),
       ));
     } else {
@@ -300,11 +300,14 @@ class AppAlertDialog extends StatelessWidget {
     }
 
     if (actions != null) {
-      children.add(ButtonBarTheme(
+      children.add(
+        ButtonBarTheme(
+          data: ButtonBarTheme.of(context),
           child: OverflowBar(
             children: actions!,
           ),
-          data: ButtonBarTheme.of(context)));
+        ),
+      );
     }
 
     Widget dialogChild = IntrinsicWidth(
@@ -319,7 +322,7 @@ class AppAlertDialog extends StatelessWidget {
       dialogChild =
           Semantics(namesRoute: true, label: label, child: dialogChild);
 
-    return Dialog(child: dialogChild, shape: shape);
+    return Dialog(shape: shape, child: dialogChild);
   }
 }
 
@@ -577,7 +580,7 @@ class AppSimpleDialog extends StatelessWidget {
         label: label,
         child: dialogChild,
       );
-    return Dialog(child: dialogChild, shape: shape);
+    return Dialog(shape: shape, child: dialogChild);
   }
 }
 

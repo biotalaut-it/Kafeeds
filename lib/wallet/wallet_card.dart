@@ -85,44 +85,44 @@ class WalletCard extends ConsumerWidget {
             ),
           ],
         ),
-        child: Container(
-          child: TextButton(
-            style: styles.darkCardButtonStyle,
-            onPressed: selectWallet,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const SizedBox(width: 8),
-                        Icon(
-                          CupertinoIcons.creditcard,
-                          size: 26,
-                          color: theme.primary,
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            wallet.name,
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            style: styles.textStyleParagraphBold.copyWith(
-                                fontSize: 18, overflow: TextOverflow.ellipsis),
+        child: TextButton(
+          style: styles.darkCardButtonStyle,
+          onPressed: selectWallet,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const SizedBox(width: 8),
+                      Icon(
+                        CupertinoIcons.creditcard,
+                        size: 26,
+                        color: theme.primary,
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Text(
+                          wallet.name,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                          style: styles.textStyleParagraphBold.copyWith(
+                            fontSize: 18,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                    color: theme.text30,
-                  ),
-                ],
-              ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                  color: theme.text30,
+                ),
+              ],
             ),
           ),
         ),

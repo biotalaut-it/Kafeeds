@@ -348,7 +348,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
                             children: [
                               SizedBox(height: buttonSize, width: buttonSize),
                               PinScreenButton(text: '0', onTap: onKeyTap),
-                              Container(
+                              SizedBox(
                                 height: buttonSize,
                                 width: buttonSize,
                                 child: InkWell(

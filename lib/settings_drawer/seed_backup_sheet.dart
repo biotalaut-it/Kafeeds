@@ -24,9 +24,7 @@ class SeedBackupSheet extends HookConsumerWidget {
       title: l10n.secretPhrase,
       mainWidget: ListView(
         children: [
-          Container(
-            child: MnemonicDisplay(wordList: mnemonic, obscured: true),
-          ),
+          MnemonicDisplay(wordList: mnemonic, obscured: true),
           const SizedBox(height: 30),
           if (wallet.usesBip39Passphrase)
             Text(

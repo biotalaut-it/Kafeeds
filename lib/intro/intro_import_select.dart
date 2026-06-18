@@ -29,29 +29,27 @@ class ImportWalletTypeCard extends ConsumerWidget {
         vertical: 6,
         horizontal: 28,
       ),
-      child: Container(
-        child: TextButton(
-          style: styles.darkCardButtonStyle,
-          onPressed: onPressed,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 14,
-              horizontal: 12,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  title,
-                  style: styles.textStyleAccount.copyWith(color: theme.text),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: styles.textStyleSettingItemSubheader,
-                ),
-              ],
-            ),
+      child: TextButton(
+        style: styles.darkCardButtonStyle,
+        onPressed: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 14,
+            horizontal: 12,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                title,
+                style: styles.textStyleAccount.copyWith(color: theme.text),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                description,
+                style: styles.textStyleSettingItemSubheader,
+              ),
+            ],
           ),
         ),
       ),

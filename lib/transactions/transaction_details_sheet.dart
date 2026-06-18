@@ -79,21 +79,21 @@ class TransactionDetailsSheet extends ConsumerWidget {
           if (txItem != null) ...[
             Expanded(child: TransactionDetails(txItem: txItem!)),
           ],
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 20),
-                  if (txItem?.pending ?? false) ...[
-                    PrimaryButton(
-                      title: l10n.feeUpdate,
-                      onPressed: updateFee,
-                    ),
-                    const SizedBox(height: 16),
-                  ] else if (displayAddressButton) ...[
-                    Stack(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 20),
+                if (txItem?.pending ?? false) ...[
+                  PrimaryButton(
+                    title: l10n.feeUpdate,
+                    onPressed: updateFee,
+                  ),
+                  const SizedBox(height: 16),
+                ] else if (displayAddressButton) ...[
+                  Stack(
+                    children: [
                       PrimaryButton(
                         title: l10n.viewAddress,
                         onPressed: viewAddress,
@@ -102,41 +102,39 @@ class TransactionDetailsSheet extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            child: Container(
-                              height: 55,
-                              width: 55,
-                              child: Visibility(
-                                visible: displayContactButton,
-                                child: TextButton(
-                                  style: styles.innerButtonStyle,
-                                  onPressed: addContact,
-                                  child: Icon(
-                                    AppIcons.addcontact,
-                                    size: 35,
-                                    color: theme.backgroundDark,
-                                  ),
+                          SizedBox(
+                            height: 55,
+                            width: 55,
+                            child: Visibility(
+                              visible: displayContactButton,
+                              child: TextButton(
+                                style: styles.innerButtonStyle,
+                                onPressed: addContact,
+                                child: Icon(
+                                  AppIcons.addcontact,
+                                  size: 35,
+                                  color: theme.backgroundDark,
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ]),
-                    const SizedBox(height: 16),
-                  ],
-                  if (txItem == null)
-                    PrimaryOutlineButton(
-                      title: l10n.viewTransaction,
-                      onPressed: viewTransaction,
-                    )
-                  else
-                    PrimaryOutlineButton(
-                      title: l10n.close,
-                      onPressed: () => appRouter.pop(context),
-                    ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                 ],
-              ),
+                if (txItem == null)
+                  PrimaryOutlineButton(
+                    title: l10n.viewTransaction,
+                    onPressed: viewTransaction,
+                  )
+                else
+                  PrimaryOutlineButton(
+                    title: l10n.close,
+                    onPressed: () => appRouter.pop(context),
+                  ),
+              ],
             ),
           ),
         ],

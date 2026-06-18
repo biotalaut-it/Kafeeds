@@ -276,11 +276,11 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                           ),
                         ),
                         Container(
+                          margin: EdgeInsets.only(top: 10),
                           child: Text(
                             CaseChange.toUpperCase(l10n.locked, ref),
                             style: styles.textStyleHeaderColored,
                           ),
-                          margin: EdgeInsets.only(top: 10),
                         ),
                       ])
                     : const SizedBox(),

@@ -126,14 +126,16 @@ class ReceiveSheet extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(width: 60, height: 60),
-                Column(children: [
-                  const SheetHandle(),
-                  GestureDetector(
-                    child: AccountAddressWidget(address: receiveAddress),
-                    onTap: selectAddress,
-                    onLongPress: copyAddress,
-                  ),
-                ]),
+                Column(
+                  children: [
+                    const SheetHandle(),
+                    GestureDetector(
+                      onTap: selectAddress,
+                      onLongPress: copyAddress,
+                      child: AccountAddressWidget(address: receiveAddress),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsetsDirectional.only(top: 10, end: 10),
                   child: SheetHeaderButton(
@@ -159,8 +161,8 @@ class ReceiveSheet extends HookConsumerWidget {
                       Visibility(
                         visible: showShareCard.value,
                         child: Container(
-                          child: AppShareCard(globalKey: shareCardKey.value),
                           alignment: const AlignmentDirectional(0, 0),
+                          child: AppShareCard(globalKey: shareCardKey.value),
                         ),
                       ),
                       // This is for hiding the share card
