@@ -123,6 +123,8 @@ class DownloadTxsDialog extends HookConsumerWidget {
         final txFile = File('${baseDiractory.path}/$fileName');
         await txFile.writeAsString(csv.value);
 
+        if (!context.mounted) return;
+
         final box = context.findRenderObject() as RenderBox?;
         final params = ShareParams(
           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,

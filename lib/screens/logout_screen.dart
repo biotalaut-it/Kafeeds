@@ -23,9 +23,10 @@ class LogoutScreen extends HookConsumerWidget {
       } catch (e, st) {
         final log = ref.read(loggerProvider);
         log.e('Failed to logout', error: e, stackTrace: st);
-      } finally {
-        appRouter.reload(context);
       }
+
+      if (!context.mounted) return;
+      appRouter.reload(context);
     }
 
     useEffect(() {

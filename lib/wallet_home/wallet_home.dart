@@ -57,9 +57,10 @@ class WalletHome extends HookConsumerWidget {
             return;
           }
 
-          UIUtil.showSendFlow(context, ref: ref, uri: uri);
-
           notifier.state = null;
+
+          if (!context.mounted) return;
+          UIUtil.showSendFlow(context, ref: ref, uri: uri);
         });
       }, fireImmediately: true);
     }, const []);

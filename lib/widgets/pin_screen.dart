@@ -100,9 +100,10 @@ class _PinScreenState extends ConsumerState<PinScreen>
                   _controller.value = 0;
                 });
                 // TODO - check logic here
-                pinLockout
-                    .updateLockDate()
-                    .then((_) => appRouter.lockoutkWithTransition(context));
+                pinLockout.updateLockDate().then((_) {
+                  if (!mounted) return;
+                  appRouter.lockoutkWithTransition(context);
+                });
               } else {
                 setState(() {
                   _pin = '';
@@ -203,6 +204,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
         final pinLockout = PinLockout(vault);
         // Mild delay so they can actually see the last dot get filled
         Future.delayed(Duration(milliseconds: 50), () async {
+          if (!context.mounted) return;
           if (widget.type == PinOverlayType.ENTER_PIN) {
             // Pin is not what was expected
             if (_pin != widget.expectedPin) {
@@ -210,6 +212,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
               _controller.forward();
             } else {
               await pinLockout.resetUnlockAttempts();
+              if (!context.mounted) return;
               appRouter.pop(context, withResult: true);
             }
           } else {

@@ -38,12 +38,13 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
     final changeIndexes = scanIndexes.value.change;
 
     Future<void> scan() async {
+      AppDialogs.showInProgressDialog(
+        context,
+        l10n.scanningTitle,
+        l10n.scanningDescription,
+      );
+
       try {
-        AppDialogs.showInProgressDialog(
-          context,
-          l10n.scanningTitle,
-          l10n.scanningDescription,
-        );
         final network = ref.read(networkProvider);
         final auth = ref.read(walletAuthProvider.notifier);
         final addressGenerator = auth.addressGenerator(network);
@@ -96,9 +97,10 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
         }
       } catch (e) {
         UIUtil.showSnackbar(l10n.scanFailedMessage);
-      } finally {
-        appRouter.pop(context);
       }
+
+      if (!context.mounted) return;
+      appRouter.pop(context);
     }
 
     return AppAlertDialog(

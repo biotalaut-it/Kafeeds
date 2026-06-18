@@ -143,6 +143,7 @@ class SetupWalletScreen extends HookConsumerWidget {
         message.value = l10n.fetchingTransactions;
         details.value = '';
 
+        if (!context.mounted) return;
         appRouter.reload(context);
       } catch (e, st) {
         final log = ref.read(loggerProvider);

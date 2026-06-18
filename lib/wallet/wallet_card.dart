@@ -29,6 +29,7 @@ class WalletCard extends ConsumerWidget {
       final networkId = ref.read(networkIdProvider);
       await notifier.selectWallet(wallet, networkId);
 
+      if (!context.mounted) return;
       appRouter.reload(context);
     }
 

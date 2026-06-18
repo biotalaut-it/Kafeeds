@@ -59,6 +59,9 @@ class SendConfirmSheet extends HookConsumerWidget {
         );
 
         final txId = await walletService.sendTransaction(tx.tx, rbf: rbf);
+
+        if (!context.mounted) return;
+
         ref.invalidate(pendingTxsProvider);
 
         if (tx.note case final txNote?) {
@@ -182,6 +185,8 @@ class SendConfirmSheet extends HookConsumerWidget {
           //   selectUtxos(priorityFee: newPriorityFee);
           // } else {
           UIUtil.showSnackbar(l10n.insufficientBalance);
+
+          if (!context.mounted) return;
           appRouter.pop(context);
           //}
         }

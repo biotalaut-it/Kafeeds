@@ -188,6 +188,7 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
     _controller.scannedDataStream.listen((event) {
       if (result == null && _shouldScan) {
         result = event;
+        if (!mounted) return;
         appRouter.pop(context, withResult: result);
       }
     });

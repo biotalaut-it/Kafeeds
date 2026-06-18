@@ -54,6 +54,8 @@ class SetPasswordSheet extends HookConsumerWidget {
         final auth = ref.read(walletAuthProvider.notifier);
         await auth.setPassword(password);
 
+        if (!context.mounted) return;
+
         UIUtil.showSnackbar(l10n.setPasswordSuccess);
         appRouter.pop(context);
       } catch (e, st) {

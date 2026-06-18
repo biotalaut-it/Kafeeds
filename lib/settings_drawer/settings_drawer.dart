@@ -260,6 +260,8 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
         final authUtil = ref.read(authUtilProvider);
 
         final mnemonic = await authUtil.getMnemonic(context);
+        if (!context.mounted) return;
+
         if (mnemonic == null) {
           return;
         }

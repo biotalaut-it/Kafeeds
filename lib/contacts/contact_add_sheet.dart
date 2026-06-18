@@ -232,6 +232,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
                         _addressValidAndUnfocused = false;
                       });
                       Future.delayed(Duration(milliseconds: 50), () {
+                        if (!context.mounted) return;
                         FocusScope.of(context).requestFocus(_addressFocusNode);
                       });
                     },
@@ -284,6 +285,8 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
     );
     final contacts = ref.read(contactsProvider);
     await contacts.addContact(newContact);
+    final context = this.context;
+    if (!context.mounted) return;
     final l10n = l10nOf(context);
     UIUtil.showSnackbar(l10n.contactAdded(newContact.name));
     appRouter.pop(context);

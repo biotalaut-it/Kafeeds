@@ -23,6 +23,8 @@ class IntroScreen extends HookConsumerWidget {
       final vault = ref.read(vaultProvider);
       final pinIsSet = await vault.pinIsSet;
 
+      if (!context.mounted) return false;
+
       if (pinIsSet) {
         final authUtil = ref.read(authUtilProvider);
         final auth = authUtil.authenticate(
@@ -60,6 +62,9 @@ class IntroScreen extends HookConsumerWidget {
         return;
       }
       final pinOk = await checkPin();
+
+      if (!context.mounted) return;
+
       if (!pinOk) {
         final notifier = ref.read(introDataProvider.notifier);
         notifier.unComplete();

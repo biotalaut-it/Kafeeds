@@ -64,6 +64,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
           appRouter.pop(context);
           await notifier.setApiUrl(url, networkId: networkId);
           // pop sheet
+          if (!context.mounted) return;
           appRouter.pop(context);
         }
       } catch (e, _) {

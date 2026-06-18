@@ -33,9 +33,11 @@ class SingleContactWidget extends ConsumerWidget {
     }
 
     Future<void> copyAddress() async {
-      await Clipboard.setData(ClipboardData(text: contact.address));
       final l10n = l10nOf(context);
       final message = l10n.contactAddressCopied(contact.address);
+
+      await Clipboard.setData(ClipboardData(text: contact.address));
+
       UIUtil.showSnackbar(message);
     }
 

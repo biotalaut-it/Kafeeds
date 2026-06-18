@@ -91,6 +91,7 @@ class ReceiveSheet extends HookConsumerWidget {
           return;
         }
         final byteData = await capturePng();
+        if (!context.mounted) return;
         final box = context.findRenderObject() as RenderBox?;
         final params = ShareParams(
           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,

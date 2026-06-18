@@ -924,6 +924,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                     onTap: () {
                       setState(() => _addressValidAndUnfocused = false);
                       Future.delayed(Duration(milliseconds: 50), () {
+                        if (!context.mounted) return;
                         FocusScope.of(context).requestFocus(_addressFocusNode);
                       });
                     },
@@ -1021,6 +1022,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                     onTap: () {
                       setState(() => _noteValidAndUnfocused = false);
                       Future.delayed(Duration(milliseconds: 50), () {
+                        if (!context.mounted) return;
                         FocusScope.of(context).requestFocus(_noteFocusNode);
                       });
                     },

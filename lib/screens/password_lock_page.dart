@@ -43,6 +43,7 @@ class PasswordLockPage extends HookConsumerWidget {
           throw Exception('Invalid password');
         }
         if (canCancel) {
+          if (!context.mounted) return;
           appRouter.pop(context, withResult: valid);
         }
       } catch (e) {

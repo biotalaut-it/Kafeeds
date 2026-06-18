@@ -20,6 +20,8 @@ Future<void> exportContacts(WidgetRef ref, BuildContext context) async {
 
   List<Contact> contacts = await ref.read(contactsProvider).contacts;
 
+  if (!context.mounted) return;
+
   if (contacts.length == 0) {
     UIUtil.showSnackbar(l10n.noContactsExport);
     return;

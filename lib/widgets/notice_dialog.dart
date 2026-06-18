@@ -73,6 +73,7 @@ class NoticeDialog extends HookConsumerWidget {
             if (isChecked.value) {
               final sharedPrefsUtil = ref.read(sharedPrefsUtilProvider);
               await sharedPrefsUtil.setNoticeShown(true);
+              if (!context.mounted) return;
             }
             appRouter.pop(context);
           },

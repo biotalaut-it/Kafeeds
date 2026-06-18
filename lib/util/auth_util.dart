@@ -25,11 +25,16 @@ class AuthUtil {
     final authMethod = sharedPrefsUtil.getAuthMethod();
     final hasBiometrics = await biometricUtil.hasBiometrics();
 
+    if (!context.mounted) return false;
+
     if (authMethod.method == AuthMethod.BIOMETRICS && hasBiometrics) {
       try {
         ref.read(privacyOverlayDisabledProvider.notifier).state = true;
         final authenticated =
             await biometricUtil.authenticateWithBiometrics(biometricsMessage);
+
+        if (!context.mounted) return false;
+
         if (authenticated) {
           final hapticUtil = ref.read(hapticUtilProvider);
           hapticUtil.fingerprintSuccess();
@@ -69,6 +74,7 @@ class AuthUtil {
         ? MaterialPageRoute<bool>(builder: (_) => pinScreen)
         : NoTransitionRoute<bool>(builder: (_) => pinScreen);
 
+    if (!context.mounted) return false;
     final auth = await appRouter.push(context, route);
     await Future.delayed(const Duration(milliseconds: 200));
 

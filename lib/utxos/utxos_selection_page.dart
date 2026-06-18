@@ -145,9 +145,12 @@ class UtxosSelectionPage extends HookConsumerWidget {
     Future<void> onConfirm() async {
       try {
         final addressNotifier = ref.read(addressNotifierProvider);
-        final changeAddress = await addressNotifier.nextChangeAddress;
         final spendableUtxos = ref.read(spendableUtxosProvider);
         final selectedUtxos = ref.read(selectedUtxosProvider).toList();
+
+        final changeAddress = await addressNotifier.nextChangeAddress;
+
+        if (!context.mounted) return;
 
         final txBuilder = TransactionBuilder(
           utxos: spendableUtxos,

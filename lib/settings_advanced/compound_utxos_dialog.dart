@@ -31,18 +31,21 @@ class CompoundUtxosDialog extends ConsumerWidget {
     final kasSymbol = ref.watch(kasSymbolProvider);
 
     Future<void> sendCompoundTx() async {
-      try {
-        AppDialogs.showInProgressDialog(
-          context,
-          l10n.compoundingUtxos,
-          l10n.compoundingMessage,
-        );
+      AppDialogs.showInProgressDialog(
+        context,
+        l10n.compoundingUtxos,
+        l10n.compoundingMessage,
+      );
 
+      try {
         final walletService = ref.read(walletServiceProvider);
         final addressNotifier = ref.read(addressNotifierProvider);
+        final spendableUtxos = ref.read(spendableUtxosProvider);
+
         final changeAddress = await addressNotifier.nextChangeAddress;
 
-        final spendableUtxos = ref.read(spendableUtxosProvider);
+        if (!context.mounted) return;
+
         if (spendableUtxos.length <= 1) {
           UIUtil.showSnackbar(l10n.compoundTooFewUtxos);
           appRouter.pop(context);
@@ -67,6 +70,7 @@ class CompoundUtxosDialog extends ConsumerWidget {
         if (lightMode) {
           // give some time for compound tx to broadcast and get accepted
           await Future.delayed(const Duration(seconds: 5));
+          if (!context.mounted) return;
           // close both dialogs
           appRouter.pop(context);
         }
@@ -74,9 +78,10 @@ class CompoundUtxosDialog extends ConsumerWidget {
         UIUtil.showSnackbar(l10n.compoundSuccess);
       } catch (e) {
         UIUtil.showSnackbar(l10n.compoundFailure);
-      } finally {
-        appRouter.pop(context);
       }
+
+      if (!context.mounted) return;
+      appRouter.pop(context);
     }
 
     Future<void> compound() async {

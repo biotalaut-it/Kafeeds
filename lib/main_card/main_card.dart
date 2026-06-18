@@ -45,6 +45,7 @@ class MainCard extends ConsumerWidget {
         return;
       }
 
+      if (!context.mounted) return;
       UIUtil.showSendFlow(context, ref: ref, uri: uri);
     }
 

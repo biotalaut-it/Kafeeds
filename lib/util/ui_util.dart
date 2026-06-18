@@ -51,6 +51,8 @@ abstract class UIUtil {
 
       final changeAddress = await notifier.nextChangeAddress;
 
+      if (!context.mounted) return;
+
       final toAddress = Address.tryParse(
         address,
         expectedPrefix: changeAddress.address.prefix,
@@ -97,6 +99,8 @@ abstract class UIUtil {
         ),
         theme: theme,
       );
+
+      if (!context.mounted) return;
 
       if (newPriorityFee == null) {
         // cancelled
@@ -151,6 +155,8 @@ abstract class UIUtil {
         auth = await authUtil.authenticate(context, message, message);
       }
 
+      if (!context.mounted) return;
+
       if (!auth) {
         return;
       }
@@ -166,6 +172,8 @@ abstract class UIUtil {
           replacementTx,
           rbf: true,
         );
+
+        if (!context.mounted) return;
 
         ref.invalidate(pendingTxsProvider);
 
@@ -256,6 +264,8 @@ abstract class UIUtil {
 
     try {
       final changeAddress = await addressNotifier.nextChangeAddress;
+
+      if (!context.mounted) return;
 
       Amount? priorityFee;
       if (rbf) {

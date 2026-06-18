@@ -32,6 +32,7 @@ class SplashScreen extends HookConsumerWidget {
         return;
       }
       final version = (await PackageInfo.fromPlatform()).version + " (Beta)";
+      if (!context.mounted) return;
       noticeShown.state = true;
       await showDialog(
         barrierColor: ref.read(themeProvider).barrier,
@@ -59,6 +60,7 @@ class SplashScreen extends HookConsumerWidget {
 
         ref.read(introDataProvider.notifier).clear();
 
+        if (!context.mounted) return;
         appRouter.startIntro(context);
         return;
       }
@@ -77,6 +79,8 @@ class SplashScreen extends HookConsumerWidget {
         final vault = ref.read(vaultProvider);
         final lockSettings = LockSettings(vault);
         final authOnLaunch = await lockSettings.getLock();
+
+        if (!context.mounted) return;
 
         final walletSettings = ref.read(walletSettingsProvider);
         final requirePassword = switch (walletSettings.requestPassword) {
@@ -103,6 +107,7 @@ class SplashScreen extends HookConsumerWidget {
       final networkId = ref.read(networkIdProvider);
       await walletRepository.openWalletBoxes(wallet, networkId: networkId);
 
+      if (!context.mounted) return;
       appRouter.openWallet(context);
     }
 

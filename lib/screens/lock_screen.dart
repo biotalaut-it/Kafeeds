@@ -57,6 +57,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
     final unlocked = await walletAuth.unlock();
 
     if (unlocked && widget.autoTransition) {
+      if (!mounted) return;
       appRouter.reload(context);
     }
   }

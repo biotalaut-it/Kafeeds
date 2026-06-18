@@ -64,6 +64,8 @@ class ImportSeedOptionsButton extends ConsumerWidget {
             builder: (_) => const ImportSeedOptionsDialog(),
           );
 
+          if (!context.mounted) return;
+
           switch (selection) {
             case ImportSeedOptions.bip39Passphrase:
               Sheets.showAppHeightEightSheet(

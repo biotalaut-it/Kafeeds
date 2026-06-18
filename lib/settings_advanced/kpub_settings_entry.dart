@@ -24,6 +24,8 @@ class KpubSettingsEntry extends ConsumerWidget {
         return;
       }
 
+      if (!context.mounted) return;
+
       return Sheets.showAppHeightNineSheet(
         context: context,
         widget: const KpubSheet(),

@@ -34,6 +34,8 @@ class DisablePasswordSheet extends HookConsumerWidget {
         await auth.removePassword(password);
 
         UIUtil.showSnackbar(l10n.disablePasswordSuccess);
+
+        if (!context.mounted) return;
         appRouter.pop(context);
       } catch (e) {
         passwordError.value = l10n.invalidPassword;

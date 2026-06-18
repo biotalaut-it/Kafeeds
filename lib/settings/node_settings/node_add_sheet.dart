@@ -121,6 +121,8 @@ class NodeAddSheet extends HookConsumerWidget {
           isSecure = false;
         }
 
+        if (!context.mounted) return;
+
         KaspaNetwork network;
         String suffix;
         final parts = networkName.split('-');
@@ -153,6 +155,7 @@ class NodeAddSheet extends HookConsumerWidget {
         if (!cancelled) {
           appRouter.pop(context);
           final success = await notifier.addOption(config);
+          if (!context.mounted) return;
           if (success) {
             // pop sheet
             appRouter.pop(context);
@@ -162,6 +165,7 @@ class NodeAddSheet extends HookConsumerWidget {
           }
         }
       } catch (e, st) {
+        if (!context.mounted) return;
         if (!cancelled) {
           // pop dialog
           appRouter.pop(context);

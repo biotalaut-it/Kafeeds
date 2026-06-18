@@ -190,6 +190,7 @@ class IntroImportSeed extends HookConsumerWidget {
           intro.setMnemonic(mnemonic);
         } catch (e) {
           UIUtil.showSnackbar(l10n.somethingWentWrong);
+          if (!context.mounted) return;
           appRouter.reload(context);
         }
       }

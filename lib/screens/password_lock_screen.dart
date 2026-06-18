@@ -20,6 +20,7 @@ class PasswordLockScreen extends ConsumerWidget {
             return false;
           }
         }
+        if (!context.mounted) return false;
         appRouter.reload(context);
         return true;
       },

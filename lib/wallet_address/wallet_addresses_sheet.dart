@@ -53,6 +53,8 @@ class WalletAddressesSheet extends HookConsumerWidget {
       final message = l10n.kpubAuth;
       final auth = await authUtil.authenticate(context, message, message);
 
+      if (!context.mounted) return;
+
       if (!auth) {
         return;
       }
@@ -100,6 +102,7 @@ class WalletAddressesSheet extends HookConsumerWidget {
           await addressNotifier.addNewReceiveAddress();
           addingAddress.value = false;
 
+          if (!context.mounted) return;
           DefaultTabController.of(context).animateTo(0);
           receiveScrollController.animateTo(
             0,
