@@ -8,7 +8,7 @@ import '../settings/available_currency.dart';
 import '../widgets/app_simpledialog.dart';
 
 class CurrencyDialog extends ConsumerWidget {
-  const CurrencyDialog({Key? key}) : super(key: key);
+  const CurrencyDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

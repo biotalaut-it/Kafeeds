@@ -7,9 +7,9 @@ class KasIconWidget extends ConsumerWidget {
   final Size size;
 
   const KasIconWidget({
-    Key? key,
+    super.key,
     this.size = const Size(40, 40),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

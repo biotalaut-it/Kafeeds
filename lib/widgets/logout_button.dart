@@ -8,7 +8,7 @@ import '../l10n/l10n.dart';
 import 'dialog.dart';
 
 class LogoutButton extends ConsumerWidget {
-  const LogoutButton({Key? key}) : super(key: key);
+  const LogoutButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -11,10 +11,10 @@ class PlainSeedDisplay extends HookConsumerWidget {
   final bool obscureSeed;
 
   const PlainSeedDisplay({
-    Key? key,
+    super.key,
     required this.seed,
     this.obscureSeed = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

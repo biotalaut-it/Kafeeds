@@ -7,7 +7,7 @@ import '../app_router.dart';
 import '../l10n/l10n.dart';
 
 class LogoutScreen extends HookConsumerWidget {
-  const LogoutScreen({Key? key}) : super(key: key);
+  const LogoutScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

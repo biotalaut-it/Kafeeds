@@ -12,7 +12,7 @@ final kaspaNodeConfigItemProvider =
     Provider<ActiveNodeConfig>((ref) => throw UnimplementedError);
 
 class NodeItem extends ConsumerWidget {
-  const NodeItem({Key? key}) : super(key: key);
+  const NodeItem({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -5,7 +5,7 @@ import '../app_providers.dart';
 import '../l10n/l10n.dart';
 
 class TxWelcomeCard extends ConsumerWidget {
-  const TxWelcomeCard({Key? key}) : super(key: key);
+  const TxWelcomeCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

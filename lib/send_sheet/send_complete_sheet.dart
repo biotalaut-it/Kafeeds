@@ -23,13 +23,13 @@ class SendCompleteSheet extends HookConsumerWidget {
   final bool rbf;
 
   const SendCompleteSheet({
-    Key? key,
+    super.key,
     required this.amount,
     required this.toAddress,
     required this.txId,
     this.note,
     this.rbf = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

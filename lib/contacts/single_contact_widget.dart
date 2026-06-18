@@ -15,9 +15,9 @@ class SingleContactWidget extends ConsumerWidget {
   final Contact contact;
 
   const SingleContactWidget({
-    Key? key,
+    super.key,
     required this.contact,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

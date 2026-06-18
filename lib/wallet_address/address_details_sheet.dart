@@ -22,9 +22,9 @@ class AddressDetailsSheet extends HookConsumerWidget {
   final WalletAddress address;
 
   const AddressDetailsSheet({
-    Key? key,
+    super.key,
     required this.address,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

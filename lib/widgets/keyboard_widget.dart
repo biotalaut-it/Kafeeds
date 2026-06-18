@@ -55,7 +55,7 @@ final enabledKeysProvider = Provider.autoDispose((ref) {
 });
 
 class WordsWidget extends ConsumerWidget {
-  const WordsWidget({Key? key}) : super(key: key);
+  const WordsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -113,7 +113,8 @@ class WordsWidget extends ConsumerWidget {
 
 class KeyWidget extends ConsumerWidget {
   final String keyId;
-  const KeyWidget({Key? key, required this.keyId}) : super(key: key);
+
+  const KeyWidget({super.key, required this.keyId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -171,7 +172,7 @@ class KeyWidget extends ConsumerWidget {
 }
 
 class KeyboardWidget extends ConsumerWidget {
-  const KeyboardWidget({Key? key}) : super(key: key);
+  const KeyboardWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

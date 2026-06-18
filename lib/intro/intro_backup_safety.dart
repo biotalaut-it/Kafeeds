@@ -10,7 +10,7 @@ import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
 class IntroBackupSafety extends ConsumerWidget {
-  const IntroBackupSafety({Key? key}) : super(key: key);
+  const IntroBackupSafety({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

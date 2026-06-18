@@ -20,7 +20,7 @@ import 'address_list_widget.dart';
 import 'wallet_address.dart';
 
 class WalletAddressesSheet extends HookConsumerWidget {
-  const WalletAddressesSheet({Key? key}) : super(key: key);
+  const WalletAddressesSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

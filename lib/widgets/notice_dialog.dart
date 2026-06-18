@@ -9,7 +9,7 @@ import 'app_simpledialog.dart';
 
 class NoticeDialog extends HookConsumerWidget {
   final String version;
-  const NoticeDialog({Key? key, required this.version}) : super(key: key);
+  const NoticeDialog({super.key, required this.version});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

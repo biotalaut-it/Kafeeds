@@ -8,9 +8,9 @@ import '../l10n/l10n.dart';
 class FeeWidget extends ConsumerWidget {
   final Amount amount;
   const FeeWidget({
-    Key? key,
+    super.key,
     required this.amount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

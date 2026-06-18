@@ -10,9 +10,9 @@ class TxIdCard extends HookConsumerWidget {
   final String txId;
 
   const TxIdCard({
-    Key? key,
+    super.key,
     required this.txId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

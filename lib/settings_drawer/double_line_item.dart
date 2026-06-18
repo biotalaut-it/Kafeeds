@@ -16,7 +16,7 @@ class DoubleLineItem extends ConsumerWidget {
   final bool disabled;
 
   const DoubleLineItem({
-    Key? key,
+    super.key,
     required this.heading,
     required this.defaultMethod,
     required this.icon,
@@ -24,7 +24,7 @@ class DoubleLineItem extends ConsumerWidget {
     required this.onPressed,
     this.onLongPress,
     this.disabled = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

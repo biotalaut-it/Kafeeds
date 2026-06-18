@@ -18,10 +18,10 @@ class ReceiveAmountField extends HookConsumerWidget {
   final bool allowFiat;
 
   const ReceiveAmountField({
-    Key? key,
+    super.key,
     this.hint = '',
     this.allowFiat = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

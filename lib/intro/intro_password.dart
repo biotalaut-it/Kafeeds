@@ -12,7 +12,7 @@ import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
 class IntroPassword extends HookConsumerWidget {
-  const IntroPassword({Key? key}) : super(key: key);
+  const IntroPassword({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

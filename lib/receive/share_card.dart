@@ -9,7 +9,7 @@ import '../app_styles.dart';
 class AppShareCard extends StatefulWidget {
   final GlobalKey? globalKey;
 
-  const AppShareCard({Key? key, this.globalKey});
+  const AppShareCard({super.key, this.globalKey});
 
   @override
   _AppShareCardState createState() => _AppShareCardState();

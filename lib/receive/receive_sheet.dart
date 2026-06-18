@@ -25,7 +25,7 @@ import 'receive_amount_field.dart';
 import 'share_card.dart';
 
 class ReceiveSheet extends HookConsumerWidget {
-  const ReceiveSheet({Key? key}) : super(key: key);
+  const ReceiveSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

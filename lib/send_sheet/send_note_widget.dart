@@ -7,9 +7,9 @@ import '../l10n/l10n.dart';
 class SendNoteWidget extends HookConsumerWidget {
   final String note;
   const SendNoteWidget({
-    Key? key,
+    super.key,
     required this.note,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

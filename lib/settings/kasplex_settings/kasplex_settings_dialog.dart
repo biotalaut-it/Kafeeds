@@ -7,7 +7,7 @@ import '../../l10n/l10n.dart';
 import '../../widgets/app_simpledialog.dart';
 
 class Krc20SettingsDialog extends ConsumerWidget {
-  const Krc20SettingsDialog({Key? key}) : super(key: key);
+  const Krc20SettingsDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

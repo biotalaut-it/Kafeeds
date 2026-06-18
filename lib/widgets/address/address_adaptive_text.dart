@@ -11,11 +11,11 @@ class AddressAdaptiveText extends ConsumerWidget {
   final String? label;
 
   const AddressAdaptiveText({
-    Key? key,
+    super.key,
     required this.address,
     required this.type,
     this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

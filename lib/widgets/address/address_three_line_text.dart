@@ -11,12 +11,12 @@ class AddressThreeLineText extends ConsumerWidget {
   final TextAlign textAlign;
 
   const AddressThreeLineText({
-    Key? key,
+    super.key,
     required this.address,
     this.type = AddressTextType.PRIMARY,
     this.label,
     this.textAlign = TextAlign.center,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

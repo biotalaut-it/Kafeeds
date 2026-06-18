@@ -13,7 +13,7 @@ import '../wallet_address/wallet_address.dart';
 import 'setup_failed_page.dart';
 
 class SetupWalletScreen extends HookConsumerWidget {
-  const SetupWalletScreen({Key? key}) : super(key: key);
+  const SetupWalletScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

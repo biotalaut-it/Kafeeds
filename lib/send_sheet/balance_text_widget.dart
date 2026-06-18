@@ -26,9 +26,9 @@ class BalanceRowWidget extends ConsumerWidget {
   final WalletAddress? address;
 
   const BalanceRowWidget({
-    Key? key,
+    super.key,
     this.address,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -85,9 +85,9 @@ class BalanceTextWidget extends ConsumerWidget {
   final WalletAddress? address;
 
   const BalanceTextWidget({
-    Key? key,
+    super.key,
     this.address,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

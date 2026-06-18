@@ -126,9 +126,7 @@ final _txListItemsProvider =
 });
 
 class TransactionsWidget extends ConsumerWidget {
-  const TransactionsWidget({
-    Key? key,
-  }) : super(key: key);
+  const TransactionsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

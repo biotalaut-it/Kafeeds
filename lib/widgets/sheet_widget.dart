@@ -13,13 +13,13 @@ class SheetWidget extends ConsumerWidget {
   final Widget bottomWidget;
 
   const SheetWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.leftWidget,
     this.rightWidget,
     required this.mainWidget,
     this.bottomWidget = const SizedBox(),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

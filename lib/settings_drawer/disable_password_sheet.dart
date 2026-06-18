@@ -12,7 +12,7 @@ import '../widgets/buttons.dart';
 import '../widgets/sheet_widget.dart';
 
 class DisablePasswordSheet extends HookConsumerWidget {
-  const DisablePasswordSheet({Key? key}) : super(key: key);
+  const DisablePasswordSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -10,12 +10,11 @@ class TextFieldButton extends ConsumerWidget {
   final void Function()? onPressed;
 
   const TextFieldButton({
-    Key? key,
+    super.key,
     this.icon,
     this.widget,
     this.onPressed,
-  })  : assert(icon != null || widget != null),
-        super(key: key);
+  }) : assert(icon != null || widget != null);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -13,14 +13,14 @@ class DoubleLineItemTwo extends ConsumerWidget {
   final bool disabled;
 
   const DoubleLineItemTwo({
-    Key? key,
+    super.key,
     required this.heading,
     required this.text,
     required this.icon,
     this.iconSize = 24,
     required this.onPressed,
     this.disabled = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

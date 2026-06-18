@@ -10,7 +10,7 @@ import 'fiat_value_container.dart';
 class AmountLabel extends HookConsumerWidget {
   final Amount amount;
 
-  const AmountLabel({Key? key, required this.amount}) : super(key: key);
+  const AmountLabel({super.key, required this.amount});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -12,12 +12,12 @@ class SingleLineItem extends ConsumerWidget {
   final VoidCallback? onPressed;
 
   const SingleLineItem({
-    Key? key,
+    super.key,
     required this.heading,
     required this.settingIcon,
     this.iconSize = 24,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

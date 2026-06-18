@@ -6,7 +6,8 @@ import '../app_providers.dart';
 class TxAddressWidget extends ConsumerWidget {
   final String address;
 
-  const TxAddressWidget({Key? key, required this.address}) : super(key: key);
+  const TxAddressWidget({super.key, required this.address});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);

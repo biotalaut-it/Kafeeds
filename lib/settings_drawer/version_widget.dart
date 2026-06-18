@@ -11,7 +11,7 @@ const kPrivacyUrl = 'https://kaspium.io/assets/wallet/privacy-policy.html';
 const kEulaUrl = 'https://kaspium.io/assets/wallet/eula.html';
 
 class VersionWidget extends HookConsumerWidget {
-  const VersionWidget({Key? key}) : super(key: key);
+  const VersionWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

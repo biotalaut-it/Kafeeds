@@ -5,7 +5,7 @@ import '../app_providers.dart';
 import '../l10n/l10n.dart';
 
 class UtxosEmptyCard extends ConsumerWidget {
-  const UtxosEmptyCard({Key? key}) : super(key: key);
+  const UtxosEmptyCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -8,7 +8,8 @@ import '../widgets/buttons.dart';
 import 'intro_providers.dart';
 
 class IntroActionsWidget extends ConsumerWidget {
-  const IntroActionsWidget({Key? key}) : super(key: key);
+  const IntroActionsWidget({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = l10nOf(context);

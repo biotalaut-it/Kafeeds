@@ -8,7 +8,7 @@ import '../settings/address_settings.dart';
 import '../widgets/app_simpledialog.dart';
 
 class AddressFilterDialog extends ConsumerWidget {
-  const AddressFilterDialog({Key? key}) : super(key: key);
+  const AddressFilterDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

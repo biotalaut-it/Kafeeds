@@ -12,10 +12,10 @@ class SetupFailedPage extends ConsumerWidget {
   final Function onRestart;
 
   const SetupFailedPage({
-    Key? key,
+    super.key,
     required this.error,
     required this.onRestart,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -7,7 +7,7 @@ import '../l10n/l10n.dart';
 class TxNoteWidget extends ConsumerWidget {
   final String note;
 
-  const TxNoteWidget({Key? key, required this.note}) : super(key: key);
+  const TxNoteWidget({super.key, required this.note});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

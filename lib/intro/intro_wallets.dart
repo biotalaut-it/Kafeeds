@@ -8,7 +8,7 @@ import '../wallet/wallet_list_widget.dart';
 import 'intro_actions_widget.dart';
 
 class IntroWallets extends ConsumerWidget {
-  const IntroWallets({Key? key}) : super(key: key);
+  const IntroWallets({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

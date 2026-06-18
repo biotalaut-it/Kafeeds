@@ -13,7 +13,7 @@ import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
 class IntroWalletName extends HookConsumerWidget {
-  const IntroWalletName({Key? key}) : super(key: key);
+  const IntroWalletName({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -5,10 +5,11 @@ import '../../app_providers.dart';
 
 class AddressTwoLineText extends ConsumerWidget {
   final String address;
+
   const AddressTwoLineText({
-    Key? key,
+    super.key,
     required this.address,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

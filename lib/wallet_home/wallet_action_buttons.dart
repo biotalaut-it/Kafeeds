@@ -5,7 +5,8 @@ import '../app_providers.dart';
 import '../widgets/action_button.dart';
 
 class WalletActionButtons extends ConsumerWidget {
-  const WalletActionButtons({Key? key}) : super(key: key);
+  const WalletActionButtons({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final wallet = ref.watch(walletProvider);

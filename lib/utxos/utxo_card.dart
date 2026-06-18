@@ -14,10 +14,10 @@ class UtxoCard extends ConsumerWidget {
   final bool selectable;
 
   const UtxoCard({
-    Key? key,
+    super.key,
     required this.item,
     this.selectable = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

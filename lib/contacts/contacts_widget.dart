@@ -18,9 +18,9 @@ class ContactsWidget extends ConsumerWidget {
   final VoidCallback onBackAction;
 
   const ContactsWidget({
-    Key? key,
+    super.key,
     required this.onBackAction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

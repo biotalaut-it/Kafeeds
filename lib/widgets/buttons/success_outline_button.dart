@@ -10,12 +10,12 @@ class SuccessOutlineButton extends ConsumerWidget {
   final bool disabled;
 
   const SuccessOutlineButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.margin,
     this.onPressed,
     this.disabled = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

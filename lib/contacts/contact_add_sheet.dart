@@ -19,7 +19,7 @@ import 'contact.dart';
 class ContactAddSheet extends ConsumerStatefulWidget {
   final String? address;
 
-  const ContactAddSheet({Key? key, this.address}) : super(key: key);
+  const ContactAddSheet({super.key, this.address});
 
   _ContactAddSheetState createState() => _ContactAddSheetState();
 }

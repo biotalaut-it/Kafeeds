@@ -12,10 +12,10 @@ class ContactsPopoverWidget extends ConsumerWidget {
   final ContactSelectionCallback callback;
 
   const ContactsPopoverWidget({
-    Key? key,
+    super.key,
     required this.contacts,
     required this.callback,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

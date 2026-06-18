@@ -19,7 +19,7 @@ Future<void> showTxFilterDialog(BuildContext context, WidgetRef ref) async {
 }
 
 class TxFilterDialog extends ConsumerWidget {
-  const TxFilterDialog({Key? key}) : super(key: key);
+  const TxFilterDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -9,9 +9,9 @@ class TransactionStateTag extends ConsumerWidget {
   final TxState state;
 
   const TransactionStateTag({
-    Key? key,
+    super.key,
     required this.state,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -10,12 +10,12 @@ class AppIconButton extends ConsumerWidget {
   final VoidCallback? onPressed;
 
   const AppIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     this.size = const Size(40, 40),
     this.color,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

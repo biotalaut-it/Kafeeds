@@ -5,7 +5,8 @@ import '../../app_providers.dart';
 
 class AddressShortText extends ConsumerWidget {
   final String address;
-  const AddressShortText({Key? key, required this.address}) : super(key: key);
+
+  const AddressShortText({super.key, required this.address});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

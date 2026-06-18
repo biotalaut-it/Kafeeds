@@ -7,7 +7,7 @@ import '../wallet_address/wallet_addresses_sheet.dart';
 import '../widgets/sheet_util.dart';
 
 class AccountSwitcher extends ConsumerWidget {
-  const AccountSwitcher({Key? key}) : super(key: key);
+  const AccountSwitcher({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

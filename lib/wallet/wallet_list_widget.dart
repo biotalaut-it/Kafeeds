@@ -7,7 +7,7 @@ import 'wallet_card.dart';
 import 'wallet_providers.dart';
 
 class WalletListWidget extends ConsumerWidget {
-  const WalletListWidget({Key? key}) : super(key: key);
+  const WalletListWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

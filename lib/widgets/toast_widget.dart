@@ -7,9 +7,9 @@ class ToastWidget extends ConsumerWidget {
   final String content;
 
   const ToastWidget({
-    Key? key,
+    super.key,
     required this.content,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

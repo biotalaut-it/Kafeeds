@@ -10,11 +10,11 @@ class AddressOneLineText extends ConsumerWidget {
   final String? label;
 
   const AddressOneLineText({
-    Key? key,
+    super.key,
     required this.address,
     this.type = AddressTextType.PRIMARY,
     this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

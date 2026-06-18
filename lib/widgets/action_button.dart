@@ -13,10 +13,10 @@ class ActionButton extends ConsumerWidget {
   final VoidCallback? onPressed;
 
   const ActionButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,9 +50,9 @@ class ReceiveActionButton extends ConsumerWidget {
   final VoidCallback? onPressed;
 
   const ReceiveActionButton({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,9 +77,9 @@ class SendActionButton extends ConsumerWidget {
   final VoidCallback? onPressed;
 
   const SendActionButton({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

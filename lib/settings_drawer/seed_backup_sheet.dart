@@ -10,7 +10,8 @@ import '../widgets/sheet_widget.dart';
 
 class SeedBackupSheet extends HookConsumerWidget {
   final List<String> mnemonic;
-  const SeedBackupSheet({Key? key, required this.mnemonic}) : super(key: key);
+
+  const SeedBackupSheet({super.key, required this.mnemonic});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

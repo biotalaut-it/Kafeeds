@@ -12,9 +12,9 @@ class DonateMenu extends ConsumerWidget {
   final VoidCallback onBackAction;
 
   const DonateMenu({
-    Key? key,
+    super.key,
     required this.onBackAction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

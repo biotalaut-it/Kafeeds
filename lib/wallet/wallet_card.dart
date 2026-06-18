@@ -14,7 +14,7 @@ final walletItemProvider =
     Provider<WalletInfo>((ref) => throw UnimplementedError());
 
 class WalletCard extends ConsumerWidget {
-  const WalletCard({Key? key}) : super(key: key);
+  const WalletCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

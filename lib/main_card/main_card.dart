@@ -16,7 +16,7 @@ final homePageScaffoldKeyProvider =
     Provider((ref) => GlobalKey<ScaffoldState>());
 
 class MainCard extends ConsumerWidget {
-  const MainCard({Key? key}) : super(key: key);
+  const MainCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

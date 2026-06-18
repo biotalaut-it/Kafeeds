@@ -32,12 +32,12 @@ class Dialog extends StatelessWidget {
   ///
   /// Typically used in conjunction with [showAppDialog].
   const Dialog({
-    Key? key,
+    super.key,
     this.child,
     this.insetAnimationDuration = const Duration(milliseconds: 100),
     this.insetAnimationCurve = Curves.decelerate,
     this.shape,
-  }) : super(key: key);
+  });
 
   /// The widget below this widget in the tree.
   ///
@@ -184,7 +184,7 @@ class AppAlertDialog extends StatelessWidget {
   /// null, which implies a default that depends on the values of the other
   /// properties. See the documentation of [titlePadding] for details.
   const AppAlertDialog({
-    Key? key,
+    super.key,
     this.title,
     this.titlePadding,
     this.content,
@@ -193,7 +193,7 @@ class AppAlertDialog extends StatelessWidget {
     this.actions,
     this.semanticLabel,
     this.shape,
-  }) : super(key: key);
+  });
 
   /// The (optional) title of the dialog is displayed in a large font at the top
   /// of the dialog.
@@ -359,10 +359,10 @@ class AppAlertDialog extends StatelessWidget {
 class AppSimpleDialogOption extends StatelessWidget {
   /// Creates an option for a [AppSimpleDialog].
   const AppSimpleDialogOption({
-    Key? key,
+    super.key,
     this.onPressed,
     this.child,
-  }) : super(key: key);
+  });
 
   /// The callback that is called when this option is selected.
   ///
@@ -462,7 +462,7 @@ class AppSimpleDialog extends StatelessWidget {
   ///
   /// The [titlePadding] and [contentPadding] arguments must not be null.
   const AppSimpleDialog({
-    Key? key,
+    super.key,
     this.title,
     this.titlePadding =
         const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 0.0),
@@ -471,7 +471,7 @@ class AppSimpleDialog extends StatelessWidget {
         const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 16.0),
     this.semanticLabel,
     this.shape,
-  }) : super(key: key);
+  });
 
   /// The (optional) title of the dialog is displayed in a large font at the top
   /// of the dialog.

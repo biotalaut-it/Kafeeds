@@ -20,7 +20,7 @@ final _noticeShownProvider = StateProvider<bool>((ref) {
 });
 
 class SplashScreen extends HookConsumerWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

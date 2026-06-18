@@ -10,9 +10,9 @@ class SelectedWalletButton extends ConsumerWidget {
   final Size size;
 
   const SelectedWalletButton({
-    Key? key,
+    super.key,
     this.size = const Size(60, 45),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

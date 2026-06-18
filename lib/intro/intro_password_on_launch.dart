@@ -9,7 +9,7 @@ import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
 class IntroPasswordOnLaunch extends ConsumerWidget {
-  const IntroPasswordOnLaunch({Key? key}) : super(key: key);
+  const IntroPasswordOnLaunch({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

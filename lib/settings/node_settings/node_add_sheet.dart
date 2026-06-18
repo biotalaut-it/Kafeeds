@@ -20,7 +20,7 @@ import '../../widgets/validation_text.dart';
 import 'node_types.dart';
 
 class NodeAddSheet extends HookConsumerWidget {
-  const NodeAddSheet({Key? key}) : super(key: key);
+  const NodeAddSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

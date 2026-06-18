@@ -12,11 +12,11 @@ class AddressCard extends HookConsumerWidget {
   final AddressTextType type;
 
   const AddressCard({
-    Key? key,
+    super.key,
     required this.address,
     this.showLabel = true,
     this.type = AddressTextType.PRIMARY,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

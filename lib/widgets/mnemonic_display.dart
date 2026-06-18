@@ -11,10 +11,10 @@ class MnemonicDisplay extends HookConsumerWidget {
   final bool obscured;
 
   const MnemonicDisplay({
-    Key? key,
+    super.key,
     required this.wordList,
     this.obscured = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

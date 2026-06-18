@@ -8,7 +8,7 @@ import '../settings/available_themes.dart';
 import '../widgets/app_simpledialog.dart';
 
 class ThemeDialog extends ConsumerWidget {
-  const ThemeDialog({Key? key}) : super(key: key);
+  const ThemeDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

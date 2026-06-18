@@ -12,7 +12,7 @@ import '../util/ui_util.dart';
 import 'app_icon_button.dart';
 
 class QrScannerWidget extends ConsumerStatefulWidget {
-  const QrScannerWidget({Key? key}) : super(key: key);
+  const QrScannerWidget({super.key});
 
   @override
   _QrScannerWidgetState createState() => _QrScannerWidgetState();

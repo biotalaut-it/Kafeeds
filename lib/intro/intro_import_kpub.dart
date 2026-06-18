@@ -24,7 +24,7 @@ bool isValidKpub(String kpub) {
 }
 
 class IntroImportKpub extends HookConsumerWidget {
-  const IntroImportKpub({Key? key}) : super(key: key);
+  const IntroImportKpub({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

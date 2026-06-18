@@ -26,10 +26,10 @@ class ContactDetails extends HookConsumerWidget {
   final String? documentsDirectory;
 
   const ContactDetails({
-    Key? key,
+    super.key,
     required this.contact,
     this.documentsDirectory,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

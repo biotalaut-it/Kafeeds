@@ -10,7 +10,7 @@ import 'intro_providers.dart';
 import 'widgets/new_mnemonic_button.dart';
 
 class IntroBackupSeed extends ConsumerWidget {
-  const IntroBackupSeed({Key? key}) : super(key: key);
+  const IntroBackupSeed({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

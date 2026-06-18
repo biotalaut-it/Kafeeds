@@ -22,9 +22,9 @@ class SecurityMenu extends ConsumerStatefulWidget {
   final VoidCallback onBackAction;
 
   const SecurityMenu({
-    Key? key,
+    super.key,
     required this.onBackAction,
-  }) : super(key: key);
+  });
 
   @override
   _SecurityMenuState createState() => _SecurityMenuState();

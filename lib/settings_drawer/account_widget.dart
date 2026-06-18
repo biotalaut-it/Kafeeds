@@ -6,7 +6,7 @@ import '../l10n/l10n.dart';
 import '../widgets/address_widgets.dart';
 
 class AccountWidget extends ConsumerWidget {
-  const AccountWidget({Key? key}) : super(key: key);
+  const AccountWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
