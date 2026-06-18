@@ -81,7 +81,7 @@ class ContactsWidget extends ConsumerWidget {
                     Tooltip(
                       message: l10n.import,
                       child: AppIconButton(
-                        icon: AppIcons.import_icon,
+                        icon: AppIcons.import,
                         onPressed: importContacts,
                       ),
                     ),
@@ -89,7 +89,7 @@ class ContactsWidget extends ConsumerWidget {
                     Tooltip(
                       message: l10n.export,
                       child: AppIconButton(
-                        icon: AppIcons.export_icon,
+                        icon: AppIcons.export,
                         onPressed: exportContacts,
                       ),
                     ),
