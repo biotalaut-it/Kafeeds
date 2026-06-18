@@ -12,7 +12,7 @@ class PBKDF2 {
   final int desiredKeyLength;
   final String saltPrefix = 'mnemonic';
 
-  PBKDF2KeyDerivator _derivator;
+  final PBKDF2KeyDerivator _derivator;
 
   PBKDF2({
     this.blockLength = 128,

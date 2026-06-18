@@ -13,7 +13,7 @@ List<int> taggedHash(String tag, List<int> msg) {
 List<int> bigToBytes(BigInt integer) {
   var hexNum = integer.toRadixString(16);
   if (hexNum.length % 2 == 1) {
-    hexNum = '0' + hexNum;
+    hexNum = '0$hexNum';
   }
   return hex.decode(hexNum.padLeft(64, '0'));
 }
@@ -31,12 +31,12 @@ var curveP = BigInt.parse(
 // liftX returns Y for this X
 BigInt liftX(BigInt x) {
   if (x >= curveP) {
-    throw new Error();
+    throw Error();
   }
   var ySq = (x.modPow(BigInt.from(3), curveP) + BigInt.from(7)) % curveP;
   var y = ySq.modPow((curveP + BigInt.one) ~/ BigInt.from(4), curveP);
   if (y.modPow(BigInt.two, curveP) != ySq) {
-    throw new Error();
+    throw Error();
   }
   return y % BigInt.two == BigInt.zero /* even */ ? y : curveP - y;
 }

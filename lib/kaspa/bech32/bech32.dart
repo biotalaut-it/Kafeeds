@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_renaming_method_parameters, non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'exceptions.dart';
@@ -261,7 +263,7 @@ int _polymod32(List<int> data) {
 
 int _polymod(List<int> values) {
   var chk = 1;
-  values.forEach((v) {
+  for (final v in values) {
     var top = chk >>> 35;
     chk = ((chk & 0x07ffffffff) << 5) ^ v;
     for (int i = 0; i < generator.length; i++) {
@@ -269,7 +271,7 @@ int _polymod(List<int> values) {
         chk ^= generator[i];
       }
     }
-  });
+  }
 
   return chk ^ 1;
 }

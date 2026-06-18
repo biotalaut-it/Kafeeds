@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +18,7 @@ void main() {
   });
   (fixtures['invalid'] as List<dynamic>).forEach((f) {
     test("decode throws on ${f['string']}", () {
-      var buffer;
+      Uint8List? buffer;
       try {
         buffer = bs58check.decode(f['string']);
       } catch (err) {

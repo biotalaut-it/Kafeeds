@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -12,7 +14,7 @@ const _INVALID_MNEMONIC = 'Invalid mnemonic';
 const _INVALID_ENTROPY = 'Invalid entropy';
 const _INVALID_CHECKSUM = 'Invalid mnemonic checksum';
 
-typedef Uint8List RandomBytes(int size);
+typedef RandomBytes = Uint8List Function(int size);
 
 int _binaryToByte(String binary) {
   return int.parse(binary, radix: 2);
@@ -61,7 +63,7 @@ String entropyToMnemonic(String entropyString) {
   final entropyBits = _bytesToBinary(entropy);
   final checksumBits = _deriveChecksumBits(entropy);
   final bits = entropyBits + checksumBits;
-  final regex = new RegExp(r".{1,11}", caseSensitive: false, multiLine: false);
+  final regex = RegExp(r".{1,11}", caseSensitive: false, multiLine: false);
   final chunks = regex
       .allMatches(bits)
       .map((match) => match.group(0)!)
@@ -73,7 +75,7 @@ String entropyToMnemonic(String entropyString) {
 }
 
 Uint8List mnemonicToSeed(String mnemonic, {String passphrase = ""}) {
-  final pbkdf2 = new PBKDF2();
+  final pbkdf2 = PBKDF2();
   return pbkdf2.process(mnemonic, passphrase: passphrase);
 }
 
@@ -92,17 +94,17 @@ bool validateMnemonic(String mnemonic) {
   return true;
 }
 
-String mnemonicToEntropy(mnemonic) {
+String mnemonicToEntropy(String mnemonic) {
   var words = mnemonic.split(' ');
   if (words.length % 3 != 0) {
-    throw new ArgumentError(_INVALID_MNEMONIC);
+    throw ArgumentError(_INVALID_MNEMONIC);
   }
   final wordlist = WORDLIST;
   // convert word indices to 11 bit binary strings
   final bits = words.map((word) {
     final index = wordlist.indexOf(word);
     if (index == -1) {
-      throw new ArgumentError(_INVALID_MNEMONIC);
+      throw ArgumentError(_INVALID_MNEMONIC);
     }
     return index.toRadixString(2).padLeft(11, '0');
   }).join('');

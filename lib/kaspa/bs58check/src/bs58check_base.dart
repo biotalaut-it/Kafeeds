@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -7,7 +9,7 @@ import 'utils/base.dart';
 
 final String ALPHABET =
     '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-final base58 = new Base(ALPHABET);
+final base58 = Base(ALPHABET);
 
 Uint8List _sha256x2(Uint8List buffer) {
   // SHA256(SHA256(buffer))
@@ -30,16 +32,16 @@ Uint8List decodeRaw(Uint8List buffer) {
       checksum[1] != newChecksum[1] ||
       checksum[2] != newChecksum[2] ||
       checksum[3] != newChecksum[3]) {
-    throw new ArgumentError("Invalid checksum");
+    throw ArgumentError("Invalid checksum");
   }
   return payload;
 }
 
 String getAddress(String inputString) {
   if (inputString.length > 27) {
-    throw new ArgumentError("Can't create");
+    throw ArgumentError("Can't create");
   }
-  String string = '1' + inputString;
+  String string = '1$inputString';
   for (var i = inputString.length; i < 34; i++) {
     final rng = Random.secure();
     string += (ALPHABET)[rng.nextInt(58)];

@@ -12,9 +12,9 @@ import 'kdf.dart';
 class Sha256KDF extends KDF {
   /// Gets the key and iv
   @override
-  KeyIV deriveKey(String password, {Uint8List? salt}) {
+  KeyIV deriveKey(String password, {required Uint8List salt}) {
     Uint8List pwBytes = utf8.encode(password);
-    Uint8List saltBytes = salt == null ? Uint8List(1) : salt;
+    Uint8List saltBytes = salt;
 
     // Key = sha256 (password + salt);
     Uint8List key = Sha.sha256([pwBytes, saltBytes]);

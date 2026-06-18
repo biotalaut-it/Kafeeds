@@ -65,7 +65,7 @@ bool isScalar(Uint8List x) {
   return x.length == 32;
 }
 
-bool isOrderScalar(x) {
+bool isOrderScalar(Uint8List x) {
   if (!isScalar(x)) return false;
   return _compare(x, egGroupOrder as Uint8List) < 0; // < G
 }

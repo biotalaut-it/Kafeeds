@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:core';
 
 import 'package:convert/convert.dart';
@@ -18,7 +20,7 @@ String sign(String privateKey, String message, String aux) {
   BigInt d0 = BigInt.parse(privateKey, radix: 16);
 
   if ((d0 < BigInt.one) || (d0 > (secp256k1.n - BigInt.one))) {
-    throw new Error();
+    throw Error();
   }
 
   ECPoint P = (secp256k1.G * d0)!;
@@ -32,7 +34,7 @@ String sign(String privateKey, String message, String aux) {
   }
 
   if (baux.length != 32) {
-    throw new Error();
+    throw Error();
   }
 
   var t = d ^ bigFromBytes(taggedHash("BIP0340/aux", baux));
@@ -46,7 +48,7 @@ String sign(String privateKey, String message, String aux) {
       secp256k1.n;
 
   if (k0.sign == 0) {
-    throw new Error();
+    throw Error();
   }
 
   var R = (secp256k1.G * k0)!;

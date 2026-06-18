@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:typed_data';
 import 'package:kaspium_wallet/kaspa/bip32/bip32.dart';
 import 'package:flutter_test/flutter_test.dart';

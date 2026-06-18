@@ -5,13 +5,11 @@ import 'package:pointycastle/api.dart';
 /// AES Encrypt/Decrypt using CBC block cipher and PKCS7 padding
 class AesCbcPkcs7 {
   /// AES/CBC/PKCS7 Encrypt
-  static Uint8List encrypt(Uint8List value, {Uint8List? key, Uint8List? iv}) {
-    if (key == null) {
-      key = Uint8List(1);
-    }
-    if (iv == null) {
-      iv = Uint8List(1);
-    }
+  static Uint8List encrypt(
+    Uint8List value, {
+    required Uint8List key,
+    required Uint8List iv,
+  }) {
     CipherParameters params = PaddedBlockCipherParameters(
         ParametersWithIV(KeyParameter(key), iv), null);
     BlockCipher encryptionCipher = PaddedBlockCipher("AES/CBC/PKCS7");
@@ -20,13 +18,11 @@ class AesCbcPkcs7 {
   }
 
   /// AES/CBC/PKCS7 Decrypt
-  static Uint8List decrypt(Uint8List encrypted, {Uint8List? key, Uint8List? iv}) {
-    if (key == null) {
-      key = Uint8List(1);
-    }
-    if (iv == null) {
-      iv = Uint8List(1);
-    }
+  static Uint8List decrypt(
+    Uint8List encrypted, {
+    required Uint8List key,
+    required Uint8List iv,
+  }) {
     CipherParameters params = PaddedBlockCipherParameters(
         ParametersWithIV(KeyParameter(key), iv), null);
     BlockCipher decryptionCipher = PaddedBlockCipher("AES/CBC/PKCS7");

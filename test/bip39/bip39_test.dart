@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_function_declarations_over_variables, avoid_function_literals_in_foreach_calls
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -89,7 +91,7 @@ void testVector(List<dynamic> v, int i) {
   final ventropy = v[0];
   final vmnemonic = v[1];
   final vseedHex = v[2];
-  group('for English(${i}), ${ventropy}', () {
+  group('for English($i), $ventropy', () {
     setUp(() {});
     test('mnemoic to entropy', () {
       final String entropy = bip39.mnemonicToEntropy(vmnemonic);
