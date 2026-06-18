@@ -13,55 +13,6 @@ import 'json_type_adapter.dart';
 
 typedef BoxKey = String;
 
-int _getTypeId<T>() {
-  switch (T) {
-    case WalletAddress:
-      return 0;
-    case AddressBalance:
-      return 1;
-    case Contact:
-      return 2;
-    case Tx:
-      return 3;
-    case Utxo:
-      return 4;
-    case TxNote:
-      return 5;
-    case TxIndex:
-      return 6;
-  }
-  throw 'Unknown type $T';
-}
-
-final walletAddressAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<WalletAddress>(),
-  fromJson: WalletAddress.fromJson,
-);
-final addressBalanceAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<AddressBalance>(),
-  fromJson: AddressBalance.fromJson,
-);
-final contactAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<Contact>(),
-  fromJson: Contact.fromJson,
-);
-final txAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<Tx>(),
-  fromJson: Tx.fromJson,
-);
-final utxoAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<Utxo>(),
-  fromJson: Utxo.fromJson,
-);
-final txNoteAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<TxNote>(),
-  fromJson: TxNote.fromJson,
-);
-final txIndexAdapter = JsonTypeAdapter(
-  typeId: _getTypeId<TxIndex>(),
-  fromJson: TxIndex.fromJson,
-);
-
 class Database {
   Database._();
 
@@ -72,13 +23,27 @@ class Database {
   static Future<void> _initHive() async {
     await Hive.initFlutter('kaspium_wallet');
 
-    Hive.registerAdapter(walletAddressAdapter);
-    Hive.registerAdapter(addressBalanceAdapter);
-    Hive.registerAdapter(contactAdapter);
-    Hive.registerAdapter(txAdapter);
-    Hive.registerAdapter(utxoAdapter);
-    Hive.registerAdapter(txNoteAdapter);
-    Hive.registerAdapter(txIndexAdapter);
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 0, fromJson: WalletAddress.fromJson),
+    );
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 1, fromJson: AddressBalance.fromJson),
+    );
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 2, fromJson: Contact.fromJson),
+    );
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 3, fromJson: Tx.fromJson),
+    );
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 4, fromJson: Utxo.fromJson),
+    );
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 5, fromJson: TxNote.fromJson),
+    );
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 6, fromJson: TxIndex.fromJson),
+    );
   }
 
   static Future<void> init() async {
@@ -122,19 +87,18 @@ class Database {
     pushInfoBox = hash('_pushInfoBox#$dbKey');
     txNotesBox = hash('_txNotesBox#$dbKey');
 
-    Future<Box> _openBox<T>(String box, {bool encrypted = false}) async {
-      return Hive.openBox<T>(
-        box,
-        encryptionCipher: encrypted ? await _getBoxCipher(box, vault) : null,
-      );
+    Future<Box> open<T>(String box, {bool encrypted = false}) async {
+      final cipher = encrypted ? await _getBoxCipher(box, vault) : null;
+      return Hive.openBox<T>(box, encryptionCipher: cipher);
     }
 
     await Future.wait([
       // typed boxes
-      _openBox<Contact>(contactsBox, encrypted: true),
-      _openBox<TxNote>(txNotesBox, encrypted: true),
+      open<Contact>(contactsBox, encrypted: true),
+      open<TxNote>(txNotesBox, encrypted: true),
+
       // generic boxes
-      _openBox(settingsBox, encrypted: true),
+      open(settingsBox, encrypted: true),
     ]);
   }
 
@@ -143,14 +107,14 @@ class Database {
     bool lazy = false,
     String? encryptionKey,
   }) async {
-    HiveCipher? chipher = null;
+    HiveCipher? cipher;
     if (encryptionKey != null) {
-      chipher = HiveAesCipher(base64Decode(encryptionKey));
+      cipher = HiveAesCipher(base64Decode(encryptionKey));
     }
     if (lazy) {
-      await Hive.openLazyBox<T>(boxKey, encryptionCipher: chipher);
+      await Hive.openLazyBox<T>(boxKey, encryptionCipher: cipher);
     } else {
-      await Hive.openBox<T>(boxKey, encryptionCipher: chipher);
+      await Hive.openBox<T>(boxKey, encryptionCipher: cipher);
     }
   }
 
