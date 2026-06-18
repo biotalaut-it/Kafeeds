@@ -10,6 +10,7 @@ class KaspaApiMainnet implements KaspaApi {
 
   KaspaApiMainnet(this.baseUrl);
 
+  @override
   Future<ApiAddressBalance> getBalance({
     required String address,
     int retryCount = 3,
@@ -39,6 +40,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<List<ApiUtxo>> getUtxos({
     required String address,
     int retryCount = 3,
@@ -69,6 +71,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<List<ApiTxLink>> getTxLinks({
     required String address,
     int retryCount = 3,
@@ -101,6 +104,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<ApiTransaction> getTransaction({
     required String id,
     ResolvePreviousOutpoints resolvePreviousOutpoints =
@@ -133,6 +137,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<List<ApiTransaction>> getTransactions({
     required Iterable<String> ids,
     ResolvePreviousOutpoints resolvePreviousOutpoints =
@@ -169,6 +174,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<List<ApiTransaction>> getTxsForAddress(
     String address, {
     ResolvePreviousOutpoints resolvePreviousOutpoints =
@@ -212,6 +218,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<int> getTxCount({
     required String address,
     int retryCount = 3,
@@ -242,6 +249,7 @@ class KaspaApiMainnet implements KaspaApi {
     }
   }
 
+  @override
   Future<List<ApiTxId>> getTxIdsForAddress(
     String address, {
     int limit = 500,

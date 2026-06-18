@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 Map<String, dynamic> _toJson(dynamic value) => value.toJson();
 
 class JsonTypeAdapter<T> extends TypeAdapter<T> {
+  @override
   final int typeId;
   final T Function(Map<String, dynamic>) fromJson;
   final Map<String, dynamic> Function(T) toJson;

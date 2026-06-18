@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 
 /// Input formatter that ensures text starts with @
 class ContactFormatter extends TextInputFormatter {
+  @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.selection.baseOffset == 0) {

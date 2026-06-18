@@ -48,6 +48,7 @@ class KaspaApiEmpty implements KaspaApi {
     return [];
   }
 
+  @override
   Future<List<ApiTxId>> getTxIdsForAddress(
     String address, {
     int limit = 500,
@@ -67,6 +68,7 @@ class KaspaApiEmpty implements KaspaApi {
     return [];
   }
 
+  @override
   Future<int> getTxCount({
     required String address,
     int retryCount = 3,
@@ -75,6 +77,7 @@ class KaspaApiEmpty implements KaspaApi {
     return 0;
   }
 
+  @override
   Future<List<ApiTransaction>> getTxsForAddress(
     String address, {
     ResolvePreviousOutpoints resolvePreviousOutpoints =

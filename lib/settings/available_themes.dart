@@ -11,6 +11,7 @@ class ThemeSetting extends SettingSelectionItem {
 
   const ThemeSetting(this.theme);
 
+  @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
 

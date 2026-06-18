@@ -12,6 +12,7 @@ class PercentFormatter extends TextInputFormatter {
     symbols.addAll('0123456789'.split(''));
   }
 
+  @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,

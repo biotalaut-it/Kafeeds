@@ -11,6 +11,7 @@ class AuthenticationMethod extends SettingSelectionItem {
 
   const AuthenticationMethod(this.method);
 
+  @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
     switch (method) {

@@ -27,6 +27,7 @@ abstract class HdAddressGenerator {
 
 class SchnorrAddressGenerator extends HdAddressGenerator {
   late final HdWalletView wallet;
+  @override
   late final Address mainAddress;
 
   SchnorrAddressGenerator({
@@ -38,6 +39,7 @@ class SchnorrAddressGenerator extends HdAddressGenerator {
     mainAddress = Address.publicKey(prefix: addressPrefix, publicKey: pubKey);
   }
 
+  @override
   Future<Address> addressAtIndex({
     required int typeIndex,
     required int index,
@@ -49,6 +51,7 @@ class SchnorrAddressGenerator extends HdAddressGenerator {
 
 class EcdsaAddressGenerator extends HdAddressGenerator {
   late final HdWalletView wallet;
+  @override
   late final Address mainAddress;
 
   EcdsaAddressGenerator({
@@ -60,6 +63,7 @@ class EcdsaAddressGenerator extends HdAddressGenerator {
     mainAddress = Address.pubKeyECDSA(prefix: addressPrefix, publicKey: pubKey);
   }
 
+  @override
   Future<Address> addressAtIndex({
     required int typeIndex,
     required int index,
@@ -71,12 +75,14 @@ class EcdsaAddressGenerator extends HdAddressGenerator {
 
 class LegacyAddressGenerator extends HdAddressGenerator {
   final LegacyPubKeyCallback pubKeyCallback;
+  @override
   final Address mainAddress;
   LegacyAddressGenerator({
     required this.pubKeyCallback,
     required this.mainAddress,
   });
 
+  @override
   Future<Address> addressAtIndex({
     required int typeIndex,
     required int index,

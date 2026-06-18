@@ -95,6 +95,7 @@ class LanguageSetting implements SettingSelectionItem {
 
   const LanguageSetting(this.language);
 
+  @override
   String getDisplayName(BuildContext context) {
     if (language == AvailableLanguage.DEFAULT) {
       return l10nOf(context).systemDefault;

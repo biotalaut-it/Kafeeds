@@ -57,7 +57,9 @@ sealed class ActiveNodeConfig with _$ActiveNodeConfig {
   KaspaNetwork get network => config.network;
 
   bool get isSecure => config.isSecure;
+  @override
   late final String url = config.urls[Random().nextInt(config.urls.length)];
+  @override
   late final String networkId = config.networkId;
 }
 

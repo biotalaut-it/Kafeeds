@@ -42,6 +42,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
   int get lastUsedReceiveIndex => _receive.lastUsedIndex;
   int get lastUsedChangeIndex => _change.lastUsedIndex;
 
+  @override
   IList<String> get allAddresses {
     final addresses =
         IList(_receive.allAddresses.followedBy(_change.allAddresses));
@@ -51,6 +52,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     return addresses;
   }
 
+  @override
   IList<String> get activeAddresses => IList(
         _receive.activeAddresses
             .followedBy(_change.activeAddresses)
@@ -119,6 +121,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     fillMissingAddresses();
   }
 
+  @override
   bool containsAddress(String address) {
     return containsReceiveAddress(address) || containsChangeAddress(address);
   }
@@ -182,6 +185,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     notifyListeners();
   }
 
+  @override
   String? keyForAddress(String address) {
     final receiveIndex = indexOfReceiveAddress(address);
     if (receiveIndex != null) {

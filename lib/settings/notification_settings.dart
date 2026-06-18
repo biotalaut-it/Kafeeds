@@ -11,6 +11,7 @@ class NotificationSetting extends SettingSelectionItem {
 
   const NotificationSetting(this.setting);
 
+  @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
     switch (setting) {

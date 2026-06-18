@@ -123,6 +123,7 @@ abstract class HdWallet implements HdWalletView {
     required int index,
   });
 
+  @override
   Uint8List derivePublicKey({
     required int typeIndex,
     required int index,

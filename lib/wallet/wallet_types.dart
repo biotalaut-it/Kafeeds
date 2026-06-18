@@ -130,7 +130,8 @@ sealed class WalletInfo with _$WalletInfo {
 
   bool get canSetPassword => !kind.isViewOnly;
 
-  late final String settingsKey = hash('walletSettingsKey#${wid}');
+  @override
+  late final String settingsKey = hash('walletSettingsKey#$wid');
 
   String hdPublicKey(KaspaNetwork network) {
     if (network == KaspaNetwork.mainnet) {

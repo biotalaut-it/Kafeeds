@@ -38,6 +38,7 @@ import 'version_widget.dart';
 class SettingsSheet extends ConsumerStatefulWidget {
   const SettingsSheet({super.key});
 
+  @override
   _SettingsSheetState createState() => _SettingsSheetState();
 }
 

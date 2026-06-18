@@ -43,6 +43,7 @@ class CurrencyFormatter extends TextInputFormatter {
     return numberStr;
   }
 
+  @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,

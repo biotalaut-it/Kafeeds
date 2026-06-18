@@ -8,6 +8,7 @@ class AvailableBlockExplorer extends SettingSelectionItem {
 
   const AvailableBlockExplorer(this.explorer);
 
+  @override
   String getDisplayName(BuildContext context) {
     return explorer.name;
   }

@@ -18,6 +18,7 @@ import 'util/platform.dart';
 class App extends HookConsumerWidget {
   const App({super.key});
 
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     final language = ref.watch(languageProvider);

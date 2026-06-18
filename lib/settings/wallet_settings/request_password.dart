@@ -10,6 +10,7 @@ class RequestPasswordSetting extends SettingSelectionItem {
 
   const RequestPasswordSetting(this.setting);
 
+  @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
 

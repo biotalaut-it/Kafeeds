@@ -11,6 +11,7 @@ class UnlockSetting extends SettingSelectionItem {
 
   const UnlockSetting(this.setting);
 
+  @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
     switch (setting) {

@@ -100,6 +100,7 @@ sealed class TxListItem with _$TxListItem {
   factory TxListItem.txItem(TxItem tx) = _TxListItemTxItem;
   factory TxListItem.loader(bool hasMore) = _TxListItemLoader;
 
+  @override
   late final id = when(
     pendingTxItem: (item) => '${item.tx.id}:${item.outputIndex}:${item.type}',
     txItem: (item) => '${item.tx.id}:${item.outputIndex}:${item.type}',

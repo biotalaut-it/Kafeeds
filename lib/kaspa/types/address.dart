@@ -115,6 +115,7 @@ sealed class Address with _$Address {
   @override
   String toString() => encoded;
 
+  @override
   late final String encoded = encodeAddress();
 
   static Address? tryParse(

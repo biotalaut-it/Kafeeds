@@ -59,6 +59,7 @@ class AvailableCurrency extends SettingSelectionItem {
 
   String get name => currency.name;
 
+  @override
   String getDisplayName(BuildContext context) {
     return symbol + ' ' + getDisplayNameNoSymbol();
   }

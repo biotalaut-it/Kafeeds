@@ -41,6 +41,7 @@ sealed class Amount with _$Amount {
 
   factory Amount.fromJson(Map<String, dynamic> json) => _$AmountFromJson(json);
 
+  @override
   late final value = Decimal.fromBigInt(raw).shift(-tokenInfo.decimals);
   int get decimals => tokenInfo.decimals;
   String get symbolLabel => tokenInfo.symbolLabel;
