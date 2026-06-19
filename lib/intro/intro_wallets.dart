@@ -13,7 +13,6 @@ class IntroWallets extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -33,10 +32,9 @@ class IntroWallets extends ConsumerWidget {
                       children: [
                         Text(
                           kWalletTitle.toUpperCase(),
-                          style: styles.textStyleSettingsHeader
-                              .copyWith(fontWeight: FontWeight.w700)
-                              .copyWith(letterSpacing: 3)
-                              .copyWith(color: theme.text),
+                          style: styles.textStyleSettingsHeader.copyWith(
+                            letterSpacing: 3,
+                          ),
                         ),
                       ],
                     ),

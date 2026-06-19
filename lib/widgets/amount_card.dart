@@ -83,7 +83,7 @@ class AmountCard extends HookConsumerWidget {
                           ),
                           TextSpan(
                             text: ' $symbol',
-                            style: styles.textStyleParagraphPrimaryW100,
+                            style: styles.textStyleParagraphPrimaryNormal,
                           ),
                         ],
                       ),

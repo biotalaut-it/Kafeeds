@@ -20,451 +20,395 @@ class AppStyles {
 
   AppStyles(this.theme);
   // Text style for paragraph text.
-  TextStyle get textStyleParagraph {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w200,
-      color: theme.text,
-    );
-  }
+  late final textStyleParagraph = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w400,
+    color: theme.text,
+  );
 
-  late final textStyleParagraphNormal =
-      textStyleParagraph.copyWith(fontWeight: FontWeight.w400);
+  late final textStyleParagraphNormal = textStyleParagraph.copyWith(
+    fontWeight: .w400,
+  );
 
   late final textStyleParagraphSmall = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: AppFontSizes.small,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     color: theme.text,
   );
 
-  TextStyle get textStyleParagraphBold {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w400,
-      color: theme.text,
-    );
-  }
+  late final textStyleParagraphBold = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w400,
+    color: theme.text,
+  );
 
   // Text style for paragraph text with primary color.
   late final textStyleParagraphPrimary = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: AppFontSizes.medium,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
     color: theme.primary,
   );
 
-  late final textStyleParagraphPrimaryNormal =
-      textStyleParagraphPrimary.copyWith(fontWeight: FontWeight.w400);
-
-  late final textStyleParagraphPrimaryW100 =
-      textStyleParagraphPrimary.copyWith(fontWeight: FontWeight.w100);
+  late final textStyleParagraphPrimaryNormal = textStyleParagraphPrimary
+      .copyWith(fontWeight: .w400);
 
   // Text style for paragraph text with text color.
-  late final textStyleParagraphText =
-      textStyleParagraphPrimary.copyWith(color: theme.text);
+  late final textStyleParagraphText = textStyleParagraphPrimary.copyWith(
+    color: theme.text,
+  );
 
   // Text style for paragraph text with primary color.
-  TextStyle get textStyleParagraphSuccess {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w700,
-      color: theme.success,
-    );
-  }
+  late final textStyleParagraphSuccess = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w700,
+    color: theme.success,
+  );
 
   // Text style for thin paragraph text with primary color.
   late final textStyleParagraphThinPrimary = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: AppFontSizes.small,
-    fontWeight: FontWeight.w600,
+    fontWeight: .w600,
     color: theme.primary,
   );
 
   // Text style for thin paragraph text with success color.
-  late final textStyleParagraphThinSuccess =
-      textStyleParagraphThinPrimary.copyWith(color: theme.success);
+  late final textStyleParagraphThinSuccess = textStyleParagraphThinPrimary
+      .copyWith(color: theme.success);
 
   // For snackbar/Toast text
-  TextStyle get textStyleSnackbar {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w700,
-      color: theme.background,
-    );
-  }
+  late final textStyleSnackbar = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w700,
+    color: theme.background,
+  );
 
   // Text style for primary button
-  TextStyle get textStyleButtonPrimary {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.background,
-    );
-  }
+  late final textStyleButtonPrimary = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.background,
+  );
 
   // Green primary button
-  TextStyle get textStyleButtonPrimaryGreen {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.successDark,
-    );
-  }
+  late final textStyleButtonPrimaryGreen = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.successDark,
+  );
 
   // Text style for outline button
-  TextStyle get textStyleButtonPrimaryOutline {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.primary,
-    );
-  }
+  late final textStyleButtonPrimaryOutline = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.primary,
+  );
 
   // Text style for small outline button
-  TextStyle get textStyleButtonPrimarySmallOutline {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w700,
-      color: theme.primary,
-    );
-  }
+  late final textStyleButtonPrimarySmallOutline = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w700,
+    color: theme.primary,
+  );
 
   // Text style for small success outline button
-  TextStyle get textStyleButtonSuccessSmallOutline {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w700,
-      color: theme.success,
-    );
-  }
+  late final textStyleButtonSuccessSmallOutline = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w700,
+    color: theme.success,
+  );
 
-  TextStyle get textStyleButtonPrimaryOutlineDisabled {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.primary60,
-    );
-  }
+  late final textStyleButtonPrimaryOutlineDisabled = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.primary60,
+  );
 
   // Text style for success outline button
-  TextStyle get textStyleButtonSuccessOutline {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.success,
-    );
-  }
+  late final textStyleButtonSuccessOutline = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.success,
+  );
 
   // Text style for text outline button
-  TextStyle get textStyleButtonTextOutline {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.text,
-    );
-  }
+  late final textStyleButtonTextOutline = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.text,
+  );
 
   // General address/seed styles
-  TextStyle get textStyleAddressPrimary60 {
-    return TextStyle(
-      color: theme.primary60,
-      fontSize: AppFontSizes.small,
-      height: 1.5,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-    );
-  }
+  late final textStyleAddressPrimary60 = TextStyle(
+    color: theme.primary60,
+    fontSize: AppFontSizes.small,
+    height: 1.5,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+  );
 
-  TextStyle get textStyleAddressPrimary {
-    return TextStyle(
-      color: theme.primary,
-      fontSize: AppFontSizes.small,
-      height: 1.5,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-    );
-  }
+  late final textStyleAddressPrimary = TextStyle(
+    color: theme.primary,
+    fontSize: AppFontSizes.small,
+    height: 1.5,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+  );
 
-  TextStyle get textStyleAddressSuccess {
-    return TextStyle(
-      color: theme.success,
-      fontSize: AppFontSizes.small,
-      height: 1.5,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-    );
-  }
+  late final textStyleAddressSuccess = TextStyle(
+    color: theme.success,
+    fontSize: AppFontSizes.small,
+    height: 1.5,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+  );
 
-  TextStyle get textStyleAddressText60 {
-    return TextStyle(
-      color: theme.text60,
-      fontSize: AppFontSizes.small,
-      height: 1.5,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-    );
-  }
+  late final textStyleAddressText60 = TextStyle(
+    color: theme.text60,
+    fontSize: AppFontSizes.small,
+    height: 1.5,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+  );
 
-  TextStyle get textStyleAddressText90 {
-    return TextStyle(
-      color: theme.text,
-      fontSize: AppFontSizes.small,
-      height: 1.5,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-    );
-  }
+  late final textStyleAddressText90 = TextStyle(
+    color: theme.text,
+    fontSize: AppFontSizes.small,
+    height: 1.5,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+  );
 
   late final textStyleAccount = TextStyle(
     color: theme.text60,
     fontSize: 16,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
+    fontFamily: kDefaultFontFamily,
+  );
+
+  late final textStyleWalletTitle = TextStyle(
+    color: theme.text,
+    fontSize: 16,
+    fontWeight: .w700,
     fontFamily: kDefaultFontFamily,
   );
 
   late final textStyleAccountName = TextStyle(
     fontFamily: kDefaultFontFamily,
-    fontWeight: FontWeight.w500,
+    fontWeight: .w500,
     fontSize: 16,
     color: theme.text,
   );
 
   late final textStyleTotalValue = TextStyle(
     fontFamily: kDefaultFontFamily,
-    fontWeight: FontWeight.w500,
+    fontWeight: .w500,
     fontSize: 14,
     color: theme.text,
   );
 
   late final textStyleDataTypeHeader = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: .w500,
     fontSize: 12,
     color: theme.text30,
     fontFamily: kDefaultFontFamily,
   );
 
   late final textStyleDataTypeHeaderHighlight = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: .w500,
     fontSize: 12,
     color: theme.primary,
     fontFamily: kDefaultFontFamily,
   );
 
-  late final textStyleDataTypeHeaderSuccess =
-      textStyleDataTypeHeaderHighlight.copyWith(color: theme.success);
+  late final textStyleDataTypeHeaderSuccess = textStyleDataTypeHeaderHighlight
+      .copyWith(color: theme.success);
 
   late final textStyleDataTypeHeaderSelected = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: .w500,
     fontSize: 12,
     color: theme.text,
     fontFamily: kDefaultFontFamily,
   );
 
   // Text style for alternate currencies on home page
-  TextStyle get textStyleCurrencyAlt {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w600,
-      color: theme.text60,
-    );
-  }
+  late final textStyleCurrencyAlt = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w600,
+    color: theme.text60,
+  );
 
-  TextStyle get textStyleCurrencyAltHidden {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w600,
-      color: Colors.transparent,
-    );
-  }
+  late final textStyleCurrencyAltHidden = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w600,
+    color: Colors.transparent,
+  );
 
   // Text style for primary currency on home page
-  TextStyle get textStyleCurrency {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.larger,
-      fontWeight: FontWeight.w900,
-      color: theme.primary,
-    );
-  }
+  late final textStyleCurrency = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.larger,
+    fontWeight: .w900,
+    color: theme.primary,
+  );
 
   late final textStyleHeaderSuccess = TextStyle(
     fontSize: 28,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
     color: theme.success,
     fontFamily: kDefaultFontFamily,
   );
 
   // Text style for primary currency on home page
-  TextStyle get textStyleCurrencySmaller {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: 22,
-      fontWeight: FontWeight.w900,
-      color: theme.primary,
-    );
-  }
+  late final textStyleCurrencySmaller = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: 22,
+    fontWeight: .w900,
+    color: theme.primary,
+  );
 
   /* Transaction cards */
   // Text style for transaction card "Received"/"Sent" text
-  TextStyle get textStyleTransactionType {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w600,
-      color: theme.text,
-    );
-  }
+  late final textStyleTransactionType = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w600,
+    color: theme.text,
+  );
 
   // Amount
   late final textStyleTransactionAmount = TextStyle(
     fontFamily: kDefaultFontFamily,
     color: theme.primary,
     fontSize: AppFontSizes.smallest,
-    fontWeight: FontWeight.w600,
+    fontWeight: .w600,
   );
 
-  late final textStyleTransactionAmountSmall =
-      textStyleTransactionAmount.copyWith(fontSize: AppFontSizes.small);
+  late final textStyleTransactionAmountSmall = textStyleTransactionAmount
+      .copyWith(fontSize: AppFontSizes.small);
 
-  late final textStyleTransactionAmountMedium =
-      textStyleTransactionAmount.copyWith(fontSize: AppFontSizes.medium);
+  late final textStyleTransactionAmountMedium = textStyleTransactionAmount
+      .copyWith(fontSize: AppFontSizes.medium);
 
   // Unit (e.g. VITE)
-  TextStyle get textStyleTransactionUnit {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      color: theme.primary60,
-      fontSize: AppFontSizes.smallest,
-      fontWeight: FontWeight.w100,
-    );
-  }
+  late final textStyleTransactionUnit = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    color: theme.primary60,
+    fontSize: AppFontSizes.smallest,
+    fontWeight: .w400,
+  );
 
   late final textStyleBalanceAmountMedium = TextStyle(
     fontFamily: kDefaultFontFamily,
     color: theme.primary60,
     fontSize: AppFontSizes.medium,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
   );
 
   late final textStyleBalanceAmountSmall = TextStyle(
     fontFamily: kDefaultFontFamily,
     color: theme.primary60,
     fontSize: AppFontSizes.small,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
   );
 
   late final textStyleTransactionUnitMedium = TextStyle(
     fontFamily: kDefaultFontFamily,
     color: theme.primary60,
     fontSize: AppFontSizes.medium,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
   );
 
   late final textStyleTransactionUnitSmall = TextStyle(
     fontFamily: kDefaultFontFamily,
     color: theme.primary60,
     fontSize: AppFontSizes.small,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
   );
 
   // Address
-  TextStyle get textStyleTransactionAddress {
-    return TextStyle(
-      fontSize: AppFontSizes.smallest,
-      fontFamily: kMonospaceFontFamily,
-      fontWeight: FontWeight.w100,
-      color: theme.text60,
-    );
-  }
+  late final textStyleTransactionAddress = TextStyle(
+    fontSize: AppFontSizes.smallest,
+    fontFamily: kMonospaceFontFamily,
+    fontWeight: .w400,
+    color: theme.text60,
+  );
 
   // Transaction Welcome
-  TextStyle get textStyleTransactionWelcome {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w200,
-      color: theme.text,
-      fontFamily: kDefaultFontFamily,
-    );
-  }
+  late final textStyleTransactionWelcome = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    color: theme.text,
+    fontFamily: kDefaultFontFamily,
+  );
 
   // Transaction Welcome Text
-  TextStyle get textStyleTransactionWelcomePrimary {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w200,
-      color: theme.primary,
-      fontFamily: kDefaultFontFamily,
-    );
-  }
+  late final textStyleTransactionWelcomePrimary = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    color: theme.primary,
+    fontFamily: kDefaultFontFamily,
+  );
 
   // Version info in settings
-  TextStyle get textStyleVersion {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      color: theme.text60,
-    );
-  }
+  late final textStyleVersion = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    color: theme.text60,
+  );
 
-  TextStyle get textStyleVersionUnderline {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      color: theme.text60,
-      decoration: TextDecoration.underline,
-    );
-  }
+  late final textStyleVersionUnderline = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    color: theme.text60,
+    decoration: TextDecoration.underline,
+  );
 
   // Text style for alert dialog header
-  TextStyle get textStyleDialogHeader {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.primary,
-    );
-  }
+  late final textStyleDialogHeader = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.primary,
+  );
 
   // Text style for dialog options
-  TextStyle get textStyleDialogOptions {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w600,
-      color: theme.primary,
-    );
-  }
+  late final textStyleDialogOptions = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w600,
+    color: theme.primary,
+  );
 
   // Text style for app text field
-  TextStyle get textStyleAppTextField {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w600,
-      color: theme.primary,
-    );
-  }
+  late final textStyleAppTextField = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w600,
+    color: theme.primary,
+  );
 
   late final textStyleAppTextFieldHint = TextStyle(
     fontSize: AppFontSizes.medium,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
     fontFamily: kDefaultFontFamily,
     color: theme.text60,
   );
@@ -472,110 +416,96 @@ class AppStyles {
   late final textStyleAppTextFieldSimple = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: AppFontSizes.medium,
-    fontWeight: FontWeight.w600,
+    fontWeight: .w600,
     color: theme.text,
   );
 
   // Text style for dialog button text
-  TextStyle get textStyleDialogButtonText {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.smallest,
-      fontWeight: FontWeight.w600,
-      color: theme.primary,
-    );
-  }
+  late final textStyleDialogButtonText = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.smallest,
+    fontWeight: .w600,
+    color: theme.primary,
+  );
 
   late final textStyleDialogButtonTextSimple = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: AppFontSizes.smallest,
-    fontWeight: FontWeight.w600,
+    fontWeight: .w600,
     color: theme.text,
   );
 
   // Text style for seed text
-  TextStyle get textStyleSeedPrimary {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-      color: theme.primary,
-      height: 1.5,
-      letterSpacing: 1,
-    );
-  }
+  late final textStyleSeedPrimary = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+    color: theme.primary,
+    height: 1.5,
+    letterSpacing: 1,
+  );
 
   late final textStyleSeed = TextStyle(
     fontSize: AppFontSizes.small,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
     fontFamily: kMonospaceFontFamily,
     color: theme.text,
     height: 1.5,
     letterSpacing: 1,
   );
 
-  TextStyle get textStyleSeedGray {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-      color: theme.text60,
-      height: 1.5,
-      letterSpacing: 1,
-    );
-  }
+  late final textStyleSeedGray = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+    color: theme.text60,
+    height: 1.5,
+    letterSpacing: 1,
+  );
 
   // Text style for mnemonic text
-  TextStyle textStyleMnemonicText(BuildContext context) {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-      color: theme.primary,
-      height: 1,
-      letterSpacing: 1,
-    );
-  }
+  late final textStyleMnemonicText = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+    color: theme.primary,
+    height: 1,
+    letterSpacing: 1,
+  );
 
-  TextStyle textStyleMnemonicTextGray(BuildContext context) {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-      color: theme.text60,
-      height: 1,
-      letterSpacing: 1,
-    );
-  }
+  late final textStyleMnemonicTextGray = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+    color: theme.text60,
+    height: 1,
+    letterSpacing: 1,
+  );
 
-  TextStyle get textStyleSeedGreen {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w100,
-      fontFamily: kMonospaceFontFamily,
-      color: theme.success,
-      height: 1.5,
-      letterSpacing: 1,
-    );
-  }
+  late final textStyleSeedGreen = TextStyle(
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    fontFamily: kMonospaceFontFamily,
+    color: theme.success,
+    height: 1.5,
+    letterSpacing: 1,
+  );
 
   // Text style for general headers like sheet headers
-  TextStyle textStyleHeader(BuildContext context) {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.larger,
-      letterSpacing: 1.4,
-      fontWeight: FontWeight.w700,
-      color: theme.text,
-    );
-  }
+  late final textStyleHeader = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.larger,
+    letterSpacing: 1.4,
+    fontWeight: .w700,
+    color: theme.text,
+  );
 
   // Text style for data sub headers
   late final textStyleSubHeader = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: AppFontSizes.medium,
     letterSpacing: 1.4,
-    fontWeight: FontWeight.w400,
+    fontWeight: .w400,
     color: theme.text,
   );
 
@@ -588,257 +518,213 @@ class AppStyles {
   );
 
   // Text style for settings headers
-  TextStyle get textStyleSettingsHeader {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.largest,
-      fontWeight: FontWeight.w700,
-      color: theme.text,
-    );
-  }
+  late final textStyleSettingsHeader = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.largest,
+    fontWeight: .w700,
+    color: theme.text,
+  );
 
   // Text style for primary color header
-  TextStyle get textStyleHeaderColored {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.largest,
-      fontWeight: FontWeight.w700,
-      color: theme.primary,
-    );
-  }
+  late final textStyleHeaderColored = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.largest,
+    fontWeight: .w700,
+    color: theme.primary,
+  );
 
   // Text style for primary color header
-  TextStyle get textStyleHeader2Colored {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.larger,
-      fontWeight: FontWeight.w700,
-      color: theme.primary,
-    );
-  }
+  late final textStyleHeader2Colored = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.larger,
+    fontWeight: .w700,
+    color: theme.primary,
+  );
 
-  TextStyle get textStylePinScreenHeaderColored {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.large,
-      fontWeight: FontWeight.w700,
-      color: theme.primary,
-    );
-  }
+  late final textStylePinScreenHeaderColored = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.large,
+    fontWeight: .w700,
+    color: theme.primary,
+  );
 
-  TextStyle get textStyleLogoutButton {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w600,
-      color: theme.text,
-    );
-  }
+  late final textStyleLogoutButton = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w600,
+    color: theme.text,
+  );
 
   // Text style for setting item header
-  TextStyle get textStyleSettingItemHeader {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w600,
-      color: theme.text,
-    );
-  }
+  late final textStyleSettingItemHeader = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w600,
+    color: theme.text,
+  );
 
   late final textStyleSettingItemHeaderLarge = TextStyle(
     fontFamily: kDefaultFontFamily,
     fontSize: 18,
-    fontWeight: FontWeight.w600,
+    fontWeight: .w600,
     color: theme.text,
   );
 
-  TextStyle get textStyleSettingItemHeader60 {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w600,
-      color: theme.text60,
-    );
-  }
+  late final textStyleSettingItemHeader60 = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w600,
+    color: theme.text60,
+  );
 
-  TextStyle get textStyleSettingItemHeader45 {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.medium,
-      fontWeight: FontWeight.w600,
-      color: theme.text45,
-    );
-  }
+  late final textStyleSettingItemHeader45 = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.medium,
+    fontWeight: .w600,
+    color: theme.text45,
+  );
 
   // Text style for setting item subheader
-  TextStyle get textStyleSettingItemSubheader {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.smallest,
-      fontWeight: FontWeight.w100,
-      color: theme.text60,
-    );
-  }
+  late final textStyleSettingItemSubheader = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.smallest,
+    fontWeight: .w400,
+    color: theme.text60,
+  );
 
-  TextStyle get textStyleSettingItemSubheader30 {
-    return TextStyle(
-      fontFamily: kDefaultFontFamily,
-      fontSize: AppFontSizes.smallest,
-      fontWeight: FontWeight.w100,
-      color: theme.text30,
-    );
-  }
+  late final textStyleSettingItemSubheader30 = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.smallest,
+    fontWeight: .w400,
+    color: theme.text30,
+  );
 
   // Text style for lock screen error
-  TextStyle get textStyleErrorMedium {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      color: theme.primary,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w600,
-    );
-  }
+  late final textStyleErrorMedium = TextStyle(
+    fontSize: AppFontSizes.small,
+    color: theme.primary,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w600,
+  );
 
   // Text style for mnemonic
-  TextStyle textStyleMnemonic(BuildContext context) {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      color: theme.primary,
-      fontFamily: kMonospaceFontFamily,
-      fontWeight: FontWeight.w100,
-    );
-  }
+  late final textStyleMnemonic = TextStyle(
+    fontSize: AppFontSizes.small,
+    color: theme.primary,
+    fontFamily: kMonospaceFontFamily,
+    fontWeight: .w400,
+  );
 
   // Text style for mnemonic success
-  TextStyle textStyleMnemonicSuccess(BuildContext context) {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      color: theme.success,
-      fontFamily: kMonospaceFontFamily,
-      fontWeight: FontWeight.w100,
-    );
-  }
+  late final textStyleMnemonicSuccess = TextStyle(
+    fontSize: AppFontSizes.small,
+    color: theme.success,
+    fontFamily: kMonospaceFontFamily,
+    fontWeight: .w400,
+  );
 
   // Text style for numbers of mnemonic
-  TextStyle textStyleNumbersOfMnemonic(BuildContext context) {
-    return TextStyle(
-      fontSize: AppFontSizes.small,
-      color: theme.text30,
-      fontFamily: kMonospaceFontFamily,
-      fontWeight: FontWeight.w100,
-    );
-  }
+  late final textStyleNumbersOfMnemonic = TextStyle(
+    fontSize: AppFontSizes.small,
+    color: theme.text30,
+    fontFamily: kMonospaceFontFamily,
+    fontWeight: .w400,
+  );
 
   // Text style for numbers of mnemonic
-  TextStyle get headerPrimary {
-    return TextStyle(
-      fontSize: 16,
-      color: theme.primary,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w700,
-    );
-  }
+  late final headerPrimary = TextStyle(
+    fontSize: 16,
+    color: theme.primary,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w700,
+  );
 
-  TextStyle get headerSuccess {
-    return TextStyle(
-      fontSize: 16,
-      color: theme.success,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w700,
-    );
-  }
+  late final headerSuccess = TextStyle(
+    fontSize: 16,
+    color: theme.success,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w700,
+  );
 
   late final textStyleApproxAmountSuccess = TextStyle(
     fontSize: 16,
     color: theme.success,
     fontFamily: kDefaultFontFamily,
-    fontWeight: FontWeight.w700,
+    fontWeight: .w700,
   );
 
   late final textStyleTokenSymbolSuccess = TextStyle(
     color: theme.success,
     fontSize: 16,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
     fontFamily: kDefaultFontFamily,
   );
 
-  TextStyle get addressText {
-    return TextStyle(
-      fontSize: 12,
-      color: theme.text,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w400,
-    );
-  }
+  late final addressText = TextStyle(
+    fontSize: 12,
+    color: theme.text,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w400,
+  );
 
-  TextStyle get tagText {
-    return TextStyle(
-      fontSize: 12,
-      color: theme.text60,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w400,
-    );
-  }
+  late final tagText = TextStyle(
+    fontSize: 12,
+    color: theme.text60,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w400,
+  );
 
-  TextStyle get remoteMessageCardTitle {
-    return TextStyle(
-      fontSize: 20,
-      color: theme.success,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w500,
-    );
-  }
+  late final remoteMessageCardTitle = TextStyle(
+    fontSize: 20,
+    color: theme.success,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w500,
+  );
 
-  TextStyle get remoteMessageCardShortDescription {
-    return TextStyle(
-      fontSize: 14,
-      color: theme.text,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w400,
-    );
-  }
+  late final remoteMessageCardShortDescription = TextStyle(
+    fontSize: 14,
+    color: theme.text,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w400,
+  );
 
-  TextStyle get remoteMessageCardTimestamp {
-    return TextStyle(
-      fontSize: 12,
-      color: theme.text60,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w400,
-    );
-  }
+  late final remoteMessageCardTimestamp = TextStyle(
+    fontSize: 12,
+    color: theme.text60,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w400,
+  );
 
-  TextStyle get buttonTextBg {
-    return TextStyle(
-      fontSize: 18,
-      color: theme.background,
-      fontFamily: kDefaultFontFamily,
-      fontWeight: FontWeight.w700,
-    );
-  }
+  late final buttonTextBg = TextStyle(
+    fontSize: 18,
+    color: theme.background,
+    fontFamily: kDefaultFontFamily,
+    fontWeight: .w700,
+  );
 
   late final textStyleAccountShortName = TextStyle(
     color: theme.backgroundDark,
     fontSize: 12,
-    fontWeight: FontWeight.w800,
+    fontWeight: .w800,
   );
 
   late final textStyleAccountShortNameSelected = TextStyle(
     color: theme.backgroundDark,
     fontSize: 16,
     fontFamily: kDefaultFontFamily,
-    fontWeight: FontWeight.w900,
+    fontWeight: .w900,
   );
 
   late final textStyleNetworkBanner = TextStyle(
     color: theme.text,
     fontSize: 12 * 0.85,
-    fontWeight: FontWeight.w900,
+    fontWeight: .w900,
     height: 1.0,
   );
 
   late final textStyleTabLabel = TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
     color: theme.text,
   );
 
@@ -846,19 +732,17 @@ class AppStyles {
     color: theme.text,
     fontFamily: kDefaultFontFamily,
     fontSize: 14,
-    fontWeight: FontWeight.w100,
+    fontWeight: .w400,
   );
 
   late final textStylePrimaryDefaultSmallMedium = TextStyle(
     color: theme.primary,
     fontFamily: kDefaultFontFamily,
     fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontWeight: .w500,
   );
 
-  late final textStyleKeyboardKey = TextStyle(
-    fontWeight: FontWeight.bold,
-  );
+  late final textStyleKeyboardKey = TextStyle(fontWeight: .bold);
 
   late final textStyleKeyboardWord = TextStyle(
     color: theme.primary,
@@ -867,13 +751,10 @@ class AppStyles {
   ButtonStyle get cardButtonStyle {
     return TextButton.styleFrom(
       backgroundColor: theme.backgroundDark,
-      padding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      padding: .zero,
+      shape: RoundedRectangleBorder(borderRadius: .circular(10)),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -885,13 +766,10 @@ class AppStyles {
   ButtonStyle get darkCardButtonStyle {
     return TextButton.styleFrom(
       backgroundColor: theme.backgroundDarkest,
-      padding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      padding: .zero,
+      shape: RoundedRectangleBorder(borderRadius: .circular(10)),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -903,13 +781,10 @@ class AppStyles {
   ButtonStyle get fieldCardButtonStyle {
     return TextButton.styleFrom(
       backgroundColor: theme.backgroundDarkest,
-      padding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
-      ),
+      padding: .zero,
+      shape: RoundedRectangleBorder(borderRadius: .circular(25)),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -919,11 +794,8 @@ class AppStyles {
   }
 
   ButtonStyle get defaultTextButtonStyle {
-    return TextButton.styleFrom(
-      padding: EdgeInsets.zero,
-    ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+    return TextButton.styleFrom(padding: .zero).copyWith(
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -934,13 +806,10 @@ class AppStyles {
 
   ButtonStyle get roundedTextButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      padding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: .circular(50)),
+      padding: .zero,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -951,13 +820,10 @@ class AppStyles {
 
   ButtonStyle get dialogButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.all(12),
+      shape: RoundedRectangleBorder(borderRadius: .circular(10)),
+      padding: const .all(12),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -968,13 +834,10 @@ class AppStyles {
 
   ButtonStyle get accountButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.all(12),
+      shape: RoundedRectangleBorder(borderRadius: .circular(10)),
+      padding: const .all(12),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -985,13 +848,10 @@ class AppStyles {
 
   ButtonStyle get quotaButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      shape: RoundedRectangleBorder(borderRadius: .circular(10)),
+      padding: const .symmetric(horizontal: 12),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -1000,31 +860,29 @@ class AppStyles {
     );
   }
 
-  ButtonStyle get walletButtonStyle {
-    return TextButton.styleFrom(
-      padding: EdgeInsets.zero,
-    ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-        if (states.contains(WidgetState.focused))
-          return theme.backgroundDark.withValues(alpha: 0.45);
-        if (states.contains(WidgetState.hovered))
-          return theme.backgroundDark.withValues(alpha: 0.45);
-        if (states.contains(WidgetState.pressed))
-          return theme.backgroundDark.withValues(alpha: 0.75);
-        return null;
-      }),
-    );
-  }
+  ButtonStyle get walletButtonStyle =>
+      TextButton.styleFrom(padding: .zero).copyWith(
+        overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.focused)) {
+            return theme.backgroundDark.withValues(alpha: 0.45);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return theme.backgroundDark.withValues(alpha: 0.45);
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return theme.backgroundDark.withValues(alpha: 0.75);
+          }
+          return null;
+        }),
+      );
 
   ButtonStyle get roundButtonStyle {
     return TextButton.styleFrom(
       shape: const CircleBorder(),
-      padding: EdgeInsets.zero,
-      tapTargetSize: MaterialTapTargetSize.padded,
+      padding: .zero,
+      tapTargetSize: .padded,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -1035,14 +893,11 @@ class AppStyles {
 
   ButtonStyle get appIconButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      padding: EdgeInsets.zero,
-      tapTargetSize: MaterialTapTargetSize.padded,
+      shape: RoundedRectangleBorder(borderRadius: .circular(50)),
+      padding: .zero,
+      tapTargetSize: .padded,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -1053,14 +908,11 @@ class AppStyles {
 
   ButtonStyle get sheetHeaderButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
-      padding: const EdgeInsets.all(13),
-      tapTargetSize: MaterialTapTargetSize.padded,
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
+      padding: const .all(13),
+      tapTargetSize: .padded,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -1071,13 +923,10 @@ class AppStyles {
 
   ButtonStyle get primaryButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
       backgroundColor: theme.primary,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.background40;
         if (states.contains(WidgetState.hovered)) return theme.background40;
         if (states.contains(WidgetState.pressed)) return theme.background40;
@@ -1088,13 +937,10 @@ class AppStyles {
 
   ButtonStyle get disabledPrimaryButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
       backgroundColor: theme.primary60,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return Colors.transparent;
         if (states.contains(WidgetState.hovered)) return Colors.transparent;
         if (states.contains(WidgetState.pressed)) return Colors.transparent;
@@ -1105,13 +951,10 @@ class AppStyles {
 
   ButtonStyle get successButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
       backgroundColor: theme.success,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.success30;
         if (states.contains(WidgetState.hovered)) return theme.success30;
         if (states.contains(WidgetState.pressed)) return Colors.transparent;
@@ -1122,15 +965,12 @@ class AppStyles {
 
   ButtonStyle get outlinedSuccessButtonStyle {
     return OutlinedButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
       side: BorderSide(color: theme.success, width: 2),
       backgroundColor: theme.backgroundDark,
       foregroundColor: theme.success,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.success15;
         if (states.contains(WidgetState.hovered)) return theme.success15;
         if (states.contains(WidgetState.pressed)) return theme.success30;
@@ -1153,12 +993,9 @@ class AppStyles {
       foregroundColor: theme.text,
       backgroundColor: theme.backgroundDark,
       side: BorderSide(color: theme.text, width: 2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.primary15;
         if (states.contains(WidgetState.hovered)) return theme.primary15;
         if (states.contains(WidgetState.pressed)) return theme.primary30;
@@ -1172,18 +1009,14 @@ class AppStyles {
       foregroundColor: theme.primary,
       backgroundColor: theme.backgroundDark,
       side: BorderSide(color: theme.primary, width: 2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
     ).copyWith(
-      overlayColor: WidgetStateProperty.resolveWith<Color?>(
-        (Set<WidgetState> states) {
-          if (states.contains(WidgetState.focused)) return theme.primary15;
-          if (states.contains(WidgetState.hovered)) return theme.primary15;
-          if (states.contains(WidgetState.pressed)) return theme.primary30;
-          return null; // Defer to the widget's default.
-        },
-      ),
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.focused)) return theme.primary15;
+        if (states.contains(WidgetState.hovered)) return theme.primary15;
+        if (states.contains(WidgetState.pressed)) return theme.primary30;
+        return null; // Defer to the widget's default.
+      }),
     );
   }
 
@@ -1192,18 +1025,14 @@ class AppStyles {
       foregroundColor: theme.primary,
       backgroundColor: theme.backgroundDark,
       side: BorderSide(color: theme.primary, width: 1),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
     ).copyWith(
-      overlayColor: WidgetStateProperty.resolveWith<Color?>(
-        (Set<WidgetState> states) {
-          if (states.contains(WidgetState.focused)) return theme.primary15;
-          if (states.contains(WidgetState.hovered)) return theme.primary15;
-          if (states.contains(WidgetState.pressed)) return theme.primary30;
-          return null; // Defer to the widget's default.
-        },
-      ),
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.focused)) return theme.primary15;
+        if (states.contains(WidgetState.hovered)) return theme.primary15;
+        if (states.contains(WidgetState.pressed)) return theme.primary30;
+        return null; // Defer to the widget's default.
+      }),
     );
   }
 
@@ -1212,18 +1041,14 @@ class AppStyles {
       foregroundColor: theme.primary,
       backgroundColor: theme.backgroundDarkest,
       side: BorderSide(color: theme.primary, width: 2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
     ).copyWith(
-      overlayColor: WidgetStateProperty.resolveWith<Color?>(
-        (Set<WidgetState> states) {
-          if (states.contains(WidgetState.focused)) return theme.primary15;
-          if (states.contains(WidgetState.hovered)) return theme.primary15;
-          if (states.contains(WidgetState.pressed)) return theme.primary30;
-          return null; // Defer to the widget's default.
-        },
-      ),
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.focused)) return theme.primary15;
+        if (states.contains(WidgetState.hovered)) return theme.primary15;
+        if (states.contains(WidgetState.pressed)) return theme.primary30;
+        return null; // Defer to the widget's default.
+      }),
     );
   }
 
@@ -1232,12 +1057,9 @@ class AppStyles {
       foregroundColor: theme.primary60,
       backgroundColor: theme.backgroundDark,
       side: BorderSide(color: theme.primary60, width: 2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.primary15;
         if (states.contains(WidgetState.hovered)) return theme.primary15;
         if (states.contains(WidgetState.pressed)) return theme.primary30;
@@ -1251,12 +1073,9 @@ class AppStyles {
       foregroundColor: theme.primary60,
       backgroundColor: theme.backgroundDarkest,
       side: BorderSide(color: theme.primary60, width: 2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.primary15;
         if (states.contains(WidgetState.hovered)) return theme.primary15;
         if (states.contains(WidgetState.pressed)) return theme.primary30;
@@ -1267,13 +1086,10 @@ class AppStyles {
 
   ButtonStyle get innerButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
-      padding: const EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(borderRadius: .circular(100)),
+      padding: const .all(10),
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return Colors.transparent;
         if (states.contains(WidgetState.hovered)) return Colors.transparent;
         if (states.contains(WidgetState.pressed)) return Colors.transparent;
@@ -1284,14 +1100,11 @@ class AppStyles {
 
   ButtonStyle get textFieldButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      padding: const EdgeInsets.all(14),
-      tapTargetSize: MaterialTapTargetSize.padded,
+      shape: RoundedRectangleBorder(borderRadius: .circular(50)),
+      padding: const .all(14),
+      tapTargetSize: .padded,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;
@@ -1302,16 +1115,13 @@ class AppStyles {
 
   ButtonStyle get tokenTextFieldButtonStyle {
     return TextButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      padding: const EdgeInsets.all(4),
-      tapTargetSize: MaterialTapTargetSize.padded,
+      shape: RoundedRectangleBorder(borderRadius: .circular(50)),
+      padding: const .all(4),
+      tapTargetSize: .padded,
       enabledMouseCursor: SystemMouseCursors.click,
       disabledMouseCursor: SystemMouseCursors.basic,
     ).copyWith(
-      overlayColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
         if (states.contains(WidgetState.focused)) return theme.text15;
         if (states.contains(WidgetState.hovered)) return theme.text05;
         if (states.contains(WidgetState.pressed)) return theme.text15;

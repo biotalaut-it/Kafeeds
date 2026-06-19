@@ -42,23 +42,25 @@ class MnemonicDisplay extends HookConsumerWidget {
                   alignment: AlignmentDirectional.centerStart,
                   fit: BoxFit.scaleDown,
                   child: RichText(
-                    textAlign: TextAlign.start,
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: wordIndex < 9 ? " " : "",
-                        style: styles.textStyleNumbersOfMnemonic(context),
-                      ),
-                      TextSpan(
-                        text: " ${wordIndex + 1}) ",
-                        style: styles.textStyleNumbersOfMnemonic(context),
-                      ),
-                      TextSpan(
-                        text: isObscured.value && obscured
-                            ? '•' * 6
-                            : wordList[wordIndex],
-                        style: styles.textStyleMnemonic(context),
-                      )
-                    ]),
+                    textAlign: .start,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: wordIndex < 9 ? " " : "",
+                          style: styles.textStyleNumbersOfMnemonic,
+                        ),
+                        TextSpan(
+                          text: " ${wordIndex + 1}) ",
+                          style: styles.textStyleNumbersOfMnemonic,
+                        ),
+                        TextSpan(
+                          text: isObscured.value && obscured
+                              ? '•' * 6
+                              : wordList[wordIndex],
+                          style: styles.textStyleMnemonic,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

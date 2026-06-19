@@ -51,7 +51,7 @@ class SheetWidget extends ConsumerWidget {
                         fit: BoxFit.scaleDown,
                         child: Text(
                           title.toUpperCase(),
-                          style: styles.textStyleHeader(context),
+                          style: styles.textStyleHeader,
                           textAlign: TextAlign.center,
                         ),
                       ),

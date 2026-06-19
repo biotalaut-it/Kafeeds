@@ -275,10 +275,8 @@ class IntroImportSeed extends HookConsumerWidget {
                         suffixShowFirstCondition: !mnemonicIsValid,
                         keyboardType: TextInputType.none,
                         style: mnemonicIsValid
-                            ? styles.textStyleParagraphPrimary
-                                .copyWith(fontWeight: FontWeight.w400)
-                            : styles.textStyleParagraph
-                                .copyWith(fontWeight: FontWeight.w400),
+                            ? styles.textStyleParagraphPrimaryNormal
+                            : styles.textStyleParagraphNormal,
                       ),
                     ),
                     Consumer(
