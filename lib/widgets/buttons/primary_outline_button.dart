@@ -5,14 +5,12 @@ import '../../app_providers.dart';
 
 class PrimaryOutlineButton extends ConsumerWidget {
   final String title;
-  final EdgeInsetsGeometry margin;
   final Function? onPressed;
   final bool disabled;
 
   const PrimaryOutlineButton({
     super.key,
     required this.title,
-    this.margin = EdgeInsets.zero,
     this.disabled = false,
     this.onPressed,
   });
@@ -32,7 +30,6 @@ class PrimaryOutlineButton extends ConsumerWidget {
               boxShadow: [theme.boxShadowButton],
             ),
             height: 55,
-            margin: margin,
             child: OutlinedButton(
               style: disabled
                   ? styles.disabledPrimaryOutlinedButtonStyle
@@ -63,14 +60,12 @@ class PrimaryOutlineButton extends ConsumerWidget {
 
 class PrimaryOutlineDarkButton extends ConsumerWidget {
   final String title;
-  final EdgeInsetsGeometry margin;
   final Function? onPressed;
   final bool disabled;
 
   const PrimaryOutlineDarkButton({
     super.key,
     required this.title,
-    this.margin = EdgeInsets.zero,
     this.disabled = false,
     this.onPressed,
   });
@@ -90,7 +85,6 @@ class PrimaryOutlineDarkButton extends ConsumerWidget {
               boxShadow: [theme.boxShadowButton],
             ),
             height: 55,
-            margin: margin,
             child: OutlinedButton(
               style: disabled
                   ? styles.disabledPrimaryOutlinedDarkButtonStyle

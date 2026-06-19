@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
-import '../app_router.dart';
 import '../l10n/l10n.dart';
-import '../widgets/buttons.dart';
+import '../widgets/action_buttons_wrapper.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/mnemonic_display.dart';
 import '../widgets/sheet_widget.dart';
 
@@ -34,12 +34,10 @@ class SeedBackupSheet extends HookConsumerWidget {
             ),
         ],
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: PrimaryButton(
-          title: l10n.close,
-          onPressed: () => appRouter.pop(context),
-        ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          const CloseActionButton(),
+        ],
       ),
     );
   }

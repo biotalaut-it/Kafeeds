@@ -15,12 +15,13 @@ import '../send_sheet/account_address_widget.dart';
 import '../util/ui_util.dart';
 import '../wallet_address/address_selection_sheet.dart';
 import '../wallet_address/wallet_address.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons/primary_outline_button.dart';
 import '../widgets/qr_code_widget.dart';
 import '../widgets/sheet_handle.dart';
 import '../widgets/sheet_header_button.dart';
 import '../widgets/sheet_util.dart';
-import '../widgets/tap_outside_unfocus.dart';
+import '../widgets/sheet_wrapper.dart';
 import 'receive_amount_field.dart';
 import 'share_card.dart';
 
@@ -114,84 +115,78 @@ class ReceiveSheet extends HookConsumerWidget {
       lockDisabled.state = false;
     }
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return TapOutsideUnfocus(
-      child: SafeArea(
-        minimum: .only(bottom: bottom),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(width: 60, height: 60),
-                Column(
+    return SheetWrapper(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(width: 60, height: 60),
+              Column(
+                children: [
+                  const SheetHandle(),
+                  GestureDetector(
+                    onTap: selectAddress,
+                    onLongPress: copyAddress,
+                    child: AccountAddressWidget(address: receiveAddress),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.only(top: 10, end: 10),
+                child: SheetHeaderButton(
+                  icon: Icons.copy,
+                  onPressed: copyAddress,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ReceiveAmountField(hint: l10n.optionalLabel),
+          const SizedBox(height: 16),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Center(
+                child: Stack(
                   children: [
-                    const SheetHandle(),
-                    GestureDetector(
-                      onTap: selectAddress,
-                      onLongPress: copyAddress,
-                      child: AccountAddressWidget(address: receiveAddress),
+                    Visibility(
+                      visible: showShareCard.value,
+                      child: Container(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: AppShareCard(globalKey: shareCardKey.value),
+                      ),
+                    ),
+                    // This is for hiding the share card
+                    Center(
+                      child: Container(
+                        width: 260,
+                        height: 150,
+                        color: theme.backgroundDark,
+                      ),
+                    ),
+                    Center(
+                      child: QrCodeWidget(
+                        data: '$kaspaUri',
+                        onTap: copyUri,
+                      ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 10, end: 10),
-                  child: SheetHeaderButton(
-                    icon: Icons.copy,
-                    onPressed: copyAddress,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            ReceiveAmountField(hint: l10n.optionalLabel),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  bottom: 28,
-                  left: 20,
-                  right: 20,
-                ),
-                child: Center(
-                  child: Stack(
-                    children: [
-                      Visibility(
-                        visible: showShareCard.value,
-                        child: Container(
-                          alignment: const AlignmentDirectional(0, 0),
-                          child: AppShareCard(globalKey: shareCardKey.value),
-                        ),
-                      ),
-                      // This is for hiding the share card
-                      Center(
-                        child: Container(
-                          width: 260,
-                          height: 150,
-                          color: theme.backgroundDark,
-                        ),
-                      ),
-                      Center(
-                        child: QrCodeWidget(
-                          data: '$kaspaUri',
-                          onTap: copyUri,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ),
-            PrimaryOutlineButton(
-              margin: const EdgeInsets.symmetric(horizontal: 28),
-              title: l10n.addressShare,
-              disabled: showShareCard.value,
-              onPressed: shareAddress,
-            ),
-          ],
-        ),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
+              PrimaryOutlineButton(
+                title: l10n.addressShare,
+                disabled: showShareCard.value,
+                onPressed: shareAddress,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

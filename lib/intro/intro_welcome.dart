@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
+import '../widgets/content_wrapper.dart';
 import 'intro_actions_widget.dart';
 
 class IntroWelcome extends ConsumerWidget {
@@ -12,54 +13,44 @@ class IntroWelcome extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final styles = ref.watch(stylesProvider);
-    final theme = ref.watch(themeProvider);
     final l10n = l10nOf(context);
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.10;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.backgroundDark,
-      body: SafeArea(
-        minimum: .only(top: top, bottom: bottom),
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: FractionallySizedBox(
-                      widthFactor: 0.4,
-                      child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Image.asset('assets/kaspa.png'),
-                      ),
+    return ContentWrapper(
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.4,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Image.asset('assets/kaspa.png'),
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 20,
-                      ),
-                      child: AutoSizeText(
-                        l10n.welcomeText,
-                        style: styles.textStyleParagraph,
-                        minFontSize: 18,
-                        maxLines: 4,
-                        stepGranularity: 0.5,
-                      ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 20,
+                    ),
+                    child: AutoSizeText(
+                      l10n.welcomeText,
+                      style: styles.textStyleParagraph,
+                      minFontSize: 18,
+                      maxLines: 4,
+                      stepGranularity: 0.5,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const IntroActionsWidget(),
-          ],
-        ),
+          ),
+          const IntroActionsWidget(),
+        ],
       ),
     );
   }

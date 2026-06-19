@@ -7,10 +7,11 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../util/caseconverter.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/content_wrapper.dart';
 import '../widgets/logout_button.dart';
-import '../widgets/tap_outside_unfocus.dart';
 
 class PasswordLockPage extends HookConsumerWidget {
   final bool canCancel;
@@ -58,43 +59,40 @@ class PasswordLockPage extends HookConsumerWidget {
     }
 
     final height = MediaQuery.heightOf(context);
-    final bottom = height * 0.035;
     final top = height * 0.1;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: TapOutsideUnfocus(
-        child: Container(
-          color: theme.backgroundDark,
-          width: double.infinity,
-          child: SafeArea(
-            minimum: .only(bottom: bottom),
-            child: Column(children: [
-              Row(children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 4),
-                  child: canCancel ? const BackButton() : const LogoutButton(),
+    return ContentWrapper(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 4),
+                child: canCancel ? const BackButton() : const LogoutButton(),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  margin: .only(top: top),
+                  child: Icon(
+                    AppIcons.lock,
+                    size: 80,
+                    color: theme.primary,
+                  ),
                 ),
-              ]),
-              Expanded(
-                child: Column(children: [
-                  Container(
-                    margin: .only(top: top),
-                    child: Icon(
-                      AppIcons.lock,
-                      size: 80,
-                      color: theme.primary,
-                    ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    CaseChange.toUpperCase(l10n.locked, ref),
+                    style: styles.textStyleHeaderColored,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      CaseChange.toUpperCase(l10n.locked, ref),
-                      style: styles.textStyleHeaderColored,
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(children: [
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
                       const SizedBox(height: 20),
                       Text(wallet.name, style: styles.textStyleAccount),
                       AppTextField(
@@ -128,19 +126,22 @@ class PasswordLockPage extends HookConsumerWidget {
                           style: styles.textStyleParagraphThinPrimary,
                         ),
                       ),
-                    ]),
+                    ],
                   ),
-                ]),
-              ),
+                ),
+              ],
+            ),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
               PrimaryButton(
                 title: l10n.unlock,
-                margin: const EdgeInsets.fromLTRB(28, 8, 28, 0),
                 disabled: unlockDisabled.value,
                 onPressed: validateAndUnlock,
               ),
-            ]),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }

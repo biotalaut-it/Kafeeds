@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons.dart';
 import 'intro_providers.dart';
 
@@ -29,19 +30,11 @@ class IntroActionsWidget extends ConsumerWidget {
       notifier.importSelect();
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28),
-      child: Column(children: [
-        PrimaryButton(
-          title: l10n.newWallet,
-          onPressed: newWallet,
-        ),
-        const SizedBox(height: 16),
-        PrimaryOutlineButton(
-          title: l10n.importWallet,
-          onPressed: importWallet,
-        ),
-      ]),
+    return ActionButtonsWrapper(
+      buttons: [
+        PrimaryButton(title: l10n.newWallet, onPressed: newWallet),
+        PrimaryOutlineButton(title: l10n.importWallet, onPressed: importWallet),
+      ],
     );
   }
 }

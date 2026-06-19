@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons.dart';
+import '../widgets/content_wrapper.dart';
 import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
@@ -62,7 +64,6 @@ class IntroImportSelect extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -86,74 +87,61 @@ class IntroImportSelect extends ConsumerWidget {
       intro.goBack();
     }
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.075;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.backgroundDark,
-      body: SafeArea(
-        minimum: .only(top: top, bottom: bottom),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 20),
-                child: const IntroBackButton(),
-              ),
+    return ContentWrapper(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 20),
+              child: const IntroBackButton(),
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
-              alignment: AlignmentDirectional(-1, 0),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  l10n.importWallet,
-                  style: styles.textStyleHeaderColored,
-                  maxLines: 1,
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-              alignment: Alignment.centerLeft,
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+            alignment: AlignmentDirectional(-1, 0),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
               child: Text(
-                l10n.importWalletDescription,
-                style: styles.textStyleParagraph,
-                textAlign: TextAlign.start,
+                l10n.importWallet,
+                style: styles.textStyleHeaderColored,
+                maxLines: 1,
               ),
             ),
-            ImportWalletTypeCard(
-              title: l10n.importOptionStandardWalletTitle,
-              description: l10n.importOptionStandardWalletDescription,
-              onPressed: importWallet,
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              l10n.importWalletDescription,
+              style: styles.textStyleParagraph,
+              textAlign: TextAlign.start,
             ),
-            ImportWalletTypeCard(
-              title: l10n.importOptionLegacyWalletTitle,
-              description: l10n.importOptionLegacyWalletDescription,
-              onPressed: importLegacyWallet,
-            ),
-            ImportWalletTypeCard(
-              title: l10n.importOptionKpubTitle,
-              description: l10n.importOptionKpubDescription,
-              onPressed: importViewOnlyWallet,
-            ),
-            Expanded(child: SizedBox()),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(children: [
-                PrimaryButton(
-                  title: l10n.goBackButton,
-                  onPressed: goBack,
-                ),
-              ]),
-            ),
-          ],
-        ),
+          ),
+          ImportWalletTypeCard(
+            title: l10n.importOptionStandardWalletTitle,
+            description: l10n.importOptionStandardWalletDescription,
+            onPressed: importWallet,
+          ),
+          ImportWalletTypeCard(
+            title: l10n.importOptionLegacyWalletTitle,
+            description: l10n.importOptionLegacyWalletDescription,
+            onPressed: importLegacyWallet,
+          ),
+          ImportWalletTypeCard(
+            title: l10n.importOptionKpubTitle,
+            description: l10n.importOptionKpubDescription,
+            onPressed: importViewOnlyWallet,
+          ),
+          Expanded(child: SizedBox()),
+          ActionButtonsWrapper(
+            buttons: [
+              PrimaryButton(title: l10n.goBackButton, onPressed: goBack),
+            ],
+          ),
+        ],
       ),
     );
   }

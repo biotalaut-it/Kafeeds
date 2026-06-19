@@ -5,8 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../app_providers.dart';
 import '../../app_router.dart';
 import '../../l10n/l10n.dart';
+import '../../widgets/action_buttons_wrapper.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/buttons.dart';
+import '../../widgets/dismiss_action_buttons.dart';
 import '../../widgets/sheet_widget.dart';
 import '../intro_providers.dart';
 
@@ -162,18 +164,11 @@ class Bip39PassphraseSheet extends HookConsumerWidget {
           ),
         ],
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(
-          children: [
-            PrimaryButton(title: l10n.confirm, onPressed: setPassphrase),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.cancel,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ],
-        ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.confirm, onPressed: setPassphrase),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

@@ -12,6 +12,7 @@ import '../util/formatters.dart';
 import '../util/ui_util.dart';
 import '../util/user_data_util.dart';
 import '../widgets/app_text_field.dart';
+import '../widgets/content_wrapper.dart';
 import '../widgets/keyboard_widget.dart';
 import 'import_seed_options.dart';
 import 'intro_back_button.dart';
@@ -63,7 +64,6 @@ class IntroImportSeed extends HookConsumerWidget {
 
     final mnemonicFocusNode = useFocusNode();
     final mnemonicController = useTextEditingController();
-    final scaffoldKey = useRef(GlobalKey<ScaffoldState>());
 
     void updateFocus(int offset) {
       mnemonicController.selection = TextSelection.collapsed(offset: offset);
@@ -196,60 +196,53 @@ class IntroImportSeed extends HookConsumerWidget {
       }
     }
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.075;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      key: scaffoldKey.value,
-      backgroundColor: theme.backgroundDark,
-      body: SafeArea(
-        minimum: .only(top: top, bottom: bottom),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const IntroBackButton(),
-                        isLegacy
-                            ? const SizedBox()
-                            : const ImportSeedOptionsButton(),
-                      ],
-                    ),
+    return ContentWrapper(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const IntroBackButton(),
+                      isLegacy
+                          ? const SizedBox()
+                          : const ImportSeedOptionsButton(),
+                    ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
-                    alignment: AlignmentDirectional(-1, 0),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        isLegacy
-                            ? l10n.importOptionLegacyWalletTitle
-                            : l10n.importOptionStandardWalletTitle,
-                        style: styles.textStyleHeaderColored,
-                        maxLines: 1,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-                    alignment: Alignment.centerLeft,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  alignment: AlignmentDirectional(-1, 0),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
                       isLegacy
-                          ? l10n.importSecretPhraseHintLegacy
-                          : l10n.importSecretPhraseHintCombo,
-                      style: styles.textStyleParagraph,
-                      textAlign: TextAlign.start,
+                          ? l10n.importOptionLegacyWalletTitle
+                          : l10n.importOptionStandardWalletTitle,
+                      style: styles.textStyleHeaderColored,
+                      maxLines: 1,
                     ),
                   ),
-                  Column(children: [
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    isLegacy
+                        ? l10n.importSecretPhraseHintLegacy
+                        : l10n.importSecretPhraseHintCombo,
+                    style: styles.textStyleParagraph,
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Column(
+                  children: [
                     Focus(
                       onKeyEvent: (node, event) => KeyEventResult.handled,
                       child: AppTextField(
@@ -288,57 +281,58 @@ class IntroImportSeed extends HookConsumerWidget {
                                 .copyWith(fontWeight: FontWeight.w400),
                       ),
                     ),
-                    Consumer(builder: (context, ref, _) {
-                      final l10n = l10nOf(context);
-                      final showInvalidChecksum = ref.watch(
-                        _showInvalidChecksumProvider(allowedLengths),
-                      );
-                      final invalidChecksumText = showInvalidChecksum
-                          ? l10n.invalidChecksumMessage
-                          : '';
-                      return Container(
-                        alignment: const AlignmentDirectional(0, 0),
-                        margin: const EdgeInsets.only(top: 6),
-                        child: Text(
-                          invalidChecksumText,
-                          style: styles.textStyleParagraphThinPrimary
-                              .copyWith(color: theme.success),
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }),
+                    Consumer(
+                      builder: (context, ref, _) {
+                        final l10n = l10nOf(context);
+                        final showInvalidChecksum = ref.watch(
+                          _showInvalidChecksumProvider(allowedLengths),
+                        );
+                        final invalidChecksumText = showInvalidChecksum
+                            ? l10n.invalidChecksumMessage
+                            : '';
+                        return Container(
+                          alignment: const AlignmentDirectional(0, 0),
+                          margin: const EdgeInsets.only(top: 6),
+                          child: Text(
+                            invalidChecksumText,
+                            style: styles.textStyleParagraphThinPrimary
+                                .copyWith(color: theme.success),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    ),
                     if (!isLegacy) const Bip39PassphraseButton(),
-                  ]),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
-            if (mnemonicIsValid)
-              Container(
-                alignment: Alignment.centerRight,
-                margin: const EdgeInsetsDirectional.only(
-                  end: 12,
-                  top: 16,
-                  bottom: 8,
-                ),
-                child: TextButton(
-                  style: styles.appIconButtonStyle,
-                  onPressed: submitMnemonic,
-                  child: Icon(
-                    AppIcons.forward,
-                    color: theme.primary,
-                    size: 40,
-                  ),
-                ),
-              )
-            else
-              const Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: const WordsWidget(),
+          ),
+          if (mnemonicIsValid)
+            Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsetsDirectional.only(
+                end: 12,
+                top: 16,
+                bottom: 8,
               ),
-            const SizedBox(height: 8),
-            const KeyboardWidget(),
+              child: TextButton(
+                style: styles.appIconButtonStyle,
+                onPressed: submitMnemonic,
+                child: Icon(
+                  AppIcons.forward,
+                  color: theme.primary,
+                  size: 40,
+                ),
+              ),
+            )
+          else ...[
+            const SizedBox(height: 16),
+            const WordsWidget(),
           ],
-        ),
+          const SizedBox(height: 8),
+          const KeyboardWidget(),
+        ],
       ),
     );
   }

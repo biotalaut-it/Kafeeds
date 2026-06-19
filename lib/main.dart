@@ -17,6 +17,7 @@ void main() async {
 
   final theme = sharedPrefsUtil.getTheme().getTheme();
   SystemChrome.setSystemUIOverlayStyle(theme.statusBar);
+  SystemChrome.setEnabledSystemUIMode(.edgeToEdge);
 
   runApp(
     MaterialApp(

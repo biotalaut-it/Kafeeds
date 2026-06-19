@@ -6,6 +6,7 @@ import '../app_providers.dart';
 import '../l10n/l10n.dart';
 import '../settings/kasplex_settings.dart';
 import '../widgets/app_icon_button.dart';
+import '../widgets/drawer_wrapper.dart';
 import '../widgets/gradient_widgets.dart';
 import 'address_discovery_settings_entry.dart';
 import 'compound_utxos_settings_entry.dart';
@@ -26,81 +27,66 @@ class AdvancedMenu extends ConsumerWidget {
 
     final wallet = ref.watch(walletProvider);
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.backgroundDark,
-        boxShadow: [
-          BoxShadow(
-            color: theme.barrierWeakest,
-            offset: Offset(-5, 0),
-            blurRadius: 20,
+    return DrawerWrapper(
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: AppIconButton(
+                    icon: AppIcons.back,
+                    onPressed: onBackAction,
+                  ),
+                ),
+                Text(
+                  l10n.advancedHeader,
+                  style: styles.textStyleSettingsHeader,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                ListView(
+                  padding: const EdgeInsets.only(top: 15),
+                  children: [
+                    Container(
+                      margin: const EdgeInsetsDirectional.only(
+                        start: 30,
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        l10n.manage,
+                        style: styles.textStyleAppTextFieldHint,
+                      ),
+                    ),
+                    if (!wallet.isViewOnly) ...[
+                      Divider(height: 2, color: theme.text15),
+                      const CompoundUtxosSettingsEntry(),
+                    ],
+                    Divider(height: 2, color: theme.text15),
+                    const AddressDiscoverySettingsEntry(),
+                    if (wallet.hasValidKpub) ...[
+                      Divider(height: 2, color: theme.text15),
+                      const KpubSettingsEntry(),
+                    ],
+                    Divider(height: 2, color: theme.text15),
+                    const TxReportSettingsEntry(),
+                    Divider(height: 2, color: theme.text15),
+                    const TxFilterSettingsEntry(),
+                    Divider(height: 2, color: theme.text15),
+                    const Krc20SettingsEntry(),
+                  ],
+                ),
+                const ListBottomGradient(),
+              ],
+            ),
           ),
         ],
-      ),
-      child: SafeArea(
-        minimum: .only(top: 60, bottom: bottom),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 5),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: AppIconButton(
-                      icon: AppIcons.back,
-                      onPressed: onBackAction,
-                    ),
-                  ),
-                  Text(
-                    l10n.advancedHeader,
-                    style: styles.textStyleSettingsHeader,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  ListView(
-                    padding: const EdgeInsets.only(top: 15),
-                    children: [
-                      Container(
-                        margin: const EdgeInsetsDirectional.only(
-                          start: 30,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          l10n.manage,
-                          style: styles.textStyleAppTextFieldHint,
-                        ),
-                      ),
-                      if (!wallet.isViewOnly) ...[
-                        Divider(height: 2, color: theme.text15),
-                        const CompoundUtxosSettingsEntry(),
-                      ],
-                      Divider(height: 2, color: theme.text15),
-                      const AddressDiscoverySettingsEntry(),
-                      if (wallet.hasValidKpub) ...[
-                        Divider(height: 2, color: theme.text15),
-                        const KpubSettingsEntry(),
-                      ],
-                      Divider(height: 2, color: theme.text15),
-                      const TxReportSettingsEntry(),
-                      Divider(height: 2, color: theme.text15),
-                      const TxFilterSettingsEntry(),
-                      Divider(height: 2, color: theme.text15),
-                      const Krc20SettingsEntry()
-                    ],
-                  ),
-                  const ListBottomGradient(),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -121,7 +121,9 @@ class HomeScreen extends HookConsumerWidget {
         width: UIUtil.drawerWidth(context),
         child: const Drawer(child: SettingsSheet()),
       ),
+      extendBody: true,
       body: SafeArea(
+        maintainBottomViewPadding: true,
         child: ClipRect(
           child: NetworkBanner(
             child: Padding(

@@ -24,7 +24,7 @@ import '../widgets/fiat_mode_icon.dart';
 import '../widgets/fiat_value_container.dart';
 import '../widgets/gradient_widgets.dart';
 import '../widgets/sheet_handle.dart';
-import '../widgets/tap_outside_unfocus.dart';
+import '../widgets/sheet_wrapper.dart';
 import 'balance_text_widget.dart';
 import 'fee_widget.dart';
 import 'send_note_widget.dart';
@@ -320,205 +320,206 @@ class _SendSheetState extends ConsumerState<SendSheet> {
 
     final viewInsets = MediaQuery.viewInsetsOf(context);
     final size = MediaQuery.sizeOf(context);
-    final bottom = size.height * 0.035;
     final maxWidth = max<double>(size.width - 140, 0);
     final horizontal = size.width * 0.105;
 
-    return SafeArea(
-      minimum: .only(bottom: bottom),
-      child: TapOutsideUnfocus(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(width: 60, height: 60),
-                Column(
-                  children: [
-                    const SheetHandle(),
-                    Container(
-                      margin: const EdgeInsets.only(top: 15),
-                      constraints: BoxConstraints(maxWidth: maxWidth),
-                      child: Column(
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              widget.title ?? l10n.send.toUpperCase(),
-                              style: styles.textStyleHeader(context),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                            ),
+    return SheetWrapper(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(width: 60, height: 60),
+              Column(
+                children: [
+                  const SheetHandle(),
+                  Container(
+                    margin: const EdgeInsets.only(top: 15),
+                    constraints: BoxConstraints(maxWidth: maxWidth),
+                    child: Column(
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            widget.title ?? l10n.send.toUpperCase(),
+                            style: styles.textStyleHeader(context),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                const SizedBox(width: 60, height: 60),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(
-                top: 10,
-                left: 30,
-                right: 30,
-                bottom: 4,
+                  ),
+                ],
               ),
-              child: RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  text: l10n.available,
-                  style: styles.textStyleAccount,
-                ),
+              const SizedBox(width: 60, height: 60),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.only(
+              top: 10,
+              left: 30,
+              right: 30,
+              bottom: 4,
+            ),
+            child: RichText(
+              textAlign: TextAlign.start,
+              text: TextSpan(
+                text: l10n.available,
+                style: styles.textStyleAccount,
               ),
             ),
-            const BalanceTextWidget(),
-            // A main container that holds everything
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(top: 5, bottom: 15),
-                child: Stack(
-                  children: [
-                    // A column for Enter Amount, Enter Address, Error containers and the pop up list
-                    SingleChildScrollView(
-                      padding: .only(bottom: max(0, viewInsets.bottom - 180)),
-                      child: Stack(
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const SizedBox(height: 35),
-                              // ******* Enter Amount Container ******* //
-                              getEnterAmountContainer(),
-                              // ******* Enter Amount Container End ******* //
+          ),
+          const BalanceTextWidget(),
+          // A main container that holds everything
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(top: 5, bottom: 15),
+              child: Stack(
+                children: [
+                  // A column for Enter Amount, Enter Address, Error containers and the pop up list
+                  SingleChildScrollView(
+                    padding: .only(bottom: max(0, viewInsets.bottom - 180)),
+                    child: Stack(
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(height: 35),
+                            // ******* Enter Amount Container ******* //
+                            getEnterAmountContainer(),
+                            // ******* Enter Amount Container End ******* //
 
-                              // ******* Enter Amount Error Container ******* //
-                              Container(
-                                alignment: const AlignmentDirectional(0, 0),
-                                margin: const EdgeInsets.only(top: 3),
-                                child: Text(
-                                  _amountValidationText,
-                                  style: styles.textStyleParagraphThinPrimary,
-                                ),
+                            // ******* Enter Amount Error Container ******* //
+                            Container(
+                              alignment: const AlignmentDirectional(0, 0),
+                              margin: const EdgeInsets.only(top: 3),
+                              child: Text(
+                                _amountValidationText,
+                                style: styles.textStyleParagraphThinPrimary,
                               ),
-                              // ******* Enter Amount Error Container End ******* //
-                            ],
-                          ),
-                          // Column for Enter Address container + Enter Address Error container
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
+                            ),
+                            // ******* Enter Amount Error Container End ******* //
+                          ],
+                        ),
+                        // Column for Enter Address container + Enter Address Error container
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              alignment: Alignment.topCenter,
+                              child: Stack(
                                 alignment: Alignment.topCenter,
-                                child: Stack(
-                                  alignment: Alignment.topCenter,
-                                  children: [
-                                    Container(
-                                      margin: .symmetric(
-                                        horizontal: horizontal,
-                                      ),
-                                      alignment: Alignment.bottomCenter,
-                                      constraints: const BoxConstraints(
-                                        maxHeight: 174,
-                                      ),
-                                      // ********************************************* //
-                                      // ********* The pop-up Contacts List ********* //
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
+                                children: [
+                                  Container(
+                                    margin: .symmetric(
+                                      horizontal: horizontal,
+                                    ),
+                                    alignment: Alignment.bottomCenter,
+                                    constraints: const BoxConstraints(
+                                      maxHeight: 174,
+                                    ),
+                                    // ********************************************* //
+                                    // ********* The pop-up Contacts List ********* //
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            25,
+                                          ),
+                                          color: theme.backgroundDarkest,
+                                        ),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            color: theme.backgroundDarkest,
-                                          ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
+                                            borderRadius: BorderRadius.circular(
+                                              25,
                                             ),
-                                            margin: EdgeInsets.only(bottom: 50),
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 0, top: 0),
-                                              itemCount: _contacts.length,
-                                              itemBuilder: (context, index) {
-                                                return _buildContactItem(
-                                                    _contacts[index]);
-                                              },
-                                            ), // ********* The pop-up Contacts List End ********* //
-                                            // ************************************************** //
                                           ),
+                                          margin: EdgeInsets.only(bottom: 50),
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            padding: const EdgeInsets.only(
+                                              bottom: 0,
+                                              top: 0,
+                                            ),
+                                            itemCount: _contacts.length,
+                                            itemBuilder: (context, index) {
+                                              return _buildContactItem(
+                                                _contacts[index],
+                                              );
+                                            },
+                                          ), // ********* The pop-up Contacts List End ********* //
+                                          // ************************************************** //
                                         ),
                                       ),
                                     ),
-                                    getEnterAddressContainer(),
-                                  ],
-                                ),
-                              ),
-
-                              // ******* Enter Address Error Container ******* //
-                              Container(
-                                alignment: const AlignmentDirectional(0, 0),
-                                margin: const EdgeInsets.only(top: 3),
-                                child: Text(
-                                  _addressValidationText,
-                                  style: styles.textStyleParagraphThinPrimary,
-                                ),
-                              ),
-                              // ******* Enter Address Error Container End ******* //
-                              if (feeRaw != null && feeRaw! > BigInt.zero) ...[
-                                FeeWidget(
-                                  amount: Amount.raw(feeRaw!),
-                                ),
-                              ],
-                              const SizedBox(height: 3),
-                              Column(
-                                children: [
-                                  if (hasNote)
-                                    SendNoteWidget(note: _note!)
-                                  else
-                                    getEnterNoteContainer(),
+                                  ),
+                                  getEnterAddressContainer(),
                                 ],
                               ),
-                              const SizedBox(height: 20),
+                            ),
+
+                            // ******* Enter Address Error Container ******* //
+                            Container(
+                              alignment: const AlignmentDirectional(0, 0),
+                              margin: const EdgeInsets.only(top: 3),
+                              child: Text(
+                                _addressValidationText,
+                                style: styles.textStyleParagraphThinPrimary,
+                              ),
+                            ),
+                            // ******* Enter Address Error Container End ******* //
+                            if (feeRaw != null && feeRaw! > BigInt.zero) ...[
+                              FeeWidget(
+                                amount: Amount.raw(feeRaw!),
+                              ),
                             ],
-                          ),
-                        ],
-                      ),
+                            const SizedBox(height: 3),
+                            Column(
+                              children: [
+                                if (hasNote)
+                                  SendNoteWidget(note: _note!)
+                                else
+                                  getEnterNoteContainer(),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      ],
                     ),
-                    const ListTopGradient(),
-                    const ListBottomGradient(),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(
-                children: [
-                  PrimaryButton(
-                    title: l10n.send,
-                    onPressed: sendAction,
                   ),
-                  const SizedBox(height: 16),
-                  if (widget.uri == null)
-                    PrimaryOutlineButton(
-                      title: l10n.scanQrCode,
-                      onPressed: scanQrCode,
-                    )
-                  else
-                    PrimaryOutlineButton(
-                      title: l10n.cancel,
-                      onPressed: () => appRouter.pop(context),
-                    ),
+                  const ListTopGradient(),
+                  const ListBottomGradient(),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: Column(
+              children: [
+                PrimaryButton(
+                  title: l10n.send,
+                  onPressed: sendAction,
+                ),
+                const SizedBox(height: 16),
+                if (widget.uri == null)
+                  PrimaryOutlineButton(
+                    title: l10n.scanQrCode,
+                    onPressed: scanQrCode,
+                  )
+                else
+                  PrimaryOutlineButton(
+                    title: l10n.cancel,
+                    onPressed: () => appRouter.pop(context),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -6,55 +6,58 @@ import '../app_router.dart';
 import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 import 'utxos_widget.dart';
 
-final selectionSummaryProvider =
-    Provider.family.autoDispose<SendTx, (SendTx, Address)>((ref, state) {
-  final spendableUtxos = ref.watch(spendableUtxosProvider);
-  final selectedUtxos = ref.watch(selectedUtxosProvider).toList();
+final selectionSummaryProvider = Provider.family
+    .autoDispose<SendTx, (SendTx, Address)>((ref, state) {
+      final spendableUtxos = ref.watch(spendableUtxosProvider);
+      final selectedUtxos = ref.watch(selectedUtxosProvider).toList();
 
-  final tx = state.$1;
-  final changeAddress = state.$2;
+      final tx = state.$1;
+      final changeAddress = state.$2;
 
-  final totalAmountRaw = selectedUtxos.fold(
-    BigInt.zero,
-    (total, utxo) => total + utxo.utxoEntry.amount,
-  );
-  final txBuilder = TransactionBuilder(
-    utxos: spendableUtxos,
-    priorityFee: tx.priorityFee,
-  );
+      final totalAmountRaw = selectedUtxos.fold(
+        BigInt.zero,
+        (total, utxo) => total + utxo.utxoEntry.amount,
+      );
+      final txBuilder = TransactionBuilder(
+        utxos: spendableUtxos,
+        priorityFee: tx.priorityFee,
+      );
 
-  var amountRaw = totalAmountRaw -
-      tx.priorityFee.raw -
-      kFeePerInput * BigInt.from(selectedUtxos.length);
-  if (amountRaw > tx.amount.raw) {
-    amountRaw = tx.amount.raw;
-  }
-  try {
-    final newTx = txBuilder.createUnsignedTransaction(
-      toAddress: tx.toAddress,
-      amountRaw: amountRaw,
-      changeAddress: changeAddress,
-      preselectedUtxos: selectedUtxos,
-    );
+      var amountRaw =
+          totalAmountRaw -
+          tx.priorityFee.raw -
+          kFeePerInput * BigInt.from(selectedUtxos.length);
+      if (amountRaw > tx.amount.raw) {
+        amountRaw = tx.amount.raw;
+      }
+      try {
+        final newTx = txBuilder.createUnsignedTransaction(
+          toAddress: tx.toAddress,
+          amountRaw: amountRaw,
+          changeAddress: changeAddress,
+          preselectedUtxos: selectedUtxos,
+        );
 
-    final newSendTx = tx.copyWith(
-      amount: Amount.raw(totalAmountRaw),
-      tx: newTx,
-      utxos: txBuilder.selectedUtxos,
-      change: txBuilder.change,
-      baseFee: txBuilder.baseFee,
-      priorityFee: txBuilder.priorityFee,
-    );
+        final newSendTx = tx.copyWith(
+          amount: Amount.raw(totalAmountRaw),
+          tx: newTx,
+          utxos: txBuilder.selectedUtxos,
+          change: txBuilder.change,
+          baseFee: txBuilder.baseFee,
+          priorityFee: txBuilder.priorityFee,
+        );
 
-    return newSendTx;
-  } catch (e) {
-    rethrow;
-  }
-});
+        return newSendTx;
+      } catch (e) {
+        rethrow;
+      }
+    });
 
 class UtxosSelectionSummary extends HookConsumerWidget {
   final SendTx tx;
@@ -64,8 +67,9 @@ class UtxosSelectionSummary extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final styles = ref.watch(stylesProvider);
 
-    final pendingTx =
-        ref.watch(selectionSummaryProvider((tx, tx.changeAddress!)));
+    final pendingTx = ref.watch(
+      selectionSummaryProvider((tx, tx.changeAddress!)),
+    );
 
     final spendableUtxos = ref.watch(spendableUtxosProvider);
     final symbol = ref.watch(kasSymbolProvider);
@@ -178,21 +182,11 @@ class UtxosSelectionPage extends HookConsumerWidget {
           Expanded(child: UtxosWidget(selectionMode: true)),
         ],
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(
-          children: [
-            PrimaryButton(
-              title: l10n.confirm,
-              onPressed: onConfirm,
-            ),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.cancel,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ],
-        ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.confirm, onPressed: onConfirm),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

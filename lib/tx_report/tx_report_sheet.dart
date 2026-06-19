@@ -3,10 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
-import '../app_router.dart';
 import '../l10n/l10n.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 import 'tx_report_dialog.dart';
 import 'tx_report_options.dart';
@@ -83,21 +84,11 @@ class TxReportSheet extends HookConsumerWidget {
           ],
         ),
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(
-          children: [
-            PrimaryButton(
-              title: l10n.txReportGenerate,
-              onPressed: generateCsv,
-            ),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.close,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ],
-        ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.txReportGenerate, onPressed: generateCsv),
+          const CloseActionButton(),
+        ],
       ),
     );
   }

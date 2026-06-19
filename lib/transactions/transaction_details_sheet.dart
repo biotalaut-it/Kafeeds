@@ -8,9 +8,12 @@ import '../contacts/contact_add_sheet.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
 import '../util/util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_handle.dart';
 import '../widgets/sheet_util.dart';
+import '../widgets/sheet_wrapper.dart';
 import 'transaction_details.dart';
 import 'transaction_types.dart';
 
@@ -68,10 +71,7 @@ class TransactionDetailsSheet extends ConsumerWidget {
       );
     }
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return SafeArea(
-      minimum: .only(bottom: bottom),
+    return SheetWrapper(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -79,63 +79,50 @@ class TransactionDetailsSheet extends ConsumerWidget {
           if (txItem != null) ...[
             Expanded(child: TransactionDetails(txItem: txItem!)),
           ],
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 20),
-                if (txItem?.pending ?? false) ...[
-                  PrimaryButton(
-                    title: l10n.feeUpdate,
-                    onPressed: updateFee,
-                  ),
-                  const SizedBox(height: 16),
-                ] else if (displayAddressButton) ...[
-                  Stack(
-                    children: [
-                      PrimaryButton(
-                        title: l10n.viewAddress,
-                        onPressed: viewAddress,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 55,
-                            width: 55,
-                            child: Visibility(
-                              visible: displayContactButton,
-                              child: TextButton(
-                                style: styles.innerButtonStyle,
-                                onPressed: addContact,
-                                child: Icon(
-                                  AppIcons.addcontact,
-                                  size: 35,
-                                  color: theme.backgroundDark,
-                                ),
+          ActionButtonsWrapper(
+            buttons: [
+              if (txItem?.pending ?? false)
+                PrimaryButton(title: l10n.feeUpdate, onPressed: updateFee)
+              else if (displayAddressButton) ...[
+                Stack(
+                  children: [
+                    PrimaryButton(
+                      title: l10n.viewAddress,
+                      onPressed: viewAddress,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 55,
+                          width: 55,
+                          child: Visibility(
+                            visible: displayContactButton,
+                            child: TextButton(
+                              style: styles.innerButtonStyle,
+                              onPressed: addContact,
+                              child: Icon(
+                                AppIcons.addcontact,
+                                size: 35,
+                                color: theme.backgroundDark,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                ],
-                if (txItem == null)
-                  PrimaryOutlineButton(
-                    title: l10n.viewTransaction,
-                    onPressed: viewTransaction,
-                  )
-                else
-                  PrimaryOutlineButton(
-                    title: l10n.close,
-                    onPressed: () => appRouter.pop(context),
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
-            ),
+              if (txItem == null)
+                PrimaryOutlineButton(
+                  title: l10n.viewTransaction,
+                  onPressed: viewTransaction,
+                )
+              else
+                const CloseActionButton(),
+            ],
           ),
         ],
       ),

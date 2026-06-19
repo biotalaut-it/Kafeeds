@@ -5,14 +5,12 @@ import '../../app_providers.dart';
 
 class TextOutlineButton extends ConsumerWidget {
   final String title;
-  final EdgeInsetsGeometry margin;
   final Function? onPressed;
   final bool disabled;
 
   const TextOutlineButton({
     super.key,
     required this.title,
-    required this.margin,
     this.onPressed,
     this.disabled = false,
   });
@@ -30,7 +28,6 @@ class TextOutlineButton extends ConsumerWidget {
             boxShadow: [theme.boxShadowButton],
           ),
           height: 55,
-          margin: margin,
           child: OutlinedButton(
             style: styles.outlinedButtonStyle,
             child: FittedBox(
@@ -43,8 +40,8 @@ class TextOutlineButton extends ConsumerWidget {
               ),
             ),
             onPressed: () {
-              if (onPressed != null) {
-                onPressed!();
+              if (!disabled) {
+                onPressed?.call();
               }
             },
           ),

@@ -7,8 +7,10 @@ import '../app_icons.dart';
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
 import '../util/contacts.dart' as contactsHelper;
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/buttons/text_outline_button.dart';
+import '../widgets/drawer_wrapper.dart';
 import '../widgets/gradient_widgets.dart';
 import '../widgets/sheet_util.dart';
 import 'contact_add_sheet.dart';
@@ -42,29 +44,16 @@ class ContactsWidget extends ConsumerWidget {
       );
     }
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.backgroundDark,
-        boxShadow: [
-          BoxShadow(
-            color: theme.barrierWeakest,
-            offset: Offset(-5, 0),
-            blurRadius: 20,
-          ),
-        ],
-      ),
-      child: SafeArea(
-        minimum: .only(bottom: bottom, top: 60),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(children: [
+    return DrawerWrapper(
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: AppIconButton(
@@ -76,8 +65,10 @@ class ContactsWidget extends ConsumerWidget {
                       l10n.contactsHeader,
                       style: styles.textStyleSettingsHeader,
                     ),
-                  ]),
-                  Row(children: [
+                  ],
+                ),
+                Row(
+                  children: [
                     Tooltip(
                       message: l10n.import,
                       child: AppIconButton(
@@ -94,27 +85,26 @@ class ContactsWidget extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                  ]),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
-            Expanded(
-              child: Stack(children: [
+          ),
+          Expanded(
+            child: Stack(
+              children: [
                 const ContactListWidget(),
                 const ContactListTopGradient(),
                 const ContactListBottomGradient(),
-              ]),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: TextOutlineButton(
-                title: l10n.addContact,
-                margin: const EdgeInsets.only(left: 28, right: 28, top: 8),
-                onPressed: addContact,
-              ),
-            ),
-          ],
-        ),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
+              TextOutlineButton(title: l10n.addContact, onPressed: addContact),
+            ],
+          ),
+        ],
       ),
     );
   }

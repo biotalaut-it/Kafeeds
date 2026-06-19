@@ -6,6 +6,7 @@ import '../app_providers.dart';
 import '../contacts/contact_labels.dart';
 import '../l10n/l10n.dart';
 import '../widgets/app_icon_button.dart';
+import '../widgets/drawer_wrapper.dart';
 import 'donate_menu_item.dart';
 
 class DonateMenu extends ConsumerWidget {
@@ -18,41 +19,30 @@ class DonateMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.backgroundDark,
-        boxShadow: [
-          BoxShadow(
-            color: theme.barrierWeakest,
-            offset: Offset(-5, 0),
-            blurRadius: 20,
-          ),
-        ],
-      ),
-      child: SafeArea(
-        minimum: .only(top: 60, bottom: bottom),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return DrawerWrapper(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Container(
             margin: const EdgeInsets.only(bottom: 10, top: 5),
-            child: Row(children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: AppIconButton(
-                  icon: AppIcons.back,
-                  onPressed: onBackAction,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: AppIconButton(
+                    icon: AppIcons.back,
+                    onPressed: onBackAction,
+                  ),
                 ),
-              ),
-              Text(
-                l10n.donate,
-                style: styles.textStyleSettingsHeader,
-              ),
-            ]),
+                Text(
+                  l10n.donate,
+                  style: styles.textStyleSettingsHeader,
+                ),
+              ],
+            ),
           ),
           Container(
             margin: const EdgeInsetsDirectional.only(
@@ -66,7 +56,7 @@ class DonateMenu extends ConsumerWidget {
           ),
           for (final contact in kDonationAddresses)
             DonateMenuItem(contact: contact),
-        ]),
+        ],
       ),
     );
   }

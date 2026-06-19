@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
-import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons.dart';
-import '../widgets/gradient_widgets.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/qr_code_widget.dart';
+import '../widgets/scrollable_wrapper.dart';
 import '../widgets/sheet_widget.dart';
 
 final kpubProvider = Provider.autoDispose((ref) {
@@ -42,62 +43,43 @@ class KpubSheet extends ConsumerWidget {
 
     return SheetWidget(
       title: l10n.kpubTitle,
-      mainWidget: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: .symmetric(horizontal: horizontal, vertical: 30),
-                  child: Text(
-                    l10n.kpubDescription,
-                    style: styles.textStyleAccount,
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                  ),
+
+      mainWidget: ScrollableWrapper(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: .symmetric(horizontal: horizontal, vertical: 30),
+                child: Text(
+                  l10n.kpubDescription,
+                  style: styles.textStyleAccount,
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
                 ),
-                Container(
-                  padding: const .symmetric(horizontal: 25, vertical: 15),
-                  margin: .symmetric(horizontal: horizontal),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: theme.backgroundDarkest,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Text(
-                    kpub,
-                    style: styles.textStyleAddressText90,
-                  ),
+              ),
+              Container(
+                padding: const .symmetric(horizontal: 25, vertical: 15),
+                margin: .symmetric(horizontal: horizontal),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: theme.backgroundDarkest,
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                const SizedBox(height: 40),
-                QrCodeWidget(
-                  data: kpub,
-                  showIcon: false,
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
+                child: Text(kpub, style: styles.textStyleAddressText90),
+              ),
+              const SizedBox(height: 40),
+              QrCodeWidget(data: kpub, showIcon: false),
+              const SizedBox(height: 20),
+            ],
           ),
-          const ListTopGradient(),
-          const ListBottomGradient(),
-        ],
-      ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(
-          children: [
-            PrimaryButton(
-              title: l10n.copyKpub,
-              onPressed: copyKpub,
-            ),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.close,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ],
         ),
+      ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.copyKpub, onPressed: copyKpub),
+          const CloseActionButton(),
+        ],
       ),
     );
   }

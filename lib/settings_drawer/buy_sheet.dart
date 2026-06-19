@@ -12,8 +12,10 @@ import '../l10n/l10n.dart';
 import '../receive/receive_amount_field.dart';
 import '../settings/setting_item.dart';
 import '../util/util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/receive_address_card.dart';
 import '../widgets/sheet_header_button.dart';
 import '../widgets/sheet_widget.dart';
@@ -70,7 +72,7 @@ class BuySheet extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final receiveAddress = ref.watch(selectedAddressProvider);
 
-    ref.listen(_sourceProvider, (_, __) {});
+    ref.listen(_sourceProvider, (_, _) {});
 
     void showInfo() {
       showAppDialog(context: context, builder: (_) => const BuyInfoDialog());
@@ -125,19 +127,11 @@ class BuySheet extends ConsumerWidget {
         onPressed: showInfo,
         icon: AppIcons.info,
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(children: [
-          PrimaryButton(
-            title: l10n.getStarted,
-            onPressed: buyKaspa,
-          ),
-          const SizedBox(height: 16),
-          PrimaryOutlineButton(
-            title: l10n.close,
-            onPressed: () => appRouter.pop(context),
-          ),
-        ]),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.getStarted, onPressed: buyKaspa),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

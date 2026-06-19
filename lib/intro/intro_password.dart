@@ -5,9 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
-import '../widgets/tap_outside_unfocus.dart';
+import '../widgets/content_wrapper.dart';
 import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
@@ -16,7 +17,6 @@ class IntroPassword extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -60,49 +60,44 @@ class IntroPassword extends HookConsumerWidget {
       intro.goBack();
     }
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.075;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.backgroundDark,
-      body: TapOutsideUnfocus(
-        child: SafeArea(
-          minimum: .only(top: top, bottom: bottom),
-          child: Column(children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(children: [
+    return ContentWrapper(
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
                     Padding(
                       padding: const EdgeInsetsDirectional.only(start: 20),
                       child: const IntroBackButton(),
                     ),
-                  ]),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
-                    alignment: const AlignmentDirectional(-1, 0),
-                    child: AutoSizeText(
-                      l10n.createAPasswordHeader,
-                      maxLines: 3,
-                      stepGranularity: 0.5,
-                      style: styles.textStyleHeaderColored,
-                    ),
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  alignment: const AlignmentDirectional(-1, 0),
+                  child: AutoSizeText(
+                    l10n.createAPasswordHeader,
+                    maxLines: 3,
+                    stepGranularity: 0.5,
+                    style: styles.textStyleHeaderColored,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40, right: 40, top: 16),
-                    alignment: const AlignmentDirectional(-1, 0),
-                    child: AutoSizeText(
-                      l10n.passwordWillBeRequiredToOpenParagraph,
-                      style: styles.textStyleParagraph,
-                      maxLines: 5,
-                      stepGranularity: 0.5,
-                    ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40, top: 16),
+                  alignment: const AlignmentDirectional(-1, 0),
+                  child: AutoSizeText(
+                    l10n.passwordWillBeRequiredToOpenParagraph,
+                    style: styles.textStyleParagraph,
+                    maxLines: 5,
+                    stepGranularity: 0.5,
                   ),
-                  Expanded(
-                    child: Column(children: [
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
                       AppTextField(
                         topMargin: 30,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -142,27 +137,25 @@ class IntroPassword extends HookConsumerWidget {
                           style: styles.textStyleParagraphThinPrimary,
                         ),
                       ),
-                    ]),
+                    ],
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
+              PrimaryButton(
+                title: l10n.nextButton,
+                onPressed: submitAndContinue,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(children: [
-                PrimaryButton(
-                  title: l10n.nextButton,
-                  onPressed: submitAndContinue,
-                ),
-                const SizedBox(height: 16),
-                PrimaryOutlineButton(
-                  title: l10n.goBackButton,
-                  onPressed: goBack,
-                ),
-              ]),
-            ),
-          ]),
-        ),
+              PrimaryOutlineButton(
+                title: l10n.goBackButton,
+                onPressed: goBack,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

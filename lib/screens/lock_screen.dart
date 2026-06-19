@@ -12,7 +12,9 @@ import '../settings/authentication_method.dart';
 import '../util/caseconverter.dart';
 import '../util/pin_lockout.dart';
 import '../util/routes.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons.dart';
+import '../widgets/content_wrapper.dart';
 import '../widgets/logout_button.dart';
 
 class LockScreen extends ConsumerStatefulWidget {
@@ -246,71 +248,68 @@ class _LockScreenState extends ConsumerState<LockScreen> {
     final l10n = l10nOf(context);
 
     final size = MediaQuery.sizeOf(context);
-    final bottom = size.height * 0.035;
     final top = size.height * 0.1;
     final containerWidth = max<double>(size.width - 100, 0);
 
-    return Scaffold(
-      body: Container(
-        color: theme.backgroundDark,
-        width: double.infinity,
-        child: SafeArea(
-          minimum: .only(bottom: bottom),
-          child: Column(
+    return ContentWrapper(
+      child: Column(
+        children: [
+          Row(
             children: [
-              Row(children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 4),
-                  child: const LogoutButton(),
-                ),
-              ]),
-              Expanded(
-                child: _showLock
-                    ? Column(children: [
-                        Container(
-                          margin: .only(top: top),
-                          child: Icon(
-                            AppIcons.lock,
-                            size: 80,
-                            color: theme.primary,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          child: Text(
-                            CaseChange.toUpperCase(l10n.locked, ref),
-                            style: styles.textStyleHeaderColored,
-                          ),
-                        ),
-                      ])
-                    : const SizedBox(),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 4),
+                child: const LogoutButton(),
               ),
-              _lockedOut
-                  ? Container(
-                      width: containerWidth,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Text(
-                        l10n.tooManyFailedAttempts,
-                        style: styles.textStyleErrorMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  : const SizedBox(),
-              _showUnlockButton
-                  ? PrimaryButton(
-                      title: _lockedOut ? _countDownTxt : l10n.unlock,
-                      margin: const EdgeInsets.fromLTRB(28, 8, 28, 0),
-                      onPressed: () {
-                        if (!_lockedOut) {
-                          _authenticate(useTransition: true);
-                        }
-                      },
-                      disabled: _lockedOut,
-                    )
-                  : const SizedBox(),
             ],
           ),
-        ),
+          Expanded(
+            child: _showLock
+                ? Column(
+                    children: [
+                      Container(
+                        margin: .only(top: top),
+                        child: Icon(
+                          AppIcons.lock,
+                          size: 80,
+                          color: theme.primary,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: Text(
+                          CaseChange.toUpperCase(l10n.locked, ref),
+                          style: styles.textStyleHeaderColored,
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
+              if (_lockedOut)
+                Container(
+                  width: containerWidth,
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  child: Text(
+                    l10n.tooManyFailedAttempts,
+                    style: styles.textStyleErrorMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              if (_showUnlockButton)
+                PrimaryButton(
+                  title: _lockedOut ? _countDownTxt : l10n.unlock,
+                  onPressed: () {
+                    if (!_lockedOut) {
+                      _authenticate(useTransition: true);
+                    }
+                  },
+                  disabled: _lockedOut,
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -9,8 +9,10 @@ import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
 import '../util/user_data_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/content_wrapper.dart';
 import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
@@ -28,7 +30,6 @@ class IntroImportKpub extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -88,50 +89,44 @@ class IntroImportKpub extends HookConsumerWidget {
       }
     }
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.075;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      backgroundColor: theme.backgroundDark,
-      body: SafeArea(
-        minimum: .only(top: top, bottom: bottom),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
-                      child: const IntroBackButton(),
-                    ),
+    return ContentWrapper(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 20),
+                    child: const IntroBackButton(),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
-                    alignment: AlignmentDirectional(-1, 0),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        l10n.importKpub,
-                        style: styles.textStyleHeaderColored,
-                        maxLines: 1,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-                    alignment: Alignment.centerLeft,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  alignment: AlignmentDirectional(-1, 0),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
-                      l10n.importKpubHint,
-                      style: styles.textStyleParagraph,
-                      textAlign: TextAlign.start,
+                      l10n.importKpub,
+                      style: styles.textStyleHeaderColored,
+                      maxLines: 1,
                     ),
                   ),
-                  Column(children: [
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    l10n.importKpubHint,
+                    style: styles.textStyleParagraph,
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Column(
+                  children: [
                     AppTextField(
                       leftMargin: 40,
                       rightMargin: 40,
@@ -177,21 +172,17 @@ class IntroImportKpub extends HookConsumerWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  ]),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(children: [
-                PrimaryButton(
-                  title: l10n.nextButton,
-                  onPressed: submitKpub,
+                  ],
                 ),
-              ]),
+              ],
             ),
-          ],
-        ),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
+              PrimaryButton(title: l10n.nextButton, onPressed: submitKpub),
+            ],
+          ),
+        ],
       ),
     );
   }

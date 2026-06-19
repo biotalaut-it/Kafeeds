@@ -6,9 +6,11 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../settings/address_settings.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/buttons.dart';
-import '../widgets/gradient_widgets.dart';
+import '../widgets/dismiss_action_buttons.dart';
+import '../widgets/scrollable_wrapper.dart';
 import '../widgets/sheet_header_button.dart';
 import '../widgets/sheet_widget.dart';
 import 'address_filter_dialog.dart';
@@ -29,7 +31,6 @@ class AddressSelectionSheet extends HookConsumerWidget {
 
     final addressNotifier = ref.watch(addressNotifierProvider);
 
-    final listGlobalKey = useRef(GlobalKey());
     final scrollController = useScrollController();
     final addingAddress = useState(false);
 
@@ -63,45 +64,27 @@ class AddressSelectionSheet extends HookConsumerWidget {
         icon: Icons.remove_red_eye,
         onPressed: showAddressFilterOptions,
       ),
-      mainWidget: Column(
-        children: [
-          const SizedBox(height: 6),
-          Expanded(
-            child: Stack(
-              key: listGlobalKey.value,
-              children: [
-                AddressListWidget(
-                  addressType: AddressType.receive,
-                  scrollController: scrollController,
-                  onSelection: (address) {
-                    final notifier = ref.read(selectedAddressProvider.notifier);
-                    notifier.state = address;
-                    appRouter.pop(context);
-                  },
-                ),
-                const ListTopGradient(),
-                const ListBottomGradient(),
-              ],
-            ),
-          ),
-        ],
+      mainWidget: ScrollableWrapper(
+        child: AddressListWidget(
+          addressType: AddressType.receive,
+          scrollController: scrollController,
+          onSelection: (address) {
+            final notifier = ref.read(selectedAddressProvider.notifier);
+            notifier.state = address;
+            appRouter.pop(context);
+          },
+        ),
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(children: [
-          if (addressType == AddressType.receive) ...[
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          if (addressType == AddressType.receive)
             PrimaryButton(
               title: l10n.newAddress,
               disabled: addingAddress.value,
               onPressed: newReceiveAddress,
             ),
-            const SizedBox(height: 16),
-          ],
-          PrimaryOutlineButton(
-            title: l10n.close,
-            onPressed: () => appRouter.pop(context),
-          ),
-        ]),
+          const CloseActionButton(),
+        ],
       ),
     );
   }

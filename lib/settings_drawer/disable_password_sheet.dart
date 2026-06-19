@@ -7,8 +7,10 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 
 class DisablePasswordSheet extends HookConsumerWidget {
@@ -44,56 +46,55 @@ class DisablePasswordSheet extends HookConsumerWidget {
 
     return SheetWidget(
       title: l10n.disablePasswordSheetHeader,
-      mainWidget: Column(children: [
-        Container(
-          margin: EdgeInsetsDirectional.only(start: 40, end: 40, top: 16),
-          child: AutoSizeText(
-            l10n.passwordNoLongerRequiredToOpenParagraph,
-            style: styles.textStyleParagraph,
-            maxLines: 5,
-            stepGranularity: 0.5,
-          ),
-        ),
-        Column(children: [
-          AppTextField(
-            topMargin: 30,
-            padding: EdgeInsetsDirectional.only(start: 16, end: 16),
-            focusNode: passwordFocusNode,
-            controller: passwordController,
-            textInputAction: TextInputAction.done,
-            maxLines: 1,
-            autocorrect: false,
-            onChanged: (String newText) {
-              passwordError.value = '';
-            },
-            hintText: l10n.enterPasswordHint,
-            keyboardType: TextInputType.text,
-            obscureText: true,
-            style: styles.textStyleParagraphText,
-          ),
+      mainWidget: Column(
+        children: [
           Container(
-            alignment: AlignmentDirectional(0, 0),
-            margin: EdgeInsets.only(top: 3),
-            child: Text(
-              passwordError.value,
-              style: styles.textStyleParagraphThinPrimary,
+            margin: EdgeInsetsDirectional.only(start: 40, end: 40, top: 16),
+            child: AutoSizeText(
+              l10n.passwordNoLongerRequiredToOpenParagraph,
+              style: styles.textStyleParagraph,
+              maxLines: 5,
+              stepGranularity: 0.5,
             ),
           ),
-        ]),
-      ]),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(children: [
+          Column(
+            children: [
+              AppTextField(
+                topMargin: 30,
+                padding: EdgeInsetsDirectional.only(start: 16, end: 16),
+                focusNode: passwordFocusNode,
+                controller: passwordController,
+                textInputAction: TextInputAction.done,
+                maxLines: 1,
+                autocorrect: false,
+                onChanged: (String newText) {
+                  passwordError.value = '';
+                },
+                hintText: l10n.enterPasswordHint,
+                keyboardType: TextInputType.text,
+                obscureText: true,
+                style: styles.textStyleParagraphText,
+              ),
+              Container(
+                alignment: AlignmentDirectional(0, 0),
+                margin: EdgeInsets.only(top: 3),
+                child: Text(
+                  passwordError.value,
+                  style: styles.textStyleParagraphThinPrimary,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
           PrimaryButton(
             title: l10n.disablePasswordSheetHeader,
             onPressed: submitAndDecrypt,
           ),
-          const SizedBox(height: 16),
-          PrimaryOutlineButton(
-            title: l10n.close,
-            onPressed: () => appRouter.pop(context),
-          ),
-        ]),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

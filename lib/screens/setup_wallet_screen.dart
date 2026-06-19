@@ -10,6 +10,7 @@ import '../l10n/l10n.dart';
 import '../wallet/wallet_types.dart';
 import '../wallet_address/address_discovery.dart';
 import '../wallet_address/wallet_address.dart';
+import '../widgets/content_wrapper.dart';
 import 'setup_failed_page.dart';
 
 class SetupWalletScreen extends HookConsumerWidget {
@@ -17,7 +18,6 @@ class SetupWalletScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -166,47 +166,41 @@ class SetupWalletScreen extends HookConsumerWidget {
       );
     }
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return Scaffold(
-      backgroundColor: theme.backgroundDark,
-      body: SafeArea(
-        minimum: .only(bottom: bottom),
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FractionallySizedBox(
-                    widthFactor: 0.4,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Image.asset('assets/kaspa.png'),
+    return ContentWrapper(
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FractionallySizedBox(
+                  widthFactor: 0.4,
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Image.asset('assets/kaspa.png'),
+                  ),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      message.value,
+                      style: styles.textStyleSettingItemHeaderLarge,
                     ),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        message.value,
-                        style: styles.textStyleSettingItemHeaderLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        details.value,
-                        style: styles.textStyleSettingItemHeader60,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    const SizedBox(height: 8),
+                    Text(
+                      details.value,
+                      style: styles.textStyleSettingItemHeader60,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(
-              width: double.infinity,
-              height: 16 + 2 * 55,
-            )
-          ],
-        ),
+          ),
+          const SizedBox(
+            width: double.infinity,
+            height: 16 + 2 * 55,
+          ),
+        ],
       ),
     );
   }

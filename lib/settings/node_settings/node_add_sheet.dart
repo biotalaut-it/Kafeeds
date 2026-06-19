@@ -12,9 +12,11 @@ import '../../l10n/l10n.dart';
 import '../../util/random_util.dart';
 import '../../util/ui_util.dart';
 import '../../util/user_data_util.dart';
+import '../../widgets/action_buttons_wrapper.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/dialog.dart';
+import '../../widgets/dismiss_action_buttons.dart';
 import '../../widgets/sheet_widget.dart';
 import '../../widgets/validation_text.dart';
 import 'node_types.dart';
@@ -234,19 +236,11 @@ class NodeAddSheet extends HookConsumerWidget {
           ValidationText(state.urlValidationText),
         ],
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(children: [
-          PrimaryButton(
-            title: l10n.add,
-            onPressed: addNode,
-          ),
-          const SizedBox(height: 16),
-          PrimaryOutlineButton(
-            title: l10n.cancel,
-            onPressed: () => appRouter.pop(context),
-          ),
-        ]),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.add, onPressed: addNode),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

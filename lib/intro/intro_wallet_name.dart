@@ -6,9 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/core_providers.dart';
 import '../l10n/l10n.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
-import '../widgets/tap_outside_unfocus.dart';
+import '../widgets/content_wrapper.dart';
 import 'intro_back_button.dart';
 import 'intro_providers.dart';
 
@@ -17,7 +18,6 @@ class IntroWalletName extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -52,25 +52,20 @@ class IntroWalletName extends HookConsumerWidget {
       intro.goBack();
     }
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.075;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.backgroundDark,
-      body: TapOutsideUnfocus(
-        child: SafeArea(
-          minimum: .only(top: top, bottom: bottom),
-          child: Column(children: [
-            Expanded(
-              child: Column(children: [
-                Row(children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 20),
-                    child: const IntroBackButton(),
-                  ),
-                ]),
+    return ContentWrapper(
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      child: const IntroBackButton(),
+                    ),
+                  ],
+                ),
                 Container(
                   margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
                   alignment: const AlignmentDirectional(-1, 0),
@@ -93,51 +88,51 @@ class IntroWalletName extends HookConsumerWidget {
                   ),
                 ),
                 Expanded(
-                  child: Column(children: [
-                    AppTextField(
-                      topMargin: 30,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      focusNode: nameFocusNode,
-                      controller: nameController,
-                      maxLines: 1,
-                      autocorrect: false,
-                      textCapitalization: TextCapitalization.words,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(25),
-                      ],
-                      onChanged: inputChanged,
-                      hintText: l10n.walletNameHint,
-                      keyboardType: TextInputType.text,
-                      style: styles.textStyleParagraphText,
-                    ),
-                    Container(
-                      alignment: AlignmentDirectional(0, 0),
-                      margin: EdgeInsets.only(top: 3),
-                      child: Text(
-                        nameError.value,
-                        style: styles.textStyleParagraphThinPrimary,
+                  child: Column(
+                    children: [
+                      AppTextField(
+                        topMargin: 30,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        focusNode: nameFocusNode,
+                        controller: nameController,
+                        maxLines: 1,
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.words,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(25),
+                        ],
+                        onChanged: inputChanged,
+                        hintText: l10n.walletNameHint,
+                        keyboardType: TextInputType.text,
+                        style: styles.textStyleParagraphText,
                       ),
-                    ),
-                  ]),
+                      Container(
+                        alignment: AlignmentDirectional(0, 0),
+                        margin: EdgeInsets.only(top: 3),
+                        child: Text(
+                          nameError.value,
+                          style: styles.textStyleParagraphThinPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ]),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Column(children: [
-                PrimaryButton(
-                  title: l10n.nextButton,
-                  onPressed: submitAndContinue,
-                ),
-                const SizedBox(height: 16),
-                PrimaryOutlineButton(
-                  title: l10n.goBackButton,
-                  onPressed: goBack,
-                ),
-              ]),
-            ),
-          ]),
-        ),
+          ),
+          ActionButtonsWrapper(
+            buttons: [
+              PrimaryButton(
+                title: l10n.nextButton,
+                onPressed: submitAndContinue,
+              ),
+              PrimaryOutlineButton(
+                title: l10n.goBackButton,
+                onPressed: goBack,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

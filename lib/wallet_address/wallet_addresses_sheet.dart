@@ -4,14 +4,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
-import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../settings/address_settings.dart';
 import '../settings_advanced/kpub_sheet.dart';
 import '../util/ui_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/buttons.dart';
-import '../widgets/gradient_widgets.dart';
+import '../widgets/dismiss_action_buttons.dart';
+import '../widgets/scrollable_wrapper.dart';
 import '../widgets/sheet_header_button.dart';
 import '../widgets/sheet_util.dart';
 import '../widgets/sheet_widget.dart';
@@ -31,8 +32,6 @@ class WalletAddressesSheet extends HookConsumerWidget {
     final addressNotifier = ref.watch(addressNotifierProvider);
     final wallet = ref.watch(walletProvider);
 
-    final receiveGlobalKey = useRef(GlobalKey());
-    final changeGlobalKey = useRef(GlobalKey());
     final addingAddress = useState(false);
     final receiveScrollController = useScrollController();
     final changeScrollController = useScrollController();
@@ -69,19 +68,19 @@ class WalletAddressesSheet extends HookConsumerWidget {
     Future<void> copyAddresses(AddressType? type) async {
       final (addresses, typeStr) = switch (type) {
         AddressType.receive => (
-            addressNotifier.receiveAddresses,
-            l10n.receive,
-          ),
+          addressNotifier.receiveAddresses,
+          l10n.receive,
+        ),
         AddressType.change => (
-            addressNotifier.changeAddresses,
-            l10n.change,
-          ),
+          addressNotifier.changeAddresses,
+          l10n.change,
+        ),
         null => (
-            addressNotifier.receiveAddresses.followedBy(
-              addressNotifier.changeAddresses,
-            ),
-            l10n.walletAddresses
+          addressNotifier.receiveAddresses.followedBy(
+            addressNotifier.changeAddresses,
           ),
+          l10n.walletAddresses,
+        ),
       };
 
       try {
@@ -95,48 +94,48 @@ class WalletAddressesSheet extends HookConsumerWidget {
 
     return DefaultTabController(
       length: 2,
-      child: Builder(builder: (context) {
-        Future<void> newReceiveAddress() async {
-          if (addingAddress.value) return;
-          addingAddress.value = true;
-          await addressNotifier.addNewReceiveAddress();
-          addingAddress.value = false;
+      child: Builder(
+        builder: (context) {
+          Future<void> newReceiveAddress() async {
+            if (addingAddress.value) return;
+            addingAddress.value = true;
+            await addressNotifier.addNewReceiveAddress();
+            addingAddress.value = false;
 
-          if (!context.mounted) return;
-          DefaultTabController.of(context).animateTo(0);
-          receiveScrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-          );
-        }
+            if (!context.mounted) return;
+            DefaultTabController.of(context).animateTo(0);
+            receiveScrollController.animateTo(
+              0,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOut,
+            );
+          }
 
-        return SheetWidget(
-          title: l10n.walletAddresses,
-          leftWidget: wallet.hasValidKpub
-              ? SheetHeaderButton(icon: Icons.vpn_key, onPressed: showKpub)
-              : null,
-          rightWidget: SheetHeaderButton(
-            icon: Icons.remove_red_eye,
-            onPressed: showAddressFilterOptions,
-          ),
-          mainWidget: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: TabBar(
-                  indicatorWeight: 3,
-                  indicatorColor: theme.primary60,
-                  indicatorPadding: const EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                  ),
-                  tabs: [
-                    Tab(
-                      child: GestureDetector(
-                        onLongPress: () => copyAddresses(AddressType.receive),
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 20),
+          return SheetWidget(
+            title: l10n.walletAddresses,
+            leftWidget: wallet.hasValidKpub
+                ? SheetHeaderButton(icon: Icons.vpn_key, onPressed: showKpub)
+                : null,
+            rightWidget: SheetHeaderButton(
+              icon: Icons.remove_red_eye,
+              onPressed: showAddressFilterOptions,
+            ),
+            mainWidget: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TabBar(
+                    indicatorWeight: 3,
+                    indicatorColor: theme.primary60,
+                    indicatorPadding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
+                    tabs: [
+                      Tab(
+                        height: 32,
+                        child: GestureDetector(
+                          onLongPress: () => copyAddresses(AddressType.receive),
                           child: Text(
                             l10n.receive.toUpperCase(),
                             textAlign: TextAlign.center,
@@ -144,13 +143,10 @@ class WalletAddressesSheet extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                    ),
-                    Tab(
-                      child: GestureDetector(
-                        onLongPress: () => copyAddresses(AddressType.change),
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 20),
-                          width: double.infinity,
+                      Tab(
+                        height: 32,
+                        child: GestureDetector(
+                          onLongPress: () => copyAddresses(AddressType.change),
                           child: Text(
                             l10n.change.toUpperCase(),
                             textAlign: TextAlign.center,
@@ -158,58 +154,43 @@ class WalletAddressesSheet extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    Stack(
-                      key: receiveGlobalKey.value,
-                      children: [
-                        AddressListWidget(
+                const SizedBox(height: 8),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      ScrollableWrapper(
+                        child: AddressListWidget(
                           addressType: AddressType.receive,
                           scrollController: receiveScrollController,
                         ),
-                        const ListTopGradient(),
-                        const ListBottomGradient(),
-                      ],
-                    ),
-                    Stack(
-                      key: changeGlobalKey.value,
-                      children: [
-                        AddressListWidget(
+                      ),
+                      ScrollableWrapper(
+                        child: AddressListWidget(
                           addressType: AddressType.change,
                           scrollController: changeScrollController,
                         ),
-                        const ListTopGradient(),
-                        const ListBottomGradient(),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          bottomWidget: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Column(children: [
-              PrimaryButton(
-                title: l10n.newAddress,
-                disabled: addingAddress.value,
-                onPressed: newReceiveAddress,
-              ),
-              const SizedBox(height: 16),
-              PrimaryOutlineButton(
-                title: l10n.close,
-                onPressed: () => appRouter.pop(context),
-              ),
-            ]),
-          ),
-        );
-      }),
+              ],
+            ),
+            bottomWidget: ActionButtonsWrapper(
+              buttons: [
+                PrimaryButton(
+                  title: l10n.newAddress,
+                  disabled: addingAddress.value,
+                  onPressed: newReceiveAddress,
+                ),
+                const CloseActionButton(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

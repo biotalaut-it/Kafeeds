@@ -9,6 +9,7 @@ import '../settings/kaspa_api_settings.dart';
 import '../settings/kasplex_settings.dart';
 import '../settings/node_settings.dart';
 import '../widgets/app_icon_button.dart';
+import '../widgets/drawer_wrapper.dart';
 import '../widgets/gradient_widgets.dart';
 
 class NetworkMenu extends ConsumerWidget {
@@ -22,73 +23,58 @@ class NetworkMenu extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.backgroundDark,
-        boxShadow: [
-          BoxShadow(
-            color: theme.barrierWeakest,
-            offset: Offset(-5, 0),
-            blurRadius: 20,
+    return DrawerWrapper(
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: AppIconButton(
+                    icon: AppIcons.back,
+                    onPressed: onBackAction,
+                  ),
+                ),
+                Text(
+                  l10n.networkHeader,
+                  style: styles.textStyleSettingsHeader,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                ListView(
+                  padding: const EdgeInsets.only(top: 15),
+                  children: [
+                    Container(
+                      margin: const EdgeInsetsDirectional.only(
+                        start: 30,
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        l10n.preferences,
+                        style: styles.textStyleAppTextFieldHint,
+                      ),
+                    ),
+                    Divider(height: 2, color: theme.text15),
+                    const NodeSettingsEntry(),
+                    Divider(height: 2, color: theme.text15),
+                    const KaspaApiSettingsUrlEntry(),
+                    Divider(height: 2, color: theme.text15),
+                    const KasplexSettingsApiUrlEntry(),
+                    Divider(height: 2, color: theme.text15),
+                    const BlockExplorerEntry(),
+                  ],
+                ),
+                const ListBottomGradient(),
+              ],
+            ),
           ),
         ],
-      ),
-      child: SafeArea(
-        minimum: .only(top: 60, bottom: bottom),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 5),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: AppIconButton(
-                      icon: AppIcons.back,
-                      onPressed: onBackAction,
-                    ),
-                  ),
-                  Text(
-                    l10n.networkHeader,
-                    style: styles.textStyleSettingsHeader,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  ListView(
-                    padding: const EdgeInsets.only(top: 15),
-                    children: [
-                      Container(
-                        margin: const EdgeInsetsDirectional.only(
-                          start: 30,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          l10n.preferences,
-                          style: styles.textStyleAppTextFieldHint,
-                        ),
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      const NodeSettingsEntry(),
-                      Divider(height: 2, color: theme.text15),
-                      const KaspaApiSettingsUrlEntry(),
-                      Divider(height: 2, color: theme.text15),
-                      const KasplexSettingsApiUrlEntry(),
-                      Divider(height: 2, color: theme.text15),
-                      const BlockExplorerEntry(),
-                    ],
-                  ),
-                  const ListBottomGradient(),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

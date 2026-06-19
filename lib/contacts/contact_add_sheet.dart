@@ -10,9 +10,11 @@ import '../l10n/l10n.dart';
 import '../util/formatters.dart';
 import '../util/ui_util.dart';
 import '../util/user_data_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_widgets.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 import 'contact.dart';
 
@@ -254,21 +256,11 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
           ),
         ],
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(
-          children: [
-            PrimaryButton(
-              title: l10n.addContact,
-              onPressed: _addContact,
-            ),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.close,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ],
-        ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.addContact, onPressed: _addContact),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

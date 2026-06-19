@@ -11,6 +11,7 @@ import '../settings/wallet_settings.dart';
 import '../util/lock_settings.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/app_simpledialog.dart';
+import '../widgets/drawer_wrapper.dart';
 import '../widgets/gradient_widgets.dart';
 import '../widgets/sheet_util.dart';
 import 'disable_password_sheet.dart';
@@ -83,49 +84,37 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     );
     final requestPasswordSetting = RequestPasswordSetting(requestPassword);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.backgroundDark,
-        boxShadow: [
-          BoxShadow(
-            color: theme.barrierWeakest,
-            offset: Offset(-5, 0),
-            blurRadius: 20,
-          ),
-        ],
-      ),
-      child: SafeArea(
-        minimum: const EdgeInsets.only(top: 60),
-        child: Column(
-          children: [
-            // Back button and Security Text
-            Container(
-              margin: const EdgeInsets.only(bottom: 10, top: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      //Back button
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: AppIconButton(
-                          icon: AppIcons.back,
-                          onPressed: widget.onBackAction,
-                        ),
+    return DrawerWrapper(
+      child: Column(
+        children: [
+          // Back button and Security Text
+          Container(
+            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    //Back button
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: AppIconButton(
+                        icon: AppIcons.back,
+                        onPressed: widget.onBackAction,
                       ),
-                      //Security Header Text
-                      Text(
-                        l10n.securityHeader,
-                        style: styles.textStyleSettingsHeader,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    //Security Header Text
+                    Text(
+                      l10n.securityHeader,
+                      style: styles.textStyleSettingsHeader,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            Expanded(
-                child: Stack(
+          ),
+          Expanded(
+            child: Stack(
               children: [
                 ListView(
                   padding: const EdgeInsets.only(top: 15),
@@ -209,9 +198,9 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
                 ),
                 const ListTopGradient(),
               ],
-            )),
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

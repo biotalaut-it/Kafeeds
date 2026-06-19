@@ -12,12 +12,14 @@ import '../l10n/l10n.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
 import '../utxos/utxos_selection_page.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_card.dart';
 import '../widgets/amount_card.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
 import '../widgets/dialog.dart';
-import '../widgets/gradient_widgets.dart';
+import '../widgets/dismiss_action_buttons.dart';
+import '../widgets/scrollable_wrapper.dart';
 import '../widgets/sheet_util.dart';
 import '../widgets/sheet_widget.dart';
 import 'fee_sheet.dart';
@@ -28,7 +30,7 @@ class SendConfirmSheet extends HookConsumerWidget {
   final SendTx sendTx;
   final bool rbf;
 
-  SendConfirmSheet({
+  const SendConfirmSheet({
     super.key,
     required this.sendTx,
     this.rbf = false,
@@ -237,73 +239,59 @@ class SendConfirmSheet extends HookConsumerWidget {
 
     return SheetWidget(
       title: l10n.sendConfirm,
-      mainWidget: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 20, bottom: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AmountCard(
-                  amount: amount,
-                  // rightButton: TextFieldButton(
-                  //   icon: Icons.sort,
-                  //   onPressed: () => selectUtxos(priorityFee: tx.priorityFee),
-                  // ),
+      mainWidget: ScrollableWrapper(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(top: 20, bottom: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AmountCard(
+                amount: amount,
+                // rightButton: TextFieldButton(
+                //   icon: Icons.sort,
+                //   onPressed: () => selectUtxos(priorityFee: tx.priorityFee),
+                // ),
+              ),
+              // "TO" text
+              Container(
+                margin: const EdgeInsets.only(top: 30, bottom: 10),
+                child: Text(
+                  l10n.sendToAddressTitle.toUpperCase(),
+                  style: styles.textStyleSubHeader,
                 ),
-                // "TO" text
-                Container(
-                  margin: const EdgeInsets.only(top: 30, bottom: 10),
-                  child: Text(
-                    l10n.sendToAddressTitle.toUpperCase(),
-                    style: styles.textStyleSubHeader,
-                  ),
+              ),
+              AddressCard(address: toAddress),
+              Container(
+                margin: const EdgeInsets.only(top: 30, bottom: 10),
+                child: Text(
+                  l10n.fee.toUpperCase(),
+                  style: styles.textStyleSubHeader,
                 ),
-                AddressCard(address: toAddress),
-                Container(
-                  margin: const EdgeInsets.only(top: 30, bottom: 10),
-                  child: Text(
-                    l10n.fee.toUpperCase(),
-                    style: styles.textStyleSubHeader,
-                  ),
+              ),
+              AmountCard(
+                amount: fee,
+                rightButton: TextFieldButton(
+                  icon: Icons.add,
+                  onPressed: adjustFee,
                 ),
-                AmountCard(
-                  amount: fee,
-                  rightButton: TextFieldButton(
-                    icon: Icons.add,
-                    onPressed: adjustFee,
+              ),
+              if (note != null)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 30,
+                    bottom: 10,
                   ),
+                  child: SendNoteWidget(note: note),
                 ),
-                if (note != null)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30,
-                      bottom: 10,
-                    ),
-                    child: SendNoteWidget(note: note),
-                  ),
-              ],
-            ),
+            ],
           ),
-          const ListTopGradient(),
-          const ListBottomGradient(),
-        ],
-      ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(
-          children: [
-            PrimaryButton(
-              title: l10n.confirm,
-              onPressed: onConfirm,
-            ),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.cancel,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ],
         ),
+      ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.confirm, onPressed: onConfirm),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

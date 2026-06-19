@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,13 +11,16 @@ import '../l10n/l10n.dart';
 import '../send_sheet/send_sheet.dart';
 import '../util/ui_util.dart';
 import '../util/util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_widgets.dart';
 import '../widgets/buttons.dart';
 import '../widgets/contact_info_button.dart';
 import '../widgets/dialog.dart';
-import '../widgets/gradient_widgets.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/qr_code_widget.dart';
+import '../widgets/scrollable_wrapper.dart';
 import '../widgets/sheet_util.dart';
+import '../widgets/sheet_widget.dart';
 import '../widgets/trashcan_button.dart';
 import 'contact.dart';
 
@@ -83,145 +85,94 @@ class ContactDetails extends HookConsumerWidget {
 
     final size = MediaQuery.sizeOf(context);
     final horizontal = size.width * 0.105;
-    final bottom = size.height * 0.035;
-    final maxWidth = max<double>(size.width - 140, 0);
 
-    return SafeArea(
-      minimum: .only(bottom: bottom),
-      child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.only(top: 10, start: 10),
-              child: TrashcanButton(onPressed: confirmDeleteContact),
-            ),
-            // The header of the sheet
-            Column(
+    return SheetWidget(
+      title: l10n.contactHeader,
+      leftWidget: TrashcanButton(onPressed: confirmDeleteContact),
+      rightWidget: ContactInfoButton(
+        onPressed: () {
+          final explorer = ref.read(blockExplorerProvider);
+          openUrl(explorer.urlForAddress(contact.address));
+        },
+      ),
+      mainWidget: ScrollableWrapper(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsetsDirectional.only(top: 19, bottom: 22),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Contact Name container
                 Container(
-                  margin: EdgeInsets.only(top: 15),
-                  constraints: BoxConstraints(maxWidth: maxWidth),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      l10n.contactHeader,
-                      style: ref.watch(stylesProvider).textStyleHeader(context),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
+                  width: double.infinity,
+                  margin: .symmetric(horizontal: horizontal),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.backgroundDarkest,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Text(
+                    contact.name,
+                    textAlign: TextAlign.center,
+                    style: styles.textStyleDialogOptions,
+                  ),
+                ),
+                // Contact Address
+                GestureDetector(
+                  onTap: copyAddress,
+                  child: Container(
+                    width: double.infinity,
+                    margin: .only(
+                      left: horizontal,
+                      right: horizontal,
+                      top: 15,
                     ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.backgroundDarkest,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: AddressThreeLineText(
+                      address: contact.address,
+                      type: addressCopied.value
+                          ? AddressTextType.SUCCESS_FULL
+                          : AddressTextType.PRIMARY,
+                    ),
+                  ),
+                ),
+                // Address Copied text container
+                Container(
+                  margin: const EdgeInsets.only(top: 5, bottom: 5),
+                  child: Text(
+                    addressCopied.value ? l10n.addressCopied : '',
+                    style: styles.textStyleParagraphThinSuccess,
+                  ),
+                ),
+                // QR Code
+                FittedBox(
+                  fit: BoxFit.contain,
+                  child: QrCodeWidget(
+                    data: contact.address,
+                    onTap: copyAddress,
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(top: 10, end: 10),
-              child: ContactInfoButton(
-                onPressed: () {
-                  final explorer = ref.read(blockExplorerProvider);
-                  openUrl(explorer.urlForAddress(contact.address));
-                },
-              ),
-            ),
-          ],
-        ),
-
-        // The main container that holds Contact Name and Contact Address
-        Expanded(
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsetsDirectional.only(top: 19, bottom: 22),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Contact Name container
-                      Container(
-                        width: double.infinity,
-                        margin: .symmetric(horizontal: horizontal),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.backgroundDarkest,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Text(
-                          contact.name,
-                          textAlign: TextAlign.center,
-                          style: styles.textStyleDialogOptions,
-                        ),
-                      ),
-                      // Contact Address
-                      GestureDetector(
-                        onTap: copyAddress,
-                        child: Container(
-                          width: double.infinity,
-                          margin: .only(
-                            left: horizontal,
-                            right: horizontal,
-                            top: 15,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theme.backgroundDarkest,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: AddressThreeLineText(
-                            address: contact.address,
-                            type: addressCopied.value
-                                ? AddressTextType.SUCCESS_FULL
-                                : AddressTextType.PRIMARY,
-                          ),
-                        ),
-                      ),
-                      // Address Copied text container
-                      Container(
-                        margin: const EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text(
-                          addressCopied.value ? l10n.addressCopied : '',
-                          style: styles.textStyleParagraphThinSuccess,
-                        ),
-                      ),
-                      // QR Code
-                      FittedBox(
-                        fit: BoxFit.contain,
-                        child: QrCodeWidget(
-                          data: contact.address,
-                          onTap: copyAddress,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const ListBottomGradient(),
-              const ListTopGradient(),
-            ],
           ),
         ),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Column(children: [
-            PrimaryButton(
-              title: l10n.send,
-              onPressed: showSendSheet,
-            ),
-            const SizedBox(height: 16),
-            PrimaryOutlineButton(
-              title: l10n.close,
-              onPressed: () => appRouter.pop(context),
-            ),
-          ]),
-        ),
-      ]),
+      ),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.send, onPressed: showSendSheet),
+          const CloseActionButton(),
+        ],
+      ),
     );
   }
 }

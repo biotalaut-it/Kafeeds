@@ -7,8 +7,10 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 
 class SetPasswordSheet extends HookConsumerWidget {
@@ -130,19 +132,11 @@ class SetPasswordSheet extends HookConsumerWidget {
           ),
         ],
       ),
-      bottomWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
-        child: Column(children: [
-          PrimaryButton(
-            title: l10n.setPassword,
-            onPressed: submitAndEncrypt,
-          ),
-          const SizedBox(height: 16),
-          PrimaryOutlineButton(
-            title: l10n.close,
-            onPressed: () => appRouter.pop(context),
-          ),
-        ]),
+      bottomWidget: ActionButtonsWrapper(
+        buttons: [
+          PrimaryButton(title: l10n.setPassword, onPressed: submitAndEncrypt),
+          const CancelActionButton(),
+        ],
       ),
     );
   }

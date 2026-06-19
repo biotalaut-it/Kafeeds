@@ -5,13 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
+import '../widgets/content_wrapper.dart';
 
 class LogoutScreen extends HookConsumerWidget {
   const LogoutScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -35,35 +35,27 @@ class LogoutScreen extends HookConsumerWidget {
       return null;
     }, const []);
 
-    final height = MediaQuery.heightOf(context);
-    final top = height * 0.075;
-    final bottom = height * 0.035;
-
-    return Scaffold(
-      backgroundColor: theme.backgroundDark,
-      body: SafeArea(
-        minimum: .only(top: top, bottom: bottom),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: FractionallySizedBox(
-                    widthFactor: 0.4,
-                    child: Image.asset('assets/kaspa.png'),
-                  ),
+    return ContentWrapper(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: FractionallySizedBox(
+                  widthFactor: 0.4,
+                  child: Image.asset('assets/kaspa.png'),
                 ),
-              ],
-            ),
-            Text(
-              l10n.loggingOutMessage,
-              style: styles.textStyleSettingItemHeader.copyWith(fontSize: 18),
-            ),
-            const SizedBox(),
-          ],
-        ),
+              ),
+            ],
+          ),
+          Text(
+            l10n.loggingOutMessage,
+            style: styles.textStyleSettingItemHeader.copyWith(fontSize: 18),
+          ),
+          const SizedBox(),
+        ],
       ),
     );
   }

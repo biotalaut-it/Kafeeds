@@ -5,14 +5,12 @@ import '../../app_providers.dart';
 
 class PrimaryButton extends ConsumerWidget {
   final String title;
-  final EdgeInsetsGeometry margin;
   final bool disabled;
   final Function? onPressed;
 
   const PrimaryButton({
     super.key,
     required this.title,
-    this.margin = EdgeInsets.zero,
     this.disabled = false,
     this.onPressed,
   });
@@ -31,7 +29,6 @@ class PrimaryButton extends ConsumerWidget {
               boxShadow: [theme.boxShadowButton],
             ),
             height: 55,
-            margin: margin,
             child: TextButton(
               style: disabled
                   ? styles.disabledPrimaryButtonStyle
