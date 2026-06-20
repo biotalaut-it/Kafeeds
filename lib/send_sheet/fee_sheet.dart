@@ -56,9 +56,10 @@ class FeeSheet extends HookConsumerWidget {
     final hint = useState<String?>(null);
 
     useEffect(() {
-      final listener = () {
+      void listener() {
         hint.value = focusNode.hasFocus ? '' : null;
-      };
+      }
+
       focusNode.addListener(listener);
       return () => focusNode.removeListener(listener);
     }, [focusNode]);

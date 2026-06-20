@@ -94,7 +94,7 @@ sealed class ApiTxId with _$ApiTxId {
       _$ApiTxIdFromJson(json);
 }
 
-int _sigOpCountFromJson(sigOpCount) {
+int _sigOpCountFromJson(dynamic sigOpCount) {
   if (sigOpCount is int) {
     return sigOpCount;
   }
@@ -146,13 +146,13 @@ sealed class ApiTransaction with _$ApiTransaction {
   factory ApiTransaction({
     String? subnetworkId,
     required String transactionId,
-    @Default(const []) List<String> blockHash,
+    @Default([]) List<String> blockHash,
     required int blockTime,
     required bool isAccepted,
     String? acceptingBlockHash,
     int? acceptingBlockBlueScore,
-    @Default(const []) List<ApiTxInput> inputs,
-    @Default(const []) List<ApiTxOutput> outputs,
+    @Default([]) List<ApiTxInput> inputs,
+    @Default([]) List<ApiTxOutput> outputs,
   }) = _Transaction;
 
   factory ApiTransaction.fromJson(Map<String, dynamic> json) =>

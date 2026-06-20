@@ -15,7 +15,7 @@ class KaspaApiSettingsUrlEntry extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final kaspaApiUrl = ref.watch(kaspaApiUrlProvider);
 
-    void _changeKaspaApiUrl() {
+    void changeKaspaApiUrl() {
       final theme = ref.read(themeProvider);
       Sheets.showAppHeightEightSheet(
         context: context,
@@ -33,7 +33,7 @@ class KaspaApiSettingsUrlEntry extends ConsumerWidget {
       heading: 'Kaspa API',
       defaultMethod: StringSelectionItem(displayUrl),
       icon: Icons.api,
-      onPressed: _changeKaspaApiUrl,
+      onPressed: changeKaspaApiUrl,
     );
   }
 }

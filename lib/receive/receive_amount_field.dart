@@ -43,9 +43,10 @@ class ReceiveAmountField extends HookConsumerWidget {
     final hintText = fiatMode ? l10n.enterFiatValue : l10n.enterAmount;
 
     useEffect(() {
-      final listener = () {
+      void listener() {
         amountHint.value = amountFocusNode.hasFocus ? '' : null;
-      };
+      }
+
       amountFocusNode.addListener(listener);
       return () => amountFocusNode.removeListener(listener);
     }, [amountFocusNode]);

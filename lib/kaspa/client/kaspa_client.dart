@@ -365,8 +365,8 @@ class KaspaClient {
   // Virtual Selected Parent Chain Changed
 
   Stream<VirtualChainChangedNotificationMessage>
-      notifyVirtualSelectedParentChainChanged({
-    required includeAcceptedTransactionIds,
+  notifyVirtualSelectedParentChainChanged({
+    required bool includeAcceptedTransactionIds,
   }) {
     final message = KaspadRequest(
       notifyVirtualChainChangedRequest: NotifyVirtualChainChangedRequestMessage(

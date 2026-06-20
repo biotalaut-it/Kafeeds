@@ -31,7 +31,7 @@ sealed class KaspaUri with _$KaspaUri {
     Amount? amount,
     String? label,
     String? message,
-    @Default(const IListConst([])) IList<KaspaUriParam> others,
+    @Default(IListConst([])) IList<KaspaUriParam> others,
   }) = _KaspaUri;
 
   static KaspaUri parse(

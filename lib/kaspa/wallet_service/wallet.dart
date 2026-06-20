@@ -83,7 +83,7 @@ class HdWalletViewECDSA extends HdWalletView {
 }
 
 class HdWalletViewSchnorr extends HdWalletViewECDSA {
-  HdWalletViewSchnorr(String hdPublicKey) : super(hdPublicKey);
+  HdWalletViewSchnorr(super.hdPublicKey);
 
   @override
   Uint8List derivePublicKey({
@@ -160,7 +160,7 @@ class HdWalletEcdsa extends HdWallet {
 }
 
 class HdWalletSchnorr extends HdWalletEcdsa {
-  HdWalletSchnorr(Uint8List seed) : super(seed);
+  HdWalletSchnorr(super.seed);
 
   @override
   HdWalletType get type => HdWalletType.schnorr;

@@ -61,7 +61,7 @@ class AppRouter {
     return Navigator.of(context).push(route);
   }
 
-  void pop<T>(BuildContext context, {T? withResult = null}) {
+  void pop<T>(BuildContext context, {T? withResult}) {
     Navigator.of(context).pop(withResult);
   }
 

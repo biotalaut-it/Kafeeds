@@ -7,6 +7,7 @@ import 'package:validators/validators.dart';
 import '../../app_icons.dart';
 import '../../app_providers.dart';
 import '../../app_router.dart';
+import '../../kaspa/grpc/rpc.pb.dart';
 import '../../kaspa/kaspa.dart';
 import '../../l10n/l10n.dart';
 import '../../util/random_util.dart';
@@ -105,7 +106,7 @@ class NodeAddSheet extends HookConsumerWidget {
       try {
         final port = int.tryParse(url.split(':').last) ?? kMainnetRpcPort;
         bool isSecure;
-        var nodeInfo;
+        GetInfoResponseMessage nodeInfo;
         String networkName;
         try {
           // Try secure connection first
@@ -127,7 +128,7 @@ class NodeAddSheet extends HookConsumerWidget {
         String suffix;
         final parts = networkName.split('-');
         if (parts.length > 1) {
-          network = KaspaNetwork.tryParse(parts[1]) ?? networkForPort(port);
+          network = .tryParse(parts[1]) ?? networkForPort(port);
           suffix = parts.length == 3 ? parts[2] : '';
         } else {
           network = networkForPort(port);

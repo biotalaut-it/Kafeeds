@@ -38,7 +38,7 @@ class SettingsSheet extends ConsumerStatefulWidget {
   const SettingsSheet({super.key});
 
   @override
-  _SettingsSheetState createState() => _SettingsSheetState();
+  ConsumerState<SettingsSheet> createState() => _SettingsSheetState();
 }
 
 class _SettingsSheetState extends ConsumerState<SettingsSheet>

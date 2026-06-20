@@ -51,19 +51,23 @@ class Bip39PassphraseSheet extends HookConsumerWidget {
     }
 
     useEffect(() {
-      final listener = () {
-        enterHint.value =
-            enterFocusNode.hasFocus ? '' : l10n.bip39PassphraseEnter;
-      };
+      void listener() {
+        enterHint.value = enterFocusNode.hasFocus
+            ? ''
+            : l10n.bip39PassphraseEnter;
+      }
+
       enterFocusNode.addListener(listener);
       return () => enterFocusNode.removeListener(listener);
     }, [enterFocusNode]);
 
     useEffect(() {
-      final listener = () {
-        confirmHint.value =
-            confirmFocusNode.hasFocus ? '' : l10n.bip39PassphraseConfirm;
-      };
+      void listener() {
+        confirmHint.value = confirmFocusNode.hasFocus
+            ? ''
+            : l10n.bip39PassphraseConfirm;
+      }
+
       confirmFocusNode.addListener(listener);
       return () => confirmFocusNode.removeListener(listener);
     }, [confirmFocusNode]);

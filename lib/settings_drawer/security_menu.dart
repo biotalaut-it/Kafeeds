@@ -28,7 +28,7 @@ class SecurityMenu extends ConsumerStatefulWidget {
   });
 
   @override
-  _SecurityMenuState createState() => _SecurityMenuState();
+  ConsumerState<SecurityMenu> createState() => _SecurityMenuState();
 }
 
 class _SecurityMenuState extends ConsumerState<SecurityMenu> {

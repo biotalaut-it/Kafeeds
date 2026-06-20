@@ -44,13 +44,13 @@ enum SigHashType {
   sigHashAll,
   sigHashNone,
   sigHashSingle,
-  SigHashAnyOneCanPay;
+  sigHashAnyOneCanPay;
 
   int get raw => switch (this) {
     .sigHashAll => kSigHashAll,
     .sigHashNone => kSigHashNone,
     .sigHashSingle => kSigHashSingle,
-    .SigHashAnyOneCanPay => kSigHashAnyOneCanPay,
+    .sigHashAnyOneCanPay => kSigHashAnyOneCanPay,
   };
 }
 

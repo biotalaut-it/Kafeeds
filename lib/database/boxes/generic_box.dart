@@ -19,7 +19,7 @@ T _convert<T>(dynamic value, {TypeFactory<T>? typeFactory}) {
   if (typeFactory == null) {
     throw Exception('Missing type factory for $T');
   }
-  if (!(value is Map)) {
+  if (value is! Map) {
     throw Exception('Value is not a Map');
   }
   return typeFactory(value.cast<String, dynamic>());

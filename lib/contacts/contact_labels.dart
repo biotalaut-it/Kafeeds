@@ -9,7 +9,7 @@ const kCommunityMarketingFundAddress =
 const kKaspiumTeamAddress =
     'kaspa:qp0qnczz5jc8vpujuyqrjw5eey73paqfgxks7505pqdz9eqwmwftxg44gu00z';
 
-const kDonationAddresses = const [
+const kDonationAddresses = [
   Contact(
     name: 'Kaspa Dev Fund',
     address: kKaspaDevFundAddress,

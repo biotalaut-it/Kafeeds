@@ -67,7 +67,8 @@ class AppTextField extends ConsumerWidget {
   final bool autofocus;
   final bool enableInteractiveSelection;
 
-  AppTextField({
+  const AppTextField({
+    super.key,
     this.focusNode,
     this.controller,
     this.cursorColor,
@@ -119,78 +120,78 @@ class AppTextField extends ConsumerWidget {
         color: theme.backgroundDarkest,
         borderRadius: .circular(25),
       ),
-      child: overrideTextFieldWidget == null
-          ? Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                TextField(
-                  enableInteractiveSelection: enableInteractiveSelection,
-                  textAlign: textAlign,
-                  keyboardAppearance: keyboardAppearance,
-                  autocorrect: autocorrect,
-                  maxLines: maxLines,
-                  focusNode: focusNode,
-                  controller: controller,
-                  cursorColor: cursorColor ?? theme.primary,
-                  inputFormatters: inputFormatters,
-                  textInputAction: textInputAction,
-                  textCapitalization:
-                      textCapitalization ?? TextCapitalization.none,
-                  keyboardType: keyboardType,
-                  obscureText: obscureText,
-                  autofocus: autofocus,
-                  onSubmitted: onSubmitted != null
-                      ? onSubmitted
-                      : (text) {
-                          if (textInputAction == TextInputAction.done) {
-                            FocusScope.of(context).unfocus();
-                          }
-                        },
-                  onChanged: onChanged,
-                  style: style,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: hintText,
-                    hintStyle: styles.textStyleAppTextFieldHint,
-                    prefixIcon: prefixButton == null
-                        ? const SizedBox()
-                        : const SizedBox(width: 48),
-                    suffixIcon: suffixButton == null
-                        ? const SizedBox()
-                        : const SizedBox(width: 48),
-                  ),
+      child:
+          overrideTextFieldWidget ??
+          Stack(
+            alignment: .center,
+            children: [
+              TextField(
+                enableInteractiveSelection: enableInteractiveSelection,
+                textAlign: textAlign,
+                keyboardAppearance: keyboardAppearance,
+                autocorrect: autocorrect,
+                maxLines: maxLines,
+                focusNode: focusNode,
+                controller: controller,
+                cursorColor: cursorColor ?? theme.primary,
+                inputFormatters: inputFormatters,
+                textInputAction: textInputAction,
+                textCapitalization: textCapitalization ?? .none,
+                keyboardType: keyboardType,
+                obscureText: obscureText,
+                autofocus: autofocus,
+                onSubmitted:
+                    onSubmitted ??
+                    (_) {
+                      if (textInputAction == .done) {
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                onChanged: onChanged,
+                style: style,
+                decoration: InputDecoration(
+                  border: .none,
+                  hintText: hintText,
+                  hintStyle: styles.textStyleAppTextFieldHint,
+                  prefixIcon: prefixButton == null
+                      ? const SizedBox()
+                      : const SizedBox(width: 48),
+                  suffixIcon: suffixButton == null
+                      ? const SizedBox()
+                      : const SizedBox(width: 48),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    fadePrefixOnCondition != null && prefixButton != null
-                        ? AnimatedCrossFade(
-                            duration: Duration(
-                              milliseconds: buttonFadeDurationMs,
-                            ),
-                            firstChild: prefixButton!,
-                            secondChild: const SizedBox(width: 48),
-                            crossFadeState: prefixShowFirstCondition!
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                          )
-                        : prefixButton ?? const SizedBox(),
-                    fadeSuffixOnCondition != null && suffixButton != null
-                        ? AnimatedCrossFade(
-                            duration:
-                                Duration(milliseconds: buttonFadeDurationMs),
-                            firstChild: suffixButton!,
-                            secondChild: const SizedBox(width: 48),
-                            crossFadeState: suffixShowFirstCondition!
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                          )
-                        : suffixButton ?? const SizedBox()
-                  ],
-                ),
-              ],
-            )
-          : overrideTextFieldWidget,
+              ),
+              Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  fadePrefixOnCondition != null && prefixButton != null
+                      ? AnimatedCrossFade(
+                          duration: Duration(
+                            milliseconds: buttonFadeDurationMs,
+                          ),
+                          firstChild: prefixButton!,
+                          secondChild: const SizedBox(width: 48),
+                          crossFadeState: prefixShowFirstCondition!
+                              ? .showFirst
+                              : .showSecond,
+                        )
+                      : prefixButton ?? const SizedBox(),
+                  fadeSuffixOnCondition != null && suffixButton != null
+                      ? AnimatedCrossFade(
+                          duration: Duration(
+                            milliseconds: buttonFadeDurationMs,
+                          ),
+                          firstChild: suffixButton!,
+                          secondChild: const SizedBox(width: 48),
+                          crossFadeState: suffixShowFirstCondition!
+                              ? .showFirst
+                              : .showSecond,
+                        )
+                      : suffixButton ?? const SizedBox(),
+                ],
+              ),
+            ],
+          ),
     );
   }
 }

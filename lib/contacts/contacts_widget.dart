@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../app_icons.dart';
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
-import '../util/contacts.dart' as contactsHelper;
+import '../util/contacts.dart' as contacts_helper;
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/buttons/text_outline_button.dart';
@@ -31,10 +31,10 @@ class ContactsWidget extends ConsumerWidget {
     final l10n = l10nOf(context);
 
     Future<void> importContacts() =>
-        contactsHelper.importContacts(ref, context);
+        contacts_helper.importContacts(ref, context);
 
     Future<void> exportContacts() =>
-        contactsHelper.exportContacts(ref, context);
+        contacts_helper.exportContacts(ref, context);
 
     void addContact() {
       Sheets.showAppHeightNineSheet(

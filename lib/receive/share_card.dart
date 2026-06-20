@@ -12,7 +12,7 @@ class AppShareCard extends StatefulWidget {
   const AppShareCard({super.key, this.globalKey});
 
   @override
-  _AppShareCardState createState() => _AppShareCardState();
+  State<AppShareCard> createState() => _AppShareCardState();
 }
 
 class _AppShareCardState extends State<AppShareCard> {

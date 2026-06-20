@@ -36,7 +36,7 @@ didUpdate
   @override
   void didDisposeProvider(
     ProviderBase provider,
-    ProviderContainer containers,
+    ProviderContainer container,
   ) {
     print('''
 didDispose

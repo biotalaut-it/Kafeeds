@@ -1653,7 +1653,7 @@ as String,
 /// @nodoc
 mixin _$WalletInfo {
 
- String get settingsKey; String get name; WalletKind get kind; String get wid;@deprecated BoxInfoByNetwork? get boxInfo; String get mainnetPublicKey;// HDPublic key base58 encoded
+ String get settingsKey; String get name; WalletKind get kind; String get wid;@Deprecated('Use boxInfoRepository instead') BoxInfoByNetwork? get boxInfo; String get mainnetPublicKey;// HDPublic key base58 encoded
  bool get usesBip39Passphrase;
 /// Create a copy of WalletInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -1687,7 +1687,7 @@ abstract mixin class $WalletInfoCopyWith<$Res>  {
   factory $WalletInfoCopyWith(WalletInfo value, $Res Function(WalletInfo) _then) = _$WalletInfoCopyWithImpl;
 @useResult
 $Res call({
- String name, WalletKind kind, String wid,@deprecated BoxInfoByNetwork? boxInfo, String mainnetPublicKey, bool usesBip39Passphrase
+ String name, WalletKind kind, String wid,@Deprecated('Use boxInfoRepository instead') BoxInfoByNetwork? boxInfo, String mainnetPublicKey, bool usesBip39Passphrase
 });
 
 
@@ -1815,7 +1815,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  WalletKind kind,  String wid, @deprecated  BoxInfoByNetwork? boxInfo,  String mainnetPublicKey,  bool usesBip39Passphrase)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  WalletKind kind,  String wid, @Deprecated('Use boxInfoRepository instead')  BoxInfoByNetwork? boxInfo,  String mainnetPublicKey,  bool usesBip39Passphrase)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WalletInfo() when $default != null:
 return $default(_that.name,_that.kind,_that.wid,_that.boxInfo,_that.mainnetPublicKey,_that.usesBip39Passphrase);case _:
@@ -1836,7 +1836,7 @@ return $default(_that.name,_that.kind,_that.wid,_that.boxInfo,_that.mainnetPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  WalletKind kind,  String wid, @deprecated  BoxInfoByNetwork? boxInfo,  String mainnetPublicKey,  bool usesBip39Passphrase)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  WalletKind kind,  String wid, @Deprecated('Use boxInfoRepository instead')  BoxInfoByNetwork? boxInfo,  String mainnetPublicKey,  bool usesBip39Passphrase)  $default,) {final _that = this;
 switch (_that) {
 case _WalletInfo():
 return $default(_that.name,_that.kind,_that.wid,_that.boxInfo,_that.mainnetPublicKey,_that.usesBip39Passphrase);}
@@ -1853,7 +1853,7 @@ return $default(_that.name,_that.kind,_that.wid,_that.boxInfo,_that.mainnetPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  WalletKind kind,  String wid, @deprecated  BoxInfoByNetwork? boxInfo,  String mainnetPublicKey,  bool usesBip39Passphrase)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  WalletKind kind,  String wid, @Deprecated('Use boxInfoRepository instead')  BoxInfoByNetwork? boxInfo,  String mainnetPublicKey,  bool usesBip39Passphrase)?  $default,) {final _that = this;
 switch (_that) {
 case _WalletInfo() when $default != null:
 return $default(_that.name,_that.kind,_that.wid,_that.boxInfo,_that.mainnetPublicKey,_that.usesBip39Passphrase);case _:
@@ -1868,13 +1868,13 @@ return $default(_that.name,_that.kind,_that.wid,_that.boxInfo,_that.mainnetPubli
 @JsonSerializable()
 
 class _WalletInfo extends WalletInfo {
-   _WalletInfo({required this.name, this.kind = const WalletKind.localHdSchnorr(), required this.wid, @deprecated this.boxInfo, required this.mainnetPublicKey, this.usesBip39Passphrase = false}): super._();
+   _WalletInfo({required this.name, this.kind = const WalletKind.localHdSchnorr(), required this.wid, @Deprecated('Use boxInfoRepository instead') this.boxInfo, required this.mainnetPublicKey, this.usesBip39Passphrase = false}): super._();
   factory _WalletInfo.fromJson(Map<String, dynamic> json) => _$WalletInfoFromJson(json);
 
 @override final  String name;
 @override@JsonKey() final  WalletKind kind;
 @override final  String wid;
-@override@deprecated final  BoxInfoByNetwork? boxInfo;
+@override@Deprecated('Use boxInfoRepository instead') final  BoxInfoByNetwork? boxInfo;
 @override final  String mainnetPublicKey;
 // HDPublic key base58 encoded
 @override@JsonKey() final  bool usesBip39Passphrase;
@@ -1912,7 +1912,7 @@ abstract mixin class _$WalletInfoCopyWith<$Res> implements $WalletInfoCopyWith<$
   factory _$WalletInfoCopyWith(_WalletInfo value, $Res Function(_WalletInfo) _then) = __$WalletInfoCopyWithImpl;
 @override @useResult
 $Res call({
- String name, WalletKind kind, String wid,@deprecated BoxInfoByNetwork? boxInfo, String mainnetPublicKey, bool usesBip39Passphrase
+ String name, WalletKind kind, String wid,@Deprecated('Use boxInfoRepository instead') BoxInfoByNetwork? boxInfo, String mainnetPublicKey, bool usesBip39Passphrase
 });
 
 

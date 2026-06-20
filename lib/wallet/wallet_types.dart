@@ -108,7 +108,7 @@ sealed class WalletInfo with _$WalletInfo {
     required String name,
     @Default(WalletKind.localHdSchnorr()) WalletKind kind,
     required String wid,
-    @deprecated BoxInfoByNetwork? boxInfo,
+    @Deprecated('Use boxInfoRepository instead') BoxInfoByNetwork? boxInfo,
     required String mainnetPublicKey, // HDPublic key base58 encoded
     @Default(false) bool usesBip39Passphrase,
   }) = _WalletInfo;
@@ -138,8 +138,8 @@ sealed class WalletInfo with _$WalletInfo {
   String getShortName() {
     List<String> splitName = name.split(' ');
     if (splitName.length > 1 &&
-        splitName[0].length >= 1 &&
-        splitName[1].length >= 1) {
+        splitName[0].isNotEmpty &&
+        splitName[1].isNotEmpty) {
       String firstChar = splitName[0].substring(0, 1);
       String secondPart = splitName[1].substring(0, 1);
       if ((int.tryParse(splitName[1]) ?? 0) >= 10) {

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
@@ -48,7 +50,7 @@ class SendSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  _SendSheetState createState() => _SendSheetState();
+  ConsumerState<SendSheet> createState() => _SendSheetState();
 }
 
 class _SendSheetState extends ConsumerState<SendSheet> {
@@ -774,10 +776,10 @@ class _SendSheetState extends ConsumerState<SendSheet> {
         prefixButton: TextFieldButton(
           icon: AppIcons.at,
           onPressed: () {
-            if (_contactButtonVisible && _contacts.length == 0) {
+            if (_contactButtonVisible && _contacts.isEmpty) {
               // Show menu
               FocusScope.of(context).requestFocus(_addressFocusNode);
-              if (_addressController.text.length == 0) {
+              if (_addressController.text.isEmpty) {
                 _addressController.text = "@";
                 _addressController.selection = TextSelection.fromPosition(
                     TextPosition(offset: _addressController.text.length));
@@ -790,7 +792,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
         ),
         fadePrefixOnCondition: true,
         prefixShowFirstCondition:
-            _contactButtonVisible && _contacts.length == 0,
+            _contactButtonVisible && _contacts.isEmpty,
         suffixButton: TextFieldButton(
           icon: AppIcons.paste,
           onPressed: () {
@@ -849,7 +851,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                 ? styles.textStyleAddressText90
                 : styles.textStyleAddressPrimary,
         onChanged: (text) {
-          if (text.length > 0) {
+          if (text.isNotEmpty) {
             setState(() {
               _contactButtonVisible = false;
             });
@@ -996,7 +998,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
             fadeSuffixOnCondition: true,
             suffixShowFirstCondition: _notePasteButtonVisible,
             onChanged: (text) {
-              if (text.length > 0) {
+              if (text.isNotEmpty) {
                 setState(() {
                   _noteQrButtonVisible = false;
                   _notePasteButtonVisible = false;

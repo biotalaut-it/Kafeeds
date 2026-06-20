@@ -26,7 +26,7 @@ sealed class WalletAddress with _$WalletAddress {
     @Default(true) bool used,
   }) = _WalletAddress;
 
-  static keyForAddressAtIndex(int index, {required AddressType type}) =>
+  static String keyForAddressAtIndex(int index, {required AddressType type}) =>
       '$type#$index';
 
   String get encoded => address.encoded;
@@ -38,8 +38,8 @@ sealed class WalletAddress with _$WalletAddress {
   String getShortName() {
     List<String> splitName = name.split(' ');
     if (splitName.length > 1 &&
-        splitName[0].length >= 1 &&
-        splitName[1].length >= 1) {
+        splitName[0].isNotEmpty &&
+        splitName[1].isNotEmpty) {
       String firstChar = splitName[0].substring(0, 1);
       String secondPart = splitName[1].substring(0, 1);
       if ((int.tryParse(splitName[1]) ?? 0) >= 10) {

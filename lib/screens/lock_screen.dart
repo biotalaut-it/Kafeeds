@@ -22,7 +22,7 @@ class LockScreen extends ConsumerStatefulWidget {
   const LockScreen({super.key, this.autoTransition = true});
 
   @override
-  _LockScreenState createState() => _LockScreenState();
+  ConsumerState<LockScreen> createState() => _LockScreenState();
 }
 
 class _LockScreenState extends ConsumerState<LockScreen> {

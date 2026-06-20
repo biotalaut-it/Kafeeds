@@ -24,7 +24,7 @@ class ContactAddSheet extends ConsumerStatefulWidget {
   const ContactAddSheet({super.key, this.address});
 
   @override
-  _ContactAddSheetState createState() => _ContactAddSheetState();
+  ConsumerState<ContactAddSheet> createState() => _ContactAddSheetState();
 }
 
 class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
@@ -302,7 +302,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
         });
       } else {
         _addressFocusNode.unfocus();
-        bool addressExists = await ref
+        bool addressExists = ref
             .read(contactsProvider)
             .contactExistsWithAddress(_addressController.text);
         if (addressExists) {
@@ -320,7 +320,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
         _nameValidationText = l10n.contactNameMissing;
       });
     } else {
-      bool nameExists = await ref
+      bool nameExists = ref
           .read(contactsProvider)
           .contactExistsWithName(_nameController.text);
       if (nameExists) {

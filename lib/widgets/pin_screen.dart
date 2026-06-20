@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -30,6 +32,7 @@ class PinScreen extends ConsumerStatefulWidget {
 
   const PinScreen(
     this.type, {
+    super.key,
     this.description = '',
     this.expectedPin = '',
     this.pinScreenBackgroundColor,
@@ -37,7 +40,7 @@ class PinScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  _PinScreenState createState() => _PinScreenState();
+  ConsumerState<PinScreen> createState() => _PinScreenState();
 }
 
 class _PinScreenState extends ConsumerState<PinScreen>

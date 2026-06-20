@@ -15,13 +15,13 @@ class QrScannerWidget extends ConsumerStatefulWidget {
   const QrScannerWidget({super.key});
 
   @override
-  _QrScannerWidgetState createState() => _QrScannerWidgetState();
+  ConsumerState<QrScannerWidget> createState() => _QrScannerWidgetState();
 }
 
 class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
-  QRViewController? controller;
+  QRViewController? _controller;
   bool _shouldScan = true;
   bool _flashOn = false;
   bool _flashToggled = false;
@@ -32,9 +32,9 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
     super.reassemble();
 
     if (kPlatformIsAndroid) {
-      controller?.pauseCamera();
+      _controller?.pauseCamera();
     } else if (kPlatformIsIOS) {
-      controller?.resumeCamera();
+      _controller?.resumeCamera();
     }
   }
 
@@ -84,8 +84,8 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
       if (_flashToggled) return;
       var flashState = _flashOn;
       try {
-        controller?.toggleFlash();
-        flashState = await controller?.getFlashStatus() ?? false;
+        _controller?.toggleFlash();
+        flashState = await _controller?.getFlashStatus() ?? false;
       } catch (e) {
         flashState = false;
       }
@@ -180,12 +180,12 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
     }
   }
 
-  void _onQRViewCreated(QRViewController _controller) async {
-    controller = _controller;
+  void _onQRViewCreated(QRViewController controller) async {
+    _controller = controller;
     if (kPlatformIsAndroid) {
-      await _controller.resumeCamera();
+      await controller.resumeCamera();
     }
-    _controller.scannedDataStream.listen((event) {
+    controller.scannedDataStream.listen((event) {
       if (result == null && _shouldScan) {
         result = event;
         if (!mounted) return;

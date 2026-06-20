@@ -22,8 +22,8 @@ class PlainSeedDisplay extends HookConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final _obscuredSeed = useState('•' * seed.length);
-    final _seedObscured = useState(true);
+    final obscuredSeed = useState('•' * seed.length);
+    final seedObscured = useState(true);
 
     return Column(children: [
       // The paragraph
@@ -41,7 +41,7 @@ class PlainSeedDisplay extends HookConsumerWidget {
         behavior: .opaque,
         onTap: () {
           if (obscureSeed) {
-            _seedObscured.value = !_seedObscured.value;
+            seedObscured.value = !seedObscured.value;
           }
         },
         child: Column(children: [
@@ -53,8 +53,8 @@ class PlainSeedDisplay extends HookConsumerWidget {
               borderRadius: .circular(25),
             ),
             child: SeedThreeLineText(
-              seed: obscureSeed && _seedObscured.value
-                  ? _obscuredSeed.value
+              seed: obscureSeed && seedObscured.value
+                  ? obscuredSeed.value
                   : seed,
               textStyle: styles.textStyleSeed,
             ),
@@ -64,7 +64,7 @@ class PlainSeedDisplay extends HookConsumerWidget {
             Container(
               margin: .only(top: 8),
               child: Text(
-                _seedObscured.value ? l10n.tapToReveal : l10n.tapToHide,
+                seedObscured.value ? l10n.tapToReveal : l10n.tapToHide,
                 style: styles.textStyleParagraphThinPrimary,
               ),
             )

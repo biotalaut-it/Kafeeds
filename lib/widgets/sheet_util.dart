@@ -117,12 +117,12 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
     this.barrierLabel,
     this.color,
     required this.radius,
-    RouteSettings? settings,
+    super.settings,
     this.barrier,
     this.animationDurationMs,
     this.closeOnTap = false,
     this.onDisposed,
-  }) : super(settings: settings);
+  });
 
   final WidgetBuilder? builder;
   final double radius;
@@ -230,24 +230,29 @@ class _AppHeightEightSheetLayout extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    if (constraints.maxHeight < 667)
+    if (constraints.maxHeight < 667) {
       return BoxConstraints(
-          minWidth: constraints.maxWidth,
-          maxWidth: constraints.maxWidth,
-          minHeight: 0.0,
-          maxHeight: constraints.maxHeight * 0.9);
-    if (constraints.maxHeight / constraints.maxWidth > 2.1)
+        minWidth: constraints.maxWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: 0.0,
+        maxHeight: constraints.maxHeight * 0.9,
+      );
+    }
+    if (constraints.maxHeight / constraints.maxWidth > 2.1) {
       return BoxConstraints(
-          minWidth: constraints.maxWidth,
-          maxWidth: constraints.maxWidth,
-          minHeight: 0.0,
-          maxHeight: constraints.maxHeight * 0.7);
-    else
+        minWidth: constraints.maxWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: 0.0,
+        maxHeight: constraints.maxHeight * 0.7,
+      );
+    } else {
       return BoxConstraints(
-          minWidth: constraints.maxWidth,
-          maxWidth: constraints.maxWidth,
-          minHeight: 0.0,
-          maxHeight: constraints.maxHeight * 0.8);
+        minWidth: constraints.maxWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: 0.0,
+        maxHeight: constraints.maxHeight * 0.8,
+      );
+    }
   }
 
   @override
@@ -267,10 +272,10 @@ class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
     this.barrierLabel,
     this.color,
     this.radius,
-    RouteSettings? settings,
+    super.settings,
     this.barrier,
     this.animationDurationMs,
-  }) : super(settings: settings);
+  });
 
   final WidgetBuilder? builder;
   final double? radius;

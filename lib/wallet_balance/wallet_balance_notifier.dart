@@ -14,10 +14,10 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
   BigInt _totalBalance = .zero;
 
   WalletBalanceNotifier({
-    required TypedBox<AddressBalance> balanceBox,
+    required this._balanceBox,
     required this.addressAware,
     required this.client,
-  }) : _balanceBox = balanceBox {
+  }) {
     final balances = _balanceBox.getAll();
     for (final balance in balances.values) {
       if (!addressAware.containsAddress(balance.address)) {
@@ -30,9 +30,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
 
   IMap<String, BigInt>? _cachedBalances;
   IMap<String, BigInt> get balances {
-    if (_cachedBalances == null) {
-      _cachedBalances = _balances.toIMap();
-    }
+    _cachedBalances ??= _balances.toIMap();
     return _cachedBalances!;
   }
 

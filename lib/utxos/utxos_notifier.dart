@@ -23,29 +23,29 @@ class UtxosNotifier extends SafeChangeNotifier {
 
   List<Utxo>? _utxoList;
   List<Utxo> get utxoList {
-    if (_utxoList == null) {
-      _utxoList = ListSet.of(
-        _utxosByAddress.values.flattened,
-        sort: true,
-        compare: (a, b) =>
-            b.utxoEntry.blockDaaScore.compareTo(a.utxoEntry.blockDaaScore),
-      );
-    }
+    _utxoList ??= ListSet.of(
+      _utxosByAddress.values.flattened,
+      sort: true,
+      compare: (a, b) =>
+          b.utxoEntry.blockDaaScore.compareTo(a.utxoEntry.blockDaaScore),
+    );
     return _utxoList!;
   }
 
   UtxosNotifier({
-    required TypedBox<Utxo> utxoBox,
+    required this._utxoBox,
     required this.client,
     required this.log,
-  }) : _utxoBox = utxoBox {
+  }) {
     final utxos = _utxoBox.getAll().values;
     for (final utxo in utxos) {
       final set = _utxosByAddress.putIfAbsent(utxo.address, () => <Utxo>{});
       set.add(utxo);
       _balancesByAddress.update(
-          utxo.address, (value) => value + utxo.utxoEntry.amount,
-          ifAbsent: () => utxo.utxoEntry.amount);
+        utxo.address,
+        (value) => value + utxo.utxoEntry.amount,
+        ifAbsent: () => utxo.utxoEntry.amount,
+      );
     }
     _utxoIds.addAll(utxos.map(_utxoKey));
     _utxoList = null;
