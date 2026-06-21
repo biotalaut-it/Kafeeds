@@ -8,8 +8,6 @@ import '../app_router.dart';
 import '../database/database.dart';
 import '../intro/intro_providers.dart';
 import '../l10n/l10n.dart';
-import '../settings/wallet_settings.dart';
-import '../util/lock_settings.dart';
 import '../util/ui_util.dart';
 import '../widgets/notice_dialog.dart';
 
@@ -65,42 +63,25 @@ class SplashScreen extends HookConsumerWidget {
         return;
       }
 
-      final walletAuthNotifier = ref.read(walletAuthNotifierProvider);
-      if (walletAuthNotifier == null) {
+      final authNotifier = ref.read(walletAuthNotifierProvider);
+      if (authNotifier == null) {
         final l10n = l10nOf(context);
         UIUtil.showSnackbar(l10n.somethingWentWrong);
         appRouter.startIntro(context);
         return;
       }
 
-      await walletAuthNotifier.checkEncryptedState();
+      await authNotifier.syncState();
+      if (!context.mounted) return;
 
-      if (walletAuthNotifier.walletIsLocked) {
-        final vault = ref.read(vaultProvider);
-        final lockSettings = LockSettings(vault);
-        final authOnLaunch = await lockSettings.getLock();
-
-        if (!context.mounted) return;
-
-        final walletSettings = ref.read(walletSettingsProvider);
-        final requirePassword = switch (walletSettings.requestPassword) {
-          RequestPassword.atLaunch => walletAuthNotifier.walletIsEncrypted,
-          RequestPassword.whenLocked =>
-            walletAuthNotifier.walletIsEncrypted && authOnLaunch,
-          RequestPassword.whenSigning => false,
-        };
-
-        if (requirePassword) {
+      if (authNotifier.walletIsLocked) {
+        if (authNotifier.needsLegacyPasswordAuth) {
           appRouter.requirePassword(context);
           return;
         }
 
-        if (authOnLaunch) {
-          appRouter.requireUnlock(context);
-          return;
-        } else {
-          await walletAuthNotifier.unlock();
-        }
+        appRouter.requireUnlock(context);
+        return;
       }
       // open database boxes for selected wallet
       final walletRepository = ref.read(walletRepositoryProvider);

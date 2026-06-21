@@ -11,6 +11,8 @@ class Vault {
 
   const Vault();
 
+  Future<bool> contains(String key) => _secureStorage.containsKey(key: key);
+
   Future<void> set(String key, String? value) {
     return _secureStorage.write(key: key, value: value);
   }

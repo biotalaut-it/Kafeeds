@@ -4,15 +4,21 @@ import '../util/vault.dart';
 
 const _kMnemonicKey = 'kaspium_mnemonic_key';
 const _kSeedKey = 'kaspium_seed_key';
+const _kEncryptedKey = 'kaspium_encrypted_key';
+
+const _true = 'true';
+const _false = 'false';
 
 class WalletVault {
   final Vault vault;
   final String _mnemonicKey;
   final String _seedKey;
+  final String _isEncryptedKey;
 
   const WalletVault(String wid, this.vault)
-      : _mnemonicKey = '$_kMnemonicKey#$wid',
-        _seedKey = '$_kSeedKey#$wid';
+    : _mnemonicKey = '$_kMnemonicKey#$wid',
+      _seedKey = '$_kSeedKey#$wid',
+      _isEncryptedKey = '$_kEncryptedKey#$wid';
 
   Future<String> getMnemonic({String? password}) async {
     final mnemonic = await vault.get(_mnemonicKey);
@@ -41,10 +47,14 @@ class WalletVault {
     }
 
     if (!EncryptionUtil.isEncryptedHex(seed)) {
+      if (password != null) {
+        await vault.set(_isEncryptedKey, _false);
+      }
       return seed;
     }
 
     if (password == null) {
+      await vault.set(_isEncryptedKey, _true);
       throw Exception('Seed is password protected');
     }
 
@@ -56,18 +66,23 @@ class WalletVault {
     return decrypted;
   }
 
-  Future<bool> hasMnemonic() async {
-    final mnemonic = await vault.get(_mnemonicKey);
-    return mnemonic != null;
-  }
+  Future<bool> hasMnemonic() => vault.contains(_mnemonicKey);
 
   Future<bool> seedIsEncrypted() async {
+    final encrypted = await vault.get(_isEncryptedKey);
+    if (encrypted != null) {
+      return encrypted == _true;
+    }
+
     final seed = await vault.get(_seedKey);
     if (seed == null) {
       return false;
     }
 
-    return EncryptionUtil.isEncryptedHex(seed);
+    final isEncrypted = EncryptionUtil.isEncryptedHex(seed);
+    vault.set(_isEncryptedKey, isEncrypted ? _true : _false);
+
+    return isEncrypted;
   }
 
   Future<void> setSeed(
@@ -81,13 +96,16 @@ class WalletVault {
       // encrypt seed with password for vault
       seed = EncryptionUtil.encryptHex(seed, password);
     }
+
     await vault.set(_seedKey, seed);
     await vault.set(_mnemonicKey, mnemonic);
+    await vault.set(_isEncryptedKey, password != null ? _true : _false);
   }
 
   Future<void> delete() async {
     await vault.delete(_mnemonicKey);
     await vault.delete(_seedKey);
+    await vault.delete(_isEncryptedKey);
   }
 
   Future<String> getSessionKey() => vault.getSessionKey();

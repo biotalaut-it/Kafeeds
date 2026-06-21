@@ -11,7 +11,6 @@ import '../l10n/l10n.dart';
 import '../main_card/main_card.dart';
 import '../settings/wallet_settings.dart';
 import '../settings_drawer/settings_drawer.dart';
-import '../util/lock_settings.dart';
 import '../util/routes.dart';
 import '../util/ui_util.dart';
 import '../wallet_home/wallet_home.dart';
@@ -56,19 +55,10 @@ class HomeScreen extends HookConsumerWidget {
     Future<void> checkAutoLock() async {
       // whether we should avoid locking the app
       final lockDisabled = ref.read(lockDisabledProvider);
-      final isLocked = ref.read(walletAuthProvider).isLocked;
-      if (lockDisabled || isLocked) {
-        return;
-      }
+      if (lockDisabled) return;
 
-      final vault = ref.read(vaultProvider);
-      final lockSettings = LockSettings(vault);
-      final shouldAutoLock = await lockSettings.getAutoLock();
-
-      if (shouldAutoLock) {
-        final notifier = ref.read(walletAuthProvider.notifier);
-        notifier.lock();
-      }
+      final notifier = ref.read(walletAuthProvider.notifier);
+      notifier.autoLock();
     }
 
     Future<void> saveChainState() async {

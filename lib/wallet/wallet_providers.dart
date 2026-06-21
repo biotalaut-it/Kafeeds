@@ -5,15 +5,6 @@ import '../settings/settings_providers.dart';
 import 'box_info_repository.dart';
 import 'wallet_bundle_notifier.dart';
 import 'wallet_repository.dart';
-import 'wallet_types.dart';
-import 'wallet_vault.dart';
-
-final walletVaultProvider =
-    Provider.autoDispose.family<WalletVault, String>((ref, wid) {
-  final vault = ref.watch(vaultProvider);
-  final walletVault = WalletVault(wid, vault);
-  return walletVault;
-});
 
 final boxInfoRepositoryProvider = Provider((ref) {
   final settings = ref.watch(settingsRepositoryProvider);
@@ -33,8 +24,7 @@ final walletRepositoryProvider = Provider((ref) {
   return repository;
 });
 
-final walletBundleProvider =
-    StateNotifierProvider<WalletBundleNotifier, WalletBundle>((ref) {
+final walletBundleProvider = StateNotifierProvider((ref) {
   final repository = ref.watch(walletRepositoryProvider);
 
   final notifier = WalletBundleNotifier(repository);

@@ -81,7 +81,7 @@ class AuthUtil {
     return auth == true;
   }
 
-  Future<bool> authenticateWithPassword(
+  Future<bool> _authenticateWithPassword(
     BuildContext context, {
     required Future<bool> Function(String password) validator,
   }) async {
@@ -99,6 +99,22 @@ class AuthUtil {
     return auth == true;
   }
 
+  Future<bool> authenticateForSecret(
+    BuildContext context,
+    String pinMessage, [
+    String? biometricsMessage,
+  ]) async {
+    final walletAuth = ref.read(walletAuthProvider.notifier);
+    if (walletAuth.needsPasswordAuth) {
+      return _authenticateWithPassword(
+        context,
+        validator: (password) => walletAuth.unlock(password: password),
+      );
+    } else {
+      return authenticate(context, pinMessage, biometricsMessage ?? pinMessage);
+    }
+  }
+
   Future<List<String>?> getMnemonic(BuildContext context) async {
     final l10n = l10nOf(context);
 
@@ -106,7 +122,7 @@ class AuthUtil {
 
     if (walletAuth.walletIsEncrypted) {
       List<String>? mnemonic;
-      await authenticateWithPassword(context, validator: (password) async {
+      await _authenticateWithPassword(context, validator: (password) async {
         try {
           mnemonic = await walletAuth.getMnemonic(password: password);
           return true;

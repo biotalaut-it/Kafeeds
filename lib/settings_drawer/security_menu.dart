@@ -8,7 +8,6 @@ import '../l10n/l10n.dart';
 import '../settings/authentication_method.dart';
 import '../settings/device_unlock_option.dart';
 import '../settings/wallet_settings.dart';
-import '../util/lock_settings.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/drawer_wrapper.dart';
@@ -33,9 +32,7 @@ class SecurityMenu extends ConsumerStatefulWidget {
 
 class _SecurityMenuState extends ConsumerState<SecurityMenu> {
   bool _hasBiometrics = false;
-  AuthenticationMethod _authMethod = AuthenticationMethod(.BIOMETRICS);
-  UnlockSetting _unlockSetting = UnlockSetting(.NO);
-  UnlockSetting _autoLockSetting = UnlockSetting(.NO);
+  var _authMethod = const AuthenticationMethod(.BIOMETRICS);
 
   @override
   void initState() {
@@ -43,30 +40,16 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
 
     // Determine if they have face or fingerprint enrolled, if not hide the setting
     final biometricUtil = ref.read(biometricUtilProvider);
-    final vault = ref.read(vaultProvider);
-    final lockSettings = LockSettings(vault);
     final sharedPrefsUtil = ref.read(sharedPrefsUtilProvider);
     biometricUtil.hasBiometrics().then((hasBiometrics) {
       setState(() => _hasBiometrics = hasBiometrics);
     });
     // Get default auth method setting
     _authMethod = sharedPrefsUtil.getAuthMethod();
-    // Get default unlock settings
-    lockSettings.getLock().then((lock) {
-      setState(
-        () =>
-            _unlockSetting = (lock ? UnlockSetting(.YES) : UnlockSetting(.NO)),
-      );
-    });
-
-    lockSettings.getAutoLock().then((autolock) {
-      setState(
-        () => _autoLockSetting = (autolock
-            ? UnlockSetting(.YES)
-            : UnlockSetting(.NO)),
-      );
-    });
   }
+
+  UnlockSetting _getSetting(bool value) =>
+      value ? const UnlockSetting(.YES) : const UnlockSetting(.NO);
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +59,9 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
 
     final wallet = ref.watch(walletProvider);
     final walletAuth = ref.watch(walletAuthProvider);
+
+    final _unlockSetting = _getSetting(walletAuth.authOnLaunch);
+    final _autoLockSetting = _getSetting(walletAuth.autoLock);
 
     final requestPassword = ref.watch(
       walletSettingsProvider.select((settings) => settings.requestPassword),
@@ -206,65 +192,40 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     final l10n = l10nOf(context);
     final sharedPrefsUtil = ref.read(sharedPrefsUtilProvider);
 
-    switch (await showDialog<AuthMethod>(
-        context: context,
-        barrierColor: theme.barrier,
-        builder: (BuildContext context) {
-          return AppSimpleDialog(
-            title: Text(
-              l10n.authMethod,
-              style: styles.textStyleDialogHeader,
-            ),
-            children: [
-              AppSimpleDialogOption(
-                onPressed: () => appRouter.pop(
-                  context,
-                  withResult: AuthMethod.BIOMETRICS,
-                ),
+    final result = await showDialog<AuthMethod>(
+      context: context,
+      barrierColor: theme.barrier,
+      builder: (context) {
+        void returnMethod(AuthMethod method) {
+          appRouter.pop(context, withResult: method);
+        }
+
+        return SimpleDialog(
+          title: Text(
+            l10n.authMethod,
+            style: styles.textStyleDialogHeader,
+          ),
+          children: [
+            for (final method in <AuthMethod>[.BIOMETRICS, .PIN])
+              SimpleDialogOption(
+                onPressed: () => returnMethod(method),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const .symmetric(vertical: 8),
                   child: Text(
                     l10n.biometricsMethod,
                     style: styles.textStyleDialogOptions,
                   ),
                 ),
               ),
-              AppSimpleDialogOption(
-                onPressed: () => appRouter.pop(
-                  context,
-                  withResult: AuthMethod.PIN,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text(
-                    l10n.pinMethod,
-                    style: styles.textStyleDialogOptions,
-                  ),
-                ),
-              ),
-            ],
-          );
-        })) {
-      case .PIN:
-        sharedPrefsUtil
-            .setAuthMethod(AuthenticationMethod(.PIN))
-            .then((result) {
-          setState(() {
-            _authMethod = AuthenticationMethod(.PIN);
-          });
-        });
-        break;
-      case .BIOMETRICS:
-        sharedPrefsUtil
-            .setAuthMethod(AuthenticationMethod(.BIOMETRICS))
-            .then((result) {
-          setState(() {
-            _authMethod = AuthenticationMethod(.BIOMETRICS);
-          });
-        });
-        break;
-      default:
-        break;
+          ],
+        );
+      },
+    );
+
+    if (result case final result?) {
+      final authMethod = AuthenticationMethod(result);
+      await sharedPrefsUtil.setAuthMethod(authMethod);
+      setState(() => _authMethod = authMethod);
     }
   }
 
@@ -276,36 +237,25 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     final unlockOption = await showDialog<UnlockOption>(
       context: context,
       barrierColor: theme.barrier,
-      builder: (BuildContext context) {
+      builder: (context) {
+        void returnOption(UnlockOption option) {
+          appRouter.pop(context, withResult: option);
+        }
+
         return AppSimpleDialog(
           title: Text(title, style: styles.textStyleDialogHeader),
           children: [
-            AppSimpleDialogOption(
-              onPressed: () => appRouter.pop(
-                context,
-                withResult: UnlockOption.YES,
-              ),
-              child: Padding(
-                padding: const .symmetric(vertical: 8),
-                child: Text(
-                  l10n.yes,
-                  style: styles.textStyleDialogOptions,
+            for (final option in UnlockOption.values)
+              AppSimpleDialogOption(
+                onPressed: () => returnOption(option),
+                child: Padding(
+                  padding: const .symmetric(vertical: 8),
+                  child: Text(
+                    l10n.yes,
+                    style: styles.textStyleDialogOptions,
+                  ),
                 ),
               ),
-            ),
-            AppSimpleDialogOption(
-              onPressed: () => appRouter.pop(
-                context,
-                withResult: UnlockOption.NO,
-              ),
-              child: Padding(
-                padding: const .symmetric(vertical: 8),
-                child: Text(
-                  l10n.no,
-                  style: styles.textStyleDialogOptions,
-                ),
-              ),
-            ),
           ],
         );
       },
@@ -313,52 +263,24 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     return unlockOption;
   }
 
-  Future<void> _lockDialog() async {
+  Future<void> _authOnLaunchDialog() async {
+    final authNotifier = ref.read(walletAuthProvider.notifier);
     final l10n = l10nOf(context);
-    final vault = ref.read(vaultProvider);
-    final lockSettings = LockSettings(vault);
 
     final unlockOption = await _getOption(title: l10n.lockAppSetting);
+    if (unlockOption == null) return;
 
-    switch (unlockOption) {
-      case .YES:
-        await lockSettings.setLock(true);
-        setState(() => _unlockSetting = UnlockSetting(.YES));
-
-        break;
-      case .NO:
-        await lockSettings.setLock(false);
-        await lockSettings.setAutoLock(false);
-        setState(() {
-          _unlockSetting = UnlockSetting(.NO);
-          _autoLockSetting = UnlockSetting(.NO);
-        });
-
-        break;
-      case null:
-        break;
-    }
+    await authNotifier.setAuthOnLaunch(unlockOption.value);
   }
 
   Future<void> _autoLockDialog() async {
     final l10n = l10nOf(context);
-    final vault = ref.read(vaultProvider);
-    final lockSettings = LockSettings(vault);
+    final authNotifier = ref.read(walletAuthProvider.notifier);
 
     final unlockOption = await _getOption(title: l10n.autoLockHeader);
+    if (unlockOption == null) return;
 
-    switch (unlockOption) {
-      case .YES:
-        await lockSettings.setAutoLock(true);
-        setState(() => _autoLockSetting = UnlockSetting(.YES));
-        break;
-      case .NO:
-        await lockSettings.setAutoLock(false);
-        setState(() => _autoLockSetting = UnlockSetting(.NO));
-        break;
-      case null:
-        break;
-    }
+    await authNotifier.setAutoLock(unlockOption.value);
   }
 
   List<Widget> _buildPasswordOptions() {

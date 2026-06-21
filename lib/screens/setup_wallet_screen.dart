@@ -74,8 +74,12 @@ class SetupWalletScreen extends HookConsumerWidget {
 
         final auth = ref.read(walletAuthNotifierProvider);
         if (auth == null) throw Exception('No active wallet');
-        await auth.checkEncryptedState();
-        await auth.unlock(password: introData.password);
+        await auth.syncState();
+        if (auth.needsLegacyPasswordAuth) {
+          await auth.unlock(password: introData.password);
+        } else {
+          await auth.unlock();
+        }
 
         // address discovery
         final client = ref.read(kaspaClientProvider);

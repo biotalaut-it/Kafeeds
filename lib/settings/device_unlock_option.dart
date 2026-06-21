@@ -5,7 +5,15 @@ import 'package:flutter/material.dart';
 import '../l10n/l10n.dart';
 import 'setting_item.dart';
 
-enum UnlockOption { YES, NO }
+enum UnlockOption {
+  YES,
+  NO;
+
+  bool get value => switch (this) {
+    .YES => true,
+    .NO => false,
+  };
+}
 
 /// Represent authenticate to open setting
 class UnlockSetting extends SettingSelectionItem {

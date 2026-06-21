@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kaspium_wallet/wallet/wallet_types.dart';
 
 import '../kaspa/kaspa.dart';
 import '../util/encryption_util.dart';
+import '../util/lock_settings.dart';
+import '../util/vault.dart';
+import '../wallet/wallet_types.dart';
 import '../wallet/wallet_vault.dart';
 import 'wallet_auth_types.dart';
 
@@ -12,9 +14,13 @@ Uint8List _computeSignDataSchnorr(List<Uint8List> params) {
 }
 
 class WalletAuthNotifier extends StateNotifier<WalletAuth> {
-  final WalletVault walletVault;
+  final WalletVault _walletVault;
+  final LockSettings _lockSettings;
 
-  WalletAuthNotifier(this.walletVault, WalletAuth auth) : super(auth);
+  WalletAuthNotifier(Vault vault, WalletInfo wallet)
+    : _walletVault = WalletVault(wallet.wid, vault),
+      _lockSettings = LockSettings(vault),
+      super(WalletAuth(wallet: wallet));
 
   static Future<Uint8List> computeSignDataSchnorr(
     Uint8List data,
@@ -23,18 +29,46 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
     return compute(_computeSignDataSchnorr, [data, privateKey]);
   }
 
-  Future<void> checkEncryptedState() async {
-    final isEncrypted = await walletVault.seedIsEncrypted();
-    state = state.copyWith(isEncrypted: isEncrypted);
+  Future<void> syncState() async {
+    final hasMnemonic = await _walletVault.hasMnemonic();
+    final authOnLaunch = await _lockSettings.getLock();
+    final autoLock = await _lockSettings.getAutoLock();
+    final isEncrypted = await _walletVault.seedIsEncrypted();
+
+    final isLocked = walletIsLocked && authOnLaunch || needsLegacyPasswordAuth;
+
+    state = state.copyWith(
+      isLocked: isLocked,
+      authOnLaunch: authOnLaunch,
+      autoLock: autoLock,
+      hasMnemonic: hasMnemonic,
+      isEncrypted: isEncrypted,
+    );
   }
 
   bool get walletIsLocked => state.isLocked;
   bool get walletIsEncrypted => state.isEncrypted;
-
   bool get walletIsLegacy => state.wallet.isLegacy;
 
-  bool get needsPasswordAuth =>
-      state.isEncrypted && state.encryptedSecret == null;
+  bool get authOnLaunch => state.authOnLaunch;
+  bool get shouldAutoLock => state.shouldAutoLock;
+
+  bool get needsPasswordAuth => state.needsPasswordAuth;
+  bool get needsLegacyPasswordAuth => state.needsLegacyPasswordAuth;
+
+  Future<void> setAuthOnLaunch(bool value) async {
+    try {
+      await _lockSettings.setLock(value);
+      state = state.copyWith(authOnLaunch: value);
+    } catch (_) {}
+  }
+
+  Future<void> setAutoLock(bool value) async {
+    try {
+      await _lockSettings.setAutoLock(value);
+      state = state.copyWith(autoLock: value);
+    } catch (_) {}
+  }
 
   Future<String> _getSeed() async {
     if (state.isLocked) {
@@ -42,11 +76,7 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
     }
 
     if (!state.isEncrypted) {
-      final seed = await walletVault.getSeed();
-
-      if (EncryptionUtil.isEncryptedHex(seed)) {
-        throw Exception('Seed is password protected');
-      }
+      final seed = await _walletVault.getSeed();
       return seed;
     }
 
@@ -55,7 +85,7 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
       throw Exception('Wallet is encrypted');
     }
 
-    final sessionKey = await walletVault.getSessionKey();
+    final sessionKey = await _walletVault.getSessionKey();
     return EncryptionUtil.decryptHex(secret, sessionKey);
   }
 
@@ -73,10 +103,8 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
     return signature;
   }
 
-  Future<bool> hasMnemonic() => walletVault.hasMnemonic();
-
   Future<List<String>> getMnemonic({String? password}) async {
-    final mnemonic = await walletVault.getMnemonic(password: password);
+    final mnemonic = await _walletVault.getMnemonic(password: password);
     return mnemonic.split(' ');
   }
 
@@ -85,6 +113,11 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
       isLocked: true,
       encryptedSecret: null,
     );
+  }
+
+  void autoLock() {
+    if (walletIsLocked) return;
+    if (shouldAutoLock) lock();
   }
 
   Future<bool> unlock({String? password}) async {
@@ -101,29 +134,30 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
   }
 
   Future<void> _unlockWithPassword(String password) async {
-    final seed = await walletVault.getSeed(password: password);
+    final seed = await _walletVault.getSeed(password: password);
 
-    final sessionKey = await walletVault.updateSessionKey();
+    final sessionKey = await _walletVault.updateSessionKey();
     final encryptedSecret = EncryptionUtil.encryptHex(seed, sessionKey);
 
     state = state.copyWith(
-      encryptedSecret: encryptedSecret,
       isLocked: false,
       isEncrypted: true,
+      encryptedSecret: encryptedSecret,
     );
   }
 
   Future<void> setPassword(String password) async {
     try {
-      final seed = await walletVault.getSeed();
+      final seed = await _walletVault.getSeed();
       if (EncryptionUtil.isEncryptedHex(seed)) {
+        state = state.copyWith(isEncrypted: true);
         throw Exception('Wallet is password protected');
       }
-      final mnemonic = await walletVault.getMnemonic();
-      final sessionKey = await walletVault.updateSessionKey();
+      final mnemonic = await _walletVault.getMnemonic();
+      final sessionKey = await _walletVault.updateSessionKey();
       final encryptedSecret = EncryptionUtil.encryptHex(seed, sessionKey);
 
-      await walletVault.setSeed(
+      await _walletVault.setSeed(
         seed,
         mnemonic: mnemonic,
         password: password,
@@ -140,10 +174,10 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
 
   Future<void> removePassword(String password) async {
     try {
-      final seed = await walletVault.getSeed(password: password);
-      final mnemonic = await walletVault.getMnemonic(password: password);
+      final seed = await _walletVault.getSeed(password: password);
+      final mnemonic = await _walletVault.getMnemonic(password: password);
 
-      await walletVault.setSeed(seed, mnemonic: mnemonic);
+      await _walletVault.setSeed(seed, mnemonic: mnemonic);
 
       state = state.copyWith(
         encryptedSecret: null,
@@ -169,7 +203,7 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
     final prefix = addressPrefixForNetwork(network);
     final hdPubKey = wallet.hdPublicKey(network);
 
-    return state.wallet.kind.when(
+    return wallet.kind.when(
       localHdSchnorr: (_) => SchnorrAddressGenerator(
         hdPublicKey: hdPubKey,
         addressPrefix: prefix,
@@ -180,7 +214,7 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
       ),
       localHdLegacy: (mainPubKey) => LegacyAddressGenerator(
         pubKeyCallback: _pubKeyLegacy,
-        mainAddress: Address.publicKey(
+        mainAddress: .publicKey(
           prefix: prefix,
           publicKey: hexToBytes(mainPubKey),
         ),
