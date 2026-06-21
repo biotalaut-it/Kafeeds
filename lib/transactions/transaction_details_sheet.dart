@@ -73,7 +73,7 @@ class TransactionDetailsSheet extends ConsumerWidget {
 
     return SheetWrapper(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           const SheetHandle(),
           if (txItem != null) ...[
@@ -91,8 +91,8 @@ class TransactionDetailsSheet extends ConsumerWidget {
                       onPressed: viewAddress,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: .end,
+                      crossAxisAlignment: .center,
                       children: [
                         SizedBox(
                           height: 55,

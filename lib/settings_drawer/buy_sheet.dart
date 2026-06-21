@@ -98,14 +98,14 @@ class BuySheet extends ConsumerWidget {
     return SheetWidget(
       title: l10n.buyKaspaTitle,
       mainWidget: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: [
           Container(
             margin: .symmetric(horizontal: horizontal),
             child: Text(
               '${l10n.buyKaspaMessage}\n${l10n.buyKaspaMessageSecondary}',
               style: styles.textStyleAccount,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
           ),
           const SizedBox(height: 30),
@@ -114,7 +114,7 @@ class BuySheet extends ConsumerWidget {
           ),
           const SizedBox(height: 20),
           Container(
-            margin: const EdgeInsets.only(top: 30, bottom: 10),
+            margin: const .only(top: 30, bottom: 10),
             child: Text(
               l10n.receiveAddress.toUpperCase(),
               style: styles.textStyleSubHeader,

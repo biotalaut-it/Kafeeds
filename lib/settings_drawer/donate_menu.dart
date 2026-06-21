@@ -24,14 +24,14 @@ class DonateMenu extends ConsumerWidget {
 
     return DrawerWrapper(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Container(
-            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            margin: const .only(bottom: 10, top: 5),
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const .symmetric(horizontal: 10),
                   child: AppIconButton(
                     icon: AppIcons.back,
                     onPressed: onBackAction,
@@ -45,10 +45,7 @@ class DonateMenu extends ConsumerWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsetsDirectional.only(
-              start: 30,
-              bottom: 10,
-            ),
+            margin: const .directional(start: 30, bottom: 10),
             child: Text(
               l10n.donateTo,
               style: styles.textStyleAppTextFieldHint,

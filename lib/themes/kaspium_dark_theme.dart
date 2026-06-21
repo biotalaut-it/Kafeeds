@@ -119,10 +119,10 @@ class KaspiumDarkTheme extends BaseTheme {
 
   //Brightness brightness = Brightness.dark;
   @override
-  SystemUiOverlayStyle systemOverlayStyle = SystemUiOverlayStyle.light;
+  SystemUiOverlayStyle systemOverlayStyle = .light;
   @override
   SystemUiOverlayStyle statusBar =
-      SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent);
+      .light.copyWith(statusBarColor: Colors.transparent);
 
   @override
   BoxShadow boxShadow = BoxShadow(color: Colors.transparent);

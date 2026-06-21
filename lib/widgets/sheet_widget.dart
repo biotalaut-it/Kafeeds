@@ -30,12 +30,12 @@ class SheetWidget extends ConsumerWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .spaceBetween,
+            crossAxisAlignment: .start,
             children: [
               if (leftRight)
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 10, start: 10),
+                  padding: const .directional(top: 10, start: 10),
                   child: leftWidget ?? const SizedBox(height: 50, width: 50),
                 ),
               Expanded(
@@ -43,16 +43,13 @@ class SheetWidget extends ConsumerWidget {
                   children: [
                     const SheetHandle(),
                     Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 8,
-                      ),
+                      margin: const .symmetric(horizontal: 4, vertical: 8),
                       child: FittedBox(
-                        fit: BoxFit.scaleDown,
+                        fit: .scaleDown,
                         child: Text(
                           title.toUpperCase(),
                           style: styles.textStyleHeader,
-                          textAlign: TextAlign.center,
+                          textAlign: .center,
                         ),
                       ),
                     ),
@@ -61,7 +58,7 @@ class SheetWidget extends ConsumerWidget {
               ),
               if (leftRight)
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(top: 10, end: 10),
+                  padding: const .directional(top: 10, end: 10),
                   child: rightWidget ?? const SizedBox(height: 50, width: 50),
                 ),
             ],

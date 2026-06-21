@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
 import '../database/boxes.dart';
-import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../settings/address_settings.dart';
 import '../wallet/wallet_types.dart';
@@ -36,9 +35,9 @@ final addressNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
       // Kind of a hack but will do for now
       final l10n = l10nWrapper.l10n;
       if (l10n == null) {
-        return type == AddressType.receive ? 'Receive $index' : 'Change $index';
+        return type == .receive ? 'Receive $index' : 'Change $index';
       }
-      return type == AddressType.receive
+      return type == .receive
           ? l10n.receiveIndexParam('$index')
           : l10n.changeIndexParam('$index');
     },
@@ -53,7 +52,7 @@ final addressNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
 
 final addressMonitorProvider = Provider.autoDispose((ref) {
   ref.listen(lastBalanceChangesProvider, (_, next) {
-    final addresses = next.where((_, balance) => balance != BigInt.zero).keys;
+    final addresses = next.where((_, balance) => balance.balance != .zero).keys;
     final notifier = ref.read(addressNotifierProvider);
     notifier.markUsed(addresses);
   });
@@ -112,23 +111,23 @@ final activeAddressesProvider = Provider.autoDispose((ref) {
   );
 });
 
-final filteredAddressesOfTypeProvider =
-    Provider.family.autoDispose<IList<WalletAddress>, AddressType>((ref, type) {
-  final filter = ref.watch(addressFilterProvider);
-  final balanceNotifier = ref.watch(balanceNotifierProvider);
-  final addresses = ref.watch(
-    addressNotifierProvider.select((value) => type == AddressType.receive
-        ? value.receiveAddresses
-        : value.changeAddresses),
-  );
-  if (filter == AddressFilter.nonZero) {
-    return addresses
-        .where((address) =>
-            balanceNotifier.balanceForAddress(address.encoded) != Amount.zero)
-        .toIList();
-  }
-  return addresses;
-});
+final filteredAddressesOfTypeProvider = Provider.family
+    .autoDispose<IList<WalletAddress>, AddressType>((ref, type) {
+      final filter = ref.watch(addressFilterProvider);
+      final balanceNotifier = ref.watch(balanceNotifierProvider);
+      final addresses = ref.watch(
+        addressNotifierProvider.select(
+          (value) =>
+              type == .receive ? value.receiveAddresses : value.changeAddresses,
+        ),
+      );
+      if (filter == .nonZero) {
+        return addresses
+            .where((a) => balanceNotifier.balanceForAddress(a.encoded) != .zero)
+            .toIList();
+      }
+      return addresses;
+    });
 
 final receiveAddressProvider = Provider.autoDispose((ref) {
   return ref.watch(

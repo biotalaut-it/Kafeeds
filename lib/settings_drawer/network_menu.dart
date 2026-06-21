@@ -27,11 +27,11 @@ class NetworkMenu extends ConsumerWidget {
       child: Column(
         children: [
           Container(
-            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            margin: const .only(bottom: 10, top: 5),
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const .symmetric(horizontal: 10),
                   child: AppIconButton(
                     icon: AppIcons.back,
                     onPressed: onBackAction,
@@ -48,13 +48,10 @@ class NetworkMenu extends ConsumerWidget {
             child: Stack(
               children: [
                 ListView(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const .only(top: 15),
                   children: [
                     Container(
-                      margin: const EdgeInsetsDirectional.only(
-                        start: 30,
-                        bottom: 10,
-                      ),
+                      margin: const .directional(start: 30, bottom: 10),
                       child: Text(
                         l10n.preferences,
                         style: styles.textStyleAppTextFieldHint,

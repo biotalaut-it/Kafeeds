@@ -15,7 +15,7 @@ class WalletListWidget extends ConsumerWidget {
 
     return ScrollableWrapper(
       child: ListView.builder(
-        padding: const EdgeInsets.only(top: 12, bottom: 16),
+        padding: const .only(top: 12, bottom: 16),
         itemCount: wallets.length,
         itemBuilder: (context, index) {
           final item = wallets[index];

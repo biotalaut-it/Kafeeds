@@ -25,7 +25,7 @@ class PrimaryButton extends ConsumerWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: .circular(100),
               boxShadow: [theme.boxShadowButton],
             ),
             height: 55,
@@ -34,10 +34,10 @@ class PrimaryButton extends ConsumerWidget {
                   ? styles.disabledPrimaryButtonStyle
                   : styles.primaryButtonStyle,
               child: FittedBox(
-                fit: BoxFit.scaleDown,
+                fit: .scaleDown,
                 child: Text(
                   title,
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   style: styles.textStyleButtonPrimary,
                   maxLines: 1,
                 ),

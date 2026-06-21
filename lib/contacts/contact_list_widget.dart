@@ -13,7 +13,7 @@ class ContactListWidget extends ConsumerWidget {
 
     return ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(top: 15, bottom: 15),
+      padding: const .only(top: 15, bottom: 15),
       itemCount: contacts.length,
       itemBuilder: (context, index) {
         final contact = contacts[index];

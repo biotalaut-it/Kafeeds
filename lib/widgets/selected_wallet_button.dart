@@ -51,7 +51,7 @@ class SelectedWalletButton extends ConsumerWidget {
             alignment: AlignmentDirectional(0, 0.3),
             child: Text(
               wallet.getShortName().toUpperCase(),
-              textAlign: TextAlign.center,
+              textAlign: .center,
               style: styles.textStyleAccountShortNameSelected,
             ),
           ),

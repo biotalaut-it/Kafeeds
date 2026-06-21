@@ -34,19 +34,19 @@ class _AppShareCardState extends State<AppShareCard> {
             width: 236,
             decoration: BoxDecoration(
               color: theme.backgroundDark,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: .circular(4),
             ),
             child: Container(
-              margin: EdgeInsets.only(left: 12, right: 12, top: 12),
-              constraints: BoxConstraints.expand(),
+              margin: .only(left: 12, right: 12, top: 12),
+              constraints: .expand(),
               // The main row that holds QR, logo, the address, ticker and the website text
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: .spaceBetween,
+                crossAxisAlignment: .center,
                 children: [
                   // A container for QR
                   Container(
-                    margin: const EdgeInsets.only(bottom: 12),
+                    margin: const .only(bottom: 12),
                     width: 100,
                     height: 100,
                     child: Stack(
@@ -57,14 +57,9 @@ class _AppShareCardState extends State<AppShareCard> {
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                color: theme.primary,
-                                width: 0.6,
-                              ),
+                              borderRadius: .all(.circular(4)),
+                              shape: .rectangle,
+                              border: .all(color: theme.primary, width: 0.6),
                             ),
                           ),
                         ),
@@ -78,7 +73,7 @@ class _AppShareCardState extends State<AppShareCard> {
                             child: Center(
                               child: QrImageView(
                                 size: 80,
-                                padding: EdgeInsets.zero,
+                                padding: .zero,
                                 gapless: false,
                                 data: selected.encoded,
                                 errorCorrectionLevel: QrErrorCorrectLevel.Q,
@@ -91,17 +86,16 @@ class _AppShareCardState extends State<AppShareCard> {
                   ),
                   // A column for logo, address, ticker and website text
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: .spaceBetween,
+                    crossAxisAlignment: .center,
                     children: [
                       // Logo
                       Container(
                         width: 96,
                         height: 20,
-                        margin: EdgeInsetsDirectional.only(start: 1),
+                        margin: .directional(start: 1),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: .spaceBetween,
                           children: [
                             // Currency Icon
                             SizedBox(
@@ -114,13 +108,13 @@ class _AppShareCardState extends State<AppShareCard> {
                             ),
                             Container(
                               width: 60,
-                              margin: const EdgeInsets.only(top: 1),
+                              margin: const .only(top: 1),
                               child: AutoSizeText(
                                 "KASPA",
                                 style: TextStyle(
                                   color: theme.primary,
                                   fontFamily: "Comfortaa",
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: .w300,
                                   fontSize: 40,
                                   letterSpacing: 1.5,
                                 ),
@@ -134,7 +128,7 @@ class _AppShareCardState extends State<AppShareCard> {
                       ),
                       // Address
                       Container(
-                        padding: EdgeInsets.only(bottom: 7),
+                        padding: .only(bottom: 7),
                         child: Column(
                           children: [
                             // First row of the address
@@ -189,7 +183,7 @@ class _AppShareCardState extends State<AppShareCard> {
                                 style: TextStyle(
                                   color: theme.text,
                                   fontFamily: kMonospaceFontFamily,
-                                  fontWeight: FontWeight.w100,
+                                  fontWeight: .w100,
                                   fontSize: 50,
                                   height: 1.2,
                                 ),
@@ -201,7 +195,7 @@ class _AppShareCardState extends State<AppShareCard> {
                       // Ticker & Website
                       Container(
                         width: 98,
-                        margin: EdgeInsets.only(bottom: 12),
+                        margin: .only(bottom: 12),
                         child: AutoSizeText(
                           "            KASPA.ORG",
                           minFontSize: 0.1,
@@ -210,7 +204,7 @@ class _AppShareCardState extends State<AppShareCard> {
                           style: TextStyle(
                             color: theme.primary,
                             fontFamily: "Comfortaa",
-                            fontWeight: FontWeight.w400,
+                            fontWeight: .w400,
                           ),
                         ),
                       ),

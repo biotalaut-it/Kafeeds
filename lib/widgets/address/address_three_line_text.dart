@@ -13,9 +13,9 @@ class AddressThreeLineText extends ConsumerWidget {
   const AddressThreeLineText({
     super.key,
     required this.address,
-    this.type = AddressTextType.PRIMARY,
+    this.type = .PRIMARY,
     this.label,
-    this.textAlign = TextAlign.center,
+    this.textAlign = .center,
   });
 
   @override
@@ -24,9 +24,8 @@ class AddressThreeLineText extends ConsumerWidget {
 
     final lineLength = address.length ~/ 3;
     final separatorIndex = address.indexOf(':') + 1;
-    final firstLineIndex = textAlign == TextAlign.center ? 25 : lineLength + 4;
-    final secondLineIndex =
-        textAlign == TextAlign.center ? 45 : 2 * firstLineIndex;
+    final firstLineIndex = textAlign == .center ? 25 : lineLength + 4;
+    final secondLineIndex = textAlign == .center ? 45 : 2 * firstLineIndex;
     final checksumLength = 8;
     final checksumIndex = address.length - checksumLength;
 
@@ -69,9 +68,7 @@ class AddressThreeLineText extends ConsumerWidget {
     };
 
     return Column(
-      crossAxisAlignment: textAlign == TextAlign.center
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
+      crossAxisAlignment: textAlign == .center ? .center : .start,
       children: [
         if (label != null) Text(label!, style: mapping[type]?.$1),
         RichText(

@@ -67,7 +67,7 @@ class PasswordLockPage extends HookConsumerWidget {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 4),
+                padding: const .fromSTEB(20, 16, 12, 4),
                 child: canCancel ? const BackButton() : const LogoutButton(),
               ),
             ],
@@ -84,7 +84,7 @@ class PasswordLockPage extends HookConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 10),
+                  margin: const .only(top: 10),
                   child: Text(
                     CaseChange.toUpperCase(l10n.locked, ref),
                     style: styles.textStyleHeaderColored,
@@ -97,13 +97,10 @@ class PasswordLockPage extends HookConsumerWidget {
                       Text(wallet.name, style: styles.textStyleAccount),
                       AppTextField(
                         topMargin: 10,
-                        padding: EdgeInsetsDirectional.only(
-                          start: 16,
-                          end: 16,
-                        ),
+                        padding: .directional(start: 16, end: 16),
                         focusNode: enterFocusNode,
                         controller: enterController,
-                        textInputAction: TextInputAction.go,
+                        textInputAction: .go,
                         autofocus: true,
                         onChanged: (_) => passwordError.value = '',
                         onSubmitted: (value) {
@@ -113,14 +110,14 @@ class PasswordLockPage extends HookConsumerWidget {
                           }
                         },
                         hintText: l10n.enterPasswordHint,
-                        keyboardType: TextInputType.text,
+                        keyboardType: .text,
                         obscureText: true,
-                        textAlign: TextAlign.center,
+                        textAlign: .center,
                         style: styles.textStyleParagraphPrimary,
                       ),
                       Container(
                         alignment: AlignmentDirectional(0, 0),
-                        margin: const EdgeInsets.only(top: 3),
+                        margin: const .only(top: 3),
                         child: Text(
                           passwordError.value,
                           style: styles.textStyleParagraphThinPrimary,

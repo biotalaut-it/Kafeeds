@@ -11,7 +11,7 @@ extension CoinGeckoPriceExtension on SettingsRepository {
           _kCoinGeckoPriceKey,
           typeFactory: CoinGeckoPrice.fromJson,
         ) ??
-        CoinGeckoPrice.empty;
+        .empty;
   }
 
   Future<void> setCoinGeckoPrice(CoinGeckoPrice price) {

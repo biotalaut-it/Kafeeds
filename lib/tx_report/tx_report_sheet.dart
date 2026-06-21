@@ -39,13 +39,13 @@ class TxReportSheet extends HookConsumerWidget {
       mainWidget: Padding(
         padding: .symmetric(horizontal: horizontal, vertical: 30),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: .spaceEvenly,
+          crossAxisAlignment: .center,
           children: [
             Text(
               l10n.txReportDetails,
               style: styles.textStyleAccount,
-              textAlign: TextAlign.center,
+              textAlign: .center,
               maxLines: 3,
             ),
             CheckboxListTile(
@@ -53,7 +53,7 @@ class TxReportSheet extends HookConsumerWidget {
                 l10n.txReportOptionIgnoreCompound,
                 style: styles.textStyleParagraphNormal,
               ),
-              controlAffinity: ListTileControlAffinity.leading,
+              controlAffinity: .leading,
               value: state.value.ignoreCompoundTxs,
               checkColor: theme.text,
               activeColor: theme.primary,
@@ -69,7 +69,7 @@ class TxReportSheet extends HookConsumerWidget {
                 l10n.txReportOptionIgnoreSelfTxs,
                 style: styles.textStyleParagraphNormal,
               ),
-              controlAffinity: ListTileControlAffinity.leading,
+              controlAffinity: .leading,
               value: state.value.ignoreInternalTxs,
               checkColor: theme.text,
               activeColor: theme.primary,

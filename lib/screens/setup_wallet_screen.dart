@@ -9,7 +9,6 @@ import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../wallet/wallet_types.dart';
 import '../wallet_address/address_discovery.dart';
-import '../wallet_address/wallet_address.dart';
 import '../widgets/content_wrapper.dart';
 import 'setup_failed_page.dart';
 
@@ -38,7 +37,7 @@ class SetupWalletScreen extends HookConsumerWidget {
         final WalletData walletData;
         if (introData.kpub case final kpub?) {
           final walletKind = WalletKind.localHdSchnorr(viewOnly: true);
-          walletData = WalletData.kpub(
+          walletData = .kpub(
             name: introData.name ?? l10n.defaultWalletName,
             kind: walletKind,
             kpub: kpub,
@@ -49,14 +48,14 @@ class SetupWalletScreen extends HookConsumerWidget {
           }
           WalletKind walletKind;
           if (introData.isLegacyWallet) {
-            final wallet = HdWallet.forSeedHex(seed, type: HdWalletType.legacy);
+            final wallet = HdWallet.forSeedHex(seed, type: .legacy);
             final pubKey = wallet.derivePublicKey(typeIndex: 0, index: 0);
-            walletKind = WalletKind.localHdLegacy(mainPubKey: pubKey.hex);
+            walletKind = .localHdLegacy(mainPubKey: pubKey.hex);
           } else {
-            walletKind = WalletKind.localHdSchnorr();
+            walletKind = .localHdSchnorr();
           }
 
-          walletData = WalletData.seed(
+          walletData = .seed(
             name: introData.name ?? l10n.defaultWalletName,
             kind: walletKind,
             seed: seed,
@@ -88,7 +87,7 @@ class SetupWalletScreen extends HookConsumerWidget {
           api: api,
           addressGenerator: addressGenerator,
           addressNameCallback: (type, index) {
-            return type == AddressType.receive
+            return type == .receive
                 ? l10n.receiveIndexParam('$index')
                 : l10n.changeIndexParam('$index');
           },
@@ -96,13 +95,13 @@ class SetupWalletScreen extends HookConsumerWidget {
 
         WalletDiscoveryResult discovery;
 
-        if (network == KaspaNetwork.mainnet && !introData.generated) {
+        if (network == .mainnet && !introData.generated) {
           message.value = l10n.walletSetupAddressDiscovery;
           discovery = await addressDiscovery.addressDiscovery(
             startReceiveIndex: 0,
             startChangeIndex: 0,
             onProgress: (type, index) {
-              final name = type == AddressType.receive
+              final name = type == .receive
                   ? l10n.receiveIndex
                   : l10n.changeIndex;
               details.value = '$name $index';
@@ -171,12 +170,12 @@ class SetupWalletScreen extends HookConsumerWidget {
         children: [
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: .spaceEvenly,
               children: [
                 FractionallySizedBox(
                   widthFactor: 0.4,
                   child: FittedBox(
-                    fit: BoxFit.fitWidth,
+                    fit: .fitWidth,
                     child: Image.asset('assets/kaspa.png'),
                   ),
                 ),
@@ -197,7 +196,7 @@ class SetupWalletScreen extends HookConsumerWidget {
             ),
           ),
           const SizedBox(
-            width: double.infinity,
+            width: .infinity,
             height: 16 + 2 * 55,
           ),
         ],

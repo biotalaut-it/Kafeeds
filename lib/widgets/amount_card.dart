@@ -44,25 +44,22 @@ class AmountCard extends HookConsumerWidget {
     return Container(
       margin: .symmetric(horizontal: horizontal),
       height: 48,
-      width: double.infinity,
+      width: .infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: .circular(50),
       ),
       // Amount text
       child: FiatValueContainer(
         amount: amount,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: .spaceBetween,
+          crossAxisAlignment: .center,
           children: [
             ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 48,
-                maxWidth: 48,
-              ),
+              constraints: BoxConstraints(maxHeight: 48, maxWidth: 48),
               child: Padding(
-                padding: const EdgeInsets.all(4),
+                padding: const .all(4),
                 child: const KasIconWidget(),
               ),
             ),
@@ -70,11 +67,11 @@ class AmountCard extends HookConsumerWidget {
               child: Tooltip(
                 message: exactAmount,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: .symmetric(horizontal: 10),
                   child: FittedBox(
-                    fit: BoxFit.scaleDown,
+                    fit: .scaleDown,
                     child: RichText(
-                      textAlign: TextAlign.center,
+                      textAlign: .center,
                       text: TextSpan(
                         children: [
                           TextSpan(

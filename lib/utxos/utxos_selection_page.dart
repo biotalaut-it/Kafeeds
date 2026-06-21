@@ -75,12 +75,12 @@ class UtxosSelectionSummary extends HookConsumerWidget {
     final symbol = ref.watch(kasSymbolProvider);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const .symmetric(horizontal: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: .spaceBetween,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Text(
                 'Target Amount',
@@ -105,7 +105,7 @@ class UtxosSelectionSummary extends HookConsumerWidget {
             ],
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: .end,
             children: [
               Text(
                 '${tx.amount.value} $symbol',
@@ -176,7 +176,7 @@ class UtxosSelectionPage extends HookConsumerWidget {
     return SheetWidget(
       title: l10n.utxoSelectionTitle,
       mainWidget: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           UtxosSelectionSummary(tx: tx),
           Expanded(child: UtxosWidget(selectionMode: true)),

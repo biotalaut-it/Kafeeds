@@ -9,7 +9,7 @@ class TransactionEmptyList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 15),
+      padding: const .fromSTEB(0, 5, 0, 15),
       children: [
         const TxWelcomeCard(),
       ],

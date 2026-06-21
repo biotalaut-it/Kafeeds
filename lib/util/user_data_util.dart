@@ -26,18 +26,18 @@ String sanitizeUri(String uri, String scheme) {
 class UserDataUtil {
   static String? _parseData(String data, DataType type) {
     data = data.trim();
-    if (type == DataType.RAW) {
+    if (type == .RAW) {
       return data;
-    } else if (type == DataType.URL) {
+    } else if (type == .URL) {
       if (isIP(data)) {
         return data;
       } else if (isURL(data)) {
         return data;
       }
-    } else if (type == DataType.ADDRESS) {
+    } else if (type == .ADDRESS) {
       final address = Address.tryParse(
         data,
-        expectedPrefix: AddressPrefix.unknown,
+        expectedPrefix: .unknown,
       );
       if (address != null) {
         return address.encoded;

@@ -61,13 +61,13 @@ class IntroWalletName extends HookConsumerWidget {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      padding: const .directional(start: 20),
                       child: const IntroBackButton(),
                     ),
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: const AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.walletName,
@@ -77,12 +77,12 @@ class IntroWalletName extends HookConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 16),
+                  margin: const .only(left: 40, right: 40, top: 16),
                   alignment: const AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.walletNameDescription,
                     style: styles.textStyleParagraph,
-                    textAlign: TextAlign.start,
+                    textAlign: .start,
                     maxLines: 5,
                     stepGranularity: 0.5,
                   ),
@@ -92,23 +92,23 @@ class IntroWalletName extends HookConsumerWidget {
                     children: [
                       AppTextField(
                         topMargin: 30,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const .symmetric(horizontal: 16),
                         focusNode: nameFocusNode,
                         controller: nameController,
                         maxLines: 1,
                         autocorrect: false,
-                        textCapitalization: TextCapitalization.words,
+                        textCapitalization: .words,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(25),
                         ],
                         onChanged: inputChanged,
                         hintText: l10n.walletNameHint,
-                        keyboardType: TextInputType.text,
+                        keyboardType: .text,
                         style: styles.textStyleParagraphText,
                       ),
                       Container(
                         alignment: AlignmentDirectional(0, 0),
-                        margin: EdgeInsets.only(top: 3),
+                        margin: .only(top: 3),
                         child: Text(
                           nameError.value,
                           style: styles.textStyleParagraphThinPrimary,

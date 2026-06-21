@@ -20,10 +20,10 @@ class TransactionStateTag extends ConsumerWidget {
     final l10n = l10nOf(context);
 
     return Container(
-      padding: EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
+      padding: .fromSTEB(6, 2, 6, 2),
       decoration: BoxDecoration(
         color: theme.text10,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: .circular(4),
       ),
       child: state.when(
         unknown: () => Text(
@@ -39,7 +39,7 @@ class TransactionStateTag extends ConsumerWidget {
           style: styles.tagText,
         ),
         confirming: (confirmations) {
-          if (confirmations < BigInt.two) {
+          if (confirmations < .two) {
             return Text(
               l10n.accepted,
               style: styles.tagText,

@@ -11,7 +11,7 @@ extension ChainStateExtension on SettingsRepository {
           kChainStateKey,
           typeFactory: ChainState.fromJson,
         ) ??
-        ChainState.empty;
+        .empty;
   }
 
   Future<void> setChainState(ChainState state) {

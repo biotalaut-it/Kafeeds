@@ -14,7 +14,7 @@ sealed class ChainState with _$ChainState {
       _$ChainStateFromJson(json);
 
   static ChainState empty = ChainState(
-    virtualDaaScore: BigInt.zero,
-    virtualSelectedParentBlueScore: BigInt.zero,
+    virtualDaaScore: .zero,
+    virtualSelectedParentBlueScore: .zero,
   );
 }

@@ -29,7 +29,7 @@ class DrawerWrapper extends ConsumerWidget {
         ],
       ),
       child: SafeArea(
-        minimum: EdgeInsets.only(top: 60, bottom: bottom),
+        minimum: .only(top: 60, bottom: bottom),
         child: child,
       ),
     );

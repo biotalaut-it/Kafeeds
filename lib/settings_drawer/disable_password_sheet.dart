@@ -49,7 +49,7 @@ class DisablePasswordSheet extends HookConsumerWidget {
       mainWidget: Column(
         children: [
           Container(
-            margin: EdgeInsetsDirectional.only(start: 40, end: 40, top: 16),
+            margin: const .directional(start: 40, end: 40, top: 16),
             child: AutoSizeText(
               l10n.passwordNoLongerRequiredToOpenParagraph,
               style: styles.textStyleParagraph,
@@ -61,23 +61,23 @@ class DisablePasswordSheet extends HookConsumerWidget {
             children: [
               AppTextField(
                 topMargin: 30,
-                padding: EdgeInsetsDirectional.only(start: 16, end: 16),
+                padding: .directional(start: 16, end: 16),
                 focusNode: passwordFocusNode,
                 controller: passwordController,
-                textInputAction: TextInputAction.done,
+                textInputAction: .done,
                 maxLines: 1,
                 autocorrect: false,
                 onChanged: (String newText) {
                   passwordError.value = '';
                 },
                 hintText: l10n.enterPasswordHint,
-                keyboardType: TextInputType.text,
+                keyboardType: .text,
                 obscureText: true,
                 style: styles.textStyleParagraphText,
               ),
               Container(
-                alignment: AlignmentDirectional(0, 0),
-                margin: EdgeInsets.only(top: 3),
+                alignment: .center,
+                margin: .only(top: 3),
                 child: Text(
                   passwordError.value,
                   style: styles.textStyleParagraphThinPrimary,

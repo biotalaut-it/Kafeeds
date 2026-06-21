@@ -16,12 +16,11 @@ class UnlockSetting extends SettingSelectionItem {
   @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
-    switch (setting) {
-      case UnlockOption.YES:
-        return l10n.yes;
-      case UnlockOption.NO:
-        return l10n.no;
-    }
+
+    return switch (setting) {
+      .YES => l10n.yes,
+      .NO => l10n.no,
+    };
   }
 
   // For saving to shared prefs

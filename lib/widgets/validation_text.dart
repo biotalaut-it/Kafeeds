@@ -12,7 +12,7 @@ class ValidationText extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
 
     return Container(
-      margin: const EdgeInsets.only(top: 5, bottom: 5),
+      margin: const .only(top: 5, bottom: 5),
       child: Text(
         data,
         style: styles.textStyleParagraphThinPrimary,

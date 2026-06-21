@@ -21,7 +21,7 @@ class CurrencyFormatter extends TextInputFormatter {
   Decimal? tryParse(String text) {
     final canonical = text.replaceAll(groupSeparator, '')
       ..replaceAll(decimalSeparator, '.');
-    return Decimal.tryParse(canonical);
+    return .tryParse(canonical);
   }
 
   CurrencyFormatter({
@@ -99,7 +99,7 @@ class CurrencyFormatter extends TextInputFormatter {
       final newText = _formatNumber(splitStr[0]);
       return newValue.copyWith(
         text: newText,
-        selection: TextSelection.collapsed(offset: newText.length),
+        selection: .collapsed(offset: newText.length),
       );
     }
 
@@ -113,7 +113,7 @@ class CurrencyFormatter extends TextInputFormatter {
 
     return newValue.copyWith(
       text: newText,
-      selection: TextSelection.collapsed(offset: newText.length),
+      selection: .collapsed(offset: newText.length),
     );
   }
 }

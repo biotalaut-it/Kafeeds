@@ -34,14 +34,14 @@ class DoubleLineItemTwo extends ConsumerWidget {
         onPressed: onPressed,
         child: Container(
           height: 60,
-          margin: const EdgeInsetsDirectional.only(start: 30),
+          margin: const .directional(start: 30),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: .center,
             children: [
               Container(
-                margin: const EdgeInsetsDirectional.only(end: 13),
+                margin: const .directional(end: 13),
                 child: Container(
-                  margin: const EdgeInsets.all(3),
+                  margin: const .all(3),
                   child: Icon(
                     icon,
                     color: disabled ? theme.primary45 : theme.primary,
@@ -50,8 +50,8 @@ class DoubleLineItemTwo extends ConsumerWidget {
                 ),
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .start,
                 children: [
                   AutoSizeText(
                     heading,

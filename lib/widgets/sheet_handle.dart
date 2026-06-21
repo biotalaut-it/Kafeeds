@@ -10,12 +10,12 @@ class SheetHandle extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
 
     return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const .only(top: 10),
       height: 5,
       width: 64,
       decoration: BoxDecoration(
         color: theme.text10,
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: .circular(100),
       ),
     );
   }

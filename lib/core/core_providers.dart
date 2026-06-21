@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:decimal/decimal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -186,8 +185,8 @@ final maxSendProvider = Provider.autoDispose((ref) {
     return total + element.utxoEntry.amount;
   });
 
-  final maxSend = maxWithFees - kFeePerInput * BigInt.from(maxInputs);
-  if (maxSend < BigInt.zero) {
+  final maxSend = maxWithFees - kFeePerInput * .from(maxInputs);
+  if (maxSend < .zero) {
     return Amount.zero;
   }
 
@@ -247,15 +246,15 @@ final feeEstimateProvider = Provider.family
   final feeEstimate = ref.watch(rpcFeeEstimateProvider).valueOrNull;
   if (feeEstimate == null) {
     return [
-      (Amount.value(Decimal.parse('0.001')), null),
-      (Amount.value(Decimal.parse('0.01')), null),
-      (Amount.value(Decimal.parse('0.1')), null),
+      (.value(.parse('0.001')), null),
+      (.value(.parse('0.01')), null),
+      (.value(.parse('0.1')), null),
     ];
   }
 
   Amount feeFor(double feeRate, BigInt mass, Amount baseFee) {
     final estimate = feeRate * mass.toDouble();
-    return Amount.raw((BigInt.from(estimate) - baseFee.raw).min(BigInt.zero));
+    return .raw((BigInt.from(estimate) - baseFee.raw).min(.zero));
   }
 
   final fees = [
@@ -281,7 +280,7 @@ final kasSymbolProvider = Provider((ref) {
   final network = ref.watch(networkProvider);
 
   return switch (network) {
-    KaspaNetwork.mainnet => 'KAS',
+    .mainnet => 'KAS',
     _ => 'TKAS',
   };
 });

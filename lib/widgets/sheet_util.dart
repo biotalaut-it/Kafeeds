@@ -164,7 +164,7 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
         curve: Curves.easeOut,
         reverseCurve: Curves.linear)
       ..addStatusListener((animationStatus) {
-        if (animationStatus == AnimationStatus.completed) {
+        if (animationStatus == .completed) {
           appSheetAnimation.curve = Curves.linear;
         }
       });
@@ -196,9 +196,9 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
                 builder: (context) => Container(
                   decoration: BoxDecoration(
                     color: color,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(radius),
-                      topRight: Radius.circular(radius),
+                    borderRadius: .only(
+                      topLeft: .circular(radius),
+                      topRight: .circular(radius),
                     ),
                   ),
                   child: Builder(builder: builder!),
@@ -302,7 +302,7 @@ class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
         curve: Curves.easeOut,
         reverseCurve: Curves.linear)
       ..addStatusListener((animationStatus) {
-        if (animationStatus == AnimationStatus.completed) {
+        if (animationStatus == .completed) {
           appSheetAnimation.curve = Curves.linear;
         }
       });
@@ -327,9 +327,9 @@ class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
               builder: (context) => Container(
                 decoration: BoxDecoration(
                   color: color,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(radius!),
-                    topRight: Radius.circular(radius!),
+                  borderRadius: .only(
+                    topLeft: .circular(radius!),
+                    topRight: .circular(radius!),
                   ),
                 ),
                 child: Builder(builder: builder!),

@@ -64,7 +64,7 @@ class AuthUtil {
     String? expectedPin = await ref.read(vaultProvider).getPin();
 
     final pinScreen = PinScreen(
-      PinOverlayType.ENTER_PIN,
+      .ENTER_PIN,
       expectedPin: expectedPin,
       description: description,
       l10n: l10n,

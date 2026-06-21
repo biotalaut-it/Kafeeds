@@ -38,12 +38,12 @@ class UtxosWidget extends ConsumerWidget {
       onRefresh: refresh,
       child: utxoList.isEmpty
           ? ListView(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 15),
+              padding: const .fromSTEB(0, 5, 0, 15),
               children: const [UtxosEmptyCard()],
             )
           : ListView.builder(
               key: const PageStorageKey('utxo-list'),
-              padding: const EdgeInsets.only(top: 6, bottom: 28),
+              padding: const .only(top: 6, bottom: 28),
               itemCount: utxoList.length,
               itemBuilder: (context, index) {
                 final item = utxoList[index];

@@ -40,7 +40,7 @@ class MassCalculator {
     required Transaction tx,
   }) {
     if (tx.isCoinbase) {
-      return BigInt.zero;
+      return .zero;
     }
 
     final harmonicOuts = tx.outputs
@@ -67,19 +67,19 @@ class MassCalculator {
             (total, element) => total + element,
           );
 
-      return _max(BigInt.zero, harmonicOuts - harmonicIns);
+      return _max(.zero, harmonicOuts - harmonicIns);
     }
 
     final sumIns = tx.inputs
         .map((input) => input.utxoEntry.amount)
         .fold(BigInt.zero, (previousValue, element) => previousValue + element);
 
-    final meanIns = sumIns ~/ BigInt.from(insLen);
+    final meanIns = sumIns ~/ .from(insLen);
 
     final arithmeticIns =
         BigInt.from(insLen) * (storageMassParameter ~/ meanIns);
 
-    return _max(BigInt.zero, harmonicOuts - arithmeticIns);
+    return _max(.zero, harmonicOuts - arithmeticIns);
   }
 
   int calcTxComputeMass({required Transaction tx}) {

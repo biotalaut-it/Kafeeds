@@ -35,7 +35,7 @@ class NoPushTransitionRoute<T> extends MaterialPageRoute<T> {
     Widget child,
   ) {
     // is popping
-    if (animation.status == AnimationStatus.reverse) {
+    if (animation.status == .reverse) {
       return super.buildTransitions(
         context,
         animation,
@@ -63,7 +63,7 @@ class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
     Widget child,
   ) {
     // is pushing
-    if (animation.status == AnimationStatus.forward) {
+    if (animation.status == .forward) {
       return super.buildTransitions(
         context,
         animation,
@@ -80,7 +80,7 @@ class BarrierRoute<T> extends NoTransitionRoute<T> {
   BarrierRoute({required super.builder, super.settings});
 
   @override
-  RoutePopDisposition get popDisposition => RoutePopDisposition.bubble;
+  RoutePopDisposition get popDisposition => .bubble;
 
   @override
   bool get barrierDismissible => false;

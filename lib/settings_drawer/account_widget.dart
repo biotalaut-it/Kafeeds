@@ -16,12 +16,12 @@ class AccountWidget extends ConsumerWidget {
     final address = ref.watch(receiveAddressProvider);
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: .start,
+      crossAxisAlignment: .start,
       children: [
         FittedBox(
-          alignment: Alignment.centerLeft,
-          fit: BoxFit.scaleDown,
+          alignment: .centerLeft,
+          fit: .scaleDown,
           child: Text(
             l10n.receiveAddress,
             style: styles.textStyleAccount,
@@ -29,7 +29,7 @@ class AccountWidget extends ConsumerWidget {
         ),
         AddressThreeLineText(
           address: address.encoded,
-          textAlign: TextAlign.start,
+          textAlign: .start,
         ),
       ],
     );

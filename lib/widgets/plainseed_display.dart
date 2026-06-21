@@ -28,8 +28,8 @@ class PlainSeedDisplay extends HookConsumerWidget {
     return Column(children: [
       // The paragraph
       Container(
-        margin: EdgeInsets.only(left: 40, right: 40, top: 15),
-        alignment: Alignment.centerLeft,
+        margin: .only(left: 40, right: 40, top: 15),
+        alignment: .centerLeft,
         child: Text(
           'Seed description placeholder',
           style: styles.textStyleParagraph,
@@ -38,7 +38,7 @@ class PlainSeedDisplay extends HookConsumerWidget {
       ),
       // Container for the seed
       GestureDetector(
-        behavior: HitTestBehavior.opaque,
+        behavior: .opaque,
         onTap: () {
           if (obscureSeed) {
             _seedObscured.value = !_seedObscured.value;
@@ -46,11 +46,11 @@ class PlainSeedDisplay extends HookConsumerWidget {
         },
         child: Column(children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            margin: const EdgeInsets.only(top: 25),
+            padding: const .symmetric(horizontal: 25, vertical: 15),
+            margin: const .only(top: 25),
             decoration: BoxDecoration(
               color: theme.backgroundDarkest,
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: .circular(25),
             ),
             child: SeedThreeLineText(
               seed: obscureSeed && _seedObscured.value
@@ -62,7 +62,7 @@ class PlainSeedDisplay extends HookConsumerWidget {
           // Tap to reveal or hide
           if (obscureSeed)
             Container(
-              margin: EdgeInsetsDirectional.only(top: 8),
+              margin: .only(top: 8),
               child: Text(
                 _seedObscured.value ? l10n.tapToReveal : l10n.tapToHide,
                 style: styles.textStyleParagraphThinPrimary,

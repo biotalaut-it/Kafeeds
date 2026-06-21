@@ -27,7 +27,7 @@ class ImportWalletTypeCard extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: const .symmetric(
         vertical: 6,
         horizontal: 28,
       ),
@@ -35,12 +35,9 @@ class ImportWalletTypeCard extends ConsumerWidget {
         style: styles.darkCardButtonStyle,
         onPressed: onPressed,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 14,
-            horizontal: 12,
-          ),
+          padding: const .symmetric(vertical: 14, horizontal: 12),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: .stretch,
             children: [
               Text(
                 title,
@@ -89,21 +86,20 @@ class IntroImportSelect extends ConsumerWidget {
 
     return ContentWrapper(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: .centerLeft,
             child: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 20),
+              padding: const .directional(start: 20),
               child: const IntroBackButton(),
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+            margin: const .only(left: 40, right: 40, top: 10),
             alignment: AlignmentDirectional(-1, 0),
             child: FittedBox(
-              fit: BoxFit.scaleDown,
+              fit: .scaleDown,
               child: Text(
                 l10n.importWallet,
                 style: styles.textStyleHeaderColored,
@@ -112,12 +108,12 @@ class IntroImportSelect extends ConsumerWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-            alignment: Alignment.centerLeft,
+            margin: const .only(left: 40, right: 40, top: 15),
+            alignment: .centerLeft,
             child: Text(
               l10n.importWalletDescription,
               style: styles.textStyleParagraph,
-              textAlign: TextAlign.start,
+              textAlign: .start,
             ),
           ),
           ImportWalletTypeCard(

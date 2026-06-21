@@ -7,7 +7,6 @@ import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_card.dart';
-import '../widgets/address_widgets.dart';
 import '../widgets/amount_label.dart';
 import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/scrollable_wrapper.dart';
@@ -47,11 +46,11 @@ class SendCompleteSheet extends HookConsumerWidget {
             child: ScrollableWrapper(
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: .center,
                   children: [
                     Container(
                       alignment: const AlignmentDirectional(0, 0),
-                      margin: const EdgeInsets.only(top: 50, bottom: 25),
+                      margin: const .only(top: 50, bottom: 25),
                       child: Icon(
                         AppIcons.success,
                         size: 80,
@@ -62,23 +61,20 @@ class SendCompleteSheet extends HookConsumerWidget {
                     AmountLabel(amount: amount),
                     // Container for the "SENT TO" text
                     Container(
-                      margin: const EdgeInsets.only(top: 30, bottom: 10),
-                      alignment: Alignment.center,
+                      margin: const .only(top: 30, bottom: 10),
+                      alignment: .center,
                       child: Text(
                         l10n.sentTo.toUpperCase(),
                         style: styles.textStyleHeader2Colored,
                       ),
                     ),
-                    AddressCard(
-                      address: toAddress,
-                      type: AddressTextType.PRIMARY,
-                    ),
+                    AddressCard(address: toAddress, type: .PRIMARY),
                     const SizedBox(height: 30),
                     TxIdCard(txId: txId),
                     const SizedBox(height: 20),
                     if (note != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        padding: const .only(top: 10, bottom: 10),
                         child: SendNoteWidget(note: note!),
                       ),
                   ],

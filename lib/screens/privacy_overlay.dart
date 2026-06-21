@@ -14,10 +14,10 @@ class PrivacyOverlay extends ConsumerWidget {
 
     return ContentWrapper(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: .spaceEvenly,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: .center,
             children: [
               Flexible(
                 child: FractionallySizedBox(

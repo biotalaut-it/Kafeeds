@@ -16,12 +16,11 @@ class NotificationSetting extends SettingSelectionItem {
   @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
-    switch (setting) {
-      case NotificationOptions.ON:
-        return l10n.on;
-      case NotificationOptions.OFF:
-        return l10n.off;
-    }
+
+    return switch (setting) {
+      .ON => l10n.on,
+      .OFF => l10n.off,
+    };
   }
 
   // For saving to shared prefs

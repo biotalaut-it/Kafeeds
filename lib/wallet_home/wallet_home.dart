@@ -71,26 +71,25 @@ class WalletHome extends HookConsumerWidget {
           child: DefaultTabController(
             length: 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: .center,
+              mainAxisSize: .min,
               children: [
                 const MainCard(),
                 Container(
-                  margin: const EdgeInsetsDirectional.fromSTEB(16, 2, 16, 10),
+                  margin: const .fromSTEB(16, 2, 16, 10),
                   child: TabBar(
                     indicatorWeight: 3,
                     indicatorColor: theme.primary60,
-                    indicatorPadding:
-                        const EdgeInsets.symmetric(horizontal: 20),
+                    indicatorPadding: const .symmetric(horizontal: 20),
                     tabs: [
                       Tab(
                         child: GestureDetector(
                           onLongPress: () => showTxFilterDialog(context, ref),
                           child: Container(
-                            margin: const EdgeInsets.only(top: 20),
+                            margin: const .only(top: 20),
                             child: Text(
                               l10n.transactionsUppercase,
-                              textAlign: TextAlign.center,
+                              textAlign: .center,
                               style: styles.textStyleTabLabel,
                             ),
                           ),
@@ -98,11 +97,11 @@ class WalletHome extends HookConsumerWidget {
                       ),
                       Tab(
                         child: Container(
-                          padding: const EdgeInsets.only(top: 20),
-                          width: double.infinity,
+                          padding: const .only(top: 20),
+                          width: .infinity,
                           child: Text(
                             l10n.utxosUppercase,
-                            textAlign: TextAlign.center,
+                            textAlign: .center,
                             style: styles.textStyleTabLabel,
                           ),
                         ),

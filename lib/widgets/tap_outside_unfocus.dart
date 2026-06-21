@@ -12,7 +12,7 @@ class TapOutsideUnfocus extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      behavior: HitTestBehavior.translucent,
+      behavior: .translucent,
       child: child,
     );
   }

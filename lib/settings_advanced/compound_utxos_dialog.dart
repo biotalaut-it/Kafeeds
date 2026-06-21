@@ -104,19 +104,19 @@ class CompoundUtxosDialog extends ConsumerWidget {
               style: styles.textStyleSettingItemHeader,
             )
           : Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Expanded(
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .start,
                     children: [
                       Text(
                         l10n.utxosUppercase,
                         style: styles.textStyleSettingItemHeader,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const .symmetric(vertical: 8),
                         child: Text(
                           l10n.balance,
                           style: styles.textStyleSettingItemHeader,
@@ -131,8 +131,8 @@ class CompoundUtxosDialog extends ConsumerWidget {
                 ),
                 Expanded(
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .start,
                     children: [
                       Text(
                         '${utxos.length}',

@@ -64,10 +64,7 @@ class WalletBundleNotifier extends StateNotifier<WalletBundle> {
         );
       },
       kpub: (data) {
-        return convertHdPublicKey(
-          data.kpub,
-          KaspaNetwork.mainnet,
-        );
+        return convertHdPublicKey(data.kpub, .mainnet);
       },
     );
 

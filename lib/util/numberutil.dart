@@ -24,7 +24,7 @@ class NumberUtil {
     }
 
     var value = amount.value;
-    if (value == Decimal.zero) {
+    if (value == .zero) {
       return '0';
     }
 
@@ -44,7 +44,7 @@ class NumberUtil {
   }
 
   static String formatedBalance(AddressBalance balance) {
-    return formatedAmount(Amount.raw(balance.balance));
+    return formatedAmount(.raw(balance.balance));
   }
 
   static BigInt getRawFromDecimal(Decimal value, int decimals) {
@@ -100,7 +100,7 @@ class NumberUtil {
   }
 
   static BigInt parseAmountAsRaw(String amount, int decimals) {
-    Decimal decimal = Decimal.parse(amount);
+    final decimal = Decimal.parse(amount);
     return decimal.shift(decimals).toBigInt();
   }
 

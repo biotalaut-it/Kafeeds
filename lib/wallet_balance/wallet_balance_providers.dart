@@ -113,13 +113,13 @@ final formatedTotalFiatProvider = Provider.autoDispose((ref) {
   final price = ref.watch(kaspaPriceProvider);
   final currency = ref.watch(currencyProvider);
   final fiat = balance.value * price.price;
-  final decimals = fiat >= Decimal.parse('1')
+  final decimals = fiat >= .parse('1')
       ? 2
-      : fiat >= Decimal.parse('0.01')
-          ? 4
-          : fiat >= Decimal.parse('0.0001')
-              ? 6
-              : 8;
+      : fiat >= .parse('0.01')
+      ? 4
+      : fiat >= .parse('0.0001')
+      ? 6
+      : 8;
 
   final format = NumberFormat.currency(
     symbol: currency.symbol,
@@ -135,13 +135,13 @@ final formatedKaspaPriceProvider = Provider.autoDispose((ref) {
   final price = ref.watch(kaspaPriceProvider).price;
   final currency = ref.watch(currencyProvider);
   final symbol = ref.watch(kasSymbolProvider);
-  final decimals = price >= Decimal.parse('1')
+  final decimals = price >= .parse('1')
       ? 2
-      : price >= Decimal.parse('0.01')
-          ? 4
-          : price >= Decimal.parse('0.0001')
-              ? 6
-              : 8;
+      : price >= .parse('0.01')
+      ? 4
+      : price >= .parse('0.0001')
+      ? 6
+      : 8;
   final format = NumberFormat.currency(
     symbol: currency.symbol,
     name: currency.name,
@@ -196,7 +196,7 @@ final fiatForAmountProvider =
   final currency = ref.watch(currencyProvider);
 
   final fiatValue = value.value * price.price;
-  if (fiatValue == Decimal.zero) {
+  if (fiatValue == .zero) {
     return '0';
   }
   final format = NumberFormat.currency(

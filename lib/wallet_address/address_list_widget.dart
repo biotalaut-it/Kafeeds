@@ -29,23 +29,24 @@ class AddressListWidget extends HookConsumerWidget {
 
     var addresses = ref.watch(filteredAddressesOfTypeProvider(addressType));
     final receiveAddress = ref.watch(receiveAddressProvider);
-    if (addressType == AddressType.receive && addresses.isEmpty) {
+    if (addressType == .receive && addresses.isEmpty) {
       addresses = [receiveAddress].lock;
     }
 
     useAutomaticKeepAlive();
 
-    final emptyDescription = addressType == AddressType.receive
-        ? l10n.receiveAddressListEmpty
-        : l10n.changeAddressListEmpty;
+    final emptyDescription = switch (addressType) {
+      .receive => l10n.receiveAddressListEmpty,
+      .change => l10n.changeAddressListEmpty,
+    };
 
     if (addresses.isEmpty) {
       return Column(
         children: [
           Align(
-            alignment: Alignment.topCenter,
+            alignment: .topCenter,
             child: Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 20),
+              padding: const .only(top: 40, bottom: 20),
               child: Text(
                 emptyDescription,
                 style: styles.textStyleAccount,
@@ -58,7 +59,7 @@ class AddressListWidget extends HookConsumerWidget {
               l10n.hintAddressListEmpty,
               style: styles.textStyleAddressText60,
               maxLines: 2,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
           ),
         ],
@@ -68,7 +69,7 @@ class AddressListWidget extends HookConsumerWidget {
     final items = addresses.unlockView.reversed;
 
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const .symmetric(vertical: 10),
       itemCount: items.length,
       controller: scrollController,
       itemBuilder: (context, index) {

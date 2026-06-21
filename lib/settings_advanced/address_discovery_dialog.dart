@@ -7,7 +7,6 @@ import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../util/ui_util.dart';
 import '../wallet_address/address_discovery.dart';
-import '../wallet_address/wallet_address.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/dialog.dart';
 
@@ -56,9 +55,10 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
           api: api,
           addressGenerator: addressGenerator,
           addressNameCallback: (type, index) {
-            return type == AddressType.receive
-                ? l10n.receiveIndexParam('$index')
-                : l10n.changeIndexParam('$index');
+            return switch (type) {
+              .receive => l10n.receiveIndexParam('$index'),
+              .change => l10n.changeIndexParam('$index'),
+            };
           },
         );
 
@@ -109,12 +109,12 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
         style: styles.textStyleDialogHeader,
       ),
       content: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: .min,
+              crossAxisAlignment: .stretch,
               children: [
                 Text(
                   l10n.indexHeader,
@@ -137,8 +137,8 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
           ),
           Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: .min,
+              crossAxisAlignment: .center,
               children: [
                 Text(
                   l10n.receive,
@@ -161,8 +161,8 @@ class AddressDiscoveryDialog extends HookConsumerWidget {
           ),
           Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: .min,
+              crossAxisAlignment: .center,
               children: [
                 Text(
                   l10n.change,

@@ -39,13 +39,12 @@ class IntroBackupSeed extends ConsumerWidget {
           //A widget that holds the header, the paragraph, the seed, "seed copied" text and the back button
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      padding: .directional(start: 20),
                       child: const IntroBackButton(),
                     ),
                     const SizedBox(width: 50),
@@ -78,14 +77,14 @@ class IntroBackupSeed extends ConsumerWidget {
                 ),
                 // The header
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: AlignmentDirectional(-1, 0),
                   child: Row(
                     children: [
                       Container(
                         constraints: BoxConstraints(maxWidth: maxWidth),
                         child: FittedBox(
-                          fit: BoxFit.scaleDown,
+                          fit: .scaleDown,
                           child: Text(
                             l10n.secretPhrase,
                             style: styles.textStyleHeaderColored,
@@ -94,7 +93,7 @@ class IntroBackupSeed extends ConsumerWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsetsDirectional.only(start: 10, end: 10),
+                        margin: .directional(start: 10, end: 10),
                         child: Icon(
                           //showMnemonic ? Icons.vpn_key : AppIcons.seed,
                           Icons.vpn_key,

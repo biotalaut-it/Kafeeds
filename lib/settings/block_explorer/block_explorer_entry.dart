@@ -58,9 +58,9 @@ class BlockExplorerEntry extends ConsumerWidget {
       return SimpleDialogOption(
         onPressed: () => appRouter.pop(context, withResult: value),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const .symmetric(vertical: 8),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Text(value.name, style: styles.textStyleDialogOptions),
               Text(value.url, style: styles.addressText),

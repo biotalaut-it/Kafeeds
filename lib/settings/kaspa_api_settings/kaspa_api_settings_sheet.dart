@@ -90,7 +90,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
     }
 
     Future<void> pasteUrl() async {
-      final data = await UserDataUtil.getClipboardText(DataType.RAW);
+      final data = await UserDataUtil.getClipboardText(.RAW);
       if (data != null) {
         controller.text = data;
       }
@@ -105,7 +105,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
     return SheetWidget(
       title: 'Kaspa Api',
       mainWidget: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: .start,
         children: [
           const SizedBox(height: 30),
           Container(
@@ -113,7 +113,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
             child: Text(
               'Set a custom Kaspa API URL or leave blank to use the default one.',
               style: styles.textStyleAccount,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
           ),
           const SizedBox(height: 20),
@@ -123,8 +123,8 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
             cursorColor: theme.primary,
             style: styles.textStyleParagraphNormal,
             hintText: showUrlHint.value ? defaultApiUrl : '',
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.url,
+            textInputAction: .next,
+            keyboardType: .url,
             prefixButton: TextFieldButton(
               icon: AppIcons.scan,
               onPressed: scanUrl,

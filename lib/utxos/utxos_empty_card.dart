@@ -12,22 +12,22 @@ class UtxosEmptyCard extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
 
     return Container(
-      margin: EdgeInsetsDirectional.fromSTEB(14.0, 4.0, 14.0, 4.0),
+      margin: .fromSTEB(14, 4, 14, 4),
       decoration: BoxDecoration(
         color: theme.backgroundDark,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: .circular(10),
         boxShadow: [theme.boxShadow],
       ),
       child: IntrinsicHeight(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Container(
               width: 7.0,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0),
+                borderRadius: .only(
+                  topLeft: .circular(10),
+                  bottomLeft: .circular(10),
                 ),
                 color: theme.primary,
                 boxShadow: [theme.boxShadow],
@@ -35,10 +35,9 @@ class UtxosEmptyCard extends ConsumerWidget {
             ),
             Flexible(
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 14.0, horizontal: 15.0),
+                padding: const .symmetric(vertical: 14, horizontal: 15),
                 child: RichText(
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   text: _getExampleHeaderSpan(context, ref),
                 ),
               ),
@@ -46,9 +45,9 @@ class UtxosEmptyCard extends ConsumerWidget {
             Container(
               width: 7.0,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
+                borderRadius: const .only(
+                  topRight: .circular(10),
+                  bottomRight: .circular(10),
                 ),
                 color: theme.primary,
               ),

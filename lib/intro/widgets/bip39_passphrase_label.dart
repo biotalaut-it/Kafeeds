@@ -14,9 +14,9 @@ class Bip39PassphraseLabel extends ConsumerWidget {
     final l10n = l10nOf(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const .symmetric(horizontal: 8),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           Icon(Icons.check_box_outlined, size: 20, color: theme.primary),
           const SizedBox(width: 8, height: 40),

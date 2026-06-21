@@ -36,7 +36,7 @@ class AddressDetailsSheet extends HookConsumerWidget {
     final nameFocusNode = useFocusNode();
     final nameController = useTextEditingController(text: address.name);
 
-    final title = address.type == AddressType.receive
+    final title = address.type == .receive
         ? l10n.receiveAddress.toUpperCase()
         : l10n.changeAddress.toUpperCase();
 
@@ -69,36 +69,33 @@ class AddressDetailsSheet extends HookConsumerWidget {
       title: title,
       rightWidget: ContactInfoButton(onPressed: showExplorer),
       mainWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: .center,
         children: [
           AppTextField(
             topMargin: 10,
             controller: nameController,
             focusNode: nameFocusNode,
-            textInputAction: TextInputAction.done,
+            textInputAction: .done,
             autocorrect: false,
-            keyboardType: TextInputType.text,
+            keyboardType: .text,
             inputFormatters: [
               LengthLimitingTextInputFormatter(25),
             ],
             style: styles.textStyleAppTextField,
           ),
           const SizedBox(height: 22),
-          AddressThreeLineText(
-            address: address.encoded,
-            type: AddressTextType.PRIMARY60,
-          ),
+          AddressThreeLineText(address: address.encoded, type: .PRIMARY60),
           const SizedBox(height: 12),
-          if (address.type == AddressType.receive)
+          if (address.type == .receive)
             Expanded(
               child: Center(
                 child: Container(
                   constraints: BoxConstraints(maxWidth: 280),
-                  padding: const EdgeInsets.all(10),
+                  padding: const .all(10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    shape: BoxShape.rectangle,
-                    border: Border.all(color: theme.primary, width: 2),
+                    borderRadius: .circular(10),
+                    shape: .rectangle,
+                    border: .all(color: theme.primary, width: 2),
                   ),
                   child: QrImageView(
                     data: address.encoded,

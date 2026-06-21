@@ -25,11 +25,11 @@ class BuyInfoDialog extends ConsumerWidget {
         style: styles.textStyleDialogHeader,
       ),
       content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: .min,
+        crossAxisAlignment: .start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const .symmetric(vertical: 8),
             child: Text(
               l10n.aboutTopperDescription,
               style: styles.textStyleSettingItemHeader,

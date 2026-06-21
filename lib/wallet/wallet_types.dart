@@ -55,18 +55,12 @@ sealed class BoxInfoByNetwork with _$BoxInfoByNetwork {
   factory BoxInfoByNetwork.fromJson(Map<String, dynamic> json) =>
       _$BoxInfoByNetworkFromJson(json);
 
-  BoxInfo getBoxInfo(KaspaNetwork network) {
-    switch (network) {
-      case KaspaNetwork.mainnet:
-        return mainnet;
-      case KaspaNetwork.testnet:
-        return testnet;
-      case KaspaNetwork.devnet:
-        return devnet;
-      case KaspaNetwork.simnet:
-        return simnet;
-    }
-  }
+  BoxInfo getBoxInfo(KaspaNetwork network) => switch (network) {
+    .mainnet => mainnet,
+    .testnet => testnet,
+    .devnet => devnet,
+    .simnet => simnet,
+  };
 }
 
 @freezed
@@ -134,7 +128,7 @@ sealed class WalletInfo with _$WalletInfo {
   late final String settingsKey = hash('walletSettingsKey#$wid');
 
   String hdPublicKey(KaspaNetwork network) {
-    if (network == KaspaNetwork.mainnet) {
+    if (network == .mainnet) {
       return mainnetPublicKey;
     }
 

@@ -93,7 +93,7 @@ class KasplexSettingsSheet extends HookConsumerWidget {
     }
 
     Future<void> pasteUrl() async {
-      final data = await UserDataUtil.getClipboardText(DataType.RAW);
+      final data = await UserDataUtil.getClipboardText(.RAW);
       if (data != null) {
         controller.text = data;
       }
@@ -108,7 +108,7 @@ class KasplexSettingsSheet extends HookConsumerWidget {
     return SheetWidget(
       title: 'KASPLEX API',
       mainWidget: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: .start,
         children: [
           const SizedBox(height: 30),
           Container(
@@ -116,7 +116,7 @@ class KasplexSettingsSheet extends HookConsumerWidget {
             child: Text(
               'Set a custom Kasplex API URL or leave blank to use the default one.',
               style: styles.textStyleAccount,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
           ),
           const SizedBox(height: 20),
@@ -126,8 +126,8 @@ class KasplexSettingsSheet extends HookConsumerWidget {
             cursorColor: theme.primary,
             style: styles.textStyleParagraphNormal,
             hintText: showUrlHint.value ? defaultApiUrl : '',
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.url,
+            textInputAction: .next,
+            keyboardType: .url,
             prefixButton: TextFieldButton(
               icon: AppIcons.scan,
               onPressed: scanUrl,

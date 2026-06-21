@@ -20,18 +20,18 @@ class AccountAddressWidget extends ConsumerWidget {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 10, left: 30, right: 30),
+          margin: const .only(top: 10, left: 30, right: 30),
           child: RichText(
-            textAlign: TextAlign.start,
+            textAlign: .start,
             text: TextSpan(text: address.name, style: styles.textStyleAccount),
           ),
         ),
         // Address Text
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin: const .symmetric(horizontal: 10),
           child: AddressAdaptiveText(
             address: address.encoded,
-            type: AddressTextType.PRIMARY60,
+            type: .PRIMARY60,
           ),
         ),
       ],

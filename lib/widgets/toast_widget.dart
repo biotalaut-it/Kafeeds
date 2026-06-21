@@ -18,12 +18,12 @@ class ToastWidget extends ConsumerWidget {
 
     return LayoutBuilder(builder: (context, constratins) {
       return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        margin: const .symmetric(horizontal: 15),
+        padding: const .symmetric(vertical: 15, horizontal: 15),
         width: constratins.maxWidth,
         decoration: BoxDecoration(
           color: theme.primary,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: .circular(10),
           boxShadow: [
             BoxShadow(
               color: theme.barrier,
@@ -36,7 +36,7 @@ class ToastWidget extends ConsumerWidget {
         child: Text(
           content,
           style: styles.textStyleSnackbar,
-          textAlign: TextAlign.start,
+          textAlign: .start,
         ),
       );
     });

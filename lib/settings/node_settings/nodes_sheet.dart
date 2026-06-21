@@ -36,7 +36,7 @@ class NodesSheet extends ConsumerWidget {
       mainWidget: ScrollableWrapper(
         child: ListView.builder(
           shrinkWrap: true,
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: .symmetric(vertical: 10),
           itemCount: items.length + 1,
           itemBuilder: (BuildContext context, int index) {
             if (index == items.length) {

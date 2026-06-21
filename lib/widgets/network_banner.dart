@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
-import '../kaspa/kaspa.dart';
 
 final _networkBannerProvider = Provider<String?>((ref) {
   final nodeConfig = ref.watch(kaspaNodeConfigProvider);
 
-  if (nodeConfig.network != KaspaNetwork.mainnet) {
+  if (nodeConfig.network != .mainnet) {
     return nodeConfig.networkId.toUpperCase();
   }
   return null;
@@ -31,7 +30,7 @@ class NetworkBanner extends ConsumerWidget {
 
     return Banner(
       message: network,
-      location: BannerLocation.topEnd,
+      location: .topEnd,
       textStyle: styles.textStyleNetworkBanner,
       color: theme.background,
       child: child,

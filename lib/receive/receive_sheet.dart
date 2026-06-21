@@ -14,7 +14,6 @@ import '../l10n/l10n.dart';
 import '../send_sheet/account_address_widget.dart';
 import '../util/ui_util.dart';
 import '../wallet_address/address_selection_sheet.dart';
-import '../wallet_address/wallet_address.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons/primary_outline_button.dart';
 import '../widgets/qr_code_widget.dart';
@@ -57,9 +56,7 @@ class ReceiveSheet extends HookConsumerWidget {
       Sheets.showAppHeightNineSheet(
         context: context,
         theme: theme,
-        widget: const AddressSelectionSheet(
-          addressType: AddressType.receive,
-        ),
+        widget: const AddressSelectionSheet(addressType: .receive),
       );
     }
 
@@ -119,8 +116,8 @@ class ReceiveSheet extends HookConsumerWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .spaceBetween,
+            crossAxisAlignment: .start,
             children: [
               const SizedBox(width: 60, height: 60),
               Column(
@@ -134,7 +131,7 @@ class ReceiveSheet extends HookConsumerWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.only(top: 10, end: 10),
+                padding: const .directional(top: 10, end: 10),
                 child: SheetHeaderButton(
                   icon: Icons.copy,
                   onPressed: copyAddress,
@@ -147,7 +144,7 @@ class ReceiveSheet extends HookConsumerWidget {
           const SizedBox(height: 16),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const .symmetric(horizontal: 20),
               child: Center(
                 child: Stack(
                   children: [

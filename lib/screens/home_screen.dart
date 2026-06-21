@@ -88,17 +88,17 @@ class HomeScreen extends HookConsumerWidget {
       log.d('didChangeAppLifecycleState $state');
 
       switch (state) {
-        case AppLifecycleState.inactive:
+        case .inactive:
           await saveChainState();
           break;
-        case AppLifecycleState.hidden:
+        case .hidden:
           break;
-        case AppLifecycleState.paused:
+        case .paused:
           final inBackground = ref.read(inBackgroundProvider.notifier);
           inBackground.state = true;
           await checkAutoLock();
           break;
-        case AppLifecycleState.resumed:
+        case .resumed:
           // refresh remote data
           final remote = ref.read(remoteRefreshProvider.notifier);
           remote.update((state) => state + 1);
@@ -106,7 +106,7 @@ class HomeScreen extends HookConsumerWidget {
           final inBackground = ref.read(inBackgroundProvider.notifier);
           inBackground.state = false;
           break;
-        case AppLifecycleState.detached:
+        case .detached:
           break;
       }
     });
@@ -127,7 +127,7 @@ class HomeScreen extends HookConsumerWidget {
         child: ClipRect(
           child: NetworkBanner(
             child: Padding(
-              padding: const EdgeInsets.only(top: 4),
+              padding: const .only(top: 4),
               child: const WalletHome(),
             ),
           ),

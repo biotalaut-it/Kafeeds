@@ -14,13 +14,13 @@ const kTransactionSigningDomain = 'TransactionSigningHash';
 
 Uint8List _getUint16(int value) {
   final data = ByteData(2);
-  data.setUint16(0, value, Endian.little);
+  data.setUint16(0, value, .little);
   return data.buffer.asUint8List();
 }
 
 Uint8List _getUint32(int value) {
   final data = ByteData(4);
-  data.setUint32(0, value, Endian.little);
+  data.setUint32(0, value, .little);
   return data.buffer.asUint8List();
 }
 
@@ -37,7 +37,7 @@ Uint8List _getPreviousOutputsHash({
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
-  assert(hashType == SigHashType.sigHashAll);
+  assert(hashType == .sigHashAll);
 
   if (reusedValues.previousOutputsHash == null) {
     final builder = BytesBuilder();
@@ -62,7 +62,7 @@ Uint8List _getSequencesHash({
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
-  assert(hashType == SigHashType.sigHashAll);
+  assert(hashType == .sigHashAll);
 
   if (reusedValues.sequencesHash == null) {
     final builder = BytesBuilder();
@@ -87,7 +87,7 @@ Uint8List _getSigOpCountsHash({
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
-  assert(hashType == SigHashType.sigHashAll);
+  assert(hashType == .sigHashAll);
 
   if (reusedValues.sigOpCountsHash == null) {
     final builder = BytesBuilder();
@@ -113,7 +113,7 @@ Uint8List _getOutputsHash({
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
-  assert(hashType == SigHashType.sigHashAll);
+  assert(hashType == .sigHashAll);
 
   if (reusedValues.outputsHash == null) {
     final builder = BytesBuilder();
@@ -233,7 +233,7 @@ Uint8List calculateSignatureHashSchnorr({
   required SigHashType hashType,
   required SighashReusedValues sighashReusedValues,
 }) {
-  assert(hashType == SigHashType.sigHashAll);
+  assert(hashType == .sigHashAll);
 
   final input = tx.inputs[inputIndex];
   final prevScriptPublicKey = input.utxoEntry.scriptPublicKey;

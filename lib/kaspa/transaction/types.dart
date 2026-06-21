@@ -46,18 +46,12 @@ enum SigHashType {
   sigHashSingle,
   SigHashAnyOneCanPay;
 
-  int get raw {
-    switch (this) {
-      case SigHashType.sigHashAll:
-        return kSigHashAll;
-      case SigHashType.sigHashNone:
-        return kSigHashNone;
-      case SigHashType.sigHashSingle:
-        return kSigHashSingle;
-      case SigHashType.SigHashAnyOneCanPay:
-        return kSigHashAnyOneCanPay;
-    }
-  }
+  int get raw => switch (this) {
+    .sigHashAll => kSigHashAll,
+    .sigHashNone => kSigHashNone,
+    .sigHashSingle => kSigHashSingle,
+    .SigHashAnyOneCanPay => kSigHashAnyOneCanPay,
+  };
 }
 
 @freezed
@@ -87,8 +81,8 @@ sealed class Utxo with _$Utxo {
 
   factory Utxo.fromRpc(RpcUtxosByAddressesEntry rpc) => Utxo(
     address: rpc.address,
-    outpoint: Outpoint.fromRpc(rpc.outpoint),
-    utxoEntry: UtxoEntry.fromRpc(rpc.utxoEntry),
+    outpoint: .fromRpc(rpc.outpoint),
+    utxoEntry: .fromRpc(rpc.utxoEntry),
   );
 
   RpcUtxosByAddressesEntry toRpc() => RpcUtxosByAddressesEntry(
@@ -114,7 +108,7 @@ sealed class UtxoEntry with _$UtxoEntry {
 
   factory UtxoEntry.fromRpc(RpcUtxoEntry rpc) => UtxoEntry(
     amount: rpc.amount.toUnsignedBigInt(),
-    scriptPublicKey: ScriptPublicKey.fromRpc(rpc.scriptPublicKey),
+    scriptPublicKey: .fromRpc(rpc.scriptPublicKey),
     blockDaaScore: rpc.blockDaaScore.toUnsignedBigInt(),
     isCoinbase: rpc.isCoinbase,
   );

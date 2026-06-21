@@ -29,19 +29,19 @@ class TxIdCard extends HookConsumerWidget {
 
     return Container(
       margin: .symmetric(horizontal: horizontal),
-      width: double.infinity,
+      width: .infinity,
       child: Material(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: .circular(25),
         ),
         color: theme.backgroundDarkest,
         child: InkWell(
           onTap: viewTransaction,
           customBorder: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: .circular(25),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            padding: const .symmetric(horizontal: 25, vertical: 15),
             child: Column(
               children: [
                 Text(

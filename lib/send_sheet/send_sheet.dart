@@ -62,7 +62,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
   final _noteController = TextEditingController();
 
   // States
-  AddressStyle _sendAddressStyle = AddressStyle.TEXT60;
+  AddressStyle _sendAddressStyle = .TEXT60;
   String? _amountHint;
   String? _addressHint;
   String? _noteHint;
@@ -108,13 +108,13 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       _isContact = true;
       _contactButtonVisible = false;
       _pasteButtonVisible = false;
-      _sendAddressStyle = AddressStyle.PRIMARY;
+      _sendAddressStyle = .PRIMARY;
     } else if (widget.uri != null) {
       // Setup initial state with prefilled address
       _addressController.text = widget.uri!.address.encoded;
       _contactButtonVisible = false;
       _pasteButtonVisible = false;
-      _sendAddressStyle = AddressStyle.TEXT90;
+      _sendAddressStyle = .TEXT90;
       _addressValidAndUnfocused = true;
     }
 
@@ -151,8 +151,9 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           _addressHint = '';
           _addressValidAndUnfocused = false;
         });
-        _addressController.selection = TextSelection.fromPosition(
-            TextPosition(offset: _addressController.text.length));
+        _addressController.selection = .fromPosition(
+          TextPosition(offset: _addressController.text.length),
+        );
         if (_addressController.text.startsWith("@")) {
           setState(() {
             _contacts = ref
@@ -253,13 +254,13 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       if (contact == null) {
         // Not a contact
         _isContact = false;
-        _sendAddressStyle = AddressStyle.TEXT90;
+        _sendAddressStyle = .TEXT90;
         _addressController.text = address.encoded;
         _addressValidAndUnfocused = true;
       } else {
         // Is a contact
         _isContact = true;
-        _sendAddressStyle = AddressStyle.PRIMARY;
+        _sendAddressStyle = .PRIMARY;
         _addressController.text = contact.name;
         _addressValidAndUnfocused = false;
       }
@@ -311,7 +312,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
 
       final uri = KaspaUri(
         address: toAddress,
-        amount: Amount.raw(amountRaw!),
+        amount: .raw(amountRaw!),
         message: note,
       );
 
@@ -327,24 +328,24 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .spaceBetween,
+            crossAxisAlignment: .start,
             children: [
               const SizedBox(width: 60, height: 60),
               Column(
                 children: [
                   const SheetHandle(),
                   Container(
-                    margin: const EdgeInsets.only(top: 15),
+                    margin: const .only(top: 15),
                     constraints: BoxConstraints(maxWidth: maxWidth),
                     child: Column(
                       children: [
                         FittedBox(
-                          fit: BoxFit.scaleDown,
+                          fit: .scaleDown,
                           child: Text(
                             widget.title ?? l10n.send.toUpperCase(),
                             style: styles.textStyleHeader,
-                            textAlign: TextAlign.center,
+                            textAlign: .center,
                             maxLines: 1,
                           ),
                         ),
@@ -357,14 +358,9 @@ class _SendSheetState extends ConsumerState<SendSheet> {
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(
-              top: 10,
-              left: 30,
-              right: 30,
-              bottom: 4,
-            ),
+            margin: const .only(top: 10, left: 30, right: 30, bottom: 4),
             child: RichText(
-              textAlign: TextAlign.start,
+              textAlign: .start,
               text: TextSpan(
                 text: l10n.available,
                 style: styles.textStyleAccount,
@@ -375,7 +371,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           // A main container that holds everything
           Expanded(
             child: Container(
-              margin: const EdgeInsets.only(top: 5, bottom: 15),
+              margin: const .only(top: 5, bottom: 15),
               child: Stack(
                 children: [
                   // A column for Enter Amount, Enter Address, Error containers and the pop up list
@@ -384,7 +380,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                     child: Stack(
                       children: [
                         Column(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisSize: .min,
                           children: [
                             const SizedBox(height: 35),
                             // ******* Enter Amount Container ******* //
@@ -394,7 +390,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                             // ******* Enter Amount Error Container ******* //
                             Container(
                               alignment: const AlignmentDirectional(0, 0),
-                              margin: const EdgeInsets.only(top: 3),
+                              margin: const .only(top: 3),
                               child: Text(
                                 _amountValidationText,
                                 style: styles.textStyleParagraphThinPrimary,
@@ -405,42 +401,38 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                         ),
                         // Column for Enter Address container + Enter Address Error container
                         Column(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisSize: .min,
                           children: [
                             Container(
-                              alignment: Alignment.topCenter,
+                              alignment: .topCenter,
                               child: Stack(
-                                alignment: Alignment.topCenter,
+                                alignment: .topCenter,
                                 children: [
                                   Container(
                                     margin: .symmetric(
                                       horizontal: horizontal,
                                     ),
-                                    alignment: Alignment.bottomCenter,
+                                    alignment: .bottomCenter,
                                     constraints: const BoxConstraints(
                                       maxHeight: 174,
                                     ),
                                     // ********************************************* //
                                     // ********* The pop-up Contacts List ********* //
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
+                                      borderRadius: .circular(25),
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            25,
-                                          ),
+                                          borderRadius: .circular(25),
                                           color: theme.backgroundDarkest,
                                         ),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              25,
-                                            ),
+                                            borderRadius: .circular(25),
                                           ),
-                                          margin: EdgeInsets.only(bottom: 50),
+                                          margin: .only(bottom: 50),
                                           child: ListView.builder(
                                             shrinkWrap: true,
-                                            padding: const EdgeInsets.only(
+                                            padding: const .only(
                                               bottom: 0,
                                               top: 0,
                                             ),
@@ -464,17 +456,15 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                             // ******* Enter Address Error Container ******* //
                             Container(
                               alignment: const AlignmentDirectional(0, 0),
-                              margin: const EdgeInsets.only(top: 3),
+                              margin: const .only(top: 3),
                               child: Text(
                                 _addressValidationText,
                                 style: styles.textStyleParagraphThinPrimary,
                               ),
                             ),
                             // ******* Enter Address Error Container End ******* //
-                            if (feeRaw != null && feeRaw! > BigInt.zero) ...[
-                              FeeWidget(
-                                amount: Amount.raw(feeRaw!),
-                              ),
+                            if (feeRaw != null && feeRaw! > .zero) ...[
+                              FeeWidget(amount: .raw(feeRaw!)),
                             ],
                             const SizedBox(height: 3),
                             Column(
@@ -498,7 +488,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
+            padding: const .symmetric(horizontal: 28),
             child: Column(
               children: [
                 PrimaryButton(
@@ -532,11 +522,11 @@ class _SendSheetState extends ConsumerState<SendSheet> {
         final styles = ref.watch(stylesProvider);
 
         return Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             SizedBox(
               height: 42,
-              width: double.infinity,
+              width: .infinity,
               child: TextButton(
                 onPressed: () {
                   _addressController.text = contact.name;
@@ -546,18 +536,18 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                     _isContact = true;
                     _contactButtonVisible = false;
                     _pasteButtonVisible = false;
-                    _sendAddressStyle = AddressStyle.PRIMARY;
+                    _sendAddressStyle = .PRIMARY;
                   });
                 },
                 child: Text(
                   contact.name,
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   style: styles.textStyleAddressPrimary,
                 ),
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
+              margin: .symmetric(horizontal: 25),
               height: 1,
               color: theme.text03,
             ),
@@ -584,7 +574,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       return false;
     }
 
-    if (amountRaw == BigInt.zero) {
+    if (amountRaw == .zero) {
       setState(() {
         _amountValidationText = l10n.amountZero;
       });
@@ -649,9 +639,9 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       final kaspaFormatter = ref.watch(kaspaFormatterProvider);
       final fiatFormatter = ref.watch(fiatFormatterProvider);
       final maxSend = ref.watch(maxSendProvider);
-      final isMaxSend = amountRaw == maxSend.raw || maxSend.raw == BigInt.zero;
+      final isMaxSend = amountRaw == maxSend.raw || maxSend.raw == .zero;
 
-      final amount = Amount.raw(amountRaw ?? BigInt.zero);
+      final amount = Amount.raw(amountRaw ?? .zero);
 
       final fiatMode = ref.watch(fiatModeProvider);
 
@@ -672,7 +662,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           true => () {
               final price = ref.read(kaspaPriceProvider);
               final fiatValue = fiatFormatter.tryParse(text);
-              if (price.price == Decimal.zero || fiatValue == null) {
+              if (price.price == .zero || fiatValue == null) {
                 return null;
               }
               return (fiatValue / price.price)
@@ -723,7 +713,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           style: styles.textStyleParagraphPrimary,
           inputFormatters: [fiatMode ? fiatFormatter : kaspaFormatter],
           onChanged: onValueChanged,
-          textInputAction: TextInputAction.done,
+          textInputAction: .done,
           maxLines: null,
           autocorrect: false,
           hintText: _amountHint ?? hintText,
@@ -741,7 +731,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           fadeSuffixOnCondition: true,
           suffixShowFirstCondition: !isMaxSend,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          textAlign: TextAlign.center,
+          textAlign: .center,
           onSubmitted: (text) {
             //FocusScope.of(context).unfocus();
             final prefix = ref.read(addressPrefixProvider);
@@ -767,8 +757,8 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       return AppTextField(
         topMargin: 124,
         padding: _addressValidAndUnfocused
-            ? EdgeInsets.symmetric(horizontal: 25, vertical: 15)
-            : EdgeInsets.zero,
+            ? .symmetric(horizontal: 25, vertical: 15)
+            : .zero,
         focusNode: _addressFocusNode,
         controller: _addressController,
         cursorColor: theme.primary,
@@ -777,7 +767,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
               ? LengthLimitingTextInputFormatter(20)
               : LengthLimitingTextInputFormatter(74),
         ],
-        textInputAction: TextInputAction.done,
+        textInputAction: .done,
         maxLines: null,
         autocorrect: false,
         hintText: _addressHint ?? l10n.enterAddress,
@@ -826,7 +816,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                   setState(() {
                     _isContact = false;
                     _addressValidationText = "";
-                    _sendAddressStyle = AddressStyle.TEXT90;
+                    _sendAddressStyle = .TEXT90;
                     _pasteButtonVisible = false;
                     _contactButtonVisible = false;
                   });
@@ -841,7 +831,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                   setState(() {
                     _isContact = true;
                     _addressValidationText = "";
-                    _sendAddressStyle = AddressStyle.PRIMARY;
+                    _sendAddressStyle = .PRIMARY;
                     _pasteButtonVisible = false;
                     _contactButtonVisible = false;
                   });
@@ -853,9 +843,9 @@ class _SendSheetState extends ConsumerState<SendSheet> {
         ),
         fadeSuffixOnCondition: true,
         suffixShowFirstCondition: _pasteButtonVisible,
-        style: _sendAddressStyle == AddressStyle.TEXT60
+        style: _sendAddressStyle == .TEXT60
             ? styles.textStyleAddressText60
-            : _sendAddressStyle == AddressStyle.TEXT90
+            : _sendAddressStyle == .TEXT90
                 ? styles.textStyleAddressText90
                 : styles.textStyleAddressPrimary,
         onChanged: (text) {
@@ -893,25 +883,25 @@ class _SendSheetState extends ConsumerState<SendSheet> {
             FocusManager.instance.primaryFocus?.unfocus();
 
             setState(() {
-              _sendAddressStyle = AddressStyle.TEXT90;
+              _sendAddressStyle = .TEXT90;
               _addressValidationText = '';
               _pasteButtonVisible = false;
             });
           } else if (!isContact) {
             setState(() {
-              _sendAddressStyle = AddressStyle.TEXT60;
+              _sendAddressStyle = .TEXT60;
               _pasteButtonVisible = true;
             });
           } else {
             final contact = ref.read(contactsProvider).getContactWithName(text);
             if (contact == null) {
               setState(() {
-                _sendAddressStyle = AddressStyle.TEXT60;
+                _sendAddressStyle = .TEXT60;
               });
             } else {
               setState(() {
                 _pasteButtonVisible = false;
-                _sendAddressStyle = AddressStyle.PRIMARY;
+                _sendAddressStyle = .PRIMARY;
               });
             }
           }
@@ -945,12 +935,12 @@ class _SendSheetState extends ConsumerState<SendSheet> {
       final l10n = l10nOf(context);
 
       return Stack(
-        alignment: Alignment.bottomCenter,
+        alignment: .bottomCenter,
         children: [
           AppTextField(
             padding: _noteValidAndUnfocused
-                ? const EdgeInsets.symmetric(horizontal: 25, vertical: 15)
-                : EdgeInsets.zero,
+                ? const .symmetric(horizontal: 25, vertical: 15)
+                : .zero,
             focusNode: _noteFocusNode,
             controller: _noteController,
             cursorColor: theme.primary,
@@ -958,7 +948,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
             inputFormatters: [
               LengthLimitingTextInputFormatter(120),
             ],
-            textInputAction: TextInputAction.done,
+            textInputAction: .done,
             maxLines: null,
             autocorrect: false,
             hintText: _noteHint ?? l10n.enterNote,
@@ -1040,7 +1030,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                 l10n.optionalLabel,
                 style: styles.textStyleTransactionAmount.copyWith(
                   color: theme.text30,
-                  fontWeight: FontWeight.w100,
+                  fontWeight: .w100,
               ),
             ),
           ),

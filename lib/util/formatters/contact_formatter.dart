@@ -26,7 +26,8 @@ class ContactFormatter extends TextInputFormatter {
     }
 
     return newValue.copyWith(
-        text: workingText,
-        selection: TextSelection.collapsed(offset: workingText.length));
+      text: workingText,
+      selection: .collapsed(offset: workingText.length),
+    );
   }
 }

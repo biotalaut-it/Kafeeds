@@ -62,7 +62,7 @@ class App extends HookConsumerWidget {
           ),
           child: PrivacyScreen(
             child: OKToast(
-              position: ToastPosition(align: Alignment.topCenter, offset: 40),
+              position: ToastPosition(align: .topCenter, offset: 40),
               textStyle: styles.textStyleSnackbar,
               backgroundColor: theme.backgroundDark,
               child: MaterialApp(
@@ -72,17 +72,14 @@ class App extends HookConsumerWidget {
                   useMaterial3: false,
                   primaryColor: theme.primary,
                   fontFamily: kDefaultFontFamily,
-                  brightness: Brightness.dark,
+                  brightness: .dark,
                   tooltipTheme: TooltipThemeData(
                     preferBelow: false,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 10,
-                    ),
+                    margin: .symmetric(vertical: 10),
+                    padding: .symmetric(vertical: 4, horizontal: 10),
                     decoration: BoxDecoration(
                       color: theme.backgroundDarkest,
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: .circular(25),
                     ),
                     textStyle: styles.textStyleAddressText60,
                   ),
@@ -92,7 +89,7 @@ class App extends HookConsumerWidget {
                   colorScheme: ThemeData()
                       .colorScheme
                       .copyWith(
-                        brightness: Brightness.dark,
+                        brightness: .dark,
                         secondary: theme.primary10,
                       )
                       .copyWith(surface: theme.backgroundDark),

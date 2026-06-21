@@ -22,7 +22,7 @@ List<TxListItem> _txListItemsFromTxs(
   required UtxosNotifier utxoNotifier,
 }) {
   return txs.expand<TxListItem>((tx) {
-    if (txFilter == TxFilter.hideNotAcceptedCoinbase &&
+    if (txFilter == .hideNotAcceptedCoinbase &&
         tx.apiTx.inputs.isEmpty &&
         !tx.apiTx.isAccepted) {
       return [];
@@ -52,7 +52,7 @@ List<TxListItem> _txListItemsFromTxs(
           TxItem(
             tx: tx,
             outputIndex: 0,
-            type: TxItemType.compound,
+            type: .compound,
           ),
         ),
       ];
@@ -66,28 +66,22 @@ List<TxListItem> _txListItemsFromTxs(
         continue;
       }
       if (addressNotifier.containsAddress(address) && hasWalletInputs) {
-        final listItem = TxListItem.txItem(TxItem(
-          tx: tx,
-          outputIndex: output.index,
-          type: TxItemType.thisWallet,
-        ));
+        final listItem = TxListItem.txItem(
+          TxItem(tx: tx, outputIndex: output.index, type: .thisWallet),
+        );
         listItems.add(listItem);
         continue;
       }
       if (addressNotifier.containsAddress(address)) {
-        final listItem = TxListItem.txItem(TxItem(
-          tx: tx,
-          outputIndex: output.index,
-          type: TxItemType.receive,
-        ));
+        final listItem = TxListItem.txItem(
+          TxItem(tx: tx, outputIndex: output.index, type: .receive),
+        );
         listItems.add(listItem);
       }
       if (hasWalletInputs) {
-        final listItem = TxListItem.txItem(TxItem(
-          tx: tx,
-          outputIndex: output.index,
-          type: TxItemType.send,
-        ));
+        final listItem = TxListItem.txItem(
+          TxItem(tx: tx, outputIndex: output.index, type: .send),
+        );
         listItems.add(listItem);
       }
     }
@@ -122,7 +116,7 @@ final _txListItemsProvider =
       addressNotifier: addressNotifier,
       utxoNotifier: utxoNotifier);
 
-  return [...pendingItems, ...txItems, TxListItem.loader(txNotifier.hasMore)];
+  return [...pendingItems, ...txItems, .loader(txNotifier.hasMore)];
 });
 
 class TransactionsWidget extends ConsumerWidget {
@@ -192,7 +186,7 @@ class TransactionsWidget extends ConsumerWidget {
             : AutomaticAnimatedList<TxListItem>(
                 key: PageStorageKey(wallet),
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 28),
+                padding: .fromSTEB(0, 6, 0, 28),
                 insertDuration: const Duration(milliseconds: 500),
                 removeDuration: const Duration(milliseconds: 500),
                 keyingFunction: (item) => Key(item.id),
@@ -204,9 +198,9 @@ class TransactionsWidget extends ConsumerWidget {
                     loader: (hasMore) {
                       if (!hasMore) return const SizedBox();
                       return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: .symmetric(vertical: 10),
                         child: Align(
-                          alignment: Alignment.center,
+                          alignment: .center,
                           child: Text(
                             l10n.loadingTransactions,
                             style: styles.textStyleParagraph,

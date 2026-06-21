@@ -37,10 +37,10 @@ class MnemonicDisplay extends HookConsumerWidget {
           items.add(
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const .symmetric(horizontal: 10),
                 child: FittedBox(
-                  alignment: AlignmentDirectional.centerStart,
-                  fit: BoxFit.scaleDown,
+                  alignment: .centerStart,
+                  fit: .scaleDown,
                   child: RichText(
                     textAlign: .start,
                     text: TextSpan(
@@ -70,9 +70,9 @@ class MnemonicDisplay extends HookConsumerWidget {
         }
         rows.add(
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 9),
+            padding: const .symmetric(vertical: 9),
             child: Container(
-              margin: const EdgeInsetsDirectional.only(start: 5),
+              margin: const .directional(start: 5),
               child: Row(children: items),
             ),
           ),
@@ -86,7 +86,7 @@ class MnemonicDisplay extends HookConsumerWidget {
 
     return Column(children: [
       GestureDetector(
-        behavior: HitTestBehavior.opaque,
+        behavior: .opaque,
         onTap: () {
           if (obscured) {
             isObscured.value = !isObscured.value;
@@ -94,7 +94,7 @@ class MnemonicDisplay extends HookConsumerWidget {
         },
         child: Column(children: [
           Container(
-            margin: EdgeInsets.only(top: 15),
+            margin: .only(top: 15),
             child: Column(
               children: buildMnemonicRows(wordList.length ~/ 3),
             ),
@@ -109,7 +109,7 @@ class MnemonicDisplay extends HookConsumerWidget {
               return Container(
                 margin: EdgeInsetsDirectional.only(top: 8),
                 child: FittedBox(
-                  fit: BoxFit.scaleDown,
+                  fit: .scaleDown,
                   child: Text(
                     text,
                     style: styles.textStyleParagraphThinPrimary,

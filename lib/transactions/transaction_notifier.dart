@@ -176,11 +176,10 @@ class TransactionNotifier extends SafeChangeNotifier {
       final cachedBalances = await cache.getCachedBalances();
 
       for (final address in pendingAddresses) {
-        final balance = balances[address] ?? BigInt.zero;
-        final cached = cachedBalances[address] ?? (BigInt.zero, 0);
+        final balance = balances[address] ?? .zero;
+        final cached = cachedBalances[address] ?? (.zero, 0);
 
-        if (balance == cached.$1 &&
-            (balance != BigInt.zero || cached.$2 != 0)) {
+        if (balance == cached.$1 && (balance != .zero || cached.$2 != 0)) {
           continue;
         }
 

@@ -16,7 +16,7 @@ class AddressShortText extends ConsumerWidget {
     final stringPartOne = address.substring(0, separatorIndex + 11);
 
     return RichText(
-      textAlign: TextAlign.center,
+      textAlign: .center,
       text: TextSpan(children: [
         TextSpan(
           text: stringPartOne,

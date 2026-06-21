@@ -35,7 +35,7 @@ class TransactionCard extends ConsumerWidget {
     final output = tx.apiTx.outputs[item.outputIndex];
 
     final amountRaw = output.amount;
-    final amount = Amount.raw(BigInt.from(amountRaw));
+    final amount = Amount.raw(.from(amountRaw));
 
     final formatedValue = NumberUtil.formatedAmount(amount);
 
@@ -47,7 +47,7 @@ class TransactionCard extends ConsumerWidget {
     );
     final isContact = contact != null;
     final isThisWallet = addressNotifier.containsAddress(address);
-    final isSendType = item.type == TxItemType.send;
+    final isSendType = item.type == .send;
 
     final txDate = DateTime.fromMillisecondsSinceEpoch(tx.apiTx.blockTime);
 
@@ -56,13 +56,10 @@ class TransactionCard extends ConsumerWidget {
     final date = formater.format(txDate);
 
     final txTypeIcon = switch (item.type) {
-      TxItemType.send => Icon(AppIcons.sent, color: theme.text60, size: 18),
-      TxItemType.receive =>
-        Icon(AppIcons.received, color: theme.primary, size: 18),
-      TxItemType.thisWallet =>
-        Icon(Icons.swap_vert, color: theme.primary, size: 18),
-      TxItemType.compound =>
-        Icon(Icons.refresh, color: theme.primary, size: 18),
+      .send => Icon(AppIcons.sent, color: theme.text60, size: 18),
+      .receive => Icon(AppIcons.received, color: theme.primary, size: 18),
+      .thisWallet => Icon(Icons.swap_vert, color: theme.primary, size: 18),
+      .compound => Icon(Icons.refresh, color: theme.primary, size: 18),
     };
 
     void showTxDetails() {
@@ -80,30 +77,30 @@ class TransactionCard extends ConsumerWidget {
     }
 
     return Container(
-      margin: EdgeInsetsDirectional.fromSTEB(14, 4, 14, 4),
+      margin: .fromSTEB(14, 4, 14, 4),
       decoration: BoxDecoration(
         color: theme.backgroundDark,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: .circular(10),
         boxShadow: [theme.boxShadow],
       ),
       child: TextButton(
         style: styles.cardButtonStyle,
         onPressed: showTxDetails,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+          padding: const .symmetric(vertical: 14, horizontal: 12),
           child: Row(
             children: [
               Container(
-                margin: const EdgeInsetsDirectional.only(end: 12),
+                margin: const .directional(end: 12),
                 child: txTypeIcon,
               ),
               Expanded(
                 flex: 1,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: .spaceBetween,
                       children: [
                         RichText(
                           maxLines: 2,
@@ -124,9 +121,9 @@ class TransactionCard extends ConsumerWidget {
                         ),
                         Text(
                           item.pending ? l10n.txPending : date,
-                          textAlign: TextAlign.start,
+                          textAlign: .start,
                           style: styles.textStyleTransactionType.copyWith(
-                            fontWeight: FontWeight.w400,
+                            fontWeight: .w400,
                             fontSize: AppFontSizes.smallest,
                             color: theme.text60,
                           ),
@@ -135,10 +132,10 @@ class TransactionCard extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: .start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: .spaceBetween,
                           children: [
                             Text(
                               l10n.transactionId,
@@ -149,10 +146,7 @@ class TransactionCard extends ConsumerWidget {
                                 txConfirmationStatusProvider(item),
                               );
                               return Container(
-                                margin: const EdgeInsetsDirectional.only(
-                                  top: 0,
-                                  bottom: 4,
-                                ),
+                                margin: const .only(top: 0, bottom: 4),
                                 child: TransactionStateTag(state: txState),
                               );
                             }),
@@ -163,7 +157,7 @@ class TransactionCard extends ConsumerWidget {
                           style: styles.textStyleTransactionType
                               .copyWith(color: theme.text60),
                           maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          overflow: .ellipsis,
                         ),
                         Row(
                           children: [

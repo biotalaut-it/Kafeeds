@@ -17,7 +17,7 @@ bool isValidSeed(String seed) {
 }
 
 extension ToBigInt on Int64 {
-  BigInt toUnsignedBigInt() => BigInt.parse(toStringUnsigned());
+  BigInt toUnsignedBigInt() => .parse(toStringUnsigned());
 }
 
 extension ToInt64 on BigInt {
@@ -32,14 +32,14 @@ extension ToInt64 on BigInt {
 extension AsUint8List on List<int> {
   Uint8List asUint8List() {
     final self = this; // Local variable to allow automatic type promotion.
-    return (self is Uint8List) ? self : Uint8List.fromList(this);
+    return (self is Uint8List) ? self : .fromList(this);
   }
 }
 
 extension Uint8ListUtils on Uint8List {
   String get hex => bytesToHex(this);
   String get toBase64 => bytesToBase64(this);
-  Uint8List get complement => Uint8List.fromList(map((e) => ~e).toList());
+  Uint8List get complement => .fromList(map((e) => ~e).toList());
 }
 
 Uint8List leftPadBytes(Uint8List bytes, int size) {
@@ -64,7 +64,7 @@ Uint8List rightPadBytes(Uint8List bytes, int size) {
 
 String bytesToHex(Uint8List bytes) => HEX.encode(bytes);
 
-Uint8List hexToBytes(String hex) => Uint8List.fromList(HEX.decode(hex));
+Uint8List hexToBytes(String hex) => .fromList(HEX.decode(hex));
 
 String bytesToBase64(Uint8List bytes) => base64.encode(bytes);
 

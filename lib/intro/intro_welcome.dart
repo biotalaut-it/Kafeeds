@@ -20,23 +20,20 @@ class IntroWelcome extends ConsumerWidget {
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: .center,
               children: [
                 Expanded(
                   child: FractionallySizedBox(
                     widthFactor: 0.4,
                     child: FittedBox(
-                      fit: BoxFit.fitWidth,
+                      fit: .fitWidth,
                       child: Image.asset('assets/kaspa.png'),
                     ),
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 20,
-                    ),
+                    margin: .symmetric(horizontal: 40, vertical: 20),
                     child: AutoSizeText(
                       l10n.welcomeText,
                       style: styles.textStyleParagraph,

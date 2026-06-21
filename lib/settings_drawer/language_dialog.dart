@@ -20,7 +20,7 @@ class LanguageDialog extends ConsumerWidget {
 
     return AppSimpleDialog(
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const .only(bottom: 10),
         child: Text(
           l10n.language,
           style: styles.textStyleDialogHeader,

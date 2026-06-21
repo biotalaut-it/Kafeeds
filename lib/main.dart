@@ -29,13 +29,13 @@ void main() async {
 
   // Setup logger
   if (kInDebugMode) {
-    Logger.level = Level.debug;
+    Logger.level = .debug;
     //debugRepaintRainbowEnabled = true;
   } else {
-    Logger.level = Level.off;
+    Logger.level = .off;
   }
 
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setPreferredOrientations([.portraitUp]);
 
   // Init database
   await Database.init();

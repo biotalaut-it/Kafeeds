@@ -67,19 +67,19 @@ class UtxoCard extends ConsumerWidget {
     }
 
     return Container(
-      margin: EdgeInsetsDirectional.fromSTEB(14, 4, 14, 4),
+      margin: .fromSTEB(14, 4, 14, 4),
       decoration: BoxDecoration(
         color: theme.backgroundDark,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: .circular(10),
         boxShadow: [theme.boxShadow],
       ),
       child: TextButton(
         style: styles.cardButtonStyle,
         onPressed: onPressed,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+          padding: const .symmetric(vertical: 14, horizontal: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: .spaceBetween,
             children: [
               if (selectable)
                 Consumer(builder: (context, ref, child) {
@@ -93,12 +93,12 @@ class UtxoCard extends ConsumerWidget {
               Flexible(
                 flex: 1,
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: .min,
                   children: [
                     Flexible(
                       flex: 1,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: .start,
                         children: [
                           Text(
                             addressNotifier.nameForAddress(item.address) ??
@@ -116,7 +116,7 @@ class UtxoCard extends ConsumerWidget {
                           ),
                           Text(
                             item.outpoint.transactionId,
-                            textAlign: TextAlign.start,
+                            textAlign: .start,
                             style: styles.textStyleCurrencyAlt,
                           ),
                           const SizedBox(height: 4),
@@ -125,7 +125,7 @@ class UtxoCard extends ConsumerWidget {
                             style: styles.textStyleTransactionAmountSmall,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: .spaceBetween,
                             children: [
                               RichText(
                                 maxLines: 2,

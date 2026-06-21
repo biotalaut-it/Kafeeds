@@ -12,7 +12,7 @@ class AddressOneLineText extends ConsumerWidget {
   const AddressOneLineText({
     super.key,
     required this.address,
-    this.type = AddressTextType.PRIMARY,
+    this.type = .PRIMARY,
     this.label,
   });
 
@@ -28,25 +28,25 @@ class AddressOneLineText extends ConsumerWidget {
     final addressPartTwo = address.substring(checksumIndex);
 
     final mapping = <AddressTextType, (TextStyle, TextStyle, TextStyle)>{
-      AddressTextType.PRIMARY60: (
+      .PRIMARY60: (
         styles.textStyleAddressPrimary60,
         styles.textStyleAddressText60,
         styles.textStyleAddressPrimary60,
       ),
-      AddressTextType.PRIMARY: (
+      .PRIMARY: (
         styles.textStyleAddressPrimary,
         styles.textStyleAddressText90,
         styles.textStyleAddressPrimary,
       ),
-      AddressTextType.SUCCESS: (
+      .SUCCESS: (
         styles.textStyleAddressSuccess,
         styles.textStyleAddressText90,
-        styles.textStyleAddressSuccess
+        styles.textStyleAddressSuccess,
       ),
-      AddressTextType.SUCCESS_FULL: (
+      .SUCCESS_FULL: (
         styles.textStyleAddressSuccess,
         styles.textStyleAddressSuccess,
-        styles.textStyleAddressSuccess
+        styles.textStyleAddressSuccess,
       ),
     };
 
@@ -54,7 +54,7 @@ class AddressOneLineText extends ConsumerWidget {
       children: [
         if (label != null) Text(label!, style: mapping[type]?.$1),
         RichText(
-          textAlign: TextAlign.center,
+          textAlign: .center,
           text: TextSpan(
             children: [
               TextSpan(text: addressPartOne, style: mapping[type]?.$1),

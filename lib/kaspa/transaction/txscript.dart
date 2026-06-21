@@ -13,21 +13,14 @@ const kOpBlake2b = 170;
 const kOpCheckSigECDSA = 171;
 const kOpCheckSig = 172;
 
-Uint8List payToPubKeyScript(Uint8List publicKey) {
-  return Uint8List.fromList(
-    [publicKey.length, ...publicKey, kOpCheckSig],
-  );
-}
+Uint8List payToPubKeyScript(Uint8List publicKey) =>
+    .fromList([publicKey.length, ...publicKey, kOpCheckSig]);
 
-Uint8List payToPubKeyScriptECDSA(Uint8List publicKey) {
-  return Uint8List.fromList(
-    [publicKey.length, ...publicKey, kOpCheckSigECDSA],
-  );
-}
+Uint8List payToPubKeyScriptECDSA(Uint8List publicKey) =>
+    .fromList([publicKey.length, ...publicKey, kOpCheckSigECDSA]);
 
-Uint8List payToScriptHashScript(Uint8List hash) {
-  return Uint8List.fromList([kOpBlake2b, hash.length, ...hash, kOpEqual]);
-}
+Uint8List payToScriptHashScript(Uint8List hash) =>
+    .fromList([kOpBlake2b, hash.length, ...hash, kOpEqual]);
 
 ScriptPublicKey payToAddressScript(Address address) {
   return address.map(

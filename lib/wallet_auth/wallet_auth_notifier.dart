@@ -159,11 +159,8 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
     required int index,
   }) async {
     final seed = await _getSeed();
-    final wallet = HdWallet.forSeedHex(seed, type: HdWalletType.legacy);
-    final keyPair = wallet.deriveKeyPair(
-      typeIndex: typeIndex,
-      index: index,
-    );
+    final wallet = HdWallet.forSeedHex(seed, type: .legacy);
+    final keyPair = wallet.deriveKeyPair(typeIndex: typeIndex, index: index);
     return keyPair.publicKey;
   }
 

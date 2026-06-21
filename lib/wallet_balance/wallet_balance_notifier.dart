@@ -11,7 +11,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
   final KaspaClient client;
 
   final Map<String, BigInt> _balances = {};
-  BigInt _totalBalance = BigInt.zero;
+  BigInt _totalBalance = .zero;
 
   WalletBalanceNotifier({
     required TypedBox<AddressBalance> balanceBox,
@@ -25,7 +25,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
       }
       _balances[balance.address] = balance.balance;
     }
-    _totalBalance = _balances.values.fold(BigInt.zero, (a, b) => a + b);
+    _totalBalance = _balances.values.fold(.zero, (a, b) => a + b);
   }
 
   IMap<String, BigInt>? _cachedBalances;
@@ -41,8 +41,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
   IMap<String, AddressBalance> _lastRefreshChanges = IMap();
   IMap<String, AddressBalance> get lastRefreshChanges => _lastRefreshChanges;
 
-  Amount balanceForAddress(String address) =>
-      Amount.raw(_balances[address] ?? BigInt.zero);
+  Amount balanceForAddress(String address) => .raw(_balances[address] ?? .zero);
 
   Future<void> refresh(Iterable<String> addresses) async {
     if (addresses.isEmpty) {
@@ -54,7 +53,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
     final changes = <String, AddressBalance>{};
     for (final entry in entries) {
       final newBalance = entry.balance;
-      final oldBalance = _balances[entry.address] ?? BigInt.zero;
+      final oldBalance = _balances[entry.address] ?? .zero;
 
       if (newBalance != oldBalance) {
         changes[entry.address] = entry;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'main_card_state.dart';
 
 class MainCardNotifier extends StateNotifier<MainCardState> {
-  MainCardNotifier() : super(MainCardState.showBalance()) {}
+  MainCardNotifier() : super(.showBalance());
 
   void setNextState() {
     //final sharedPrefsUtil = read(sharedPrefsUtilProvider);
@@ -12,7 +12,7 @@ class MainCardNotifier extends StateNotifier<MainCardState> {
 
     //sharedPrefsUtil.setPriceConversion(pc);
     Future.delayed(Duration(milliseconds: 150), () {
-      state = MainCardState.showBalance();
+      state = .showBalance();
     });
   }
 }

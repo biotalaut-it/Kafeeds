@@ -30,7 +30,7 @@ class SeedBackupSheet extends HookConsumerWidget {
             Text(
               l10n.bip39PassphraseNote,
               style: styles.textStyleAddressText60,
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
         ],
       ),

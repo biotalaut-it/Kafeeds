@@ -55,7 +55,7 @@ TxReportItem convertTx(
   required TxNotesNotifier txNotes,
   required AppLocalizations l10n,
 }) {
-  BigInt sumRaw(BigInt sum, int amount) => sum + BigInt.from(amount);
+  BigInt sumRaw(BigInt sum, int amount) => sum + .from(amount);
   final txInputs = tx.inputData.nonNulls.toIList();
   final txOutputs = tx.apiTx.outputs;
 
@@ -101,7 +101,7 @@ TxReportItem convertTx(
       txHash: tx.id,
       isCompound: isCompound,
       isSendToSelf: isSendToSelf,
-      sendAmount: formatAmount(Amount.raw(feeRaw)),
+      sendAmount: formatAmount(.raw(feeRaw)),
       receiveAmount: '',
       fee: '',
       label: 'cost',
@@ -116,12 +116,12 @@ TxReportItem convertTx(
       isCompound: isCompound,
       isSendToSelf: isSendToSelf,
       sendAmount: isAllMyInput && !isAllMyOutput
-          ? formatAmount(Amount.raw(sendRaw - receiveRaw - feeRaw))
+          ? formatAmount(.raw(sendRaw - receiveRaw - feeRaw))
           : '',
       receiveAmount: !isSendToSelf && receiveRaw > sendRaw
-          ? formatAmount(Amount.raw(receiveRaw - sendRaw))
+          ? formatAmount(.raw(receiveRaw - sendRaw))
           : '',
-      fee: isAnyMyInput ? formatAmount(Amount.raw(feeRaw)) : '',
+      fee: isAnyMyInput ? formatAmount(.raw(feeRaw)) : '',
       label: '',
       description: '',
       toAddress: toAddress,

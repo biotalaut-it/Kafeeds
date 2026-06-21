@@ -127,7 +127,7 @@ class DownloadTxsDialog extends HookConsumerWidget {
 
         final box = context.findRenderObject() as RenderBox?;
         final params = ShareParams(
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+          sharePositionOrigin: box!.localToGlobal(.zero) & box.size,
           files: [XFile(txFile.path)],
         );
         await SharePlus.instance.share(params);
@@ -144,8 +144,8 @@ class DownloadTxsDialog extends HookConsumerWidget {
         style: styles.textStyleDialogHeader,
       ),
       content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: .min,
+        crossAxisAlignment: .stretch,
         children: [
           Text(
             message.value,

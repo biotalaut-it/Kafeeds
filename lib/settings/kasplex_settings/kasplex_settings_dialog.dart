@@ -18,7 +18,7 @@ class Krc20SettingsDialog extends ConsumerWidget {
 
     return AppSimpleDialog(
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const .only(bottom: 10),
         child: Text(
           'Enable KRC20',
           style: styles.textStyleDialogHeader,
@@ -26,29 +26,17 @@ class Krc20SettingsDialog extends ConsumerWidget {
       ),
       children: [
         SimpleDialogOption(
-          onPressed: () => appRouter.pop(
-            context,
-            withResult: true,
-          ),
+          onPressed: () => appRouter.pop(context, withResult: true),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              l10n.on,
-              style: style,
-            ),
+            padding: const .symmetric(vertical: 8),
+            child: Text(l10n.on, style: style),
           ),
         ),
         SimpleDialogOption(
-          onPressed: () => appRouter.pop(
-            context,
-            withResult: false,
-          ),
+          onPressed: () => appRouter.pop(context, withResult: false),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              l10n.off,
-              style: style,
-            ),
+            padding: const .symmetric(vertical: 8),
+            child: Text(l10n.off, style: style),
           ),
         ),
       ],

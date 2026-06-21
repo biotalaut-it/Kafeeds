@@ -6,7 +6,6 @@ import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../send_sheet/send_note_widget.dart';
 import '../widgets/address_card.dart';
-import '../widgets/address_widgets.dart';
 import '../widgets/amount_label.dart';
 import '../widgets/scrollable_wrapper.dart';
 import '../widgets/txid_card.dart';
@@ -27,43 +26,40 @@ class TransactionDetails extends ConsumerWidget {
 
     final output = txItem.tx.apiTx.outputs[txItem.outputIndex];
     final amountRaw = output.amount;
-    final amount = Amount.raw(BigInt.from(amountRaw));
+    final amount = Amount.raw(.from(amountRaw));
 
     final address = Address.decodeAddress(output.scriptPublicKeyAddress);
     final txId = txItem.tx.id;
     final note = ref.watch(txNoteProvider(txId))?.note;
     final title = switch (txItem.type) {
-      TxItemType.send => l10n.sent.toUpperCase(),
-      TxItemType.receive => l10n.received.toUpperCase(),
-      TxItemType.thisWallet =>
-        l10n.thisWallet.replaceAll('#', '').toUpperCase(),
-      TxItemType.compound => l10n.compoundUppercased,
+      .send => l10n.sent.toUpperCase(),
+      .receive => l10n.received.toUpperCase(),
+      .thisWallet => l10n.thisWallet.replaceAll('#', '').toUpperCase(),
+      .compound => l10n.compoundUppercased,
     };
     final addressTitle = switch (txItem.type) {
-      TxItemType.send => l10n.toAddress.toUpperCase(),
-      TxItemType.receive ||
-      TxItemType.thisWallet ||
-      TxItemType.compound => l10n.walletAddress.toUpperCase(),
+      .send => l10n.toAddress.toUpperCase(),
+      .receive || .thisWallet || .compound => l10n.walletAddress.toUpperCase(),
     };
 
     return ScrollableWrapper(
       child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: .start,
           children: [
             const SizedBox(height: 20),
             FittedBox(
-              fit: BoxFit.scaleDown,
+              fit: .scaleDown,
               child: Text(
                 title,
                 style: styles.textStyleSubHeader,
-                textAlign: TextAlign.center,
+                textAlign: .center,
                 maxLines: 1,
               ),
             ),
             if (txItem.pending)
               Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                padding: const .only(top: 10, bottom: 10),
                 child: Text(
                   l10n.txPendingMessage,
                   style: styles.textStyleAddressPrimary,
@@ -72,22 +68,19 @@ class TransactionDetails extends ConsumerWidget {
             const SizedBox(height: 10),
             AmountLabel(amount: amount),
             Container(
-              margin: const EdgeInsets.only(top: 30, bottom: 10),
+              margin: const .only(top: 30, bottom: 10),
               alignment: Alignment.center,
               child: Text(
                 addressTitle,
                 style: styles.textStyleSubHeader,
               ),
             ),
-            AddressCard(
-              address: address,
-              type: AddressTextType.PRIMARY,
-            ),
+            AddressCard(address: address, type: .PRIMARY),
             const SizedBox(height: 30),
             TxIdCard(txId: txId),
             if (note != null)
               Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 20),
+                padding: const .only(top: 30, bottom: 20),
                 child: SendNoteWidget(note: note),
               ),
           ],

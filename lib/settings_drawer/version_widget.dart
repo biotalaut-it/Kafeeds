@@ -27,9 +27,9 @@ class VersionWidget extends HookConsumerWidget {
     void showEula() => openUrl(kEulaUrl);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      padding: const .only(top: 10, bottom: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: [
           Text(packageInfo.data ?? '', style: styles.textStyleVersion),
           Text(' | ', style: styles.textStyleVersion),

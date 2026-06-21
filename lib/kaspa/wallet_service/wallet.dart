@@ -14,7 +14,7 @@ String convertIfXpub(String hdPubKey) {
   if (hdPubKey.startsWith('xpub')) {
     try {
       final bip32 = BIP32.fromBase58(hdPubKey);
-      bip32.network = networkTypeForNetwork(KaspaNetwork.mainnet);
+      bip32.network = networkTypeForNetwork(.mainnet);
       return bip32.toBase58();
     } catch (_) {}
   }
@@ -35,16 +35,12 @@ String convertHdPublicKey(String hdPubKey, KaspaNetwork toNetwork) {
 }
 
 AddressPrefix addressPrefixForNetwork(KaspaNetwork network) {
-  switch (network) {
-    case KaspaNetwork.mainnet:
-      return AddressPrefix.kaspa;
-    case KaspaNetwork.testnet:
-      return AddressPrefix.kaspaTest;
-    case KaspaNetwork.devnet:
-      return AddressPrefix.kaspaDev;
-    case KaspaNetwork.simnet:
-      return AddressPrefix.kaspaSim;
-  }
+  return switch (network) {
+    .mainnet => .kaspa,
+    .testnet => .kaspaTest,
+    .devnet => .kaspaDev,
+    .simnet => .kaspaSim,
+  };
 }
 
 enum HdWalletType {

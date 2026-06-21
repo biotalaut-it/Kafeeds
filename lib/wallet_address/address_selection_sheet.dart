@@ -66,7 +66,7 @@ class AddressSelectionSheet extends HookConsumerWidget {
       ),
       mainWidget: ScrollableWrapper(
         child: AddressListWidget(
-          addressType: AddressType.receive,
+          addressType: .receive,
           scrollController: scrollController,
           onSelection: (address) {
             final notifier = ref.read(selectedAddressProvider.notifier);
@@ -77,7 +77,7 @@ class AddressSelectionSheet extends HookConsumerWidget {
       ),
       bottomWidget: ActionButtonsWrapper(
         buttons: [
-          if (addressType == AddressType.receive)
+          if (addressType == .receive)
             PrimaryButton(
               title: l10n.newAddress,
               disabled: addingAddress.value,

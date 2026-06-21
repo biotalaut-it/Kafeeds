@@ -215,9 +215,9 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
 
   @override
   Color get barrierColor {
-    if (type == AnimationType.TRANSFER_TRANSFERRING ||
-        type == AnimationType.TRANSFER_SEARCHING_QR ||
-        type == AnimationType.TRANSFER_SEARCHING_MANUAL) {
+    if (type == .TRANSFER_TRANSFERRING ||
+        type == .TRANSFER_SEARCHING_QR ||
+        type == .TRANSFER_SEARCHING_MANUAL) {
       return barrierStronger;
     }
     return barrier;
@@ -242,7 +242,7 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
     Animation<double> secondaryAnimation,
   ) {
     return Material(
-      type: MaterialType.transparency,
+      type: .transparency,
       child: SafeArea(
         child: _buildOverlayContent(context),
       ),
@@ -261,28 +261,28 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
   Widget _buildOverlayContent(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     switch (type) {
-      case AnimationType.TRANSFER_SEARCHING_QR:
+      case .TRANSFER_SEARCHING_QR:
         return Center(
           child: Container(
-            margin: EdgeInsets.only(bottom: size.height * 0.15),
+            margin: .only(bottom: size.height * 0.15),
             width: size.width / 1.1,
             height: size.width / 1.1,
             child: _getAnimation(context),
           ),
         );
-      case AnimationType.TRANSFER_SEARCHING_MANUAL:
+      case .TRANSFER_SEARCHING_MANUAL:
         return Center(
           child: Container(
-            margin: EdgeInsets.only(bottom: size.height * 0.15),
+            margin: .only(bottom: size.height * 0.15),
             width: size.width / 1.1,
             height: size.width / 1.1,
             child: _getAnimation(context),
           ),
         );
-      case AnimationType.TRANSFER_TRANSFERRING:
+      case .TRANSFER_TRANSFERRING:
         return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: .center,
             children: [
               Container(
                 alignment: AlignmentDirectional(0, -0.5),
@@ -291,14 +291,14 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
                 child: _getAnimation(context),
               ),
               Container(
-                margin: EdgeInsetsDirectional.only(
+                margin: .directional(
                   start: 10,
                   top: 20,
                   bottom: size.height * 0.15,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: .center,
+                  crossAxisAlignment: .end,
                   children: [
                     Consumer(builder: (context, ref, _) {
                       final styles = ref.watch(stylesProvider);
@@ -309,7 +309,7 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
                       );
                     }),
                     Container(
-                      margin: EdgeInsets.only(bottom: 7),
+                      margin: .only(bottom: 7),
                       width: 33.333,
                       height: 8.866,
                     ),
@@ -322,7 +322,7 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
       case AnimationType.MANTA:
         return Center(
           child: Container(
-            margin: EdgeInsets.only(bottom: size.height * 0.05),
+            margin: .only(bottom: size.height * 0.05),
             width: size.width,
             height: size.width,
             child: _getAnimation(context),
@@ -330,18 +330,16 @@ class AnimationLoadingOverlay extends ModalRoute<void> {
         );
       default:
         return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: type == AnimationType.SEND
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.center,
+          mainAxisSize: .min,
+          mainAxisAlignment: type == .SEND ? .end : .center,
           children: [
             Container(
-              margin: type == AnimationType.SEND
-                  ? EdgeInsets.only(bottom: 10, left: 90, right: 90)
-                  : EdgeInsets.zero,
+              margin: type == .SEND
+                  ? .only(bottom: 10, left: 90, right: 90)
+                  : .zero,
               //Widgth/Height ratio is needed because BoxFit is not working as expected
-              width: type == AnimationType.SEND ? double.infinity : 100,
-              height: type == AnimationType.SEND ? size.width : 100,
+              width: type == .SEND ? .infinity : 100,
+              height: type == .SEND ? size.width : 100,
               child: _getAnimation(context),
             ),
           ],

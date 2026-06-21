@@ -71,7 +71,7 @@ class WalletCard extends ConsumerWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 28, vertical: 6),
+      margin: const .symmetric(horizontal: 28, vertical: 6),
       child: Slidable(
         endActionPane: ActionPane(
           extentRatio: 0.18,
@@ -89,12 +89,12 @@ class WalletCard extends ConsumerWidget {
           style: styles.darkCardButtonStyle,
           onPressed: selectWallet,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+            padding: const .symmetric(vertical: 14, horizontal: 12),
             child: Row(
               children: [
                 Expanded(
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: .end,
                     children: [
                       const SizedBox(width: 8),
                       Icon(
@@ -106,11 +106,11 @@ class WalletCard extends ConsumerWidget {
                       Expanded(
                         child: Text(
                           wallet.name,
-                          textAlign: TextAlign.start,
+                          textAlign: .start,
                           maxLines: 1,
                           style: styles.textStyleParagraphBold.copyWith(
                             fontSize: 18,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: .ellipsis,
                           ),
                         ),
                       ),

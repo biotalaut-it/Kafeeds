@@ -23,12 +23,12 @@ class FeeWidget extends ConsumerWidget {
     final horizontal = MediaQuery.widthOf(context) * 0.105;
 
     return Container(
-      width: double.infinity,
+      width: .infinity,
       margin: .only(left: horizontal, right: horizontal, top: 5),
       padding: const .symmetric(horizontal: 25, vertical: 15),
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: .circular(25),
       ),
       child: Column(
         children: [
@@ -38,7 +38,7 @@ class FeeWidget extends ConsumerWidget {
           ),
           Text(
             '${amount.value} $symbol',
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: styles.textStyleAddressText90,
           ),
         ],

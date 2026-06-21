@@ -91,24 +91,24 @@ class IntroImportKpub extends HookConsumerWidget {
 
     return ContentWrapper(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           Expanded(
             child: ListView(
               shrinkWrap: true,
               children: [
                 Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: .centerLeft,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 20),
+                    padding: const .directional(start: 20),
                     child: const IntroBackButton(),
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: AlignmentDirectional(-1, 0),
                   child: FittedBox(
-                    fit: BoxFit.scaleDown,
+                    fit: .scaleDown,
                     child: Text(
                       l10n.importKpub,
                       style: styles.textStyleHeaderColored,
@@ -117,12 +117,12 @@ class IntroImportKpub extends HookConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-                  alignment: Alignment.centerLeft,
+                  margin: const .only(left: 40, right: 40, top: 15),
+                  alignment: .centerLeft,
                   child: Text(
                     l10n.importKpubHint,
                     style: styles.textStyleParagraph,
-                    textAlign: TextAlign.start,
+                    textAlign: .start,
                   ),
                 ),
                 Column(
@@ -139,7 +139,7 @@ class IntroImportKpub extends HookConsumerWidget {
                           RegExp("[a-km-zA-HJ-NP-Z1-9]"),
                         ),
                       ],
-                      textInputAction: TextInputAction.next,
+                      textInputAction: .next,
                       maxLines: null,
                       autocorrect: false,
                       autofocus: true,
@@ -155,21 +155,18 @@ class IntroImportKpub extends HookConsumerWidget {
                       ),
                       fadeSuffixOnCondition: true,
                       suffixShowFirstCondition: !kpubIsValid,
-                      keyboardType: TextInputType.text,
+                      keyboardType: .text,
                       style: kpubIsValid
                           ? styles.textStyleParagraphPrimaryNormal
                           : styles.textStyleParagraphNormal,
                     ),
                     Container(
                       alignment: const AlignmentDirectional(0, 0),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 40,
-                      ),
+                      padding: const .symmetric(vertical: 6, horizontal: 40),
                       child: Text(
                         showInvalidMessage ? l10n.invalidKpubMessage : '',
                         style: styles.textStyleParagraphThinSuccess,
-                        textAlign: TextAlign.center,
+                        textAlign: .center,
                       ),
                     ),
                   ],

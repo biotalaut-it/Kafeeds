@@ -34,12 +34,12 @@ class SetupFailedPage extends ConsumerWidget {
         children: [
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: .spaceEvenly,
               children: [
                 FractionallySizedBox(
                   widthFactor: 0.4,
                   child: FittedBox(
-                    fit: BoxFit.fitWidth,
+                    fit: .fitWidth,
                     child: Image.asset('assets/kaspa.png'),
                   ),
                 ),

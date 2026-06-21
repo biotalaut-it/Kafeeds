@@ -73,16 +73,16 @@ class WalletService {
     final selectedUtxos =
         spendableUtxos.take(kMaxInputsPerTransaction).toList();
     final fee = BigInt.from(selectedUtxos.length) * feePerInput +
-        (priorityFee?.raw ?? BigInt.zero);
+        (priorityFee?.raw ?? .zero);
     final selectedTotal = selectedUtxos.fold<BigInt>(
-      BigInt.zero,
+      .zero,
       (sum, utxo) => sum + utxo.utxoEntry.amount,
     );
     final amountRaw = selectedTotal - fee;
 
     return createSendTx(
       toAddress: compoundAddress,
-      amount: Amount.raw(amountRaw),
+      amount: .raw(amountRaw),
       spendableUtxos: spendableUtxos,
       selectedUtxos: selectedUtxos,
       feePerInput: feePerInput,

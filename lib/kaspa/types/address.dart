@@ -77,12 +77,12 @@ sealed class Address with _$Address {
 
   static Address decodeAddress(
     String address, [
-    AddressPrefix expectedPrefix = AddressPrefix.unknown,
+    AddressPrefix expectedPrefix = .unknown,
   ]) {
     final decoded = bech32.bech32.decode(address);
     final prefix = AddressPrefix.parseBech32Prefix(decoded.hrp);
 
-    if (expectedPrefix != AddressPrefix.unknown && expectedPrefix != prefix) {
+    if (expectedPrefix != .unknown && expectedPrefix != prefix) {
       throw Exception('Invalid prefix');
     }
 
@@ -90,16 +90,12 @@ sealed class Address with _$Address {
     final version = data.first;
     final payload = data.sublist(1);
 
-    switch (version) {
-      case kAddressIdPubKey:
-        return Address.publicKey(prefix: prefix, publicKey: payload);
-      case kAddressIdPubKeyECDSA:
-        return Address.pubKeyECDSA(prefix: prefix, publicKey: payload);
-      case kAddressIdScriptHash:
-        return Address.scriptHash(prefix: prefix, hash: payload);
-      default:
-        throw UnknownAddressTypeException(version);
-    }
+    return switch (version) {
+      kAddressIdPubKey => .publicKey(prefix: prefix, publicKey: payload),
+      kAddressIdPubKeyECDSA => .pubKeyECDSA(prefix: prefix, publicKey: payload),
+      kAddressIdScriptHash => .scriptHash(prefix: prefix, hash: payload),
+      _ => throw UnknownAddressTypeException(version),
+    };
   }
 
   Uint8List scriptAddress() {

@@ -19,7 +19,7 @@ class AddressFilterDialog extends ConsumerWidget {
 
     return AppSimpleDialog(
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const .only(bottom: 10),
         child: Text(
           l10n.addressFilterDialogTitle,
           style: styles.textStyleDialogHeader,
@@ -32,7 +32,7 @@ class AddressFilterDialog extends ConsumerWidget {
             withResult: AddressFilter.all,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const .symmetric(vertical: 8),
             child: Text(
               l10n.addressFilterDialogOptionAllAddresses,
               style: style,
@@ -45,7 +45,7 @@ class AddressFilterDialog extends ConsumerWidget {
             withResult: AddressFilter.nonZero,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const .symmetric(vertical: 8),
             child: Text(
               l10n.addressFilterDialogOptionNonZeroBalances,
               style: style,

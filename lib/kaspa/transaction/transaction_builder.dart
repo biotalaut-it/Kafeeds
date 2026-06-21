@@ -11,14 +11,14 @@ class TransactionBuilder {
   final BigInt feePerInputRaw;
   final Amount priorityFee;
 
-  BigInt _change = BigInt.zero;
+  BigInt _change = .zero;
   Amount get change => Amount.raw(_change);
 
   Address? _changeAddress;
   Address? get changeAddress => _changeAddress;
 
-  BigInt _baseFee = BigInt.zero;
-  Amount get baseFee => Amount.raw(_baseFee);
+  BigInt _baseFee = .zero;
+  Amount get baseFee => .raw(_baseFee);
 
   List<Utxo> _selectedUtxos = <Utxo>[];
   List<Utxo> get selectedUtxos => UnmodifiableListView(_selectedUtxos);
@@ -27,8 +27,8 @@ class TransactionBuilder {
     required this.utxos,
     BigInt? feePerInput,
     Amount? priorityFee,
-  })  : feePerInputRaw = feePerInput ?? kFeePerInput,
-        priorityFee = priorityFee ?? Amount.zero;
+  }) : feePerInputRaw = feePerInput ?? kFeePerInput,
+       priorityFee = priorityFee ?? .zero;
 
   Transaction? rebuildTransaction(
     ApiTransaction tx, {
@@ -99,8 +99,8 @@ class TransactionBuilder {
       spendAmount: amountRaw,
     );
 
-    final hasChange = changeAmount >= kMinChangeTarget ||
-        changeAmount >= amountRaw ~/ BigInt.two;
+    final hasChange =
+        changeAmount >= kMinChangeTarget || changeAmount >= amountRaw ~/ .two;
 
     final payments = <Address, Int64>{
       toAddress: amountRaw.toInt64(),
@@ -110,12 +110,11 @@ class TransactionBuilder {
     if (hasChange) {
       _change = changeAmount;
       _changeAddress = changeAddress;
-      _baseFee = feePerInputRaw * BigInt.from(_selectedUtxos.length);
+      _baseFee = feePerInputRaw * .from(_selectedUtxos.length);
     } else {
-      _change = BigInt.zero;
+      _change = .zero;
       _changeAddress = null;
-      _baseFee =
-          feePerInputRaw * BigInt.from(_selectedUtxos.length) + changeAmount;
+      _baseFee = feePerInputRaw * .from(_selectedUtxos.length) + changeAmount;
     }
 
     final unsignedTransaction = _createUnsignedTransaction(
@@ -174,7 +173,7 @@ class TransactionBuilder {
       (total, utxo) => total + utxo.utxoEntry.amount,
     );
 
-    final baseFeeRaw = feePerInputRaw * BigInt.from(selectedUtxos.length);
+    final baseFeeRaw = feePerInputRaw * .from(selectedUtxos.length);
     final totalSpendRaw = spendAmountRaw + baseFeeRaw + priorityFee.raw;
 
     if (totalValue < totalSpendRaw) {
@@ -188,13 +187,13 @@ class TransactionBuilder {
     required BigInt spendAmount,
   }) {
     final selectedUtxos = <Utxo>[];
-    var totalValue = BigInt.zero;
+    BigInt totalValue = .zero;
 
     for (final utxo in utxos) {
       selectedUtxos.add(utxo);
       totalValue += utxo.utxoEntry.amount;
 
-      final baseFeeRaw = feePerInputRaw * BigInt.from(selectedUtxos.length);
+      final baseFeeRaw = feePerInputRaw * .from(selectedUtxos.length);
       final totalSpend = spendAmount + baseFeeRaw + priorityFee.raw;
 
       if (totalValue == totalSpend ||
@@ -204,7 +203,7 @@ class TransactionBuilder {
       }
     }
 
-    final baseFeeRaw = feePerInputRaw * BigInt.from(selectedUtxos.length);
+    final baseFeeRaw = feePerInputRaw * .from(selectedUtxos.length);
     final totalSpend = spendAmount + baseFeeRaw + priorityFee.raw;
 
     if (totalValue < totalSpend) {
@@ -218,13 +217,13 @@ class TransactionBuilder {
     required List<Utxo> selectedUtxos,
     required BigInt spendAmount,
   }) {
-    var totalValue = BigInt.zero;
+    BigInt totalValue = .zero;
 
     for (final utxo in selectedUtxos) {
       totalValue += utxo.utxoEntry.amount;
     }
 
-    final baseFeeRaw = feePerInputRaw * BigInt.from(selectedUtxos.length);
+    final baseFeeRaw = feePerInputRaw * .from(selectedUtxos.length);
     final fee = baseFeeRaw + priorityFee.raw;
     final totalSpend = spendAmount + fee;
 

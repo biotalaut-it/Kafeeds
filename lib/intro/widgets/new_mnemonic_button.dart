@@ -38,9 +38,9 @@ class NewMnemonicButton extends ConsumerWidget {
       style: styles.smallOutlinedPrimaryButtonStyle,
       onPressed: generateNewMnemonic,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const .symmetric(horizontal: 8),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             Icon(Icons.cached, size: 20),
             const SizedBox(width: 8),

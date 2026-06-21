@@ -47,24 +47,24 @@ class KpubSheet extends ConsumerWidget {
       mainWidget: ScrollableWrapper(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: .spaceEvenly,
             children: [
               Padding(
                 padding: .symmetric(horizontal: horizontal, vertical: 30),
                 child: Text(
                   l10n.kpubDescription,
                   style: styles.textStyleAccount,
-                  textAlign: TextAlign.center,
+                  textAlign: .center,
                   maxLines: 3,
                 ),
               ),
               Container(
                 padding: const .symmetric(horizontal: 25, vertical: 15),
                 margin: .symmetric(horizontal: horizontal),
-                width: double.infinity,
+                width: .infinity,
                 decoration: BoxDecoration(
                   color: theme.backgroundDarkest,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: .circular(25),
                 ),
                 child: Text(kpub, style: styles.textStyleAddressText90),
               ),

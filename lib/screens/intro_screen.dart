@@ -38,10 +38,7 @@ class IntroScreen extends HookConsumerWidget {
       final pin = await appRouter.push(
         context,
         MaterialPageRoute<String>(
-          builder: (_) => PinScreen(
-            PinOverlayType.NEW_PIN,
-            l10n: l10n,
-          ),
+          builder: (_) => PinScreen(.NEW_PIN, l10n: l10n),
         ),
       );
       if (pin != null && pin.length > 5) {
@@ -76,16 +73,16 @@ class IntroScreen extends HookConsumerWidget {
 
     Widget widgetForPage(IntroPage page) {
       return switch (page) {
-        IntroPage.walletName => const IntroWalletName(),
-        IntroPage.passwordOnLaunch => const IntroPasswordOnLaunch(),
-        IntroPage.password => const IntroPassword(),
-        IntroPage.importSelect => const IntroImportSelect(),
-        IntroPage.importSeed => const IntroImportSeed(),
-        IntroPage.importLegacySeed => const IntroImportSeed(isLegacy: true),
-        IntroPage.importKpub => const IntroImportKpub(),
-        IntroPage.backupSeed => const IntroBackupSeed(),
-        IntroPage.backupSafety => const IntroBackupSafety(),
-        IntroPage.backupConfirm => const IntroBackupConfirm(),
+        .walletName => const IntroWalletName(),
+        .passwordOnLaunch => const IntroPasswordOnLaunch(),
+        .password => const IntroPassword(),
+        .importSelect => const IntroImportSelect(),
+        .importSeed => const IntroImportSeed(),
+        .importLegacySeed => const IntroImportSeed(isLegacy: true),
+        .importKpub => const IntroImportKpub(),
+        .backupSeed => const IntroBackupSeed(),
+        .backupSafety => const IntroBackupSafety(),
+        .backupConfirm => const IntroBackupConfirm(),
       };
     }
 

@@ -23,7 +23,7 @@ sealed class SendTx with _$SendTx {
     required BigInt mass,
   }) = _SendTx;
 
-  Amount get fee => Amount.raw(baseFee.raw + priorityFee.raw);
+  Amount get fee => .raw(baseFee.raw + priorityFee.raw);
 
   Address get toAddress => uri.address;
 

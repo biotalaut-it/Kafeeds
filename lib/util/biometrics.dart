@@ -13,10 +13,9 @@ class BiometricUtil {
     final canCheck = await localAuth.canCheckBiometrics;
     if (canCheck) {
       final availableBiometrics = await localAuth.getAvailableBiometrics();
-      return availableBiometrics.any((element) =>
-          element == BiometricType.face ||
-          element == BiometricType.fingerprint ||
-          element == BiometricType.strong);
+      return availableBiometrics.any(
+        (type) => type == .face || type == .fingerprint || type == .strong,
+      );
     }
     return false;
   }

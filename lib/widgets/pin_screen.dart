@@ -67,7 +67,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
     super.initState();
 
     // Initialize list all empty
-    if (widget.type == PinOverlayType.ENTER_PIN) {
+    if (widget.type == .ENTER_PIN) {
       _header = l10n.pinEnterTitle;
       _pinLength = widget.expectedPin!.length;
     } else {
@@ -92,8 +92,8 @@ class _PinScreenState extends ConsumerState<PinScreen>
     );
     _animation = Tween(begin: 0.0, end: 25.0).animate(curve)
       ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          if (widget.type == PinOverlayType.ENTER_PIN) {
+        if (status == .completed) {
+          if (widget.type == .ENTER_PIN) {
             pinLockout.incrementUnlockAttempts().then((failedAttempts) {
               if (failedAttempts >= MAX_ATTEMPTS) {
                 setState(() {
@@ -194,8 +194,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
     final l10n = l10nOf(context);
 
     void onKeyTap(String key) {
-      if (_controller.status == AnimationStatus.forward ||
-          _controller.status == AnimationStatus.reverse) {
+      if (_controller.status == .forward || _controller.status == .reverse) {
         return;
       }
       if (_setCharacter(key)) {
@@ -205,7 +204,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
         // Mild delay so they can actually see the last dot get filled
         Future.delayed(Duration(milliseconds: 50), () async {
           if (!context.mounted) return;
-          if (widget.type == PinOverlayType.ENTER_PIN) {
+          if (widget.type == .ENTER_PIN) {
             // Pin is not what was expected
             if (_pin != widget.expectedPin) {
               hapticUtil.error();
@@ -242,47 +241,46 @@ class _PinScreenState extends ConsumerState<PinScreen>
       body: LayoutBuilder(builder: (context, constraints) {
         final size = Size(constraints.maxWidth, constraints.maxHeight);
         return Container(
-          constraints: BoxConstraints.expand(),
+          constraints: .expand(),
           child: Material(
             color: widget.pinScreenBackgroundColor ?? theme.backgroundDark,
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: size.height * 0.1),
+                  margin: .only(top: size.height * 0.1),
                   child: Column(
                     children: [
                       // Header
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        margin: .symmetric(horizontal: 40),
                         child: AutoSizeText(
                           _header,
                           style: styles.textStylePinScreenHeaderColored,
-                          textAlign: TextAlign.center,
+                          textAlign: .center,
                           maxLines: 1,
                           stepGranularity: 0.1,
                         ),
                       ),
                       // Descripttion
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                        margin: .symmetric(horizontal: 40, vertical: 10),
                         child: AutoSizeText(
                           widget.description,
                           style: styles.textStyleParagraph,
-                          textAlign: TextAlign.center,
+                          textAlign: .center,
                           maxLines: 1,
                           stepGranularity: 0.1,
                         ),
                       ),
                       // Dots
                       Container(
-                        margin: EdgeInsetsDirectional.only(
+                        margin: .directional(
                           start: size.width * 0.25 + _animation.value,
                           end: size.width * 0.25 - _animation.value,
                           top: size.height * 0.02,
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: .spaceAround,
                           children: [
                             for (int i = 0; i < _pinLength; i++)
                               Icon(
@@ -298,20 +296,20 @@ class _PinScreenState extends ConsumerState<PinScreen>
                 ),
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.only(
+                    margin: .only(
                       left: size.width * 0.07,
                       right: size.width * 0.07,
                       bottom: size.height * 0.05,
                       top: size.height * 0.05,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: .center,
+                      mainAxisAlignment: .end,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(bottom: size.height * 0.01),
+                          margin: .only(bottom: size.height * 0.01),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: .spaceAround,
                             children: [
                               PinScreenButton(text: '1', onTap: onKeyTap),
                               PinScreenButton(text: '2', onTap: onKeyTap),
@@ -320,9 +318,9 @@ class _PinScreenState extends ConsumerState<PinScreen>
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: size.height * 0.01),
+                          margin: .only(bottom: size.height * 0.01),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: .spaceAround,
                             children: [
                               PinScreenButton(text: '4', onTap: onKeyTap),
                               PinScreenButton(text: '5', onTap: onKeyTap),
@@ -331,9 +329,9 @@ class _PinScreenState extends ConsumerState<PinScreen>
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: size.height * 0.01),
+                          margin: .only(bottom: size.height * 0.01),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: .spaceAround,
                             children: [
                               PinScreenButton(text: '7', onTap: onKeyTap),
                               PinScreenButton(text: '8', onTap: onKeyTap),
@@ -342,9 +340,9 @@ class _PinScreenState extends ConsumerState<PinScreen>
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: size.height * 0.009),
+                          margin: .only(bottom: size.height * 0.009),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: .spaceAround,
                             children: [
                               SizedBox(height: buttonSize, width: buttonSize),
                               PinScreenButton(text: '0', onTap: onKeyTap),
@@ -352,7 +350,7 @@ class _PinScreenState extends ConsumerState<PinScreen>
                                 height: buttonSize,
                                 width: buttonSize,
                                 child: InkWell(
-                                  borderRadius: BorderRadius.circular(200),
+                                  borderRadius: .circular(200),
                                   highlightColor: theme.primary15,
                                   splashColor: theme.primary30,
                                   onTap: _backSpace,

@@ -30,7 +30,7 @@ class TxFilterDialog extends ConsumerWidget {
 
     return AppSimpleDialog(
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const .only(bottom: 10),
         child: Text(
           l10n.txFilterDialogTitle,
           style: styles.textStyleDialogHeader,
@@ -43,7 +43,7 @@ class TxFilterDialog extends ConsumerWidget {
             withResult: TxFilter.all,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const .symmetric(vertical: 8),
             child: Text(
               l10n.txFilterDialogOptionAllTxs,
               style: style,
@@ -56,7 +56,7 @@ class TxFilterDialog extends ConsumerWidget {
             withResult: TxFilter.hideNotAcceptedCoinbase,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const .symmetric(vertical: 8),
             child: Text(
               l10n.txFilterDialogOptionHideNotAcceptedCoinbase,
               style: style,

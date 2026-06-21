@@ -24,11 +24,11 @@ class QrCodeWidget extends ConsumerWidget {
       onTap: onTap,
       child: Container(
         constraints: BoxConstraints(maxWidth: 280),
-        padding: const EdgeInsets.all(10),
+        padding: const .all(10),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          shape: BoxShape.rectangle,
-          border: Border.all(color: theme.primary, width: 2),
+          borderRadius: .circular(10),
+          shape: .rectangle,
+          border: .all(color: theme.primary, width: 2),
         ),
         child: QrImageView(
           data: data,

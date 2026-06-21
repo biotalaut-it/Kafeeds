@@ -12,7 +12,7 @@ class WalletActionButtons extends ConsumerWidget {
     final wallet = ref.watch(walletProvider);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 14, right: 14, bottom: 16),
+      padding: const .only(left: 14, right: 14, bottom: 16),
       child: Row(
         children: [
           Expanded(

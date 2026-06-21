@@ -57,7 +57,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
           _showAddressHint = false;
           _addressValidAndUnfocused = false;
         });
-        _addressController.selection = TextSelection.fromPosition(
+        _addressController.selection = .fromPosition(
           TextPosition(offset: _addressController.text.length),
         );
       } else {
@@ -103,11 +103,9 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
             padding: const .symmetric(horizontal: 30),
             focusNode: _nameFocusNode,
             controller: _nameController,
-            textInputAction: widget.address != null
-                ? TextInputAction.done
-                : TextInputAction.next,
+            textInputAction: widget.address != null ? .done : .next,
             hintText: _showNameHint ? l10n.contactNameHint : "",
-            keyboardType: TextInputType.text,
+            keyboardType: .text,
             style: styles.textStyleAppTextFieldSimple,
             inputFormatters: [
               LengthLimitingTextInputFormatter(20),
@@ -130,7 +128,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
           ),
           // Enter Name Error Container
           Container(
-            margin: const EdgeInsets.only(top: 5, bottom: 5),
+            margin: const .only(top: 5, bottom: 5),
             child: Text(
               _nameValidationText,
               style: styles.textStyleParagraphThinPrimary,
@@ -139,8 +137,8 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
           // Enter Address container
           AppTextField(
             padding: !_shouldShowTextField()
-                ? EdgeInsets.symmetric(horizontal: 25, vertical: 15)
-                : EdgeInsets.zero,
+                ? .symmetric(horizontal: 25, vertical: 15)
+                : .zero,
             focusNode: _addressFocusNode,
             controller: _addressController,
             style: _addressValid
@@ -149,7 +147,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
             inputFormatters: [
               LengthLimitingTextInputFormatter(74),
             ],
-            textInputAction: TextInputAction.done,
+            textInputAction: .done,
             maxLines: null,
             autocorrect: false,
             hintText: _showAddressHint ? l10n.addressHint : '',
@@ -185,8 +183,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
                 if (!_showPasteButton) {
                   return;
                 }
-                String? data =
-                    await UserDataUtil.getClipboardText(DataType.ADDRESS);
+                String? data = await UserDataUtil.getClipboardText(.ADDRESS);
                 if (data != null) {
                   setState(() {
                     _addressValid = true;
@@ -248,7 +245,7 @@ class _ContactAddSheetState extends ConsumerState<ContactAddSheet> {
           ),
           // Enter Address Error Container
           Container(
-            margin: const EdgeInsets.only(top: 5, bottom: 5),
+            margin: const .only(top: 5, bottom: 5),
             child: Text(
               _addressValidationText,
               style: styles.textStyleParagraphThinPrimary,

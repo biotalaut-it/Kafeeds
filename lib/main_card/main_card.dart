@@ -55,21 +55,21 @@ class MainCard extends ConsumerWidget {
         notifier.setNextState();
       },
       child: Container(
-        margin: const EdgeInsets.only(left: 14, right: 14, top: 10),
+        margin: const .only(left: 14, right: 14, top: 10),
         decoration: BoxDecoration(
           color: theme.backgroundDark,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: .circular(10),
           boxShadow: [theme.boxShadow],
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: .start,
+          crossAxisAlignment: .stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 6, top: 6, right: 6),
+              padding: const .only(left: 6, top: 6, right: 6),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: .start,
+                mainAxisAlignment: .spaceBetween,
                 children: [
                   Consumer(builder: (context, ref, _) {
                     final error = ref.watch(networkErrorProvider);
@@ -83,11 +83,11 @@ class MainCard extends ConsumerWidget {
                       const SizedBox(height: 8),
                       Text(
                         fiatBalance,
-                        textAlign: TextAlign.end,
+                        textAlign: .end,
                         style: styles.textStyleAccount,
                       ),
                       FittedBox(
-                        fit: BoxFit.scaleDown,
+                        fit: .scaleDown,
                         child: Row(
                           children: [
                             Image.asset(
@@ -100,7 +100,7 @@ class MainCard extends ConsumerWidget {
                             const SizedBox(width: 4),
                             Text(
                               kaspaBalance,
-                              textAlign: TextAlign.end,
+                              textAlign: .end,
                               style: styles.textStyleCurrency,
                             ),
                           ],
@@ -109,7 +109,7 @@ class MainCard extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Text(
                         kaspaPrice,
-                        textAlign: TextAlign.end,
+                        textAlign: .end,
                         style: styles.textStyleTransactionAmountSmall.copyWith(
                           fontSize: 13,
                         ),

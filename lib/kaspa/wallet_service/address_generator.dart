@@ -36,7 +36,7 @@ class SchnorrAddressGenerator extends HdAddressGenerator {
   }) {
     wallet = HdWalletViewSchnorr(hdPublicKey);
     final pubKey = wallet.derivePublicKey(typeIndex: 0, index: 0);
-    mainAddress = Address.publicKey(prefix: addressPrefix, publicKey: pubKey);
+    mainAddress = .publicKey(prefix: addressPrefix, publicKey: pubKey);
   }
 
   @override
@@ -45,7 +45,7 @@ class SchnorrAddressGenerator extends HdAddressGenerator {
     required int index,
   }) async {
     final pubKey = wallet.derivePublicKey(typeIndex: typeIndex, index: index);
-    return Address.publicKey(prefix: addressPrefix, publicKey: pubKey);
+    return .publicKey(prefix: addressPrefix, publicKey: pubKey);
   }
 }
 
@@ -60,7 +60,7 @@ class EcdsaAddressGenerator extends HdAddressGenerator {
   }) {
     wallet = HdWalletViewECDSA(hdPublicKey);
     final pubKey = wallet.derivePublicKey(typeIndex: 0, index: 0);
-    mainAddress = Address.pubKeyECDSA(prefix: addressPrefix, publicKey: pubKey);
+    mainAddress = .pubKeyECDSA(prefix: addressPrefix, publicKey: pubKey);
   }
 
   @override
@@ -69,7 +69,7 @@ class EcdsaAddressGenerator extends HdAddressGenerator {
     required int index,
   }) async {
     final pubKey = wallet.derivePublicKey(typeIndex: typeIndex, index: index);
-    return Address.pubKeyECDSA(prefix: addressPrefix, publicKey: pubKey);
+    return .pubKeyECDSA(prefix: addressPrefix, publicKey: pubKey);
   }
 }
 
@@ -88,6 +88,6 @@ class LegacyAddressGenerator extends HdAddressGenerator {
     required int index,
   }) async {
     final publicKey = await pubKeyCallback(index: index, typeIndex: typeIndex);
-    return Address.publicKey(prefix: addressPrefix, publicKey: publicKey);
+    return .publicKey(prefix: addressPrefix, publicKey: publicKey);
   }
 }

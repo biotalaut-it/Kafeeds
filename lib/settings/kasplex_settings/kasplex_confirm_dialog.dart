@@ -19,12 +19,12 @@ class KasplexConfirmDialog extends HookConsumerWidget {
         'Enable Kasplex KRC20 features?',
         style: styles.textStyleButtonPrimaryOutline,
       ),
-      contentPadding: const EdgeInsetsDirectional.fromSTEB(12, 20, 24, 12),
+      contentPadding: const .fromSTEB(12, 20, 24, 12),
       content: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.only(start: 12),
+              padding: const .directional(start: 12),
               child: Text(
                 'Do you want to enable Kasplex KRC20 features in Kaspium?',
                 style: styles.textStyleParagraph,

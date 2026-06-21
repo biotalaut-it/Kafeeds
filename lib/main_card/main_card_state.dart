@@ -12,9 +12,9 @@ sealed class MainCardState with _$MainCardState {
   const factory MainCardState.hideAll() = _HideAll;
 
   PriceConversion get priceConvertion => when(
-    showBalance: () => PriceConversion.BTC,
-    hideBalance: () => PriceConversion.HIDDEN,
-    hideAll: () => PriceConversion.NONE,
+    showBalance: () => .BTC,
+    hideBalance: () => .HIDDEN,
+    hideAll: () => .NONE,
   );
 
   double get mainCardHeight => maybeWhen(

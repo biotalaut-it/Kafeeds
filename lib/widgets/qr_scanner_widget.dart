@@ -56,7 +56,7 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
       XFile? file;
       try {
         final picker = ImagePicker();
-        file = await picker.pickImage(source: ImageSource.gallery);
+        file = await picker.pickImage(source: .gallery);
       } catch (_) {}
 
       lockDisabled.state = false;
@@ -104,7 +104,7 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
             key: qrKey,
             onQRViewCreated: _onQRViewCreated,
             onPermissionSet: _onPermissionSet,
-            formatsAllowed: [BarcodeFormat.qrcode],
+            formatsAllowed: [.qrcode],
             overlay: QrScannerOverlayShape(
               borderColor: Colors.white,
               borderRadius: 10,
@@ -115,12 +115,12 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const .symmetric(horizontal: 8),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: .spaceBetween,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: .spaceBetween,
                     children: [
                       AppIconButton(
                         icon: Icons.arrow_back,
@@ -143,11 +143,11 @@ class _QrScannerWidgetState extends ConsumerState<QrScannerWidget> {
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.only(bottom: 50),
-                    padding: const EdgeInsets.all(8),
+                    margin: const .only(bottom: 50),
+                    padding: const .all(8),
                     decoration: BoxDecoration(
                       color: Colors.white38,
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: .circular(50),
                     ),
                     child: IconButton(
                       iconSize: 32,

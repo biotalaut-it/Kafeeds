@@ -98,25 +98,22 @@ class ContactDetails extends HookConsumerWidget {
       mainWidget: ScrollableWrapper(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsetsDirectional.only(top: 19, bottom: 22),
+            padding: .only(top: 19, bottom: 22),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: .center,
               children: [
                 // Contact Name container
                 Container(
-                  width: double.infinity,
+                  width: .infinity,
                   margin: .symmetric(horizontal: horizontal),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 12,
-                  ),
+                  padding: const .symmetric(horizontal: 25, vertical: 12),
                   decoration: BoxDecoration(
                     color: theme.backgroundDarkest,
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: .circular(25),
                   ),
                   child: Text(
                     contact.name,
-                    textAlign: TextAlign.center,
+                    textAlign: .center,
                     style: styles.textStyleDialogOptions,
                   ),
                 ),
@@ -124,31 +121,22 @@ class ContactDetails extends HookConsumerWidget {
                 GestureDetector(
                   onTap: copyAddress,
                   child: Container(
-                    width: double.infinity,
-                    margin: .only(
-                      left: horizontal,
-                      right: horizontal,
-                      top: 15,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 15,
-                    ),
+                    width: .infinity,
+                    margin: .only(left: horizontal, right: horizontal, top: 15),
+                    padding: const .symmetric(horizontal: 25, vertical: 15),
                     decoration: BoxDecoration(
                       color: theme.backgroundDarkest,
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: .circular(25),
                     ),
                     child: AddressThreeLineText(
                       address: contact.address,
-                      type: addressCopied.value
-                          ? AddressTextType.SUCCESS_FULL
-                          : AddressTextType.PRIMARY,
+                      type: addressCopied.value ? .SUCCESS_FULL : .PRIMARY,
                     ),
                   ),
                 ),
                 // Address Copied text container
                 Container(
-                  margin: const EdgeInsets.only(top: 5, bottom: 5),
+                  margin: const .only(top: 5, bottom: 5),
                   child: Text(
                     addressCopied.value ? l10n.addressCopied : '',
                     style: styles.textStyleParagraphThinSuccess,
@@ -156,7 +144,7 @@ class ContactDetails extends HookConsumerWidget {
                 ),
                 // QR Code
                 FittedBox(
-                  fit: BoxFit.contain,
+                  fit: .contain,
                   child: QrCodeWidget(
                     data: contact.address,
                     onTap: copyAddress,

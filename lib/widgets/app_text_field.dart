@@ -89,11 +89,11 @@ class AppTextField extends ConsumerWidget {
     this.leftMargin,
     this.rightMargin,
     this.obscureText = false,
-    this.textAlign = TextAlign.center,
-    this.keyboardAppearance = Brightness.dark,
+    this.textAlign = .center,
+    this.keyboardAppearance = .dark,
     this.autocorrect = true,
     this.maxLines = 1,
-    this.padding = EdgeInsets.zero,
+    this.padding = .zero,
     this.buttonFadeDurationMs = 100,
     this.topMargin = 0,
     this.autofocus = false,
@@ -108,16 +108,16 @@ class AppTextField extends ConsumerWidget {
     final horizontal = MediaQuery.widthOf(context) * 0.105;
 
     return Container(
-      margin: EdgeInsets.only(
+      margin: .only(
         left: leftMargin ?? horizontal,
         right: rightMargin ?? horizontal,
         top: topMargin,
       ),
       padding: padding,
-      width: double.infinity,
+      width: .infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: .circular(25),
       ),
       child: overrideTextFieldWidget == null
           ? Stack(

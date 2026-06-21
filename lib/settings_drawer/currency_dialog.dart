@@ -18,7 +18,7 @@ class CurrencyDialog extends ConsumerWidget {
 
     return AppSimpleDialog(
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const .only(bottom: 10),
         child: Text(
           l10n.currency,
           style: styles.textStyleDialogHeader,
@@ -29,7 +29,7 @@ class CurrencyDialog extends ConsumerWidget {
           SimpleDialogOption(
             onPressed: () => appRouter.pop(context, withResult: value),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const .symmetric(vertical: 8),
               child: Text(
                 AvailableCurrency(value).getDisplayName(context),
                 style: styles.textStyleDialogOptions,
@@ -37,11 +37,11 @@ class CurrencyDialog extends ConsumerWidget {
             ),
           ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const .symmetric(horizontal: 16),
           child: Divider(height: 2, color: theme.text15),
         ),
         Padding(
-          padding: const EdgeInsetsDirectional.only(start: 24, top: 12),
+          padding: const .directional(start: 24, top: 12),
           child: Text(
             l10n.currencyPoweredBy,
             style: styles.textStyleDialogOptions,

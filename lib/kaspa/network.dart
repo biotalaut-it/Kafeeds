@@ -23,10 +23,10 @@ enum KaspaNetwork {
 
   static KaspaNetwork? tryParse(String network) {
     return switch (network) {
-      kKaspaNetworkMainnet => KaspaNetwork.mainnet,
-      kKaspaNetworkTestnet => KaspaNetwork.testnet,
-      kKaspaNetworkSimnet => KaspaNetwork.simnet,
-      kKaspaNetworkDevnet => KaspaNetwork.devnet,
+      kKaspaNetworkMainnet => .mainnet,
+      kKaspaNetworkTestnet => .testnet,
+      kKaspaNetworkSimnet => .simnet,
+      kKaspaNetworkDevnet => .devnet,
       _ => null,
     };
   }
@@ -39,50 +39,35 @@ enum KaspaNetwork {
   }
 
   int get defaultRpcPort => switch (this) {
-        KaspaNetwork.mainnet => kMainnetRpcPort,
-        KaspaNetwork.testnet => kTestnetPpcPort,
-        KaspaNetwork.simnet => kSimnetRpcPort,
-        KaspaNetwork.devnet => kDevnetRpcPort
-      };
-}
-
-KaspaNetwork networkForPort(int port) {
-  switch (port) {
-    case kMainnetRpcPort:
-      return KaspaNetwork.mainnet;
-    case kTestnetPpcPort:
-      return KaspaNetwork.testnet;
-    case kSimnetRpcPort:
-      return KaspaNetwork.simnet;
-    case kDevnetRpcPort:
-      return KaspaNetwork.devnet;
-    default:
-      return KaspaNetwork.mainnet;
-  }
-}
-
-KaspaNetwork networkForKpub(String kpub) {
-  return switch (kpub.substring(0, 4)) {
-    'kpub' => KaspaNetwork.mainnet,
-    'ktub' => KaspaNetwork.testnet,
-    'ksub' => KaspaNetwork.simnet,
-    'kdub' => KaspaNetwork.devnet,
-    _ => KaspaNetwork.mainnet,
+    .mainnet => kMainnetRpcPort,
+    .testnet => kTestnetPpcPort,
+    .simnet => kSimnetRpcPort,
+    .devnet => kDevnetRpcPort,
   };
 }
 
-NetworkType networkTypeForNetwork(KaspaNetwork network) {
-  switch (network) {
-    case KaspaNetwork.mainnet:
-      return kaspaMainnet;
-    case KaspaNetwork.testnet:
-      return kaspaTestnet;
-    case KaspaNetwork.devnet:
-      return kaspaDevnet;
-    case KaspaNetwork.simnet:
-      return kaspaSimnet;
-  }
-}
+KaspaNetwork networkForPort(int port) => switch (port) {
+  kMainnetRpcPort => .mainnet,
+  kTestnetPpcPort => .testnet,
+  kSimnetRpcPort => .simnet,
+  kDevnetRpcPort => .devnet,
+  _ => .mainnet,
+};
+
+KaspaNetwork networkForKpub(String kpub) => switch (kpub.substring(0, 4)) {
+  'kpub' => .mainnet,
+  'ktub' => .testnet,
+  'ksub' => .simnet,
+  'kdub' => .devnet,
+  _ => .mainnet,
+};
+
+NetworkType networkTypeForNetwork(KaspaNetwork network) => switch (network) {
+  .mainnet => kaspaMainnet,
+  .testnet => kaspaTestnet,
+  .devnet => kaspaDevnet,
+  .simnet => kaspaSimnet,
+};
 
 final kaspaMainnet = NetworkType(
   messagePrefix: 'Kaspa Signed Message:\n',

@@ -29,13 +29,13 @@ class SingleLineItem extends ConsumerWidget {
       onPressed: () => onPressed?.call(),
       child: Container(
         height: 60,
-        margin: const EdgeInsetsDirectional.only(start: 30),
+        margin: const .directional(start: 30),
         child: Row(
           children: [
             Container(
-              margin: const EdgeInsetsDirectional.only(end: 13),
+              margin: const .directional(end: 13),
               child: Container(
-                margin: EdgeInsetsDirectional.only(
+                margin: .directional(
                   top: 3,
                   start: settingIcon == AppIcons.logout
                       ? 6

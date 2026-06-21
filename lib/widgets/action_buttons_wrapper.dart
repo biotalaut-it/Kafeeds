@@ -22,7 +22,7 @@ class ActionButtonsWrapper extends StatelessWidget {
     };
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+      padding: const .symmetric(horizontal: 28, vertical: 16),
       child: child,
     );
   }

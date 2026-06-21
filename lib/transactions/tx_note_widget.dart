@@ -16,7 +16,7 @@ class TxNoteWidget extends ConsumerWidget {
     final l10n = l10nOf(context);
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         RichText(
           text: TextSpan(children: [
@@ -32,7 +32,7 @@ class TxNoteWidget extends ConsumerWidget {
             ),
           ]),
           maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          overflow: .ellipsis,
         ),
       ],
     );

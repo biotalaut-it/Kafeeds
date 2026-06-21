@@ -65,18 +65,18 @@ class IntroPassword extends HookConsumerWidget {
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: .center,
               children: [
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      padding: const .directional(start: 20),
                       child: const IntroBackButton(),
                     ),
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: const AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.createAPasswordHeader,
@@ -86,7 +86,7 @@ class IntroPassword extends HookConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 16),
+                  margin: const .only(left: 40, right: 40, top: 16),
                   alignment: const AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.passwordWillBeRequiredToOpenParagraph,
@@ -100,15 +100,15 @@ class IntroPassword extends HookConsumerWidget {
                     children: [
                       AppTextField(
                         topMargin: 30,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const .symmetric(horizontal: 16),
                         focusNode: createFocusNode,
                         controller: createController,
-                        textInputAction: TextInputAction.next,
+                        textInputAction: .next,
                         maxLines: 1,
                         autocorrect: false,
                         onChanged: inputChanged,
                         hintText: l10n.createPasswordHint,
-                        keyboardType: TextInputType.text,
+                        keyboardType: .text,
                         obscureText: true,
                         style: textFieldStyle,
                         onSubmitted: (text) => confirmFocusNode.requestFocus(),
@@ -116,22 +116,22 @@ class IntroPassword extends HookConsumerWidget {
                       // Confirm Password Text Field
                       AppTextField(
                         topMargin: 20,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const .symmetric(horizontal: 16),
                         focusNode: confirmFocusNode,
                         controller: confirmController,
-                        textInputAction: TextInputAction.done,
+                        textInputAction: .done,
                         maxLines: 1,
                         autocorrect: false,
                         onChanged: inputChanged,
                         hintText: l10n.confirmPasswordHint,
-                        keyboardType: TextInputType.text,
+                        keyboardType: .text,
                         obscureText: true,
                         style: textFieldStyle,
                       ),
                       // Error Text
                       Container(
                         alignment: AlignmentDirectional(0, 0),
-                        margin: EdgeInsets.only(top: 3),
+                        margin: .only(top: 3),
                         child: Text(
                           passwordError.value,
                           style: styles.textStyleParagraphThinPrimary,

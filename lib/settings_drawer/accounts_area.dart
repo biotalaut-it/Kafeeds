@@ -28,29 +28,29 @@ class AccountsArea extends ConsumerWidget {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: .start,
               children: [
                 const SizedBox(width: 30),
                 const SelectedWalletButton(),
                 const SizedBox(width: 20),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: .start,
+                  crossAxisAlignment: .start,
                   children: [
                     FittedBox(
-                      alignment: Alignment.centerLeft,
-                      fit: BoxFit.scaleDown,
+                      alignment: .centerLeft,
+                      fit: .scaleDown,
                       child: Text(
                         wallet.name,
                         style: styles.textStyleAppTextFieldSimple.copyWith(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: .bold,
                         ),
                       ),
                     ),
@@ -59,18 +59,13 @@ class AccountsArea extends ConsumerWidget {
               ],
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: .symmetric(horizontal: 16),
               child: AccountSwitcher(),
             ),
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            left: 18,
-            right: 18,
-            top: 12,
-            bottom: 8,
-          ),
+          padding: const .only(left: 18, right: 18, top: 12, bottom: 8),
           child: TextButton(
             style: styles.accountButtonStyle,
             onPressed: showAccountDetails,

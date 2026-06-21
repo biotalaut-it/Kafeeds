@@ -30,18 +30,18 @@ class IntroBackupSafety extends ConsumerWidget {
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      padding: .directional(start: 20),
                       child: const IntroBackButton(),
                     ),
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsetsDirectional.only(start: 40, top: 15),
+                  margin: const .directional(start: 40, top: 15),
                   child: Icon(
                     AppIcons.security,
                     size: 60,
@@ -50,7 +50,7 @@ class IntroBackupSafety extends ConsumerWidget {
                 ),
                 // The header
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.secretInfoHeader,
@@ -62,8 +62,8 @@ class IntroBackupSafety extends ConsumerWidget {
                 ),
                 // The paragraph
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-                  alignment: AlignmentDirectional.centerStart,
+                  margin: const .only(left: 40, right: 40, top: 15),
+                  alignment: .centerStart,
                   child: Column(
                     children: [
                       AutoSizeText(
@@ -73,7 +73,7 @@ class IntroBackupSafety extends ConsumerWidget {
                         stepGranularity: 0.5,
                       ),
                       Container(
-                        margin: const EdgeInsetsDirectional.only(top: 15),
+                        margin: const .only(top: 15),
                         child: AutoSizeText(
                           l10n.secretWarning,
                           style: styles.textStyleParagraphPrimary,

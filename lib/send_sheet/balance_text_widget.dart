@@ -39,8 +39,8 @@ class BalanceRowWidget extends ConsumerWidget {
     final fiatValue = ref.watch(_fiatProvider(address));
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: .spaceBetween,
+      mainAxisSize: .max,
       children: [
         Row(
           children: [

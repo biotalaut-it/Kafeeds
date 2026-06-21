@@ -6,45 +6,45 @@ import 'intro_types.dart';
 class IntroStateNotifier extends StateNotifier<IntroState> {
   final IntroDataNotifier introData;
 
-  IntroStateNotifier(this.introData) : super(IntroState.init());
+  IntroStateNotifier(this.introData) : super(.init());
 
   void newWallet() {
     introData.clear();
     introData.generateNewMnemonic(strength: 128);
 
-    _goToPage(IntroPage.walletName);
+    _goToPage(.walletName);
   }
 
   void importSelect() {
-    _goToPage(IntroPage.importSelect);
+    _goToPage(.importSelect);
   }
 
   void importWallet() {
     introData.clear();
-    _goToPage(IntroPage.importSeed);
+    _goToPage(.importSeed);
   }
 
   void importLegacyWallet() {
     introData.clear();
     introData.setLegacyWallet();
-    _goToPage(IntroPage.importLegacySeed);
+    _goToPage(.importLegacySeed);
   }
 
   void importViewOnlyWallet() {
     introData.clear();
-    _goToPage(IntroPage.importKpub);
+    _goToPage(.importKpub);
   }
 
   void skipPassword() {
     if (introData.isSeedGenerated) {
-      _goToPage(IntroPage.backupSafety);
+      _goToPage(.backupSafety);
     } else {
       introData.complete();
     }
   }
 
   void showIntroPassword() {
-    _goToPage(IntroPage.password);
+    _goToPage(.password);
   }
 
   void setName(String name) {
@@ -54,14 +54,14 @@ class IntroStateNotifier extends StateNotifier<IntroState> {
       return;
     }
 
-    _goToPage(IntroPage.passwordOnLaunch);
+    _goToPage(.passwordOnLaunch);
   }
 
   void setPassword(String password) {
     introData.setPassword(password);
 
     if (introData.isSeedGenerated) {
-      _goToPage(IntroPage.backupSafety);
+      _goToPage(.backupSafety);
     } else {
       introData.complete();
     }
@@ -69,31 +69,31 @@ class IntroStateNotifier extends StateNotifier<IntroState> {
 
   void setMnemonic(String mnemonic) {
     introData.setMnemonic(mnemonic);
-    _goToPage(IntroPage.walletName);
+    _goToPage(.walletName);
   }
 
   void setKpub(String kpub) {
     introData.setKpub(kpub);
-    _goToPage(IntroPage.walletName);
+    _goToPage(.walletName);
   }
 
   void showIntroBackup() {
-    _goToPage(IntroPage.backupSeed);
+    _goToPage(.backupSeed);
   }
 
   void showIntroBackupConfirm() {
-    _goToPage(IntroPage.backupConfirm);
+    _goToPage(.backupConfirm);
   }
 
   void showIntroWalletName() {
-    _goToPage(IntroPage.walletName);
+    _goToPage(.walletName);
   }
 
   void goBack() {
-    state = IntroState.pop();
+    state = .pop();
   }
 
   void _goToPage(IntroPage page) {
-    state = IntroState.push(page: page);
+    state = .push(page: page);
   }
 }

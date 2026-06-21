@@ -257,7 +257,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 12, 4),
+                padding: const .fromSTEB(20, 16, 12, 4),
                 child: const LogoutButton(),
               ),
             ],
@@ -275,7 +275,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 10),
+                        margin: .only(top: 10),
                         child: Text(
                           CaseChange.toUpperCase(l10n.locked, ref),
                           style: styles.textStyleHeaderColored,
@@ -290,11 +290,11 @@ class _LockScreenState extends ConsumerState<LockScreen> {
               if (_lockedOut)
                 Container(
                   width: containerWidth,
-                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  margin: .symmetric(horizontal: 50),
                   child: Text(
                     l10n.tooManyFailedAttempts,
                     style: styles.textStyleErrorMedium,
-                    textAlign: TextAlign.center,
+                    textAlign: .center,
                   ),
                 ),
               if (_showUnlockButton)

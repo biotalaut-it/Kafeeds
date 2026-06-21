@@ -17,21 +17,17 @@ class ThemeSetting extends SettingSelectionItem {
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
 
-    switch (theme) {
-      case ThemeOptions.KASPIUM_LIGHT:
-        return l10n.themeLight;
-      case ThemeOptions.KASPIUM_DARK:
-        return l10n.themeDark;
-    }
+    return switch (theme) {
+      .KASPIUM_LIGHT => l10n.themeLight,
+      .KASPIUM_DARK => l10n.themeDark,
+    };
   }
 
   BaseTheme getTheme() {
-    switch (theme) {
-      case ThemeOptions.KASPIUM_LIGHT:
-        return KaspiumLightTheme();
-      case ThemeOptions.KASPIUM_DARK:
-        return KaspiumDarkTheme();
-    }
+    return switch (theme) {
+      .KASPIUM_LIGHT => KaspiumLightTheme(),
+      .KASPIUM_DARK => KaspiumDarkTheme(),
+    };
   }
 
   // For saving to shared prefs

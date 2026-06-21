@@ -212,8 +212,7 @@ class SendConfirmSheet extends HookConsumerWidget {
         final pendingTx = ref.read(txNotifierProvider).pendingTxs.first;
         final fees = pendingTx.fees;
         if (tx.fee.raw <= fees.baseFee.raw + fees.priorityFee.raw) {
-          final requiredPriorityFee =
-              Amount.raw(fees.priorityFee.raw + BigInt.one);
+          final requiredPriorityFee = Amount.raw(fees.priorityFee.raw + .one);
           adjustFee(requiredPriorityFee: requiredPriorityFee);
           return;
         }
@@ -241,9 +240,9 @@ class SendConfirmSheet extends HookConsumerWidget {
       title: l10n.sendConfirm,
       mainWidget: ScrollableWrapper(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(top: 20, bottom: 20),
+          padding: const .only(top: 20, bottom: 20),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: .min,
             children: [
               AmountCard(
                 amount: amount,
@@ -254,7 +253,7 @@ class SendConfirmSheet extends HookConsumerWidget {
               ),
               // "TO" text
               Container(
-                margin: const EdgeInsets.only(top: 30, bottom: 10),
+                margin: const .only(top: 30, bottom: 10),
                 child: Text(
                   l10n.sendToAddressTitle.toUpperCase(),
                   style: styles.textStyleSubHeader,
@@ -262,7 +261,7 @@ class SendConfirmSheet extends HookConsumerWidget {
               ),
               AddressCard(address: toAddress),
               Container(
-                margin: const EdgeInsets.only(top: 30, bottom: 10),
+                margin: const .only(top: 30, bottom: 10),
                 child: Text(
                   l10n.fee.toUpperCase(),
                   style: styles.textStyleSubHeader,
@@ -277,10 +276,7 @@ class SendConfirmSheet extends HookConsumerWidget {
               ),
               if (note != null)
                 Padding(
-                  padding: const EdgeInsets.only(
-                    top: 30,
-                    bottom: 10,
-                  ),
+                  padding: const .only(top: 30, bottom: 10),
                   child: SendNoteWidget(note: note),
                 ),
             ],

@@ -72,10 +72,10 @@ class SetPasswordSheet extends HookConsumerWidget {
     return SheetWidget(
       title: l10n.createPasswordSheetHeader,
       mainWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: .center,
         children: [
           Container(
-            margin: EdgeInsetsDirectional.only(start: 40, end: 40, top: 16),
+            margin: .only(left: 40, right: 40, top: 16),
             child: AutoSizeText(
               l10n.passwordWillBeRequiredToOpenParagraph,
               style: styles.textStyleParagraph,
@@ -86,17 +86,17 @@ class SetPasswordSheet extends HookConsumerWidget {
           // Create a Password Text Field
           AppTextField(
             topMargin: 30,
-            padding: EdgeInsetsDirectional.only(start: 16, end: 16),
+            padding: .symmetric(horizontal: 16),
             focusNode: createFocusNode,
             controller: createController,
-            textInputAction: TextInputAction.next,
+            textInputAction: .next,
             maxLines: 1,
             autocorrect: false,
             onChanged: inputChanged,
             hintText: l10n.createPasswordHint,
-            keyboardType: TextInputType.text,
+            keyboardType: .text,
             obscureText: true,
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: textStyle,
             onSubmitted: (text) {
               confirmFocusNode.requestFocus();
@@ -105,26 +105,23 @@ class SetPasswordSheet extends HookConsumerWidget {
           // Confirm Password Text Field
           AppTextField(
             topMargin: 20,
-            padding: const EdgeInsetsDirectional.only(
-              start: 16,
-              end: 16,
-            ),
+            padding: const .symmetric(horizontal: 16),
             focusNode: confirmFocusNode,
             controller: confirmController,
-            textInputAction: TextInputAction.done,
+            textInputAction: .done,
             maxLines: 1,
             autocorrect: false,
             onChanged: inputChanged,
             hintText: l10n.confirmPasswordHint,
-            keyboardType: TextInputType.text,
+            keyboardType: .text,
             obscureText: true,
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: textStyle,
           ),
           // Error Text
           Container(
             alignment: AlignmentDirectional(0, 0),
-            margin: EdgeInsets.only(top: 3),
+            margin: .only(top: 3),
             child: Text(
               passwordError.value,
               style: styles.textStyleParagraphThinPrimary,

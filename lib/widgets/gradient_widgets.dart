@@ -10,10 +10,10 @@ class TopGradientWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return Align(
-      alignment: Alignment.topCenter,
+      alignment: .topCenter,
       child: Container(
         height: 10,
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [theme.background00, theme.background],
@@ -33,10 +33,10 @@ class BottomGradientWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: .bottomCenter,
       child: Container(
         height: 30,
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [theme.background00, theme.background],
@@ -58,10 +58,10 @@ class ListTopGradient extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return Align(
-      alignment: Alignment.topCenter,
+      alignment: .topCenter,
       child: Container(
         height: 20,
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [theme.backgroundDark00, theme.backgroundDark],
@@ -81,10 +81,10 @@ class ListBottomGradient extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: .bottomCenter,
       child: Container(
         height: 20,
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [theme.backgroundDark, theme.backgroundDark00],
@@ -106,10 +106,10 @@ class ContactListTopGradient extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return Align(
-      alignment: Alignment.topCenter,
+      alignment: .topCenter,
       child: Container(
         height: 20,
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: AlignmentDirectional(0.5, -1),
@@ -129,10 +129,10 @@ class ContactListBottomGradient extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: .bottomCenter,
       child: Container(
         height: 15,
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [theme.backgroundDark00, theme.backgroundDark],

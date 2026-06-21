@@ -34,19 +34,18 @@ class IntroBackupConfirm extends ConsumerWidget {
           //A widget that holds the header, the paragraph and Back Button
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      padding: .directional(start: 20),
                       child: const IntroBackButton(),
                     ),
                   ],
                 ),
                 // The header
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.ackBackedUp,
@@ -57,7 +56,7 @@ class IntroBackupConfirm extends ConsumerWidget {
                 ),
                 // The paragraph
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
+                  margin: const .only(left: 40, right: 40, top: 15),
                   child: AutoSizeText(
                     l10n.secretWarning,
                     style: styles.textStyleParagraph,

@@ -30,20 +30,20 @@ class ContactsPopoverWidget extends ConsumerWidget {
         maxHeight: 174,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: .circular(25),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: .circular(25),
             color: theme.backgroundDarkest,
           ),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: .circular(25),
             ),
-            margin: EdgeInsets.only(bottom: 50),
+            margin: .only(bottom: 50),
             child: ListView.builder(
               shrinkWrap: true,
-              padding: const EdgeInsets.only(bottom: 0, top: 0),
+              padding: const .only(bottom: 0, top: 0),
               itemCount: contacts.length,
               itemBuilder: (context, index) {
                 final contact = contacts[index];

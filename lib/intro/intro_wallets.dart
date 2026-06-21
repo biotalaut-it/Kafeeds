@@ -21,12 +21,12 @@ class IntroWallets extends ConsumerWidget {
         children: [
           Flexible(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: .stretch,
               children: [
                 const SizedBox(height: 30),
                 Image.asset('assets/kaspa.png', width: 80, height: 80),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16, top: 8),
+                  padding: const .only(bottom: 16, top: 8),
                   child: Center(
                     child: Stack(
                       children: [
@@ -42,7 +42,7 @@ class IntroWallets extends ConsumerWidget {
                 ),
                 const SizedBox(height: 26),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 34),
+                  padding: const .directional(start: 34),
                   child: Text(
                     l10n.walletsTitle.toUpperCase(),
                     style: styles.textStyleLogoutButton,

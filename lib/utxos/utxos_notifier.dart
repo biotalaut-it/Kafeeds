@@ -61,7 +61,7 @@ class UtxosNotifier extends SafeChangeNotifier {
   }) async {
     final addresses = <String>{};
     for (final balance in balances.entries) {
-      final utxosBalance = _balancesByAddress[balance.key] ?? BigInt.zero;
+      final utxosBalance = _balancesByAddress[balance.key] ?? .zero;
       if (balance.value != utxosBalance) {
         addresses.add(balance.key);
       }
@@ -93,7 +93,7 @@ class UtxosNotifier extends SafeChangeNotifier {
 
       _utxosByAddress[address] = newSet;
       _balancesByAddress[address] = newSet.fold(
-        BigInt.zero,
+        .zero,
         (total, utxo) => total + utxo.utxoEntry.amount,
       );
 

@@ -66,7 +66,7 @@ class ReceiveAmountField extends HookConsumerWidget {
         true => () {
             final price = ref.read(kaspaPriceProvider);
             final fiatValue = fiatFormatter.tryParse(text);
-            if (price.price == Decimal.zero || fiatValue == null) {
+            if (price.price == .zero || fiatValue == null) {
               return null;
             }
             return (fiatValue / price.price)
@@ -100,7 +100,7 @@ class ReceiveAmountField extends HookConsumerWidget {
         style: styles.textStyleParagraphPrimary,
         inputFormatters: [fiatMode ? fiatFormatter : kaspaFormatter],
         onChanged: onValueChanged,
-        textInputAction: TextInputAction.done,
+        textInputAction: .done,
         maxLines: null,
         autocorrect: false,
         hintText: amountHint.value ?? hintText,
@@ -118,10 +118,9 @@ class ReceiveAmountField extends HookConsumerWidget {
           onPressed: clearAmount,
         ),
         fadeSuffixOnCondition: true,
-        suffixShowFirstCondition:
-            (amount?.value ?? Decimal.zero) > Decimal.zero,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        textAlign: TextAlign.center,
+        suffixShowFirstCondition: (amount?.value ?? .zero) > .zero,
+        keyboardType: const .numberWithOptions(decimal: true),
+        textAlign: .center,
       ),
     );
   }

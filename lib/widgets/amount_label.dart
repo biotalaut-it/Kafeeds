@@ -38,19 +38,19 @@ class AmountLabel extends HookConsumerWidget {
       child: Container(
         margin: .symmetric(horizontal: horizontal),
         padding: const .symmetric(horizontal: 25, vertical: 15),
-        width: double.infinity,
+        width: .infinity,
         decoration: BoxDecoration(
           color: theme.backgroundDarkest,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: .circular(50),
         ),
         child: Tooltip(
           message: exactAmount,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const .symmetric(horizontal: 10),
             child: FittedBox(
-              fit: BoxFit.scaleDown,
+              fit: .scaleDown,
               child: RichText(
-                textAlign: TextAlign.center,
+                textAlign: .center,
                 text: TextSpan(
                   children: [
                     TextSpan(

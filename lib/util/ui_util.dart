@@ -46,7 +46,7 @@ abstract class UIUtil {
       final notifier = ref.read(addressNotifierProvider);
       final spendableUtxos = ref.read(spendableUtxosProvider);
 
-      final amount = Amount.raw(BigInt.from(tx.apiTx.outputs.first.amount));
+      final amount = Amount.raw(.from(tx.apiTx.outputs.first.amount));
       final fees = tx.fees;
 
       final changeAddress = await notifier.nextChangeAddress;
@@ -88,7 +88,7 @@ abstract class UIUtil {
 
       final mass = massCalculator.calcTxOverallMass(tx: newTx);
 
-      final priorityFee = Amount.raw(fees.priorityFee.raw + BigInt.one);
+      final priorityFee = Amount.raw(fees.priorityFee.raw + .one);
       final newPriorityFee = await Sheets.showAppHeightNineSheet<Amount>(
         context: context,
         widget: FeeSheet(
@@ -307,12 +307,12 @@ abstract class UIUtil {
     BigInt? fee,
   }) {
     final l10n = l10nOf(context);
-    if (amount.raw != BigInt.zero) {
+    if (amount.raw != .zero) {
       final amountStr = NumberUtil.formatedAmount(amount);
       final amountConfirm = l10n.amountConfirm(amountStr, symbol);
       action += '\n$amountConfirm';
     }
-    if (fee != null && fee != BigInt.zero) {
+    if (fee != null && fee != .zero) {
       final kaspa = TokenInfo.kaspa;
       final feeStr = NumberUtil.approxAmountRaw(fee, kaspa.decimals);
       final feeConfirm = l10n.feeConfirm(feeStr, symbol);

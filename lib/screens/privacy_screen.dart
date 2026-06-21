@@ -29,20 +29,20 @@ class PrivacyScreen extends HookConsumerWidget {
 
     useOnAppLifecycleStateChange((previous, state) {
       switch (state) {
-        case AppLifecycleState.detached:
+        case .detached:
           break;
-        case AppLifecycleState.resumed:
+        case .resumed:
           inactive.value = false;
           break;
-        case AppLifecycleState.inactive:
+        case .inactive:
           if (kInDebugMode && kPlatformIsMacOS) {
             break;
           }
           inactive.value = true;
           break;
-        case AppLifecycleState.hidden:
+        case .hidden:
           break;
-        case AppLifecycleState.paused:
+        case .paused:
           break;
       }
     });

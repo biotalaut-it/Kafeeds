@@ -68,24 +68,24 @@ class WordsWidget extends ConsumerWidget {
     return SizedBox(
       height: 48,
       child: ListView.builder(
-        padding: const EdgeInsetsDirectional.only(start: 4),
+        padding: const .directional(start: 4),
         shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
+        scrollDirection: .horizontal,
         itemCount: words.length,
         itemBuilder: (context, index) {
           final word = words[index];
           return Container(
-            margin: EdgeInsets.all(4),
+            margin: .all(4),
             decoration: BoxDecoration(
               color: theme.background,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: .circular(10),
               boxShadow: [theme.boxShadowButton],
             ),
             child: TextButton(
               key: ValueKey(word),
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: .circular(10),
                 ),
                 backgroundColor: theme.background,
                 foregroundColor: theme.text,
@@ -129,16 +129,16 @@ class KeyWidget extends ConsumerWidget {
       double margin = constraints.maxWidth >= 40 ? 4 : 2;
       return Container(
         height: 48,
-        margin: EdgeInsets.all(margin),
+        margin: .all(margin),
         decoration: BoxDecoration(
           color: theme.background,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: .circular(10),
           boxShadow: [theme.boxShadowButton],
         ),
         child: TextButton(
           style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: .circular(10),
             ),
             backgroundColor: theme.background,
             foregroundColor: theme.text,
@@ -184,7 +184,7 @@ class KeyboardWidget extends ConsumerWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: .symmetric(horizontal: 4),
               child: Row(
                 children: const [
                   Expanded(flex: 1, child: KeyWidget(keyId: 'q')),
@@ -200,9 +200,9 @@ class KeyboardWidget extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24),
+              padding: .symmetric(horizontal: 24),
               child: Row(
                 children: const [
                   Expanded(flex: 1, child: KeyWidget(keyId: 'a')),
@@ -219,9 +219,9 @@ class KeyboardWidget extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Padding(
-              padding: const EdgeInsetsDirectional.only(start: 42, end: 4),
+              padding: .directional(start: 42, end: 4),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: .end,
                 children: const [
                   Expanded(flex: 2, child: KeyWidget(keyId: 'z')),
                   Expanded(flex: 2, child: KeyWidget(keyId: 'x')),

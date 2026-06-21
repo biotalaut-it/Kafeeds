@@ -67,7 +67,7 @@ class ImportSeedOptionsButton extends ConsumerWidget {
           if (!context.mounted) return;
 
           switch (selection) {
-            case ImportSeedOptions.bip39Passphrase:
+            case .bip39Passphrase:
               Sheets.showAppHeightEightSheet(
                 context: context,
                 widget: Bip39PassphraseSheet(),

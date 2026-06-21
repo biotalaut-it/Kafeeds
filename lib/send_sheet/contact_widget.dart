@@ -19,22 +19,22 @@ class ContactWidget extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         SizedBox(
           height: 42,
-          width: double.infinity,
+          width: .infinity,
           child: TextButton(
             onPressed: onPressed,
             child: Text(
               contact.name,
-              textAlign: TextAlign.center,
+              textAlign: .center,
               style: styles.textStyleAddressPrimary,
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 25),
+          margin: .symmetric(horizontal: 25),
           height: 1,
           color: theme.text03,
         ),

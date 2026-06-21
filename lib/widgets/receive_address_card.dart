@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
 import '../wallet_address/address_selection_sheet.dart';
-import '../wallet_address/wallet_address.dart';
 import 'address_widgets.dart';
 import 'sheet_util.dart';
 
@@ -18,7 +17,7 @@ class ReceiveAddressCard extends HookConsumerWidget {
     super.key,
     required this.address,
     this.showLabel = true,
-    this.type = AddressTextType.PRIMARY,
+    this.type = .PRIMARY,
   });
 
   @override
@@ -41,10 +40,10 @@ class ReceiveAddressCard extends HookConsumerWidget {
 
     return Container(
       margin: .symmetric(horizontal: horizontal),
-      width: double.infinity,
+      width: .infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: .circular(25),
       ),
       child: TextButton(
         style: styles.fieldCardButtonStyle,
@@ -52,16 +51,11 @@ class ReceiveAddressCard extends HookConsumerWidget {
           Sheets.showAppHeightNineSheet(
             context: context,
             theme: ref.read(themeProvider),
-            widget: AddressSelectionSheet(
-              addressType: AddressType.receive,
-            ),
+            widget: AddressSelectionSheet(addressType: .receive),
           );
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 25,
-            vertical: 15,
-          ),
+          padding: const .symmetric(horizontal: 25, vertical: 15),
           child: AddressThreeLineText(
             address: address.encoded,
             label: label,

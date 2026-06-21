@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Amount {
 
- dynamic get value; BigInt get raw; TokenInfo get tokenInfo;
+ Decimal get value; BigInt get raw; TokenInfo get tokenInfo;
 /// Create a copy of Amount
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,12 +28,12 @@ $AmountCopyWith<Amount> get copyWith => _$AmountCopyWithImpl<Amount>(this as Amo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Amount&&const DeepCollectionEquality().equals(other.value, value)&&(identical(other.raw, raw) || other.raw == raw)&&(identical(other.tokenInfo, tokenInfo) || other.tokenInfo == tokenInfo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Amount&&(identical(other.value, value) || other.value == value)&&(identical(other.raw, raw) || other.raw == raw)&&(identical(other.tokenInfo, tokenInfo) || other.tokenInfo == tokenInfo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(value),raw,tokenInfo);
+int get hashCode => Object.hash(runtimeType,value,raw,tokenInfo);
 
 
 

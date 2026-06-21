@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -48,7 +47,7 @@ class FeeSheet extends HookConsumerWidget {
     final amount = useState<Amount?>(priorityFee);
 
     final controller = useTextEditingController(
-      text: priorityFee == Amount.zero
+      text: priorityFee == .zero
           ? null
           : NumberUtil.textFieldFormatedAmount(priorityFee),
     );
@@ -80,13 +79,13 @@ class FeeSheet extends HookConsumerWidget {
     }
 
     void confirmFee() {
-      if (rbf && (amount.value ?? Amount.zero).raw < priorityFee.raw) {
+      if (rbf && (amount.value ?? .zero).raw < priorityFee.raw) {
         final symbol = ref.watch(kasSymbolProvider);
         final amountStr = NumberUtil.formatedAmount(priorityFee);
         UIUtil.showSnackbar(l10n.feeSheetPriorityFeeWarning(amountStr, symbol));
         return;
       }
-      appRouter.pop(context, withResult: amount.value ?? Amount.zero);
+      appRouter.pop(context, withResult: amount.value ?? .zero);
     }
 
     return SheetWidget(
@@ -106,7 +105,7 @@ class FeeSheet extends HookConsumerWidget {
             style: styles.textStyleSubHeader,
           ),
           FiatValueContainer(
-            amount: amount.value ?? Amount.zero,
+            amount: amount.value ?? .zero,
             hint: l10n.optionalLabel,
             child: AppTextField(
               focusNode: focusNode,
@@ -116,7 +115,7 @@ class FeeSheet extends HookConsumerWidget {
               style: styles.textStyleParagraphPrimary,
               inputFormatters: [kaspaFormatter],
               onChanged: onValueChanged,
-              textInputAction: TextInputAction.done,
+              textInputAction: .done,
               maxLines: null,
               autocorrect: false,
               hintText: hint.value ?? l10n.feePriorityHint,
@@ -126,11 +125,9 @@ class FeeSheet extends HookConsumerWidget {
                 onPressed: clearAmount,
               ),
               fadeSuffixOnCondition: true,
-              suffixShowFirstCondition:
-                  (amount.value?.value ?? Decimal.zero) > Decimal.zero,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              textAlign: TextAlign.center,
+              suffixShowFirstCondition: (amount.value?.value ?? .zero) > .zero,
+              keyboardType: const .numberWithOptions(decimal: true),
+              textAlign: .center,
             ),
           ),
           if (feeEstimate.isNotEmpty) ...[
@@ -140,24 +137,26 @@ class FeeSheet extends HookConsumerWidget {
               style: styles.textStyleTokenSymbolSuccess,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 10),
+              padding: const .symmetric(horizontal: 28, vertical: 10),
               child: FittedBox(
-                fit: BoxFit.scaleDown,
+                fit: .scaleDown,
                 child: Row(
                   children: [
                     for (final fee in feeEstimate)
                       Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            padding: const .symmetric(horizontal: 4),
                             child: ActionChip(
                               label: Text(
                                 '${fee.$1}',
                               ),
                               labelStyle:
                                   styles.textStyleTransactionAmountSmall,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 12),
+                              padding: const .symmetric(
+                                horizontal: 8,
+                                vertical: 12,
+                              ),
                               onPressed: () {
                                 final text = fee.$1.toString();
                                 controller.text = text;

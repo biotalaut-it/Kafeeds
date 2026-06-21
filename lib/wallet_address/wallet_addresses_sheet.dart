@@ -67,14 +67,8 @@ class WalletAddressesSheet extends HookConsumerWidget {
 
     Future<void> copyAddresses(AddressType? type) async {
       final (addresses, typeStr) = switch (type) {
-        AddressType.receive => (
-          addressNotifier.receiveAddresses,
-          l10n.receive,
-        ),
-        AddressType.change => (
-          addressNotifier.changeAddresses,
-          l10n.change,
-        ),
+        .receive => (addressNotifier.receiveAddresses, l10n.receive),
+        .change => (addressNotifier.changeAddresses, l10n.change),
         null => (
           addressNotifier.receiveAddresses.followedBy(
             addressNotifier.changeAddresses,
@@ -123,22 +117,19 @@ class WalletAddressesSheet extends HookConsumerWidget {
             mainWidget: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const .symmetric(horizontal: 16),
                   child: TabBar(
                     indicatorWeight: 3,
                     indicatorColor: theme.primary60,
-                    indicatorPadding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
+                    indicatorPadding: const .only(left: 20, right: 20),
                     tabs: [
                       Tab(
                         height: 32,
                         child: GestureDetector(
-                          onLongPress: () => copyAddresses(AddressType.receive),
+                          onLongPress: () => copyAddresses(.receive),
                           child: Text(
                             l10n.receive.toUpperCase(),
-                            textAlign: TextAlign.center,
+                            textAlign: .center,
                             style: styles.textStyleTabLabel,
                           ),
                         ),
@@ -146,10 +137,10 @@ class WalletAddressesSheet extends HookConsumerWidget {
                       Tab(
                         height: 32,
                         child: GestureDetector(
-                          onLongPress: () => copyAddresses(AddressType.change),
+                          onLongPress: () => copyAddresses(.change),
                           child: Text(
                             l10n.change.toUpperCase(),
-                            textAlign: TextAlign.center,
+                            textAlign: .center,
                             style: styles.textStyleTabLabel,
                           ),
                         ),
@@ -163,13 +154,13 @@ class WalletAddressesSheet extends HookConsumerWidget {
                     children: [
                       ScrollableWrapper(
                         child: AddressListWidget(
-                          addressType: AddressType.receive,
+                          addressType: .receive,
                           scrollController: receiveScrollController,
                         ),
                       ),
                       ScrollableWrapper(
                         child: AddressListWidget(
-                          addressType: AddressType.change,
+                          addressType: .change,
                           scrollController: changeScrollController,
                         ),
                       ),

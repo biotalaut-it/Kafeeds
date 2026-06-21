@@ -13,7 +13,7 @@ const mainnetNodeConfig = NodeConfig(
   name: 'Kaspium Official',
   urls: ['node.kaspium.io'],
   isSecure: true,
-  network: KaspaNetwork.mainnet,
+  network: .mainnet,
 );
 
 @freezed

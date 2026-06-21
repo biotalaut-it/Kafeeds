@@ -79,9 +79,9 @@ class NodeItem extends ConsumerWidget {
             style: styles.defaultTextButtonStyle,
             onPressed: change,
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: const .all(8),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: .min,
                 children: [
                   Radio<ActiveNodeConfig>(
                     value: item,
@@ -92,10 +92,10 @@ class NodeItem extends ConsumerWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: .stretch,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: .spaceBetween,
                           children: [
                             Expanded(
                               child: Text(
@@ -104,12 +104,11 @@ class NodeItem extends ConsumerWidget {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 4, right: 4),
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
+                              margin: const .only(top: 4, right: 4),
+                              padding: .fromSTEB(6, 2, 6, 2),
                               decoration: BoxDecoration(
                                 color: theme.text10,
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: .circular(4),
                               ),
                               child: Text(
                                 item.networkId.toUpperCase(),
@@ -121,7 +120,7 @@ class NodeItem extends ConsumerWidget {
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 3),
+                              padding: const .only(top: 3),
                               child: Text(
                                 item.url.toString(),
                                 style: styles.textStyleAddressText60.copyWith(

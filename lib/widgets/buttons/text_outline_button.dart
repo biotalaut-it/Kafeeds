@@ -24,17 +24,17 @@ class TextOutlineButton extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
             color: theme.backgroundDark,
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: .circular(100),
             boxShadow: [theme.boxShadowButton],
           ),
           height: 55,
           child: OutlinedButton(
             style: styles.outlinedButtonStyle,
             child: FittedBox(
-              fit: BoxFit.scaleDown,
+              fit: .scaleDown,
               child: Text(
                 title,
-                textAlign: TextAlign.center,
+                textAlign: .center,
                 style: styles.textStyleButtonTextOutline,
                 maxLines: 1,
               ),

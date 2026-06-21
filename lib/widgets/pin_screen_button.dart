@@ -24,15 +24,15 @@ class PinScreenButton extends ConsumerWidget {
       height: size,
       width: size,
       child: InkWell(
-        borderRadius: BorderRadius.circular(200),
+        borderRadius: .circular(200),
         highlightColor: theme.primary15,
         splashColor: theme.primary30,
         onTap: () => onTap(text),
         child: Container(
-          alignment: const AlignmentDirectional(0, 0),
+          alignment: .center,
           child: Text(
             text,
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: styles.textStyleButtonPrimaryOutline,
           ),
         ),

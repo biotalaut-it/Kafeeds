@@ -191,7 +191,7 @@ class NodeAddSheet extends HookConsumerWidget {
     }
 
     Future<void> pasteUrl() async {
-      final data = await UserDataUtil.getClipboardText(DataType.RAW);
+      final data = await UserDataUtil.getClipboardText(.RAW);
       if (data != null) {
         urlController.text = data;
       }
@@ -200,7 +200,7 @@ class NodeAddSheet extends HookConsumerWidget {
     return SheetWidget(
       title: l10n.addNode,
       mainWidget: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           const SizedBox(height: 50),
           AppTextField(
@@ -209,8 +209,8 @@ class NodeAddSheet extends HookConsumerWidget {
             cursorColor: theme.primary,
             style: styles.textStyleParagraphNormal,
             hintText: state.showNameHint ? l10n.nodeNameHint : '',
-            textInputAction: TextInputAction.next,
-            textCapitalization: TextCapitalization.words,
+            textInputAction: .next,
+            textCapitalization: .words,
             inputFormatters: [
               LengthLimitingTextInputFormatter(25),
             ],
@@ -222,8 +222,8 @@ class NodeAddSheet extends HookConsumerWidget {
             cursorColor: theme.primary,
             style: styles.textStyleParagraphNormal,
             hintText: state.showUrlHint ? l10n.nodeUrlHint : '',
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.url,
+            textInputAction: .next,
+            keyboardType: .url,
             prefixButton: TextFieldButton(
               icon: AppIcons.scan,
               onPressed: scanUrl,

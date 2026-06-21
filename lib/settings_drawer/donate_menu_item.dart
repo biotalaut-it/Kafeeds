@@ -47,18 +47,18 @@ class DonateMenuItem extends ConsumerWidget {
       style: styles.defaultTextButtonStyle,
       onPressed: donate,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: [
           Divider(height: 2, color: theme.text15),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            margin: const EdgeInsetsDirectional.only(start: 20, end: 12),
+            padding: const .symmetric(vertical: 8),
+            margin: const .directional(start: 20, end: 12),
             height: 80,
             child: FittedBox(
-              fit: BoxFit.scaleDown,
+              fit: .scaleDown,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .start,
                 children: [
                   Text(
                     contact.name,

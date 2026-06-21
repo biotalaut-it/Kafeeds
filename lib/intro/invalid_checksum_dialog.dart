@@ -27,12 +27,12 @@ class InvalidChecksumDialog extends HookConsumerWidget {
         title,
         style: styles.textStyleButtonPrimaryOutline,
       ),
-      contentPadding: const EdgeInsetsDirectional.fromSTEB(12, 20, 24, 12),
+      contentPadding: const .fromSTEB(12, 20, 24, 12),
       content: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.only(start: 12),
+              padding: const .directional(start: 12),
               child: Text(
                 content,
                 style: styles.textStyleParagraph,
@@ -40,11 +40,11 @@ class InvalidChecksumDialog extends HookConsumerWidget {
             ),
             const SizedBox(height: 12),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: .start,
               children: [
                 Checkbox(
                   value: isChecked.value,
-                  visualDensity: VisualDensity.compact,
+                  visualDensity: .compact,
                   checkColor: theme.text,
                   activeColor: theme.primary,
                   onChanged: (value) {

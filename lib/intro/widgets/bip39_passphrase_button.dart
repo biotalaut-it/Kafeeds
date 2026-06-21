@@ -24,7 +24,7 @@ class Bip39PassphraseButton extends ConsumerWidget {
     }
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         const SizedBox(height: 20),
         TextButton(

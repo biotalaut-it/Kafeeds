@@ -27,7 +27,7 @@ class SendNoteWidget extends HookConsumerWidget {
       padding: const .symmetric(horizontal: 25, vertical: 15),
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: .circular(25),
       ),
       child: Column(
         children: [
@@ -37,7 +37,7 @@ class SendNoteWidget extends HookConsumerWidget {
           ),
           Text(
             details,
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: styles.textStyleAddressText90,
           ),
         ],

@@ -33,10 +33,9 @@ class SecurityMenu extends ConsumerStatefulWidget {
 
 class _SecurityMenuState extends ConsumerState<SecurityMenu> {
   bool _hasBiometrics = false;
-  AuthenticationMethod _authMethod =
-      AuthenticationMethod(AuthMethod.BIOMETRICS);
-  UnlockSetting _unlockSetting = UnlockSetting(UnlockOption.NO);
-  UnlockSetting _autoLockSetting = UnlockSetting(UnlockOption.NO);
+  AuthenticationMethod _authMethod = AuthenticationMethod(.BIOMETRICS);
+  UnlockSetting _unlockSetting = UnlockSetting(.NO);
+  UnlockSetting _autoLockSetting = UnlockSetting(.NO);
 
   @override
   void initState() {
@@ -55,17 +54,16 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     // Get default unlock settings
     lockSettings.getLock().then((lock) {
       setState(
-        () => _unlockSetting = (lock
-            ? UnlockSetting(UnlockOption.YES)
-            : UnlockSetting(UnlockOption.NO)),
+        () =>
+            _unlockSetting = (lock ? UnlockSetting(.YES) : UnlockSetting(.NO)),
       );
     });
 
     lockSettings.getAutoLock().then((autolock) {
       setState(
         () => _autoLockSetting = (autolock
-            ? UnlockSetting(UnlockOption.YES)
-            : UnlockSetting(UnlockOption.NO)),
+            ? UnlockSetting(.YES)
+            : UnlockSetting(.NO)),
       );
     });
   }
@@ -89,15 +87,15 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
         children: [
           // Back button and Security Text
           Container(
-            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            margin: const .only(bottom: 10, top: 5),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: .spaceBetween,
               children: [
                 Row(
                   children: [
                     //Back button
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const .symmetric(horizontal: 10),
                       child: AppIconButton(
                         icon: AppIcons.back,
                         onPressed: widget.onBackAction,
@@ -117,13 +115,10 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
             child: Stack(
               children: [
                 ListView(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const .only(top: 15),
                   children: [
                     Container(
-                      margin: const EdgeInsetsDirectional.only(
-                        start: 30,
-                        bottom: 10,
-                      ),
+                      margin: const .directional(start: 30, bottom: 10),
                       child: Text(
                         l10n.preferences,
                         style: styles.textStyleAppTextFieldHint,
@@ -155,7 +150,7 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
                       defaultMethod: _autoLockSetting,
                       icon: Icons.sync_lock,
                       onPressed: _autoLockDialog,
-                      disabled: _unlockSetting.setting == UnlockOption.NO,
+                      disabled: _unlockSetting.setting == .NO,
                     ),
                     if (wallet.canSetPassword)
                       // Encrypt option
@@ -250,21 +245,21 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
             ],
           );
         })) {
-      case AuthMethod.PIN:
+      case .PIN:
         sharedPrefsUtil
-            .setAuthMethod(AuthenticationMethod(AuthMethod.PIN))
+            .setAuthMethod(AuthenticationMethod(.PIN))
             .then((result) {
           setState(() {
-            _authMethod = AuthenticationMethod(AuthMethod.PIN);
+            _authMethod = AuthenticationMethod(.PIN);
           });
         });
         break;
-      case AuthMethod.BIOMETRICS:
+      case .BIOMETRICS:
         sharedPrefsUtil
-            .setAuthMethod(AuthenticationMethod(AuthMethod.BIOMETRICS))
+            .setAuthMethod(AuthenticationMethod(.BIOMETRICS))
             .then((result) {
           setState(() {
-            _authMethod = AuthenticationMethod(AuthMethod.BIOMETRICS);
+            _authMethod = AuthenticationMethod(.BIOMETRICS);
           });
         });
         break;
@@ -291,7 +286,7 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
                 withResult: UnlockOption.YES,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const .symmetric(vertical: 8),
                 child: Text(
                   l10n.yes,
                   style: styles.textStyleDialogOptions,
@@ -304,7 +299,7 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
                 withResult: UnlockOption.NO,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const .symmetric(vertical: 8),
                 child: Text(
                   l10n.no,
                   style: styles.textStyleDialogOptions,
@@ -326,17 +321,17 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     final unlockOption = await _getOption(title: l10n.lockAppSetting);
 
     switch (unlockOption) {
-      case UnlockOption.YES:
+      case .YES:
         await lockSettings.setLock(true);
-        setState(() => _unlockSetting = UnlockSetting(UnlockOption.YES));
+        setState(() => _unlockSetting = UnlockSetting(.YES));
 
         break;
-      case UnlockOption.NO:
+      case .NO:
         await lockSettings.setLock(false);
         await lockSettings.setAutoLock(false);
         setState(() {
-          _unlockSetting = UnlockSetting(UnlockOption.NO);
-          _autoLockSetting = UnlockSetting(UnlockOption.NO);
+          _unlockSetting = UnlockSetting(.NO);
+          _autoLockSetting = UnlockSetting(.NO);
         });
 
         break;
@@ -353,13 +348,13 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     final unlockOption = await _getOption(title: l10n.autoLockHeader);
 
     switch (unlockOption) {
-      case UnlockOption.YES:
+      case .YES:
         await lockSettings.setAutoLock(true);
-        setState(() => _autoLockSetting = UnlockSetting(UnlockOption.YES));
+        setState(() => _autoLockSetting = UnlockSetting(.YES));
         break;
-      case UnlockOption.NO:
+      case .NO:
         await lockSettings.setAutoLock(false);
-        setState(() => _autoLockSetting = UnlockSetting(UnlockOption.NO));
+        setState(() => _autoLockSetting = UnlockSetting(.NO));
         break;
       case null:
         break;
@@ -371,7 +366,7 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
       return SimpleDialogOption(
         onPressed: () => appRouter.pop(context, withResult: value),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const .symmetric(vertical: 8),
           child: Text(
             RequestPasswordSetting(value).getDisplayName(context),
             style: ref.read(stylesProvider).textStyleDialogOptions,
@@ -387,7 +382,7 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
       builder: (context) {
         return AppSimpleDialog(
           title: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const .only(bottom: 10),
             child: Text(
               l10nOf(context).requestPasswordHeader,
               style: ref.read(stylesProvider).textStyleDialogHeader,

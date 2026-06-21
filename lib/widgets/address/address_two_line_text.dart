@@ -18,7 +18,7 @@ class AddressTwoLineText extends ConsumerWidget {
     final split = 34;
     final lSplit = address.length - 8;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         RichText(
           text: TextSpan(

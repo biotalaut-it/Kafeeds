@@ -17,7 +17,7 @@ class ThemeDialog extends ConsumerWidget {
 
     return AppSimpleDialog(
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const .only(bottom: 10),
         child: Text(
           l10n.themeHeader,
           style: styles.textStyleDialogHeader,
@@ -28,7 +28,7 @@ class ThemeDialog extends ConsumerWidget {
           SimpleDialogOption(
             onPressed: () => appRouter.pop(context, withResult: value),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const .symmetric(vertical: 8),
               child: Text(
                 ThemeSetting(value).getDisplayName(context),
                 style: styles.textStyleDialogOptions,

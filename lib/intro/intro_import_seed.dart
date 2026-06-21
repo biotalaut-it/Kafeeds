@@ -66,7 +66,7 @@ class IntroImportSeed extends HookConsumerWidget {
     final mnemonicController = useTextEditingController();
 
     void updateFocus(int offset) {
-      mnemonicController.selection = TextSelection.collapsed(offset: offset);
+      mnemonicController.selection = .collapsed(offset: offset);
       mnemonicFocusNode.requestFocus();
     }
 
@@ -198,16 +198,16 @@ class IntroImportSeed extends HookConsumerWidget {
 
     return ContentWrapper(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           Expanded(
             child: ListView(
               shrinkWrap: true,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const .symmetric(horizontal: 20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: .spaceBetween,
                     children: [
                       const IntroBackButton(),
                       isLegacy
@@ -217,10 +217,10 @@ class IntroImportSeed extends HookConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: AlignmentDirectional(-1, 0),
                   child: FittedBox(
-                    fit: BoxFit.scaleDown,
+                    fit: .scaleDown,
                     child: Text(
                       isLegacy
                           ? l10n.importOptionLegacyWalletTitle
@@ -231,20 +231,20 @@ class IntroImportSeed extends HookConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 15),
-                  alignment: Alignment.centerLeft,
+                  margin: const .only(left: 40, right: 40, top: 15),
+                  alignment: .centerLeft,
                   child: Text(
                     isLegacy
                         ? l10n.importSecretPhraseHintLegacy
                         : l10n.importSecretPhraseHintCombo,
                     style: styles.textStyleParagraph,
-                    textAlign: TextAlign.start,
+                    textAlign: .start,
                   ),
                 ),
                 Column(
                   children: [
                     Focus(
-                      onKeyEvent: (node, event) => KeyEventResult.handled,
+                      onKeyEvent: (node, event) => .handled,
                       child: AppTextField(
                         leftMargin: 40,
                         rightMargin: 40,
@@ -256,7 +256,7 @@ class IntroImportSeed extends HookConsumerWidget {
                           LowerCaseTextFormatter(),
                           FilteringTextInputFormatter.allow(RegExp("[a-z ]")),
                         ],
-                        textInputAction: TextInputAction.done,
+                        textInputAction: .done,
                         maxLines: null,
                         autocorrect: false,
                         autofocus: true,
@@ -273,7 +273,7 @@ class IntroImportSeed extends HookConsumerWidget {
                         ),
                         fadeSuffixOnCondition: true,
                         suffixShowFirstCondition: !mnemonicIsValid,
-                        keyboardType: TextInputType.none,
+                        keyboardType: .none,
                         style: mnemonicIsValid
                             ? styles.textStyleParagraphPrimaryNormal
                             : styles.textStyleParagraphNormal,
@@ -290,12 +290,12 @@ class IntroImportSeed extends HookConsumerWidget {
                             : '';
                         return Container(
                           alignment: const AlignmentDirectional(0, 0),
-                          margin: const EdgeInsets.only(top: 6),
+                          margin: const .only(top: 6),
                           child: Text(
                             invalidChecksumText,
                             style: styles.textStyleParagraphThinPrimary
                                 .copyWith(color: theme.success),
-                            textAlign: TextAlign.center,
+                            textAlign: .center,
                           ),
                         );
                       },
@@ -308,12 +308,8 @@ class IntroImportSeed extends HookConsumerWidget {
           ),
           if (mnemonicIsValid)
             Container(
-              alignment: Alignment.centerRight,
-              margin: const EdgeInsetsDirectional.only(
-                end: 12,
-                top: 16,
-                bottom: 8,
-              ),
+              alignment: .centerRight,
+              margin: const .directional(end: 12, top: 16, bottom: 8),
               child: TextButton(
                 style: styles.appIconButtonStyle,
                 onPressed: submitMnemonic,

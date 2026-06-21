@@ -40,7 +40,7 @@ class AddressDiscovery {
       change: DiscoveryResult(
         addresses: {},
         txIds: {},
-        scanIndexes: ScanIndexes.empty,
+        scanIndexes: .empty,
       ),
     );
     return discovery;
@@ -182,7 +182,7 @@ class AddressDiscovery {
     bool Function(AddressType type, int index)? onProgress,
   }) async {
     final receiveResult = await addressDiscoveryFor(
-      type: AddressType.receive,
+      type: .receive,
       startIndex: startReceiveIndex,
       maxGap: maxGap,
       maxRetries: maxRetries,
@@ -190,7 +190,7 @@ class AddressDiscovery {
     );
 
     final changeResult = await addressDiscoveryFor(
-      type: AddressType.change,
+      type: .change,
       startIndex: startChangeIndex,
       maxGap: maxGap,
       maxRetries: maxRetries,

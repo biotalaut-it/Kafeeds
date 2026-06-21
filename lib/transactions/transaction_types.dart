@@ -38,28 +38,28 @@ sealed class Tx with _$Tx {
 
   String get id => apiTx.transactionId;
 
-  Amount get amount => Amount.raw(BigInt.from(apiTx.outputs.first.amount));
+  Amount get amount => .raw(.from(apiTx.outputs.first.amount));
 
   ({Amount baseFee, Amount priorityFee}) get fees {
-    final baseFee = kFeePerInput * BigInt.from(apiTx.inputs.length);
+    final baseFee = kFeePerInput * .from(apiTx.inputs.length);
     final totalInput = inputData.fold(
       BigInt.zero,
-      (total, input) => total + BigInt.from(input?.amount ?? 0),
+      (total, input) => total + .from(input?.amount ?? 0),
     );
     final totalOutput = apiTx.outputs.fold(
       BigInt.zero,
-      (total, output) => total + BigInt.from(output.amount),
+      (total, output) => total + .from(output.amount),
     );
     final totalFee = totalInput - totalOutput;
 
     var priorityFee = totalFee - baseFee;
-    if (priorityFee < BigInt.zero) {
-      priorityFee = BigInt.zero;
+    if (priorityFee < .zero) {
+      priorityFee = .zero;
     }
 
     return (
-      baseFee: Amount.raw(baseFee),
-      priorityFee: Amount.raw(priorityFee),
+      baseFee: .raw(baseFee),
+      priorityFee: .raw(priorityFee),
     );
   }
 

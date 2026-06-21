@@ -9,7 +9,6 @@ import '../app_icons.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../contacts/contacts_widget.dart';
-import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../settings/available_currency.dart';
 import '../settings/available_language.dart';
@@ -252,9 +251,8 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
       final wallet = ref.watch(walletProvider);
       final hasMnemonic = ref.watch(walletHasMnemonic);
 
-      final canDonate = !kPlatformIsIOS &&
-          network == KaspaNetwork.mainnet &&
-          !wallet.isViewOnly;
+      final canDonate =
+          !kPlatformIsIOS && network == .mainnet && !wallet.isViewOnly;
 
       Future<void> backupSecretPhrase() async {
         final authUtil = ref.read(authUtilProvider);
@@ -321,8 +319,7 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
                     padding: const EdgeInsets.only(top: 15),
                     children: [
                       Container(
-                        margin:
-                            EdgeInsetsDirectional.only(start: 30, bottom: 10),
+                        margin: .directional(start: 30, bottom: 10),
                         child: Text(
                           l10n.preferences,
                           style: styles.textStyleAppTextFieldHint,
@@ -378,7 +375,7 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
                       ),
                       Divider(height: 2, color: theme.text15),
                       Container(
-                        margin: const EdgeInsetsDirectional.only(
+                        margin: const .directional(
                           start: 30,
                           top: 20,
                           bottom: 10,

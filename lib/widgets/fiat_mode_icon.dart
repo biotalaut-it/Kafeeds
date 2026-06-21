@@ -15,7 +15,7 @@ class FiatModeIcon extends ConsumerWidget {
 
     return fiatMode
         ? FittedBox(
-            fit: BoxFit.scaleDown,
+            fit: .scaleDown,
             child: Text(
               currency.symbol,
               style: styles.textStyleParagraphPrimary,

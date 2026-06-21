@@ -15,7 +15,7 @@ class AddressCard extends HookConsumerWidget {
     super.key,
     required this.address,
     this.showLabel = true,
-    this.type = AddressTextType.PRIMARY,
+    this.type = .PRIMARY,
   });
 
   @override
@@ -46,10 +46,10 @@ class AddressCard extends HookConsumerWidget {
     return Container(
       padding: const .symmetric(horizontal: 25, vertical: 15),
       margin: .symmetric(horizontal: horizontal),
-      width: double.infinity,
+      width: .infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: .circular(25),
       ),
       child: AddressThreeLineText(
         address: address.encoded,

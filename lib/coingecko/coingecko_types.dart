@@ -19,8 +19,8 @@ sealed class CoinGeckoPrice with _$CoinGeckoPrice {
       _$CoinGeckoPriceFromJson(json);
 
   static CoinGeckoPrice empty = CoinGeckoPrice(
-    currency: AvailableCurrencies.USD,
-    price: Decimal.zero,
+    currency: .USD,
+    price: .zero,
     timestamp: 0,
   );
 }

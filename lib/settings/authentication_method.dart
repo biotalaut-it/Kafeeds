@@ -16,12 +16,11 @@ class AuthenticationMethod extends SettingSelectionItem {
   @override
   String getDisplayName(BuildContext context) {
     final l10n = l10nOf(context);
-    switch (method) {
-      case AuthMethod.BIOMETRICS:
-        return l10n.biometricsMethod;
-      case AuthMethod.PIN:
-        return l10n.pinMethod;
-    }
+
+    return switch (method) {
+      .BIOMETRICS => l10n.biometricsMethod,
+      .PIN => l10n.pinMethod,
+    };
   }
 
   // For saving to shared prefs

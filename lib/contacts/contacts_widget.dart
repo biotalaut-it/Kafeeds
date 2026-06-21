@@ -48,14 +48,14 @@ class ContactsWidget extends ConsumerWidget {
       child: Column(
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 16),
+            margin: const .only(top: 16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: .spaceBetween,
               children: [
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const .symmetric(horizontal: 10),
                       child: AppIconButton(
                         icon: AppIcons.back,
                         onPressed: onBackAction,

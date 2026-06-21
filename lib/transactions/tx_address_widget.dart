@@ -29,7 +29,7 @@ class TxAddressWidget extends ConsumerWidget {
         ),
       ]),
       maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+      overflow: .ellipsis,
     );
   }
 }

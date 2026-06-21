@@ -18,8 +18,8 @@ class WalletAddressNotifier extends SafeChangeNotifier
 
   late final defaultReceiveAddress = WalletAddress(
     index: 0,
-    type: AddressType.receive,
-    name: addressNameCallback(AddressType.receive, 0),
+    type: .receive,
+    name: addressNameCallback(.receive, 0),
     address: addressGenerator.mainAddress,
     used: false,
   );
@@ -64,7 +64,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
 
     final walletAddress = await _getWalletAddress(
       index: index,
-      type: AddressType.change,
+      type: .change,
     );
     return walletAddress;
   }
@@ -74,8 +74,8 @@ class WalletAddressNotifier extends SafeChangeNotifier
     required AddressType type,
   }) async {
     final cached = switch (type) {
-      AddressType.receive => _receive.addressAtIndex(index),
-      AddressType.change => _change.addressAtIndex(index),
+      .receive => _receive.addressAtIndex(index),
+      .change => _change.addressAtIndex(index),
     };
     if (cached != null) {
       return cached;
@@ -104,7 +104,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     final bufferSize = 30;
 
     _receive = WalletAddressManager(
-      type: AddressType.receive,
+      type: .receive,
       bufferSize: bufferSize,
       addresses: addresses.values,
     );
@@ -113,7 +113,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     }
 
     _change = WalletAddressManager(
-      type: AddressType.change,
+      type: .change,
       bufferSize: bufferSize,
       addresses: addresses.values,
     );
@@ -140,8 +140,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
   int? indexOfChangeAddress(String address) => _change.indexOfAddress(address);
 
   bool isAddressSelected(WalletAddress address) {
-    return address.type == AddressType.receive &&
-        address.index == selected.index;
+    return address.type == .receive && address.index == selected.index;
   }
 
   String? nameForAddress(String address) {
@@ -150,10 +149,10 @@ class WalletAddressNotifier extends SafeChangeNotifier
 
   Future<void> _addAddress(WalletAddress address) async {
     switch (address.type) {
-      case AddressType.receive:
+      case .receive:
         _receive.updateAddress(address);
         break;
-      case AddressType.change:
+      case .change:
         _change.updateAddress(address);
         break;
     }
@@ -191,14 +190,14 @@ class WalletAddressNotifier extends SafeChangeNotifier
     if (receiveIndex != null) {
       return WalletAddress.keyForAddressAtIndex(
         receiveIndex,
-        type: AddressType.receive,
+        type: .receive,
       );
     }
     final changeIndex = indexOfChangeAddress(address);
     if (changeIndex != null) {
       return WalletAddress.keyForAddressAtIndex(
         changeIndex,
-        type: AddressType.change,
+        type: .change,
       );
     }
     return null;
@@ -208,10 +207,10 @@ class WalletAddressNotifier extends SafeChangeNotifier
   Future<void> changeAddressName(WalletAddress address, String name) async {
     address = address.copyWith(name: name);
     switch (address.type) {
-      case AddressType.receive:
+      case .receive:
         _receive.updateAddress(address);
         break;
-      case AddressType.change:
+      case .change:
         _change.updateAddress(address);
         break;
     }
@@ -226,7 +225,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     for (final index in _receive.missingAddresses) {
       final address = await _getWalletAddress(
         index: index,
-        type: AddressType.receive,
+        type: .receive,
       );
       _receive.updateAddress(address);
       await _walletAddressBox.set(address.key, address);
@@ -236,7 +235,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
     for (final index in _change.missingAddresses) {
       final address = await _getWalletAddress(
         index: index,
-        type: AddressType.change,
+        type: .change,
       );
       _change.updateAddress(address);
       await _walletAddressBox.set(address.key, address);

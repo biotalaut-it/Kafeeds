@@ -102,7 +102,7 @@ class Bip39PassphraseSheet extends HookConsumerWidget {
         children: [
           const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: const .symmetric(horizontal: 40),
             child: Text(
               l10n.bip39PassphraseWarning,
               style: styles.textStyleParagraphThinPrimary,
@@ -116,7 +116,7 @@ class Bip39PassphraseSheet extends HookConsumerWidget {
             autofocus: false,
             style: textStyle,
             obscureText: !passphraseVisible.value,
-            textInputAction: TextInputAction.done,
+            textInputAction: .done,
             hintText: enterHint.value,
             onChanged: inputChanged,
             prefixButton: TextFieldButton(
@@ -141,7 +141,7 @@ class Bip39PassphraseSheet extends HookConsumerWidget {
             autofocus: false,
             style: textStyle,
             obscureText: !passphraseVisible.value,
-            textInputAction: TextInputAction.done,
+            textInputAction: .done,
             hintText: confirmHint.value,
             onChanged: inputChanged,
             prefixButton: TextFieldButton(
@@ -156,7 +156,7 @@ class Bip39PassphraseSheet extends HookConsumerWidget {
           ),
           Container(
             alignment: AlignmentDirectional(0, 0),
-            margin: EdgeInsets.only(top: 3),
+            margin: .only(top: 3),
             child: Text(
               passphraseError.value,
               style: styles.textStyleParagraphThinPrimary,

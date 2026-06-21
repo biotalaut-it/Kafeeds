@@ -36,7 +36,7 @@ sealed class KaspaUri with _$KaspaUri {
 
   static KaspaUri parse(
     String uri, {
-    AddressPrefix prefix = AddressPrefix.unknown,
+    AddressPrefix prefix = .unknown,
   }) {
     final uriParts = uri.split('?');
     if (uriParts.length > 2) {
@@ -64,7 +64,7 @@ sealed class KaspaUri with _$KaspaUri {
           if (amountValue == null) {
             throw Exception('Invalid amount: $value');
           }
-          amount = Amount.value(amountValue);
+          amount = .value(amountValue);
           break;
         case kLabelKey:
           label = value;
@@ -88,7 +88,7 @@ sealed class KaspaUri with _$KaspaUri {
 
   static KaspaUri? tryParse(
     String uri, {
-    AddressPrefix prefix = AddressPrefix.unknown,
+    AddressPrefix prefix = .unknown,
   }) {
     try {
       return parse(uri, prefix: prefix);

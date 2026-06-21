@@ -249,8 +249,8 @@ class TxCacheService {
       for (final output in tx.apiTx.outputs) {
         balanceMap.update(
           output.scriptPublicKeyAddress,
-          (value) => (value.$1 + BigInt.from(output.amount), value.$2),
-          ifAbsent: () => (BigInt.from(output.amount), 0),
+          (value) => (value.$1 + .from(output.amount), value.$2),
+          ifAbsent: () => (.from(output.amount), 0),
         );
       }
       for (final input in tx.inputData) {
@@ -259,8 +259,8 @@ class TxCacheService {
         }
         balanceMap.update(
           input.address,
-          (value) => (value.$1 - BigInt.from(input.amount), value.$2),
-          ifAbsent: () => (BigInt.from(-input.amount), 0),
+          (value) => (value.$1 - .from(input.amount), value.$2),
+          ifAbsent: () => (.from(-input.amount), 0),
         );
       }
 
@@ -273,7 +273,7 @@ class TxCacheService {
         balanceMap.update(
           address,
           (value) => (value.$1, value.$2 + 1),
-          ifAbsent: () => (BigInt.zero, 1),
+          ifAbsent: () => (.zero, 1),
         );
       }
     }

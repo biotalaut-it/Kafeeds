@@ -33,18 +33,18 @@ class IntroPasswordOnLaunch extends ConsumerWidget {
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: .center,
               children: [
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 20),
+                      padding: const .directional(start: 20),
                       child: const IntroBackButton(),
                     ),
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 10),
+                  margin: const .only(left: 40, right: 40, top: 10),
                   alignment: AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.requireAPasswordToOpenHeader,
@@ -54,11 +54,7 @@ class IntroPasswordOnLaunch extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsetsDirectional.only(
-                    start: 40,
-                    end: 40,
-                    top: 16,
-                  ),
+                  margin: .directional(start: 40, end: 40, top: 16),
                   alignment: AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.createPasswordFirstParagraph,
@@ -68,7 +64,7 @@ class IntroPasswordOnLaunch extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40, right: 40, top: 8),
+                  margin: const .only(left: 40, right: 40, top: 8),
                   alignment: AlignmentDirectional(-1, 0),
                   child: AutoSizeText(
                     l10n.createPasswordSecondParagraph,

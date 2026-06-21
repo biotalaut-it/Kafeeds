@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,14 +27,14 @@ class FiatValueWidget extends ConsumerWidget {
     final symbol = ref.watch(kasSymbolProvider);
 
     return Visibility(
-      visible: amount.value != Decimal.zero,
+      visible: amount.value != .zero,
       replacement: hint.isEmpty
           ? const SizedBox.shrink()
           : Text(
               hint,
               style: styles.textStyleTransactionAmount.copyWith(
                 color: theme.text30,
-                fontWeight: FontWeight.w100,
+                fontWeight: .w100,
               ),
             ),
       child: Text(

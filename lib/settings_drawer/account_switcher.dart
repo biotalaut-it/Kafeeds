@@ -25,9 +25,7 @@ class AccountSwitcher extends ConsumerWidget {
     return Container(
       height: 36,
       width: 36,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-      ),
+      decoration: const BoxDecoration(shape: .circle),
       child: TextButton(
         style: styles.roundButtonStyle,
         onPressed: showAccountsSheet,
