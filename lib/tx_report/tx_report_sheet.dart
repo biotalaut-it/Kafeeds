@@ -7,6 +7,7 @@ import '../l10n/l10n.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/buttons.dart';
+import '../widgets/checkbox_item.dart';
 import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 import 'tx_report_dialog.dart';
@@ -17,7 +18,6 @@ class TxReportSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -48,32 +48,18 @@ class TxReportSheet extends HookConsumerWidget {
               textAlign: .center,
               maxLines: 3,
             ),
-            CheckboxListTile(
-              title: Text(
-                l10n.txReportOptionIgnoreCompound,
-                style: styles.textStyleParagraphNormal,
-              ),
-              controlAffinity: .leading,
+            CheckboxItem(
+              title: l10n.txReportOptionIgnoreCompound,
               value: state.value.ignoreCompoundTxs,
-              checkColor: theme.text,
-              activeColor: theme.primary,
-              dense: true,
               onChanged: (value) {
                 state.value = state.value.copyWith(
                   ignoreCompoundTxs: value ?? false,
                 );
               },
             ),
-            CheckboxListTile(
-              title: Text(
-                l10n.txReportOptionIgnoreSelfTxs,
-                style: styles.textStyleParagraphNormal,
-              ),
-              controlAffinity: .leading,
+            CheckboxItem(
+              title: l10n.txReportOptionIgnoreSelfTxs,
               value: state.value.ignoreInternalTxs,
-              checkColor: theme.text,
-              activeColor: theme.primary,
-              dense: true,
               onChanged: (value) {
                 state.value = state.value.copyWith(
                   ignoreInternalTxs: value ?? false,

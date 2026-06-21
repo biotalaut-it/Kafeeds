@@ -6,6 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../widgets/action_buttons_wrapper.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/dismiss_action_buttons.dart';
+import '../../widgets/item_divider.dart';
 import '../../widgets/scrollable_wrapper.dart';
 import '../../widgets/sheet_util.dart';
 import '../../widgets/sheet_widget.dart';
@@ -22,6 +23,7 @@ class NodesSheet extends ConsumerWidget {
     final l10n = l10nOf(context);
 
     final items = ref.watch(kaspaNodeOptionsProvider);
+    final activeConfig = ref.watch(kaspaNodeConfigProvider);
 
     void addNode() {
       Sheets.showAppHeightNineSheet(
@@ -31,25 +33,48 @@ class NodesSheet extends ConsumerWidget {
       );
     }
 
+    Future<void> change(ActiveNodeConfig? item) async {
+      if (item == null) {
+        return;
+      }
+
+      final oldNetworkId = ref.read(networkIdProvider);
+      final newNetworkId = item.networkId;
+      final repository = ref.read(walletRepositoryProvider);
+      final wallet = ref.read(walletProvider);
+
+      if (oldNetworkId != newNetworkId) {
+        await repository.openWalletBoxes(wallet, networkId: newNetworkId);
+      }
+
+      final notifier = ref.read(kaspaNodeSettingsProvider.notifier);
+      await notifier.updateSelected(item.config);
+
+      if (oldNetworkId != newNetworkId) {
+        await repository.closeWalletBoxes(wallet, networkId: oldNetworkId);
+      }
+    }
+
     return SheetWidget(
       title: l10n.nodesSheetTitle,
       mainWidget: ScrollableWrapper(
-        child: ListView.builder(
-          shrinkWrap: true,
-          padding: .symmetric(vertical: 10),
-          itemCount: items.length + 1,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == items.length) {
-              return Divider(height: 2, color: theme.text15);
-            }
-            final config = ActiveNodeConfig(config: items[index]);
-            return ProviderScope(
-              overrides: [
-                kaspaNodeConfigItemProvider.overrideWithValue(config),
-              ],
-              child: const NodeItem(),
-            );
-          },
+        child: RadioGroup(
+          groupValue: activeConfig,
+          onChanged: change,
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: .symmetric(vertical: 10),
+            separatorBuilder: (_, _) => const ItemDivider(),
+            itemCount: items.length,
+            itemBuilder: (_, index) {
+              final config = ActiveNodeConfig(config: items[index]);
+              return NodeItem(
+                config: config,
+                isSelectedConfig: config == activeConfig,
+                onSelected: change,
+              );
+            },
+          ),
         ),
       ),
       bottomWidget: ActionButtonsWrapper(

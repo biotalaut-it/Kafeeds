@@ -6,13 +6,13 @@ import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../settings/available_currency.dart';
 import '../widgets/app_simpledialog.dart';
+import '../widgets/item_divider.dart';
 
 class CurrencyDialog extends ConsumerWidget {
   const CurrencyDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -38,7 +38,7 @@ class CurrencyDialog extends ConsumerWidget {
           ),
         Padding(
           padding: const .symmetric(horizontal: 16),
-          child: Divider(height: 2, color: theme.text15),
+          child: const ItemDivider(),
         ),
         Padding(
           padding: const .directional(start: 24, top: 12),

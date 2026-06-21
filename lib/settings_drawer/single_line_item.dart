@@ -24,6 +24,17 @@ class SingleLineItem extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
 
+    final margins = <IconData, (double, double)>{
+      AppIcons.logout: (6, 0),
+      Icons.settings_applications: (0, 0),
+      AppIcons.changerepresentative: (0, 6),
+      AppIcons.backupseed: (1, 5),
+      AppIcons.transferfunds: (2, 4),
+    };
+
+    final start = margins[settingIcon]?.$1 ?? 3;
+    final end = margins[settingIcon]?.$2 ?? 3;
+
     return TextButton(
       style: styles.defaultTextButtonStyle,
       onPressed: () => onPressed?.call(),
@@ -35,36 +46,8 @@ class SingleLineItem extends ConsumerWidget {
             Container(
               margin: const .directional(end: 13),
               child: Container(
-                margin: .directional(
-                  top: 3,
-                  start: settingIcon == AppIcons.logout
-                      ? 6
-                      : settingIcon == AppIcons.changerepresentative ||
-                            settingIcon == Icons.settings_applications
-                      ? 0
-                      : settingIcon == AppIcons.backupseed
-                      ? 1
-                      : settingIcon == AppIcons.transferfunds
-                      ? 2
-                      : 3,
-                  bottom: 3,
-                  end:
-                      settingIcon == AppIcons.logout ||
-                          settingIcon == Icons.settings_applications
-                      ? 0
-                      : settingIcon == AppIcons.changerepresentative
-                      ? 6
-                      : settingIcon == AppIcons.backupseed
-                      ? 5
-                      : settingIcon == AppIcons.transferfunds
-                      ? 4
-                      : 3,
-                ),
-                child: Icon(
-                  settingIcon,
-                  color: theme.primary,
-                  size: iconSize,
-                ),
+                margin: .directional(top: 3, start: start, bottom: 3, end: end),
+                child: Icon(settingIcon, color: theme.primary, size: iconSize),
               ),
             ),
             Expanded(

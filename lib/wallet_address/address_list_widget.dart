@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../core/core_providers.dart';
 import '../l10n/l10n.dart';
+import '../widgets/item_divider.dart';
 import 'address_list_item.dart';
 import 'wallet_address.dart';
 import 'wallet_address_providers.dart';
@@ -23,7 +24,6 @@ class AddressListWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -70,17 +70,15 @@ class AddressListWidget extends HookConsumerWidget {
 
     return ListView.separated(
       padding: const .symmetric(vertical: 10),
-      itemCount: items.length,
       controller: scrollController,
-      itemBuilder: (context, index) {
+      separatorBuilder: (_, _) => const ItemDivider(),
+      itemCount: items.length,
+      itemBuilder: (_, index) {
         final address = items.elementAt(index);
         return AddressListItem(
           address: address,
           onSelection: onSelection,
         );
-      },
-      separatorBuilder: (context, index) {
-        return Divider(height: 2, color: theme.text15);
       },
     );
   }

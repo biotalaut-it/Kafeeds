@@ -47,7 +47,6 @@ class SingleContactWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
-          Divider(height: 2, color: theme.text15),
           Container(
             padding: const .symmetric(vertical: 8),
             margin: const .directional(start: 20, end: 12),

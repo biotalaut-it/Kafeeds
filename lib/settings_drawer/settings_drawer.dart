@@ -1,37 +1,28 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_plus/share_plus.dart';
 
-import '../app_constants.dart';
 import '../app_icons.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../contacts/contacts_widget.dart';
 import '../l10n/l10n.dart';
-import '../settings/available_currency.dart';
-import '../settings/available_language.dart';
-import '../settings/available_themes.dart';
-import '../settings/setting_item.dart';
 import '../settings_advanced/advanced_menu.dart';
 import '../util/platform.dart';
-import '../util/ui_util.dart';
-import '../util/util.dart';
-import '../widgets/app_simpledialog.dart';
-import '../widgets/dialog.dart';
 import '../widgets/gradient_widgets.dart';
-import '../widgets/sheet_util.dart';
+import '../widgets/item_divider.dart';
 import 'accounts_area.dart';
-import 'currency_dialog.dart';
+import 'contact_support_settings_item.dart';
+import 'currency_settings_item.dart';
 import 'donate_menu.dart';
-import 'double_line_item.dart';
-import 'language_dialog.dart';
+import 'language_settings_item.dart';
+import 'logout_settings_item.dart';
 import 'network_menu.dart';
+import 'secret_phrase_settings_item.dart';
 import 'security_menu.dart';
-import 'seed_backup_sheet.dart';
+import 'settings_header.dart';
+import 'share_settings_item.dart';
 import 'single_line_item.dart';
-import 'theme_dialog.dart';
+import 'theme_settings_item.dart';
 import 'version_widget.dart';
 
 class SettingsSheet extends ConsumerStatefulWidget {
@@ -130,39 +121,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
     super.dispose();
   }
 
-  Future<void> _showCurrencyDialog() async {
-    final selection = await showAppDialog<AvailableCurrencies>(
-      context: context,
-      builder: (context) => const CurrencyDialog(),
-    );
-    if (selection != null) {
-      final notifier = ref.read(currencyProvider.notifier);
-      notifier.updateCurrency(AvailableCurrency(selection));
-    }
-  }
-
-  Future<void> _showLanguageDialog() async {
-    final selection = await showAppDialog<AvailableLanguage>(
-      context: context,
-      builder: (context) => const LanguageDialog(),
-    );
-    if (selection != null) {
-      final notifier = ref.read(languageProvider.notifier);
-      notifier.updateLanguage(LanguageSetting(selection));
-    }
-  }
-
-  Future<void> _showThemeDialog() async {
-    final selection = await showAppDialog<ThemeOptions>(
-      context: context,
-      builder: (context) => const ThemeDialog(),
-    );
-    if (selection != null) {
-      final notifier = ref.read(themeSettingProvider.notifier);
-      notifier.updateTheme(ThemeSetting(selection));
-    }
-  }
-
   void _onBackButtonPressed<T>(bool didPop, T result) {
     if (_contactsOpen) {
       setState(() => _contactsOpen = false);
@@ -186,290 +144,178 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
 
   @override
   Widget build(BuildContext context) {
-    // Drawer in flutter doesn't have a built-in way to push/pop elements
-    // on top of it like our Android counterpart. So we can override back button
-    // presses and replace the main settings widget with contacts based on a bool
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: _onBackButtonPressed,
       child: ClipRect(
-        child: Stack(children: [
-          Consumer(builder: (context, ref, _) {
-            return Container(
-              color: ref.watch(themeProvider).backgroundDark,
-              constraints: BoxConstraints.expand(),
-            );
-          }),
-          buildMainSettings(context),
-          SlideTransition(
-            position: _contactsOffsetFloat,
-            child: ContactsWidget(onBackAction: () {
-              setState(() => _contactsOpen = false);
-              _contactsController.reverse();
-            }),
-          ),
-          SlideTransition(
-            position: _securityOffsetFloat,
-            child: SecurityMenu(onBackAction: () {
-              setState(() => _securityOpen = false);
-              _securityController.reverse();
-            }),
-          ),
-          SlideTransition(
-            position: _networkOffsetFloat,
-            child: NetworkMenu(onBackAction: () {
-              setState(() => _networkOpen = false);
-              _networkController.reverse();
-            }),
-          ),
-          SlideTransition(
-            position: _advancedOffsetFloat,
-            child: AdvancedMenu(onBackAction: () {
-              setState(() => _advancedOpen = false);
-              _advancedController.reverse();
-            }),
-          ),
-          SlideTransition(
-            position: _donateOffsetFloat,
-            child: DonateMenu(onBackAction: () {
-              setState(() => _donateOpen = false);
-              _donateController.reverse();
-            }),
-          ),
-        ]),
+        child: Stack(
+          children: [
+            Consumer(
+              builder: (context, ref, _) {
+                return Container(
+                  color: ref.watch(themeProvider).backgroundDark,
+                  constraints: .expand(),
+                );
+              },
+            ),
+            buildMainSettings(context),
+            SlideTransition(
+              position: _contactsOffsetFloat,
+              child: ContactsWidget(
+                onBackAction: () {
+                  setState(() => _contactsOpen = false);
+                  _contactsController.reverse();
+                },
+              ),
+            ),
+            SlideTransition(
+              position: _securityOffsetFloat,
+              child: SecurityMenu(
+                onBackAction: () {
+                  setState(() => _securityOpen = false);
+                  _securityController.reverse();
+                },
+              ),
+            ),
+            SlideTransition(
+              position: _networkOffsetFloat,
+              child: NetworkMenu(
+                onBackAction: () {
+                  setState(() => _networkOpen = false);
+                  _networkController.reverse();
+                },
+              ),
+            ),
+            SlideTransition(
+              position: _advancedOffsetFloat,
+              child: AdvancedMenu(
+                onBackAction: () {
+                  setState(() => _advancedOpen = false);
+                  _advancedController.reverse();
+                },
+              ),
+            ),
+            SlideTransition(
+              position: _donateOffsetFloat,
+              child: DonateMenu(
+                onBackAction: () {
+                  setState(() => _donateOpen = false);
+                  _donateController.reverse();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget buildMainSettings(BuildContext context) {
-    return Consumer(builder: (context, ref, _) {
-      final theme = ref.watch(themeProvider);
-      final styles = ref.watch(stylesProvider);
-      final l10n = l10nOf(context);
-
-      final network = ref.watch(networkProvider);
-      final wallet = ref.watch(walletProvider);
-      final hasMnemonic = ref.watch(walletHasMnemonic);
-
-      final canDonate =
-          !kPlatformIsIOS && network == .mainnet && !wallet.isViewOnly;
-
-      Future<void> backupSecretPhrase() async {
-        final authUtil = ref.read(authUtilProvider);
-
-        final mnemonic = await authUtil.getMnemonic(context);
-        if (!context.mounted) return;
-
-        if (mnemonic == null) {
-          return;
-        }
-        if (mnemonic.isEmpty) {
-          UIUtil.showSnackbar(l10n.missingSecretPhrase);
-          return;
-        }
-
-        Sheets.showAppHeightNineSheet(
-          context: context,
-          theme: theme,
-          widget: SeedBackupSheet(mnemonic: mnemonic),
+    return Consumer(
+      builder: (context, ref, _) {
+        final theme = ref.watch(themeProvider);
+        final l10n = l10nOf(context);
+        final network = ref.watch(networkProvider);
+        final wallet = ref.watch(walletProvider);
+        final hasMnemonic = ref.watch(
+          walletAuthProvider.select((auth) => auth.hasMnemonic),
         );
-      }
 
-      void contactSupport() =>
-          openUrl('mailto:$kSupportEmail?subject=Kaspium support');
+        final canDonate =
+            !kPlatformIsIOS && network == .mainnet && !wallet.isViewOnly;
+        //final canBuy = ref.watch(networkProvider) == .mainnet;
 
-        void share() {
-          try {
-            final box = context.findRenderObject() as RenderBox?;
-            final params = ShareParams(
-              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-              text: l10n.shareKaspiumText,
-              subject: l10n.shareKaspiumSubject,
-            );
-            SharePlus.instance.share(params);
-          } catch (e) {
-            UIUtil.showSnackbar('Could not share Kaspium');
-          }
-        }
+        final items = <Widget>[
+          SettingsHeader(title: l10n.preferences),
+          const CurrencySettingsItem(),
+          const LanguageSettingsItem(),
+          const ThemeSettingsItem(),
 
-      void logout() {
-        AppDialogs.showConfirmDialog(
-          context,
-          l10n.areYouSure,
-          l10n.logoutDialogContent,
-          l10n.yesUppercase,
-          () => appRouter.logout(context),
-        );
-      }
+          SingleLineItem(
+            heading: l10n.securityHeader,
+            settingIcon: AppIcons.security,
+            onPressed: () {
+              setState(() => _securityOpen = true);
+              _securityController.forward();
+            },
+          ),
+          SingleLineItem(
+            heading: l10n.networkHeader,
+            settingIcon: Icons.language,
+            iconSize: 28,
+            onPressed: () {
+              setState(() => _networkOpen = true);
+              _networkController.forward();
+            },
+          ),
+          Padding(
+            padding: const .only(top: 20),
+            child: SettingsHeader(title: l10n.manage),
+          ),
+          SingleLineItem(
+            heading: l10n.contactsHeader,
+            settingIcon: AppIcons.contact,
+            onPressed: () {
+              setState(() => _contactsOpen = true);
+              _contactsController.forward();
+            },
+          ),
+          SingleLineItem(
+            heading: l10n.advancedHeader,
+            settingIcon: Icons.settings_applications,
+            iconSize: 30,
+            onPressed: () {
+              setState(() => _advancedOpen = true);
+              _advancedController.forward();
+            },
+          ),
+          if (hasMnemonic) const SecretPhraseSettingsItem(),
+          //if (canBuy) const BuySettingsItem(),
+          if (canDonate)
+            SingleLineItem(
+              heading: l10n.donate,
+              settingIcon: Icons.handshake_rounded,
+              onPressed: () {
+                setState(() => _donateOpen = true);
+                _donateController.forward();
+              },
+            ),
 
-      return Container(
-        decoration: BoxDecoration(color: theme.backgroundDark),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: const AccountsArea(),
-              ),
-              // Settings items
-              Expanded(
-                child: Stack(children: [
-                  ListView(
-                    primary: false,
-                    padding: const EdgeInsets.only(top: 15),
+          const ContactSupportSettingsItem(),
+          const ShareSettingsItem(),
+          const LogoutSettingsItem(),
+          const VersionWidget(),
+        ];
+
+        return Container(
+          decoration: BoxDecoration(color: theme.backgroundDark),
+          child: SafeArea(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: .only(top: 30),
+                  child: AccountsArea(),
+                ),
+                // Settings items
+                Expanded(
+                  child: Stack(
                     children: [
-                      Container(
-                        margin: .directional(start: 30, bottom: 10),
-                        child: Text(
-                          l10n.preferences,
-                          style: styles.textStyleAppTextFieldHint,
-                        ),
+                      ListView.separated(
+                        primary: false,
+                        padding: const .only(top: 15),
+                        itemCount: items.length,
+                        itemBuilder: (_, index) => items[index],
+                        separatorBuilder: (_, _) => const ItemDivider(),
                       ),
-                      Divider(height: 2, color: theme.text15),
-                      Consumer(builder: (context, ref, _) {
-                        final currency = ref.watch(currencyProvider);
-                        return DoubleLineItem(
-                          heading: l10n.currency,
-                          defaultMethod: currency,
-                          icon: AppIcons.currency,
-                          onPressed: _showCurrencyDialog,
-                        );
-                      }),
-                      Divider(height: 2, color: theme.text15),
-                      Consumer(builder: (context, ref, _) {
-                        return DoubleLineItem(
-                          heading: l10n.language,
-                          defaultMethod: ref.watch(languageProvider),
-                          icon: Icons.translate,
-                          onPressed: _showLanguageDialog,
-                        );
-                      }),
-                      Divider(height: 2, color: theme.text15),
-                      Consumer(builder: (context, ref, _) {
-                        final themeSetting = ref.watch(themeSettingProvider);
-                        return DoubleLineItem(
-                          heading: l10n.themeHeader,
-                          defaultMethod: themeSetting,
-                          icon: AppIcons.theme,
-                          onPressed: _showThemeDialog,
-                        );
-                      }),
-                      Divider(height: 2, color: theme.text15),
-                      SingleLineItem(
-                        heading: l10n.securityHeader,
-                        settingIcon: AppIcons.security,
-                        onPressed: () {
-                          setState(() => _securityOpen = true);
-                          _securityController.forward();
-                        },
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      SingleLineItem(
-                        heading: l10n.networkHeader,
-                        settingIcon: Icons.language,
-                        iconSize: 28,
-                        onPressed: () {
-                          setState(() => _networkOpen = true);
-                          _networkController.forward();
-                        },
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      Container(
-                        margin: const .directional(
-                          start: 30,
-                          top: 20,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          l10n.manage,
-                          style: styles.textStyleAppTextFieldHint,
-                        ),
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      SingleLineItem(
-                        heading: l10n.contactsHeader,
-                        settingIcon: AppIcons.contact,
-                        onPressed: () {
-                          setState(() => _contactsOpen = true);
-                          _contactsController.forward();
-                        },
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      SingleLineItem(
-                        heading: l10n.advancedHeader,
-                        settingIcon: Icons.settings_applications,
-                        iconSize: 30,
-                        onPressed: () {
-                          setState(() => _advancedOpen = true);
-                          _advancedController.forward();
-                        },
-                      ),
-                      if (hasMnemonic.asData?.value == true) ...[
-                        Divider(height: 2, color: theme.text15),
-                        SingleLineItem(
-                          heading: l10n.backupSecretPhrase,
-                          settingIcon: AppIcons.backupseed,
-                          onPressed: backupSecretPhrase,
-                        ),
-                      ],
-                      // if (network == KaspaNetwork.mainnet) ...[
-                      //   Divider(height: 2, color: theme.text15),
-                      //   DoubleLineItem(
-                      //     heading: l10n.buyKaspaTitle,
-                      //     defaultMethod: BuySettingItem(),
-                      //     icon: Icons.currency_exchange,
-                      //     onPressed: () {
-                      //       Sheets.showAppHeightNineSheet(
-                      //         context: context,
-                      //         theme: theme,
-                      //         widget: const BuySheet(),
-                      //       );
-                      //     },
-                      //   ),
-                      // ],
-                      if (canDonate) ...[
-                        Divider(height: 2, color: theme.text15),
-                        SingleLineItem(
-                          heading: l10n.donate,
-                          settingIcon: Icons.handshake_rounded,
-                          onPressed: () {
-                            setState(() => _donateOpen = true);
-                            _donateController.forward();
-                          },
-                        ),
-                      ],
-                      Divider(height: 2, color: theme.text15),
-                      DoubleLineItem(
-                        heading: l10n.contactSupport,
-                        defaultMethod: const ContactSupportItem(
-                          email: kSupportEmail,
-                        ),
-                        icon: Icons.email,
-                        onPressed: contactSupport,
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      SingleLineItem(
-                        heading: l10n.shareKaspium,
-                        settingIcon: AppIcons.share,
-                        onPressed: share,
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      SingleLineItem(
-                        heading: l10n.logoutOrSwitchWallet,
-                        settingIcon: AppIcons.logout,
-                        onPressed: logout,
-                      ),
-                      Divider(height: 2, color: theme.text15),
-                      const VersionWidget(),
+                      const ListTopGradient(),
                     ],
                   ),
-                  const ListTopGradient()
-                ]),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

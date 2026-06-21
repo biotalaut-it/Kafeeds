@@ -10,7 +10,6 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../receive/receive_amount_field.dart';
-import '../settings/setting_item.dart';
 import '../util/util.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_simpledialog.dart';
@@ -52,16 +51,6 @@ final _sourceProvider = Provider((ref) {
   }
   return kUSDCurrency;
 });
-
-class BuySettingItem extends SettingSelectionItem {
-  const BuySettingItem();
-
-  @override
-  String getDisplayName(BuildContext context) {
-    final l10n = l10nOf(context);
-    return l10n.buyKaspaSubtitle;
-  }
-}
 
 class BuySheet extends ConsumerWidget {
   const BuySheet({super.key});

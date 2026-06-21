@@ -35,7 +35,7 @@ class LanguageDialog extends ConsumerWidget {
                   ? () => appRouter.pop(context, withResult: value)
                   : null,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const .symmetric(vertical: 8),
                 child: Text(
                   LanguageSetting(value).getDisplayName(context),
                   style: isAvailable ? style : uStyle,

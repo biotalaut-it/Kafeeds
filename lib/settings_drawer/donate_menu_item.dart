@@ -8,6 +8,7 @@ import '../l10n/l10n.dart';
 import '../send_sheet/send_sheet.dart';
 import '../util/ui_util.dart';
 import '../widgets/address_widgets.dart';
+import '../widgets/item_divider.dart';
 import '../widgets/sheet_util.dart';
 
 class DonateMenuItem extends ConsumerWidget {
@@ -49,7 +50,7 @@ class DonateMenuItem extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
-          Divider(height: 2, color: theme.text15),
+          const ItemDivider(),
           Container(
             padding: const .symmetric(vertical: 8),
             margin: const .directional(start: 20, end: 12),

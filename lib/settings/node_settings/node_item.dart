@@ -8,11 +8,17 @@ import '../../l10n/l10n.dart';
 import '../../widgets/dialog.dart';
 import 'node_types.dart';
 
-final kaspaNodeConfigItemProvider =
-    Provider<ActiveNodeConfig>((ref) => throw UnimplementedError);
-
 class NodeItem extends ConsumerWidget {
-  const NodeItem({super.key});
+  final ActiveNodeConfig config;
+  final bool isSelectedConfig;
+  final void Function(ActiveNodeConfig item) onSelected;
+
+  const NodeItem({
+    super.key,
+    required this.config,
+    required this.isSelectedConfig,
+    required this.onSelected,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,34 +26,14 @@ class NodeItem extends ConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final item = ref.watch(kaspaNodeConfigItemProvider);
-    final activeConfig = ref.watch(kaspaNodeConfigProvider);
-
-    Future<void> change() async {
-      final oldNetworkId = ref.read(networkIdProvider);
-      final newNetworkId = item.networkId;
-      final repository = ref.read(walletRepositoryProvider);
-      final wallet = ref.read(walletProvider);
-      if (oldNetworkId != newNetworkId) {
-        await repository.openWalletBoxes(wallet, networkId: newNetworkId);
-      }
-
-      final notifier = ref.read(kaspaNodeSettingsProvider.notifier);
-      await notifier.updateSelected(item.config);
-
-      if (oldNetworkId != newNetworkId) {
-        await repository.closeWalletBoxes(wallet, networkId: oldNetworkId);
-      }
-    }
-
     void delete() {
       final notifier = ref.read(kaspaNodeSettingsProvider.notifier);
-      notifier.removeOption(item.config);
+      notifier.removeOption(config.config);
     }
 
     void confirmDelete() {
       final title = l10n.nodeDeleteTitle;
-      final content = '${l10n.nodeDeleteMessage} ${item.name}?';
+      final content = '${l10n.nodeDeleteMessage} ${config.name}?';
       AppDialogs.showConfirmDialog(
         context,
         title,
@@ -59,7 +45,7 @@ class NodeItem extends ConsumerWidget {
     }
 
     return Slidable(
-      enabled: item != activeConfig,
+      enabled: !isSelectedConfig,
       endActionPane: ActionPane(
         extentRatio: 0.16,
         motion: const StretchMotion(),
@@ -74,21 +60,15 @@ class NodeItem extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Divider(height: 2, color: theme.text15),
           TextButton(
             style: styles.defaultTextButtonStyle,
-            onPressed: change,
+            onPressed: () => onSelected(config),
             child: Container(
               padding: const .all(8),
               child: Row(
                 mainAxisSize: .min,
                 children: [
-                  Radio<ActiveNodeConfig>(
-                    value: item,
-                    groupValue: activeConfig,
-                    activeColor: theme.primary,
-                    onChanged: (_) => change(),
-                  ),
+                  Radio(value: config, activeColor: theme.primary),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -99,7 +79,7 @@ class NodeItem extends ConsumerWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                item.name,
+                                config.name,
                                 style: styles.textStyleSettingItemHeader,
                               ),
                             ),
@@ -111,31 +91,62 @@ class NodeItem extends ConsumerWidget {
                                 borderRadius: .circular(4),
                               ),
                               child: Text(
-                                item.networkId.toUpperCase(),
+                                config.networkId.toUpperCase(),
                                 style: styles.tagText.copyWith(fontSize: 10),
                               ),
                             ),
                           ],
                         ),
+                        const SizedBox(height: 8),
                         Row(
+                          mainAxisAlignment: .spaceBetween,
                           children: [
-                            Padding(
-                              padding: const .only(top: 3),
-                              child: Text(
-                                item.url.toString(),
-                                style: styles.textStyleAddressText60.copyWith(
-                                  fontSize: AppFontSizes.smallest,
-                                  height: 1.2,
+                            Row(
+                              children: [
+                                Text(
+                                  config.url,
+                                  style: styles.textStyleAddressText60.copyWith(
+                                    fontSize: AppFontSizes.smallest,
+                                    height: 1.2,
+                                    overflow: .ellipsis,
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(width: 4),
+                                if (config.isSecure)
+                                  Tooltip(
+                                    message: l10n.nodeSecureConnection,
+                                    child: Icon(
+                                      Icons.lock,
+                                      size: 12,
+                                      color: theme.text60,
+                                    ),
+                                  ),
+                              ],
                             ),
-                            const SizedBox(width: 4),
-                            if (item.isSecure)
-                              Tooltip(
-                                message: l10n.nodeSecureConnection,
-                                child: Icon(Icons.lock,
-                                    size: 12, color: theme.text60),
-                              )
+                            if (isSelectedConfig)
+                              Row(
+                                children: [
+                                  Consumer(
+                                    builder: (context, ref, child) {
+                                      final daa = ref.watch(
+                                        virtualDaaScoreProvider,
+                                      );
+                                      return daa.maybeWhen(
+                                        data: (value) => Text(
+                                          value.toString(),
+                                          style: styles.textStyleAddressText60
+                                              .copyWith(
+                                                fontSize: AppFontSizes.smallest,
+                                                height: 1.2,
+                                              ),
+                                        ),
+                                        orElse: () => const SizedBox(),
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(width: 4),
+                                ],
+                              ),
                           ],
                         ),
                       ],

@@ -11,11 +11,12 @@ import '../settings/wallet_settings.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/drawer_wrapper.dart';
-import '../widgets/gradient_widgets.dart';
+import '../widgets/item_divider.dart';
 import '../widgets/sheet_util.dart';
 import 'disable_password_sheet.dart';
 import 'double_line_item.dart';
 import 'set_password_sheet.dart';
+import 'settings_header.dart';
 import 'single_line_item.dart';
 
 class SecurityMenu extends ConsumerStatefulWidget {
@@ -57,21 +58,70 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final wallet = ref.watch(walletProvider);
     final walletAuth = ref.watch(walletAuthProvider);
-
-    final _unlockSetting = _getSetting(walletAuth.authOnLaunch);
-    final _autoLockSetting = _getSetting(walletAuth.autoLock);
 
     final requestPassword = ref.watch(
       walletSettingsProvider.select((settings) => settings.requestPassword),
     );
     final requestPasswordSetting = RequestPasswordSetting(requestPassword);
 
+    final items = <Widget>[
+      SettingsHeader(title: l10n.preferences),
+      // Authentication Method
+      if (_hasBiometrics)
+        DoubleLineItem(
+          heading: l10n.authMethod,
+          defaultMethod: _authMethod,
+          icon: AppIcons.fingerprint,
+          onPressed: _authMethodDialog,
+        ),
+      // Authenticate on Launch
+      DoubleLineItem(
+        heading: l10n.lockAppSetting,
+        defaultMethod: _getSetting(walletAuth.authOnLaunch),
+        icon: AppIcons.lock,
+        onPressed: _authOnLaunchDialog,
+      ),
+      // Autolock
+      DoubleLineItem(
+        heading: l10n.autoLockHeader,
+        defaultMethod: _getSetting(walletAuth.autoLock),
+        icon: Icons.sync_lock,
+        onPressed: _autoLockDialog,
+        disabled: walletAuth.authOnLaunch == false,
+      ),
+      if (walletAuth.canSetPassword)
+        if (walletAuth.isEncrypted) ...[
+          SingleLineItem(
+            heading: l10n.disableWalletPassword,
+            settingIcon: AppIcons.walletpassworddisabled,
+            onPressed: () => Sheets.showAppHeightNineSheet(
+              context: context,
+              widget: const DisablePasswordSheet(),
+              theme: theme,
+            ),
+          ),
+          DoubleLineItem(
+            heading: l10n.requestPasswordHeader,
+            defaultMethod: requestPasswordSetting,
+            icon: Icons.password,
+            onPressed: _requestPasswordDialog,
+          ),
+        ] else
+          SingleLineItem(
+            heading: l10n.setWalletPassword,
+            settingIcon: AppIcons.walletpassword,
+            onPressed: () => Sheets.showAppHeightNineSheet(
+              context: context,
+              widget: const SetPasswordSheet(),
+              theme: theme,
+            ),
+          ),
+    ];
+
     return DrawerWrapper(
       child: Column(
         children: [
-          // Back button and Security Text
           Container(
             margin: const .only(bottom: 10, top: 5),
             child: Row(
@@ -79,7 +129,6 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
               children: [
                 Row(
                   children: [
-                    //Back button
                     Padding(
                       padding: const .symmetric(horizontal: 10),
                       child: AppIconButton(
@@ -87,7 +136,6 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
                         onPressed: widget.onBackAction,
                       ),
                     ),
-                    //Security Header Text
                     Text(
                       l10n.securityHeader,
                       style: styles.textStyleSettingsHeader,
@@ -100,84 +148,12 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
           Expanded(
             child: Stack(
               children: [
-                ListView(
+                ListView.separated(
                   padding: const .only(top: 15),
-                  children: [
-                    Container(
-                      margin: const .directional(start: 30, bottom: 10),
-                      child: Text(
-                        l10n.preferences,
-                        style: styles.textStyleAppTextFieldHint,
-                      ),
-                    ),
-                    // Authentication Method
-                    if (_hasBiometrics) ...[
-                      Divider(height: 2, color: theme.text15),
-                      DoubleLineItem(
-                        heading: l10n.authMethod,
-                        defaultMethod: _authMethod,
-                        icon: AppIcons.fingerprint,
-                        onPressed: _authMethodDialog,
-                      ),
-                    ],
-                    // Authenticate on Launch
-                    Divider(height: 2, color: theme.text15),
-                    DoubleLineItem(
-                      heading: l10n.lockAppSetting,
-                      defaultMethod: _unlockSetting,
-                      icon: AppIcons.lock,
-                      onPressed: _lockDialog,
-                    ),
-
-                    // Autolock
-                    Divider(height: 2, color: theme.text15),
-                    DoubleLineItem(
-                      heading: l10n.autoLockHeader,
-                      defaultMethod: _autoLockSetting,
-                      icon: Icons.sync_lock,
-                      onPressed: _autoLockDialog,
-                      disabled: _unlockSetting.setting == .NO,
-                    ),
-                    if (wallet.canSetPassword)
-                      // Encrypt option
-                      if (walletAuth.isEncrypted) ...[
-                        Divider(height: 2, color: theme.text15),
-                        SingleLineItem(
-                          heading: l10n.disableWalletPassword,
-                          settingIcon: AppIcons.walletpassworddisabled,
-                          onPressed: () {
-                            Sheets.showAppHeightNineSheet(
-                              context: context,
-                              widget: const DisablePasswordSheet(),
-                              theme: theme,
-                            );
-                          },
-                        ),
-                        Divider(height: 2, color: theme.text15),
-                        DoubleLineItem(
-                          heading: l10n.requestPasswordHeader,
-                          defaultMethod: requestPasswordSetting,
-                          icon: Icons.password,
-                          onPressed: _requestPasswordDialog,
-                        ),
-                      ] else ...[
-                        Divider(height: 2, color: theme.text15),
-                        SingleLineItem(
-                          heading: l10n.setWalletPassword,
-                          settingIcon: AppIcons.walletpassword,
-                          onPressed: () {
-                            Sheets.showAppHeightNineSheet(
-                              context: context,
-                              widget: const SetPasswordSheet(),
-                              theme: theme,
-                            );
-                          },
-                        ),
-                      ],
-                    Divider(height: 2, color: theme.text15),
-                  ],
+                  itemCount: items.length,
+                  separatorBuilder: (_, _) => const ItemDivider(),
+                  itemBuilder: (_, index) => items[index],
                 ),
-                const ListTopGradient(),
               ],
             ),
           ),
@@ -206,13 +182,13 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
             style: styles.textStyleDialogHeader,
           ),
           children: [
-            for (final method in <AuthMethod>[.BIOMETRICS, .PIN])
+            for (final method in AuthMethod.values)
               SimpleDialogOption(
                 onPressed: () => returnMethod(method),
                 child: Padding(
                   padding: const .symmetric(vertical: 8),
                   child: Text(
-                    l10n.biometricsMethod,
+                    AuthenticationMethod(method).getDisplayName(context),
                     style: styles.textStyleDialogOptions,
                   ),
                 ),
@@ -232,7 +208,6 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
   Future<UnlockOption?> _getOption({required String title}) async {
     final theme = ref.read(themeProvider);
     final styles = ref.read(stylesProvider);
-    final l10n = l10nOf(context);
 
     final unlockOption = await showDialog<UnlockOption>(
       context: context,
@@ -251,7 +226,7 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
                 child: Padding(
                   padding: const .symmetric(vertical: 8),
                   child: Text(
-                    l10n.yes,
+                    UnlockSetting(option).getDisplayName(context),
                     style: styles.textStyleDialogOptions,
                   ),
                 ),

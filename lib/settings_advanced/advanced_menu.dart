@@ -5,9 +5,11 @@ import '../app_icons.dart';
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
 import '../settings/kasplex_settings.dart';
+import '../settings_drawer/settings_header.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/gradient_widgets.dart';
+import '../widgets/item_divider.dart';
 import 'address_discovery_settings_entry.dart';
 import 'compound_utxos_settings_entry.dart';
 import 'kpub_settings_entry.dart';
@@ -21,11 +23,20 @@ class AdvancedMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
     final wallet = ref.watch(walletProvider);
+
+    final items = <Widget>[
+      SettingsHeader(title: l10n.manage),
+      if (!wallet.isViewOnly) const CompoundUtxosSettingsEntry(),
+      const AddressDiscoverySettingsEntry(),
+      if (wallet.hasValidKpub) const KpubSettingsEntry(),
+      const TxReportSettingsEntry(),
+      const TxFilterSettingsEntry(),
+      const Krc20SettingsEntry(),
+    ];
 
     return DrawerWrapper(
       child: Column(
@@ -51,33 +62,11 @@ class AdvancedMenu extends ConsumerWidget {
           Expanded(
             child: Stack(
               children: [
-                ListView(
+                ListView.separated(
                   padding: const .only(top: 15),
-                  children: [
-                    Container(
-                      margin: const .directional(start: 30, bottom: 10),
-                      child: Text(
-                        l10n.manage,
-                        style: styles.textStyleAppTextFieldHint,
-                      ),
-                    ),
-                    if (!wallet.isViewOnly) ...[
-                      Divider(height: 2, color: theme.text15),
-                      const CompoundUtxosSettingsEntry(),
-                    ],
-                    Divider(height: 2, color: theme.text15),
-                    const AddressDiscoverySettingsEntry(),
-                    if (wallet.hasValidKpub) ...[
-                      Divider(height: 2, color: theme.text15),
-                      const KpubSettingsEntry(),
-                    ],
-                    Divider(height: 2, color: theme.text15),
-                    const TxReportSettingsEntry(),
-                    Divider(height: 2, color: theme.text15),
-                    const TxFilterSettingsEntry(),
-                    Divider(height: 2, color: theme.text15),
-                    const Krc20SettingsEntry(),
-                  ],
+                  separatorBuilder: (_, _) => const ItemDivider(),
+                  itemCount: items.length,
+                  itemBuilder: (_, index) => items[index],
                 ),
                 const ListBottomGradient(),
               ],

@@ -11,6 +11,8 @@ import '../settings/node_settings.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/gradient_widgets.dart';
+import '../widgets/item_divider.dart';
+import 'settings_header.dart';
 
 class NetworkMenu extends ConsumerWidget {
   final VoidCallback onBackAction;
@@ -19,7 +21,6 @@ class NetworkMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeProvider);
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
@@ -50,20 +51,14 @@ class NetworkMenu extends ConsumerWidget {
                 ListView(
                   padding: const .only(top: 15),
                   children: [
-                    Container(
-                      margin: const .directional(start: 30, bottom: 10),
-                      child: Text(
-                        l10n.preferences,
-                        style: styles.textStyleAppTextFieldHint,
-                      ),
-                    ),
-                    Divider(height: 2, color: theme.text15),
+                    SettingsHeader(title: l10n.preferences),
+                    const ItemDivider(),
                     const NodeSettingsEntry(),
-                    Divider(height: 2, color: theme.text15),
+                    const ItemDivider(),
                     const KaspaApiSettingsUrlEntry(),
-                    Divider(height: 2, color: theme.text15),
+                    const ItemDivider(),
                     const KasplexSettingsApiUrlEntry(),
-                    Divider(height: 2, color: theme.text15),
+                    const ItemDivider(),
                     const BlockExplorerEntry(),
                   ],
                 ),
