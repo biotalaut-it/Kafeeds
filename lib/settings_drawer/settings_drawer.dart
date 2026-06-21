@@ -7,13 +7,11 @@ import '../app_router.dart';
 import '../contacts/contacts_widget.dart';
 import '../l10n/l10n.dart';
 import '../settings_advanced/advanced_menu.dart';
-import '../util/platform.dart';
 import '../widgets/gradient_widgets.dart';
 import '../widgets/item_divider.dart';
 import 'accounts_area.dart';
 import 'contact_support_settings_item.dart';
 import 'currency_settings_item.dart';
-import 'donate_menu.dart';
 import 'language_settings_item.dart';
 import 'logout_settings_item.dart';
 import 'network_menu.dart';
@@ -46,14 +44,10 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
   late final AnimationController _advancedController;
   late final Animation<Offset> _advancedOffsetFloat;
 
-  late final AnimationController _donateController;
-  late final Animation<Offset> _donateOffsetFloat;
-
   bool _securityOpen = false;
   bool _contactsOpen = false;
   bool _networkOpen = false;
   bool _advancedOpen = false;
-  bool _donateOpen = false;
 
   @override
   void initState() {
@@ -80,11 +74,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
       vsync: this,
       duration: const Duration(milliseconds: 220),
     );
-    // For donate menu
-    _donateController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 220),
-    );
 
     final beginOffset = const Offset(1.1, 0);
     final endOffset = const Offset(0, 0);
@@ -104,10 +93,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
       begin: beginOffset,
       end: endOffset,
     ).animate(_advancedController);
-    _donateOffsetFloat = Tween<Offset>(
-      begin: beginOffset,
-      end: endOffset,
-    ).animate(_donateController);
   }
 
   @override
@@ -116,7 +101,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
     _securityController.dispose();
     _networkController.dispose();
     _advancedController.dispose();
-    _donateController.dispose();
 
     super.dispose();
   }
@@ -134,9 +118,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
     } else if (_advancedOpen) {
       setState(() => _advancedOpen = false);
       _advancedController.reverse();
-    } else if (_donateOpen) {
-      setState(() => _donateOpen = false);
-      _donateController.reverse();
     } else if (!didPop) {
       appRouter.pop(context);
     }
@@ -195,15 +176,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
                 },
               ),
             ),
-            SlideTransition(
-              position: _donateOffsetFloat,
-              child: DonateMenu(
-                onBackAction: () {
-                  setState(() => _donateOpen = false);
-                  _donateController.reverse();
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -215,14 +187,10 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
       builder: (context, ref, _) {
         final theme = ref.watch(themeProvider);
         final l10n = l10nOf(context);
-        final network = ref.watch(networkProvider);
-        final wallet = ref.watch(walletProvider);
         final hasMnemonic = ref.watch(
           walletAuthProvider.select((auth) => auth.hasMnemonic),
         );
 
-        final canDonate =
-            !kPlatformIsIOS && network == .mainnet && !wallet.isViewOnly;
         //final canBuy = ref.watch(networkProvider) == .mainnet;
 
         final items = <Widget>[
@@ -271,16 +239,6 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
           ),
           if (hasMnemonic) const SecretPhraseSettingsItem(),
           //if (canBuy) const BuySettingsItem(),
-          if (canDonate)
-            SingleLineItem(
-              heading: l10n.donate,
-              settingIcon: Icons.handshake_rounded,
-              onPressed: () {
-                setState(() => _donateOpen = true);
-                _donateController.forward();
-              },
-            ),
-
           const ContactSupportSettingsItem(),
           const ShareSettingsItem(),
           const LogoutSettingsItem(),
