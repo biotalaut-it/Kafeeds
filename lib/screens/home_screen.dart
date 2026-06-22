@@ -9,7 +9,6 @@ import '../app_router.dart';
 import '../chain_state/chain_state.dart';
 import '../l10n/l10n.dart';
 import '../main_card/main_card.dart';
-import '../settings/wallet_settings.dart';
 import '../settings_drawer/settings_drawer.dart';
 import '../util/routes.dart';
 import '../util/ui_util.dart';
@@ -34,12 +33,10 @@ class HomeScreen extends HookConsumerWidget {
         return;
       }
       if (isLocked) {
-        final walletSettings = ref.read(walletSettingsProvider);
-        final requestPassword = walletSettings.requestPassword;
-        final lockScreen = switch (requestPassword) {
-          RequestPassword.whenLocked => const PasswordLockScreen(),
-          _ => LockScreen(autoTransition: false),
-        };
+        final walletAuth = ref.read(walletAuthProvider);
+        final lockScreen = walletAuth.needsLegacyPasswordAuth
+            ? const PasswordLockScreen()
+            : const LockScreen(autoTransition: false);
 
         appRouter.push(
           context,

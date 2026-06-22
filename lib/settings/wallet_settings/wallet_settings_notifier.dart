@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../settings_repository.dart';
-import 'request_password.dart';
 import 'wallet_settings_types.dart';
 
 extension WalletSettingsExtension on SettingsRepository {
@@ -25,12 +24,4 @@ class WalletSettingsStateNotifier extends StateNotifier<WalletSettings> {
     required this.repository,
     required this.key,
   }) : super(repository.getWalletSettings(key));
-
-  Future<void> setRequestPassword(RequestPassword requestPassword) async {
-    if (state.requestPassword == requestPassword) {
-      return;
-    }
-    state = state.copyWith(requestPassword: requestPassword);
-    return repository.setWalletSettings(key, state);
-  }
 }

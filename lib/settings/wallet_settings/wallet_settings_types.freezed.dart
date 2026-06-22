@@ -15,12 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WalletSettings {
 
- RequestPassword get requestPassword;
-/// Create a copy of WalletSettings
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$WalletSettingsCopyWith<WalletSettings> get copyWith => _$WalletSettingsCopyWithImpl<WalletSettings>(this as WalletSettings, _$identity);
+
 
   /// Serializes this WalletSettings to a JSON map.
   Map<String, dynamic> toJson();
@@ -28,50 +23,24 @@ $WalletSettingsCopyWith<WalletSettings> get copyWith => _$WalletSettingsCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WalletSettings&&(identical(other.requestPassword, requestPassword) || other.requestPassword == requestPassword));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WalletSettings);
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestPassword);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'WalletSettings(requestPassword: $requestPassword)';
+  return 'WalletSettings()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $WalletSettingsCopyWith<$Res>  {
-  factory $WalletSettingsCopyWith(WalletSettings value, $Res Function(WalletSettings) _then) = _$WalletSettingsCopyWithImpl;
-@useResult
-$Res call({
- RequestPassword requestPassword
-});
-
-
-
-
-}
-/// @nodoc
-class _$WalletSettingsCopyWithImpl<$Res>
-    implements $WalletSettingsCopyWith<$Res> {
-  _$WalletSettingsCopyWithImpl(this._self, this._then);
-
-  final WalletSettings _self;
-  final $Res Function(WalletSettings) _then;
-
-/// Create a copy of WalletSettings
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? requestPassword = null,}) {
-  return _then(_self.copyWith(
-requestPassword: null == requestPassword ? _self.requestPassword : requestPassword // ignore: cast_nullable_to_non_nullable
-as RequestPassword,
-  ));
-}
-
+class $WalletSettingsCopyWith<$Res>  {
+$WalletSettingsCopyWith(WalletSettings _, $Res Function(WalletSettings) __);
 }
 
 
@@ -150,10 +119,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestPassword requestPassword)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function()?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WalletSettings() when $default != null:
-return $default(_that.requestPassword);case _:
+return $default();case _:
   return orElse();
 
 }
@@ -171,10 +140,10 @@ return $default(_that.requestPassword);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestPassword requestPassword)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function()  $default,) {final _that = this;
 switch (_that) {
 case _WalletSettings():
-return $default(_that.requestPassword);}
+return $default();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -188,10 +157,10 @@ return $default(_that.requestPassword);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestPassword requestPassword)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function()?  $default,) {final _that = this;
 switch (_that) {
 case _WalletSettings() when $default != null:
-return $default(_that.requestPassword);case _:
+return $default();case _:
   return null;
 
 }
@@ -203,16 +172,11 @@ return $default(_that.requestPassword);case _:
 @JsonSerializable()
 
 class _WalletSettings implements WalletSettings {
-  const _WalletSettings({this.requestPassword = RequestPassword.atLaunch});
+  const _WalletSettings();
   factory _WalletSettings.fromJson(Map<String, dynamic> json) => _$WalletSettingsFromJson(json);
 
-@override@JsonKey() final  RequestPassword requestPassword;
 
-/// Create a copy of WalletSettings
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$WalletSettingsCopyWith<_WalletSettings> get copyWith => __$WalletSettingsCopyWithImpl<_WalletSettings>(this, _$identity);
+
 
 @override
 Map<String, dynamic> toJson() {
@@ -221,51 +185,22 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WalletSettings&&(identical(other.requestPassword, requestPassword) || other.requestPassword == requestPassword));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WalletSettings);
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestPassword);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'WalletSettings(requestPassword: $requestPassword)';
+  return 'WalletSettings()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class _$WalletSettingsCopyWith<$Res> implements $WalletSettingsCopyWith<$Res> {
-  factory _$WalletSettingsCopyWith(_WalletSettings value, $Res Function(_WalletSettings) _then) = __$WalletSettingsCopyWithImpl;
-@override @useResult
-$Res call({
- RequestPassword requestPassword
-});
 
 
-
-
-}
-/// @nodoc
-class __$WalletSettingsCopyWithImpl<$Res>
-    implements _$WalletSettingsCopyWith<$Res> {
-  __$WalletSettingsCopyWithImpl(this._self, this._then);
-
-  final _WalletSettings _self;
-  final $Res Function(_WalletSettings) _then;
-
-/// Create a copy of WalletSettings
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? requestPassword = null,}) {
-  return _then(_WalletSettings(
-requestPassword: null == requestPassword ? _self.requestPassword : requestPassword // ignore: cast_nullable_to_non_nullable
-as RequestPassword,
-  ));
-}
-
-
-}
 
 // dart format on

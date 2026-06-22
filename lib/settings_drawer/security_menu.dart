@@ -7,7 +7,6 @@ import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../settings/authentication_method.dart';
 import '../settings/device_unlock_option.dart';
-import '../settings/wallet_settings.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/drawer_wrapper.dart';
@@ -60,11 +59,6 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
 
     final walletAuth = ref.watch(walletAuthProvider);
 
-    final requestPassword = ref.watch(
-      walletSettingsProvider.select((settings) => settings.requestPassword),
-    );
-    final requestPasswordSetting = RequestPasswordSetting(requestPassword);
-
     final items = <Widget>[
       SettingsHeader(title: l10n.preferences),
       // Authentication Method
@@ -100,12 +94,6 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
               widget: const DisablePasswordSheet(),
               theme: theme,
             ),
-          ),
-          DoubleLineItem(
-            heading: l10n.requestPasswordHeader,
-            defaultMethod: requestPasswordSetting,
-            icon: Icons.password,
-            onPressed: _requestPasswordDialog,
           ),
         ] else
           SingleLineItem(
@@ -256,44 +244,5 @@ class _SecurityMenuState extends ConsumerState<SecurityMenu> {
     if (unlockOption == null) return;
 
     await authNotifier.setAutoLock(unlockOption.value);
-  }
-
-  List<Widget> _buildPasswordOptions() {
-    return RequestPassword.values.map((value) {
-      return SimpleDialogOption(
-        onPressed: () => appRouter.pop(context, withResult: value),
-        child: Padding(
-          padding: const .symmetric(vertical: 8),
-          child: Text(
-            RequestPasswordSetting(value).getDisplayName(context),
-            style: ref.read(stylesProvider).textStyleDialogOptions,
-          ),
-        ),
-      );
-    }).toList();
-  }
-
-  Future<void> _requestPasswordDialog() async {
-    final selection = await showAppDialog<RequestPassword>(
-      context: context,
-      builder: (context) {
-        return AppSimpleDialog(
-          title: Padding(
-            padding: const .only(bottom: 10),
-            child: Text(
-              l10nOf(context).requestPasswordHeader,
-              style: ref.read(stylesProvider).textStyleDialogHeader,
-            ),
-          ),
-          children: _buildPasswordOptions(),
-        );
-      },
-    );
-    if (selection == null) {
-      return;
-    }
-
-    final walletSettings = ref.read(walletSettingsProvider.notifier);
-    return walletSettings.setRequestPassword(selection);
   }
 }
