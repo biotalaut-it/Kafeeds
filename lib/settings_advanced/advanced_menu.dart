@@ -13,6 +13,7 @@ import '../widgets/item_divider.dart';
 import 'address_discovery_settings_entry.dart';
 import 'compound_utxos_settings_entry.dart';
 import 'kpub_settings_entry.dart';
+import 'sign_message_settings_entry.dart';
 import 'tx_filter_settings_entry.dart';
 import 'tx_report_settings_entry.dart';
 
@@ -36,6 +37,7 @@ class AdvancedMenu extends ConsumerWidget {
       const TxReportSettingsEntry(),
       const TxFilterSettingsEntry(),
       const Krc20SettingsEntry(),
+      if (!wallet.isViewOnly) const SignMessageSettingsEntry(),
     ];
 
     return DrawerWrapper(

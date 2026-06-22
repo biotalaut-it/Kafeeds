@@ -4,8 +4,11 @@ import '../kaspa_client.dart';
 import '../transaction.dart';
 import '../transaction/mass_calculator.dart';
 import '../types.dart';
+import '../utils.dart';
 import 'send_tx.dart';
 import 'signer_base.dart';
+
+typedef SignatureDetails = ({String signature, String hash});
 
 class WalletService {
   final SignerBase signer;
@@ -126,5 +129,20 @@ class WalletService {
           [signature.length + 1] + signature + [hashType.raw];
       input.signatureScript.setAll(0, signatureScript);
     }
+  }
+
+  Future<SignatureDetails> signPersonalMessage(
+    String message, {
+    required Address address,
+  }) async {
+    final canSign = await signer.canSignForAddress(address);
+    if (!canSign) {
+      throw Exception('Cannot sign for address $address');
+    }
+
+    final hash = hashPersonalMessage(message);
+    final signature = await signer.sign(hash, address);
+
+    return (signature: signature.hex, hash: hash.hex);
   }
 }
