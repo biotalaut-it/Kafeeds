@@ -10,6 +10,7 @@ import '../l10n/l10n.dart';
 import '../wallet/wallet_types.dart';
 import '../wallet_address/address_discovery.dart';
 import '../widgets/content_wrapper.dart';
+import 'confirm_legacy_dialog.dart';
 import 'setup_failed_page.dart';
 
 class SetupWalletScreen extends HookConsumerWidget {
@@ -25,6 +26,45 @@ class SetupWalletScreen extends HookConsumerWidget {
 
     final message = useState(l10n.walletSetupMessage);
     final details = useState('');
+
+    Future<bool> checkLegacyWallet(String seed) async {
+      try {
+        final api = ref.read(kaspaApiServiceProvider);
+        final prefix = ref.read(addressPrefixProvider);
+
+        final wallet = HdWallet.forSeedHex(seed, type: .legacy);
+        final addresses = <String>[];
+
+        for (int ti = 0; ti < 2; ti++) {
+          for (int i = 0; i < 10; i++) {
+            final pubKey = wallet.derivePublicKey(typeIndex: ti, index: i);
+            final address = Address.publicKey(
+              prefix: prefix,
+              publicKey: pubKey,
+            );
+            addresses.add(address.encoded);
+          }
+        }
+
+        final active = await api.checkActive(addresses: addresses);
+        return active.any((a) => a.active);
+      } catch (_) {}
+      return false;
+    }
+
+    Future<bool> confirmLegacyWallet(String seed) async {
+      final isLegacy = await checkLegacyWallet(seed);
+
+      if (!isLegacy) return false;
+      if (!context.mounted) return false;
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (_) => const ConfirmLegacyWalletDialog(),
+      );
+
+      return confirmed == true;
+    }
 
     Future<void> setupWallet() async {
       try {
@@ -47,7 +87,7 @@ class SetupWalletScreen extends HookConsumerWidget {
             throw Exception('Missing seed');
           }
           WalletKind walletKind;
-          if (introData.isLegacyWallet) {
+          if (introData.isLegacyWallet || await confirmLegacyWallet(seed)) {
             final wallet = HdWallet.forSeedHex(seed, type: .legacy);
             final pubKey = wallet.derivePublicKey(typeIndex: 0, index: 0);
             walletKind = .localHdLegacy(mainPubKey: pubKey.hex);
