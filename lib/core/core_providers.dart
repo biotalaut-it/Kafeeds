@@ -49,8 +49,9 @@ final stylesProvider = Provider((ref) {
   return AppStyles(theme);
 });
 
-final sharedPrefsProvider =
-    Provider<SharedPreferences>((ref) => throw UnimplementedError());
+final sharedPrefsProvider = Provider<SharedPreferences>(
+  (ref) => throw UnimplementedError(),
+);
 
 final hapticUtilProvider = Provider((ref) => const HapticUtil());
 final authUtilProvider = Provider((ref) => AuthUtil(ref));
@@ -84,24 +85,16 @@ final addressPrefixProvider = Provider((ref) {
   return prefix;
 });
 
-final _kaspaApiProvider = Provider.autoDispose<KaspaApi>((ref) {
+final kaspaApiServiceProvider = Provider.autoDispose<ApiService>((ref) {
   final apiUrl = ref.watch(kaspaApiUrlProvider);
-
-  if (apiUrl.isEmpty) {
-    return KaspaApiEmpty();
-  }
-  return KaspaApiMainnet(apiUrl);
+  return ApiService.url(apiUrl);
 });
 
-final kaspaApiServiceProvider = Provider.autoDispose<KaspaApiService>((ref) {
-  final api = ref.watch(_kaspaApiProvider);
-  return KaspaApiService(api);
-});
-
-final mainCardProvider =
-    StateNotifierProvider<MainCardNotifier, MainCardState>((ref) {
-  return MainCardNotifier();
-});
+final mainCardProvider = StateNotifierProvider<MainCardNotifier, MainCardState>(
+  (ref) {
+    return MainCardNotifier();
+  },
+);
 
 final themeProvider = Provider((ref) {
   final themeSetting = ref.watch(themeSettingProvider);
@@ -170,8 +163,10 @@ final maxSendProvider = Provider.autoDispose((ref) {
   final utxos = ref.watch(spendableUtxosProvider);
   final maxInputs = min(utxos.length, kMaxInputsPerTransaction);
 
-  final maxWithFees =
-      utxos.take(maxInputs).fold<BigInt>(BigInt.zero, (total, element) {
+  final maxWithFees = utxos.take(maxInputs).fold<BigInt>(BigInt.zero, (
+    total,
+    element,
+  ) {
     return total + element.utxoEntry.amount;
   });
 

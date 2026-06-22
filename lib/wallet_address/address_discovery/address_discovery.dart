@@ -3,7 +3,7 @@ import '../wallet_address.dart';
 import 'address_discovery_types.dart';
 
 class AddressDiscovery {
-  final KaspaApiService api;
+  final ApiService api;
   final RpcService rpc;
   final HdAddressGenerator addressGenerator;
   final AddressNameCallback addressNameCallback;

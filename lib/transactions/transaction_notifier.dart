@@ -11,7 +11,7 @@ import 'tx_cache_service.dart';
 class TransactionNotifier extends SafeChangeNotifier {
   final TxCacheService cache;
 
-  KaspaApiService get api => cache.api;
+  ApiService get api => cache.api;
   Logger get log => cache.log;
 
   var loadedTxs = IList<Tx>();

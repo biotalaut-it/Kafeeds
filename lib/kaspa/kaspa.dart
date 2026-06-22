@@ -1,4 +1,4 @@
-export 'kaspa_api.dart';
+export 'api.dart';
 export 'network.dart';
 export 'rpc.dart';
 export 'transaction.dart';
