@@ -28,7 +28,7 @@ class TransactionNotifier extends SafeChangeNotifier {
 
   TransactionNotifier({required this.cache});
 
-  Future<void> updatePendingTxs(Iterable<ApiTransaction> pendingTxs) async {
+  Future<void> updatePendingTxs(Iterable<Transaction> pendingTxs) async {
     if (pendingTxs.isEmpty) {
       this.pendingTxs = this.pendingTxs.clear();
     } else {
@@ -39,7 +39,7 @@ class TransactionNotifier extends SafeChangeNotifier {
     notifyListeners();
   }
 
-  void addToMemcache(ApiTransaction tx) {
+  void addToMemcache(Transaction tx) {
     // Don't cache coinbase transactions
     if (tx.inputs.isEmpty) {
       return;
@@ -47,7 +47,7 @@ class TransactionNotifier extends SafeChangeNotifier {
     cache.addToMemcache(tx);
   }
 
-  Future<void> addWalletTx(ApiTransaction apiTx) async {
+  Future<void> addWalletTx(Transaction apiTx) async {
     if (cache.isWalletTxId(apiTx.transactionId)) {
       return;
     }
@@ -63,14 +63,14 @@ class TransactionNotifier extends SafeChangeNotifier {
   Future<void> processAcceptedTxIds(
     Iterable<String> acceptedTxIds, {
     required String acceptingBlockHash,
-    required KaspaClient client,
+    required RpcService rpc,
   }) async {
     final walletIds = acceptedTxIds.where(cache.isWalletTxId);
     if (walletIds.isEmpty) {
       return;
     }
 
-    final block = await client.getBlockByHash(
+    final block = await rpc.getBlock(
       acceptingBlockHash,
       includeTransactions: false,
     );
@@ -78,14 +78,14 @@ class TransactionNotifier extends SafeChangeNotifier {
     await cache.updateAcceptedTxs(
       walletIds,
       acceptingBlockHash: acceptingBlockHash,
-      acceptingBlockBlueScore: block.verboseData.blueScore.toInt(),
+      acceptingBlockBlueScore: block.verboseData?.blueScore ?? 0,
     );
 
     await reload();
   }
 
   Future<void> fetchNewTxsForAddresses(Iterable<String> addresses) async {
-    final apiTxs = <ApiTransaction>[];
+    final apiTxs = <Transaction>[];
     try {
       for (final address in addresses) {
         final txsForAddress = await api.getTxsForAddress(

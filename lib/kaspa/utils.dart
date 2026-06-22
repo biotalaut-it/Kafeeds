@@ -20,6 +20,10 @@ extension ToBigInt on Int64 {
   BigInt toUnsignedBigInt() => .parse(toStringUnsigned());
 }
 
+extension BigIntExt on BigInt {
+  BigInt min(BigInt min) => this < min ? min : this;
+}
+
 extension ToInt64 on BigInt {
   Int64 toInt64() =>
       Int64.fromBytesBigEndian(leftPadBytes(bigIntToBytesUnsigned(this), 8));

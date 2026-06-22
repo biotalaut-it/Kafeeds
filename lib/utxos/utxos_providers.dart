@@ -1,12 +1,9 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/core_providers.dart';
+import '../app_providers.dart';
 import '../database/boxes.dart';
-import '../kaspa/transaction/types.dart';
-import '../wallet_address/wallet_address_providers.dart';
-import '../wallet_auth/wallet_auth_providers.dart';
-import '../wallet_balance/wallet_balance_providers.dart';
+import '../kaspa/types.dart';
 import 'utxos_notifier.dart';
 
 final _utxoBoxProvider = Provider.autoDispose<TypedBox<Utxo>>((ref) {
@@ -20,20 +17,25 @@ final _utxoBoxProvider = Provider.autoDispose<TypedBox<Utxo>>((ref) {
 });
 
 final utxosChangedProvider = StreamProvider.autoDispose((ref) {
-  final client = ref.watch(kaspaClientProvider);
+  final rpc = ref.watch(kaspaRpcProvider);
   final addresses = ref.watch(allAddressesProvider);
 
-  return client.notifyUtxosChanged(addresses);
+  ref.onDispose(() async {
+    try {
+      await rpc.stopNotifyingUtxosChanged(addresses);
+    } catch (_) {}
+  });
+
+  return rpc.notifyUtxosChanged(addresses);
 });
 
-final utxoNotifierProvider =
-    ChangeNotifierProvider.autoDispose<UtxosNotifier>((ref) {
-  final client = ref.watch(kaspaClientProvider);
+final utxoNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
+  final rpc = ref.watch(kaspaRpcProvider);
   final utxoBox = ref.watch(_utxoBoxProvider);
   final log = ref.watch(loggerProvider);
 
   final notifier = UtxosNotifier(
-    client: client,
+    rpc: rpc,
     utxoBox: utxoBox,
     log: log,
   );
@@ -44,7 +46,6 @@ final utxoNotifierProvider =
       log.d('UTXOs - Refresh with balances for ${balances.keys}');
       notifier.refreshWithBalances(balances: balances);
     },
-    fireImmediately: true,
   );
 
   ref.listen(utxosChangedProvider, (_, next) {

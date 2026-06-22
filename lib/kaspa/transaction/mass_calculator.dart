@@ -1,3 +1,4 @@
+import '../types.dart';
 import '../utils.dart';
 import 'types.dart';
 
@@ -29,7 +30,7 @@ class MassCalculator {
   });
 
   BigInt calcTxOverallMass({
-    required Transaction tx,
+    required RawTransaction tx,
   }) {
     final computeMass = BigInt.from(calcTxComputeMass(tx: tx));
     final storageMass = calcTxStorageMass(tx: tx);
@@ -37,7 +38,7 @@ class MassCalculator {
   }
 
   BigInt calcTxStorageMass({
-    required Transaction tx,
+    required RawTransaction tx,
   }) {
     if (tx.isCoinbase) {
       return .zero;
@@ -47,10 +48,7 @@ class MassCalculator {
         .map(
           (output) => storageMassParameter ~/ output.value.toUnsignedBigInt(),
         )
-        .fold(
-          BigInt.zero,
-          (total, element) => total + element,
-        );
+        .fold(BigInt.zero, (total, element) => total + element);
 
     final outsLen = tx.outputs.length;
     final insLen = tx.inputs.length;
@@ -59,13 +57,8 @@ class MassCalculator {
         outsLen == 1 || insLen == 1 || (outsLen == 2 && insLen == 2);
     if (isRelaxed) {
       final harmonicIns = tx.inputs
-          .map(
-            (input) => storageMassParameter ~/ input.utxoEntry.amount,
-          )
-          .fold(
-            BigInt.zero,
-            (total, element) => total + element,
-          );
+          .map((input) => storageMassParameter ~/ input.utxoEntry.amount)
+          .fold(BigInt.zero, (total, element) => total + element);
 
       return _max(.zero, harmonicOuts - harmonicIns);
     }
@@ -82,7 +75,7 @@ class MassCalculator {
     return _max(.zero, harmonicOuts - arithmeticIns);
   }
 
-  int calcTxComputeMass({required Transaction tx}) {
+  int calcTxComputeMass({required RawTransaction tx}) {
     if (tx.isCoinbase) {
       return 0;
     }
@@ -110,7 +103,7 @@ class MassCalculator {
     return massForSize + massForScriptPubKeySize + massForSigOps;
   }
 
-  int txEstimatedSerializedSize({required Transaction tx}) {
+  int txEstimatedSerializedSize({required RawTransaction tx}) {
     int size = 0;
     size += 2; // version
     size += 8; // number of inputs
@@ -131,7 +124,7 @@ class MassCalculator {
     return size;
   }
 
-  int txInputEstimatedSerializedSize({required TxInput input}) {
+  int txInputEstimatedSerializedSize({required RawInput input}) {
     int size = 0;
     size += outpointEstimatedSerializedSize(); // previous outpoint
     size += 8; // signature script length
@@ -147,7 +140,7 @@ class MassCalculator {
     return size;
   }
 
-  int txOutputEstimatedSerializedSize({required TxOutput output}) {
+  int txOutputEstimatedSerializedSize({required RawOutput output}) {
     int size = 0;
     size += 8; // value (uint64)
     size += 2; // output.ScriptPublicKey.Version (uint 16)

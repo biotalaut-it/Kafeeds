@@ -1,7 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../grpc/rpc.pb.dart';
+import '../types/transaction.dart';
 
 part 'types.freezed.dart';
 part 'types.g.dart';
@@ -94,97 +93,4 @@ sealed class ApiTxId with _$ApiTxId {
       _$ApiTxIdFromJson(json);
 }
 
-int _sigOpCountFromJson(dynamic sigOpCount) {
-  if (sigOpCount is int) {
-    return sigOpCount;
-  }
-  if (sigOpCount is String) {
-    return int.tryParse(sigOpCount) ?? 0;
-  }
-  return 0;
-}
-
-@freezed
-sealed class ApiTxInput with _$ApiTxInput {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory ApiTxInput({
-    required String transactionId,
-    required int index,
-    required String previousOutpointHash,
-    required BigInt previousOutpointIndex,
-    required String signatureScript,
-    @JsonKey(fromJson: _sigOpCountFromJson) required int sigOpCount,
-    // new fields
-    String? previousOutpointAddress,
-    int? previousOutpointAmount,
-  }) = _ApiTxInput;
-
-  factory ApiTxInput.fromJson(Map<String, dynamic> json) =>
-      _$ApiTxInputFromJson(json);
-}
-
-@freezed
-sealed class ApiTxOutput with _$ApiTxOutput {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory ApiTxOutput({
-    required String transactionId,
-    required int index,
-    required int amount,
-    required String scriptPublicKey,
-    required String scriptPublicKeyAddress,
-    required String scriptPublicKeyType,
-  }) = _ApiTxOutput;
-
-  factory ApiTxOutput.fromJson(Map<String, dynamic> json) =>
-      _$ApiTxOutputFromJson(json);
-}
-
-@freezed
-sealed class ApiTransaction with _$ApiTransaction {
-  ApiTransaction._();
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory ApiTransaction({
-    String? subnetworkId,
-    required String transactionId,
-    @Default([]) List<String> blockHash,
-    required int blockTime,
-    required bool isAccepted,
-    String? acceptingBlockHash,
-    int? acceptingBlockBlueScore,
-    @Default([]) List<ApiTxInput> inputs,
-    @Default([]) List<ApiTxOutput> outputs,
-  }) = _Transaction;
-
-  factory ApiTransaction.fromJson(Map<String, dynamic> json) =>
-      _$ApiTransactionFromJson(json);
-
-  factory ApiTransaction.fromRpc(RpcTransaction tx) {
-    return ApiTransaction(
-      transactionId: tx.verboseData.transactionId,
-      blockTime: tx.verboseData.blockTime.toInt(),
-      isAccepted: false,
-      inputs: tx.inputs.mapIndexed((index, e) {
-        return ApiTxInput(
-          transactionId: tx.verboseData.transactionId,
-          index: index,
-          previousOutpointHash: e.previousOutpoint.transactionId,
-          previousOutpointIndex: BigInt.from(e.previousOutpoint.index),
-          signatureScript: e.signatureScript,
-          sigOpCount: e.sigOpCount,
-        );
-      }).toList(),
-      outputs: tx.outputs.mapIndexed((index, e) {
-        return ApiTxOutput(
-          transactionId: tx.verboseData.transactionId,
-          index: index,
-          amount: e.amount.toInt(),
-          scriptPublicKey: e.scriptPublicKey.scriptPublicKey,
-          scriptPublicKeyAddress: e.verboseData.scriptPublicKeyAddress,
-          scriptPublicKeyType: e.verboseData.scriptPublicKeyType,
-        );
-      }).toList(),
-    );
-  }
-
-  bool get isCoinbase => inputs.isEmpty;
-}
+typedef ApiTransaction = Transaction;

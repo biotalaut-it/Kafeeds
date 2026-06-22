@@ -9,7 +9,6 @@ import '../app_providers.dart';
 import '../app_styles.dart';
 import '../chain_state/chain_state.dart';
 import '../database/database.dart';
-import '../kaspa/grpc/rpc.pb.dart';
 import '../kaspa/kaspa.dart';
 import '../main_card/main_card_notifier.dart';
 import '../main_card/main_card_state.dart';
@@ -99,29 +98,6 @@ final kaspaApiServiceProvider = Provider.autoDispose<KaspaApiService>((ref) {
   return KaspaApiService(api);
 });
 
-final kaspaClientProvider = Provider((ref) {
-  final config = ref.watch(kaspaNodeConfigProvider);
-  final inBackground = ref.watch(inBackgroundProvider);
-
-  final client = inBackground
-      ? VoidKaspaClient()
-      : KaspaClient.url(config.url, isSecure: config.isSecure);
-
-  ref.onDispose(() {
-    client.close();
-  });
-
-  return client;
-});
-
-final balancesForAddressesProvider = FutureProvider.family
-    .autoDispose<Iterable<RpcBalancesByAddressesEntry>, List<String>>(
-        (ref, addresses) async {
-  final client = ref.watch(kaspaClientProvider);
-  final balance = await client.getBalancesByAddresses(addresses);
-  return balance;
-});
-
 final mainCardProvider =
     StateNotifierProvider<MainCardNotifier, MainCardState>((ref) {
   return MainCardNotifier();
@@ -142,11 +118,16 @@ final lastKnownVirtualDaaScoreProvider = StateProvider<BigInt>((ref) {
   return chainState.virtualDaaScore;
 });
 
-final virtualDaaScoreProvider = StreamProvider((ref) {
-  final client = ref.watch(kaspaClientProvider);
-  return client.notifyVirtualDaaScoreChanged().map((value) {
-    final virtualDaaScore = value.toUnsignedBigInt();
+final virtualDaaScoreProvider = StreamProvider.autoDispose((ref) {
+  final rpc = ref.watch(kaspaRpcProvider);
 
+  ref.onDispose(() async {
+    try {
+      await rpc.stopNotifyingVirtualDaaScoreChanged();
+    } catch (_) {}
+  });
+
+  return rpc.notifyVirtualDaaScoreChanged().map((virtualDaaScore) {
     final lastKnown = ref.read(lastKnownVirtualDaaScoreProvider.notifier);
     lastKnown.state = virtualDaaScore;
 
@@ -159,17 +140,26 @@ final virtualSelectedParentBlueScoreProvider = StateProvider<BigInt>((ref) {
   return chainState.virtualSelectedParentBlueScore;
 });
 
-final virtualSelectedParentBlueScoreStreamProvider = StreamProvider((ref) {
-  final client = ref.watch(kaspaClientProvider);
-  return client.notifyVirtualSelectedParentBlueScoreChanged().map((value) {
-    final blueScore = value.toUnsignedBigInt();
+final virtualSelectedParentBlueScoreStreamProvider = StreamProvider.autoDispose(
+  (ref) {
+    final rpc = ref.watch(kaspaRpcProvider);
 
-    final notifier = ref.read(virtualSelectedParentBlueScoreProvider.notifier);
-    notifier.state = blueScore;
+    ref.onDispose(() async {
+      try {
+        await rpc.stopNotifyingSinkBlueScoreChanged();
+      } catch (_) {}
+    });
 
-    return blueScore;
-  });
-});
+    return rpc.notifySinkBlueScoreChanged().map((blueScore) {
+      final notifier = ref.read(
+        virtualSelectedParentBlueScoreProvider.notifier,
+      );
+      notifier.state = blueScore;
+
+      return blueScore;
+    });
+  },
+);
 
 final remoteRefreshProvider = StateProvider((ref) => 0);
 
@@ -198,83 +188,6 @@ final appLinkProvider = StateProvider<String?>((ref) {
 });
 
 final fiatModeProvider = StateProvider<bool>((ref) => false);
-
-final pendingTxsProvider = FutureProvider.autoDispose((ref) async {
-  final client = ref.watch(kaspaClientProvider);
-  final addresses = ref.watch(activeAddressesProvider);
-  // refresh when utxos change
-  ref.watch(utxosChangedProvider);
-
-  final pendingTxs = await client.getMempoolEntriesByAddresses(
-    addresses,
-    filterTransactionPool: false,
-    includeOrphanPool: false,
-  );
-
-  return pendingTxs
-      .expand(
-        (entries) => entries.sending.map(
-          (e) => ApiTransaction.fromRpc(e.transaction),
-        ),
-      )
-      .toSet()
-      .toList();
-});
-
-final rpcFeeEstimateProvider = FutureProvider.autoDispose((ref) async {
-  // refresh once every 10 seconds
-  ref.watch(timeProvider);
-  final client = ref.watch(kaspaClientProvider);
-
-  try {
-    final feeEstimate = await client.getFeeEstimate();
-    return feeEstimate;
-  } catch (e) {
-    return null;
-  }
-});
-
-extension BigIntExt on BigInt {
-  BigInt min(BigInt min) => this < min ? min : this;
-}
-
-final feeEstimateProvider = Provider.family
-    .autoDispose<List<(Amount, int?)>, (BigInt, Amount)>((ref, massAndFee) {
-  final mass = massAndFee.$1;
-  final baseFee = massAndFee.$2;
-
-  final feeEstimate = ref.watch(rpcFeeEstimateProvider).valueOrNull;
-  if (feeEstimate == null) {
-    return [
-      (.value(.parse('0.001')), null),
-      (.value(.parse('0.01')), null),
-      (.value(.parse('0.1')), null),
-    ];
-  }
-
-  Amount feeFor(double feeRate, BigInt mass, Amount baseFee) {
-    final estimate = feeRate * mass.toDouble();
-    return .raw((BigInt.from(estimate) - baseFee.raw).min(.zero));
-  }
-
-  final fees = [
-    if (feeEstimate.lowBuckets.isNotEmpty)
-      (
-        feeFor(feeEstimate.lowBuckets.first.feerate, mass, baseFee),
-        feeEstimate.lowBuckets.first.estimatedSeconds.toInt(),
-      ),
-    if (feeEstimate.normalBuckets.isNotEmpty)
-      (
-        feeFor(feeEstimate.normalBuckets.first.feerate, mass, baseFee),
-        feeEstimate.normalBuckets.first.estimatedSeconds.toInt(),
-      ),
-    (
-      feeFor(feeEstimate.priorityBucket.feerate, mass, baseFee),
-      feeEstimate.priorityBucket.estimatedSeconds.toInt(),
-    ),
-  ].where((fee) => fee.$1.raw > BigInt.zero).toList();
-  return fees;
-});
 
 final kasSymbolProvider = Provider((ref) {
   final network = ref.watch(networkProvider);

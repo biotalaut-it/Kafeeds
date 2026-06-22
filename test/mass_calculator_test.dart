@@ -6,7 +6,7 @@ import 'package:kaspium_wallet/kaspa/kaspa.dart';
 import 'package:kaspium_wallet/kaspa/transaction/mass_calculator.dart';
 
 void main() {
-  Transaction generateTxFromAmounts(
+  RawTransaction generateTxFromAmounts(
     Iterable<BigInt> ins,
     Iterable<BigInt> outs,
   ) {
@@ -17,36 +17,32 @@ void main() {
     final prevTxId =
         '880eb9819a31821d9d2399e2f35e2433b72637e393d71ecc9b8d0250f49153c3';
     final address = Address.publicKey(prefix: .kaspa, publicKey: Uint8List(32));
-    final tx = Transaction(
+    final tx = RawTransaction(
       version: 0,
-      inputs: ins.indexed
-          .map(
-            (indexed) => TxInput(
-              previousOutpoint: Outpoint(
-                transactionId: prevTxId,
-                index: indexed.$1,
-              ),
-              sequence: Int64(0),
-              sigOpCount: 0,
-              signatureScript: Uint8List(0),
-              address: address,
-              utxoEntry: UtxoEntry(
-                amount: indexed.$2,
-                isCoinbase: false,
-                blockDaaScore: BigInt.zero,
-                scriptPublicKey: scriptPublicKey,
-              ),
-            ),
-          )
-          .toList(),
-      outputs: outs
-          .map(
-            (out) => TxOutput(
-              value: out.toInt64(),
-              scriptPublicKey: scriptPublicKey,
-            ),
-          )
-          .toList(),
+      inputs: ins.indexed.map((indexed) {
+        return RawInput(
+          previousOutpoint: Outpoint(
+            transactionId: prevTxId,
+            index: indexed.$1,
+          ),
+          sequence: Int64(0),
+          sigOpCount: 0,
+          signatureScript: Uint8List(0),
+          address: address,
+          utxoEntry: UtxoEntry(
+            amount: indexed.$2,
+            isCoinbase: false,
+            blockDaaScore: BigInt.zero,
+            scriptPublicKey: scriptPublicKey,
+          ),
+        );
+      }).toList(),
+      outputs: outs.map((out) {
+        return RawOutput(
+          value: out.toInt64(),
+          scriptPublicKey: scriptPublicKey,
+        );
+      }).toList(),
       lockTime: Int64(1615462089000),
       subnetworkId: Uint8List.fromList(
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -3,8 +3,10 @@ import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
 
-import '../kaspa.dart';
+import '../types.dart';
+import '../utils.dart';
 import 'txscript.dart';
+import 'types.dart';
 
 class TransactionBuilder {
   final List<Utxo> utxos;
@@ -12,7 +14,7 @@ class TransactionBuilder {
   final Amount priorityFee;
 
   BigInt _change = .zero;
-  Amount get change => Amount.raw(_change);
+  Amount get change => .raw(_change);
 
   Address? _changeAddress;
   Address? get changeAddress => _changeAddress;
@@ -30,8 +32,8 @@ class TransactionBuilder {
   }) : feePerInputRaw = feePerInput ?? kFeePerInput,
        priorityFee = priorityFee ?? .zero;
 
-  Transaction? rebuildTransaction(
-    ApiTransaction tx, {
+  RawTransaction? rebuildTransaction(
+    Transaction tx, {
     required Address toAddress,
     required Address changeAddress,
   }) {
@@ -81,7 +83,7 @@ class TransactionBuilder {
     return null;
   }
 
-  Transaction createUnsignedTransaction({
+  RawTransaction createUnsignedTransaction({
     required Address toAddress,
     required BigInt amountRaw,
     required Address changeAddress,
@@ -125,12 +127,12 @@ class TransactionBuilder {
     return unsignedTransaction;
   }
 
-  Transaction _createUnsignedTransaction({
+  RawTransaction _createUnsignedTransaction({
     required List<Utxo> utxos,
     required Map<Address, Int64> payments,
   }) {
     final inputs = utxos.map((utxo) {
-      return TxInput(
+      return RawInput(
         address: Address.decodeAddress(utxo.address),
         previousOutpoint: utxo.outpoint,
         signatureScript: Uint8List(64 + 2),
@@ -145,13 +147,13 @@ class TransactionBuilder {
 
     final outputs = payments.entries.map((e) {
       final scriptPublicKey = payToAddressScript(e.key);
-      return TxOutput(
+      return RawOutput(
         value: e.value,
         scriptPublicKey: scriptPublicKey,
       );
     });
 
-    final tx = Transaction(
+    final tx = RawTransaction(
       version: kMaxTransactionVersion,
       inputs: inputs.toList(),
       outputs: outputs.toList(),

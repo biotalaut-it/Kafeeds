@@ -65,6 +65,9 @@ message KaspadRequest {
     GetFeeEstimateRequestMessage getFeeEstimateRequest = 1106;
     GetFeeEstimateExperimentalRequestMessage getFeeEstimateExperimentalRequest = 1108;
     GetCurrentBlockColorRequestMessage getCurrentBlockColorRequest = 1110;
+    GetUtxoReturnAddressRequestMessage getUtxoReturnAddressRequest = 1112;
+    GetVirtualChainFromBlockV2RequestMessage getVirtualChainFromBlockV2Request = 1114;
+    GetBlockRewardInfoRequestMessage getBlockRewardInfoRequest = 1116;
   }
 }
 
@@ -130,6 +133,9 @@ message KaspadResponse {
     GetFeeEstimateResponseMessage getFeeEstimateResponse = 1107;
     GetFeeEstimateExperimentalResponseMessage getFeeEstimateExperimentalResponse = 1109;
     GetCurrentBlockColorResponseMessage getCurrentBlockColorResponse = 1111;
+    GetUtxoReturnAddressResponseMessage getUtxoReturnAddressResponse = 1113;
+    GetVirtualChainFromBlockV2ResponseMessage getVirtualChainFromBlockV2Response = 1115;
+    GetBlockRewardInfoResponseMessage getBlockRewardInfoResponse = 1117;
   }
 }
 

@@ -4,7 +4,7 @@ import 'address_discovery_types.dart';
 
 class AddressDiscovery {
   final KaspaApiService api;
-  final KaspaClient client;
+  final RpcService rpc;
   final HdAddressGenerator addressGenerator;
   final AddressNameCallback addressNameCallback;
 
@@ -12,7 +12,7 @@ class AddressDiscovery {
 
   AddressDiscovery({
     required this.api,
-    required this.client,
+    required this.rpc,
     required this.addressGenerator,
     required this.addressNameCallback,
   });
@@ -85,9 +85,9 @@ class AddressDiscovery {
   }
 
   Future<bool> _checkForUsedAddresses(Iterable<String> addresses) async {
-    final balances = await client.getBalancesByAddresses(addresses);
+    final balances = await rpc.getBalancesByAddresses(addresses);
 
-    final anyUsedAddress = balances.any((balance) => balance.balance > 0);
+    final anyUsedAddress = balances.any((balance) => balance.balance > .zero);
 
     return anyUsedAddress;
   }

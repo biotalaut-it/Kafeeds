@@ -1,12 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/core_providers.dart';
+import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
-import '../wallet_address/wallet_address_providers.dart';
-import '../wallet_auth/wallet_auth_providers.dart';
 import 'wallet_signer.dart';
 
-final walletSignerProvider = Provider.autoDispose((ref) {
+final _walletSignerProvider = Provider.autoDispose((ref) {
   final addressNotifier = ref.watch(addressNotifierProvider);
   final walletAuth = ref.watch(walletAuthProvider.notifier);
 
@@ -14,11 +12,11 @@ final walletSignerProvider = Provider.autoDispose((ref) {
 });
 
 final walletServiceProvider = Provider.autoDispose((ref) {
-  final signer = ref.watch(walletSignerProvider);
-  final client = ref.watch(kaspaClientProvider);
+  final signer = ref.watch(_walletSignerProvider);
+  final rpc = ref.watch(kaspaRpcProvider);
 
   return WalletService(
     signer: signer,
-    client: client,
+    rpc: rpc,
   );
 });

@@ -25,9 +25,7 @@ Map<String, dynamic> _$TxInputDataToJson(_TxInputData instance) =>
     <String, dynamic>{'address': instance.address, 'amount': instance.amount};
 
 _Tx _$TxFromJson(Map json) => _Tx(
-  apiTx: ApiTransaction.fromJson(
-    Map<String, dynamic>.from(json['apiTx'] as Map),
-  ),
+  apiTx: Transaction.fromJson(Map<String, dynamic>.from(json['apiTx'] as Map)),
   inputData: (json['inputData'] as List<dynamic>)
       .map(
         (e) => e == null

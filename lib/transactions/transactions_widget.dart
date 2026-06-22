@@ -21,103 +21,107 @@ List<TxListItem> _txListItemsFromTxs(
   required WalletAddressNotifier addressNotifier,
   required UtxosNotifier utxoNotifier,
 }) {
-  return txs.expand<TxListItem>((tx) {
-    if (txFilter == .hideNotAcceptedCoinbase &&
-        tx.apiTx.inputs.isEmpty &&
-        !tx.apiTx.isAccepted) {
-      return [];
-    }
+  return txs
+      .expand<TxListItem>((tx) {
+        if (txFilter == .hideNotAcceptedCoinbase &&
+            tx.apiTx.inputs.isEmpty &&
+            !tx.apiTx.isAccepted) {
+          return [];
+        }
 
-    final hasWalletInputs = tx.inputData.nonNulls.any(
-          (input) => addressNotifier.containsAddress(input.address),
-        ) ||
-        tx.apiTx.inputs.any(
-          (input) => utxoNotifier.isWalletOutpoint(
-            Outpoint(
-              transactionId: input.previousOutpointHash,
-              index: input.previousOutpointIndex.toInt(),
+        final hasWalletInputs =
+            tx.inputData.nonNulls.any(
+              (input) => addressNotifier.containsAddress(input.address),
+            ) ||
+            tx.apiTx.inputs.any(
+              (input) => utxoNotifier.isWalletOutpoint(
+                Outpoint(
+                  transactionId: input.previousOutpointHash,
+                  index: input.previousOutpointIndex.toInt(),
+                ),
+              ),
+            );
+
+        final outputs = tx.apiTx.outputs;
+        final hasSingleChangeOutput =
+            tx.apiTx.outputs.length == 1 &&
+            addressNotifier.containsChangeAddress(
+              tx.apiTx.outputs.first.scriptPublicKeyAddress,
+            );
+
+        if (hasWalletInputs && hasSingleChangeOutput) {
+          return [
+            TxListItem.txItem(
+              TxItem(tx: tx, outputIndex: 0, type: .compound),
             ),
-          ),
-        );
+          ];
+        }
 
-    final outputs = tx.apiTx.outputs;
-    final hasSingleChangeOutput = tx.apiTx.outputs.length == 1 &&
-        addressNotifier.containsChangeAddress(
-          tx.apiTx.outputs.first.scriptPublicKeyAddress,
-        );
+        final listItems = <TxListItem>[];
+        for (final output in outputs) {
+          final address = output.scriptPublicKeyAddress;
+          if (addressNotifier.containsChangeAddress(address) &&
+              outputs.last == output) {
+            continue;
+          }
+          if (addressNotifier.containsAddress(address) && hasWalletInputs) {
+            final listItem = TxListItem.txItem(
+              TxItem(tx: tx, outputIndex: output.index, type: .thisWallet),
+            );
+            listItems.add(listItem);
+            continue;
+          }
+          if (addressNotifier.containsAddress(address)) {
+            final listItem = TxListItem.txItem(
+              TxItem(tx: tx, outputIndex: output.index, type: .receive),
+            );
+            listItems.add(listItem);
+          }
+          if (hasWalletInputs) {
+            final listItem = TxListItem.txItem(
+              TxItem(tx: tx, outputIndex: output.index, type: .send),
+            );
+            listItems.add(listItem);
+          }
+        }
 
-    if (hasWalletInputs && hasSingleChangeOutput) {
-      return [
-        TxListItem.txItem(
-          TxItem(
-            tx: tx,
-            outputIndex: 0,
-            type: .compound,
-          ),
-        ),
-      ];
-    }
-
-    final listItems = <TxListItem>[];
-    for (final output in outputs) {
-      final address = output.scriptPublicKeyAddress;
-      if (addressNotifier.containsChangeAddress(address) &&
-          outputs.last == output) {
-        continue;
-      }
-      if (addressNotifier.containsAddress(address) && hasWalletInputs) {
-        final listItem = TxListItem.txItem(
-          TxItem(tx: tx, outputIndex: output.index, type: .thisWallet),
-        );
-        listItems.add(listItem);
-        continue;
-      }
-      if (addressNotifier.containsAddress(address)) {
-        final listItem = TxListItem.txItem(
-          TxItem(tx: tx, outputIndex: output.index, type: .receive),
-        );
-        listItems.add(listItem);
-      }
-      if (hasWalletInputs) {
-        final listItem = TxListItem.txItem(
-          TxItem(tx: tx, outputIndex: output.index, type: .send),
-        );
-        listItems.add(listItem);
-      }
-    }
-
-    return listItems;
-  }).toList(growable: false);
+        return listItems;
+      })
+      .toList(growable: false);
 }
 
-final _txListItemsProvider =
-    Provider.autoDispose.family<List<TxListItem>, WalletInfo>((ref, wallet) {
-  final addressNotifier = ref.watch(addressNotifierProvider.notifier);
-  final utxoNotifier = ref.watch(utxoNotifierProvider.notifier);
-  final txNotifier = ref.watch(txNotifierForWalletProvider(wallet));
-  final txFilter = ref.watch(txFilterProvider);
+final _txListItemsProvider = Provider.autoDispose
+    .family<List<TxListItem>, WalletInfo>((ref, wallet) {
+      final addressNotifier = ref.watch(addressNotifierProvider.notifier);
+      final utxoNotifier = ref.watch(utxoNotifierProvider.notifier);
+      final txNotifier = ref.watch(txNotifierForWalletProvider(wallet));
+      final txFilter = ref.watch(txFilterProvider);
 
-  final pendingItems = _txListItemsFromTxs(
-    txNotifier.pendingTxs,
-    txFilter: txFilter,
-    addressNotifier: addressNotifier,
-    utxoNotifier: utxoNotifier,
-  )
-      .map((item) => item.maybeWhen(
-            txItem: (txItem) => TxListItem.pendingTxItem(
-              txItem.copyWith(pending: true),
-            ),
-            orElse: () => item,
-          ))
-      .toList(growable: false);
+      final pendingItems =
+          _txListItemsFromTxs(
+                txNotifier.pendingTxs,
+                txFilter: txFilter,
+                addressNotifier: addressNotifier,
+                utxoNotifier: utxoNotifier,
+              )
+              .map(
+                (item) => item.maybeWhen(
+                  txItem: (txItem) =>
+                      TxListItem.pendingTxItem(txItem.copyWith(pending: true)),
+                  orElse: () => item,
+                ),
+              )
+              .toList(growable: false);
 
-  final txItems = _txListItemsFromTxs(txNotifier.loadedTxs,
-      txFilter: txFilter,
-      addressNotifier: addressNotifier,
-      utxoNotifier: utxoNotifier);
+      final txItems = _txListItemsFromTxs(
+        txNotifier.loadedTxs,
+        txFilter: txFilter,
+        addressNotifier: addressNotifier,
+        utxoNotifier: utxoNotifier,
+      );
 
-  return [...pendingItems, ...txItems, .loader(txNotifier.hasMore)];
-});
+      return [...pendingItems, ...txItems, .loader(txNotifier.hasMore)];
+    });
 
 class TransactionsWidget extends ConsumerWidget {
   const TransactionsWidget({super.key});
@@ -145,7 +149,7 @@ class TransactionsWidget extends ConsumerWidget {
 
       final networkError = ref.read(networkErrorProvider);
       if (networkError) {
-        final _ = ref.refresh(kaspaClientProvider);
+        final _ = ref.refresh(kaspaRpcProvider);
       }
 
       final balanceNotifier = ref.read(balanceNotifierProvider);

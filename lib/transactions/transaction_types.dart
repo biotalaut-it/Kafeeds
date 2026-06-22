@@ -31,7 +31,7 @@ sealed class TxInputData with _$TxInputData {
 sealed class Tx with _$Tx {
   const Tx._();
   const factory Tx({
-    required ApiTransaction apiTx,
+    required Transaction apiTx,
     required List<TxInputData?> inputData,
     @Default(0) int lastUpdate,
   }) = _Tx;

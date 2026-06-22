@@ -535,7 +535,7 @@ as int,
 /// @nodoc
 mixin _$Tx {
 
- ApiTransaction get apiTx; List<TxInputData?> get inputData; int get lastUpdate;
+ Transaction get apiTx; List<TxInputData?> get inputData; int get lastUpdate;
 /// Create a copy of Tx
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -568,11 +568,11 @@ abstract mixin class $TxCopyWith<$Res>  {
   factory $TxCopyWith(Tx value, $Res Function(Tx) _then) = _$TxCopyWithImpl;
 @useResult
 $Res call({
- ApiTransaction apiTx, List<TxInputData?> inputData, int lastUpdate
+ Transaction apiTx, List<TxInputData?> inputData, int lastUpdate
 });
 
 
-$ApiTransactionCopyWith<$Res> get apiTx;
+$TransactionCopyWith<$Res> get apiTx;
 
 }
 /// @nodoc
@@ -588,7 +588,7 @@ class _$TxCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? apiTx = null,Object? inputData = null,Object? lastUpdate = null,}) {
   return _then(_self.copyWith(
 apiTx: null == apiTx ? _self.apiTx : apiTx // ignore: cast_nullable_to_non_nullable
-as ApiTransaction,inputData: null == inputData ? _self.inputData : inputData // ignore: cast_nullable_to_non_nullable
+as Transaction,inputData: null == inputData ? _self.inputData : inputData // ignore: cast_nullable_to_non_nullable
 as List<TxInputData?>,lastUpdate: null == lastUpdate ? _self.lastUpdate : lastUpdate // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -597,9 +597,9 @@ as int,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ApiTransactionCopyWith<$Res> get apiTx {
+$TransactionCopyWith<$Res> get apiTx {
   
-  return $ApiTransactionCopyWith<$Res>(_self.apiTx, (value) {
+  return $TransactionCopyWith<$Res>(_self.apiTx, (value) {
     return _then(_self.copyWith(apiTx: value));
   });
 }
@@ -681,7 +681,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ApiTransaction apiTx,  List<TxInputData?> inputData,  int lastUpdate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Transaction apiTx,  List<TxInputData?> inputData,  int lastUpdate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Tx() when $default != null:
 return $default(_that.apiTx,_that.inputData,_that.lastUpdate);case _:
@@ -702,7 +702,7 @@ return $default(_that.apiTx,_that.inputData,_that.lastUpdate);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ApiTransaction apiTx,  List<TxInputData?> inputData,  int lastUpdate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Transaction apiTx,  List<TxInputData?> inputData,  int lastUpdate)  $default,) {final _that = this;
 switch (_that) {
 case _Tx():
 return $default(_that.apiTx,_that.inputData,_that.lastUpdate);}
@@ -719,7 +719,7 @@ return $default(_that.apiTx,_that.inputData,_that.lastUpdate);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ApiTransaction apiTx,  List<TxInputData?> inputData,  int lastUpdate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Transaction apiTx,  List<TxInputData?> inputData,  int lastUpdate)?  $default,) {final _that = this;
 switch (_that) {
 case _Tx() when $default != null:
 return $default(_that.apiTx,_that.inputData,_that.lastUpdate);case _:
@@ -737,7 +737,7 @@ class _Tx extends Tx {
   const _Tx({required this.apiTx, required final  List<TxInputData?> inputData, this.lastUpdate = 0}): _inputData = inputData,super._();
   factory _Tx.fromJson(Map<String, dynamic> json) => _$TxFromJson(json);
 
-@override final  ApiTransaction apiTx;
+@override final  Transaction apiTx;
  final  List<TxInputData?> _inputData;
 @override List<TxInputData?> get inputData {
   if (_inputData is EqualUnmodifiableListView) return _inputData;
@@ -780,11 +780,11 @@ abstract mixin class _$TxCopyWith<$Res> implements $TxCopyWith<$Res> {
   factory _$TxCopyWith(_Tx value, $Res Function(_Tx) _then) = __$TxCopyWithImpl;
 @override @useResult
 $Res call({
- ApiTransaction apiTx, List<TxInputData?> inputData, int lastUpdate
+ Transaction apiTx, List<TxInputData?> inputData, int lastUpdate
 });
 
 
-@override $ApiTransactionCopyWith<$Res> get apiTx;
+@override $TransactionCopyWith<$Res> get apiTx;
 
 }
 /// @nodoc
@@ -800,7 +800,7 @@ class __$TxCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? apiTx = null,Object? inputData = null,Object? lastUpdate = null,}) {
   return _then(_Tx(
 apiTx: null == apiTx ? _self.apiTx : apiTx // ignore: cast_nullable_to_non_nullable
-as ApiTransaction,inputData: null == inputData ? _self._inputData : inputData // ignore: cast_nullable_to_non_nullable
+as Transaction,inputData: null == inputData ? _self._inputData : inputData // ignore: cast_nullable_to_non_nullable
 as List<TxInputData?>,lastUpdate: null == lastUpdate ? _self.lastUpdate : lastUpdate // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -810,9 +810,9 @@ as int,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ApiTransactionCopyWith<$Res> get apiTx {
+$TransactionCopyWith<$Res> get apiTx {
   
-  return $ApiTransactionCopyWith<$Res>(_self.apiTx, (value) {
+  return $TransactionCopyWith<$Res>(_self.apiTx, (value) {
     return _then(_self.copyWith(apiTx: value));
   });
 }

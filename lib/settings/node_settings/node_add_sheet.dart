@@ -7,7 +7,6 @@ import 'package:validators/validators.dart';
 import '../../app_icons.dart';
 import '../../app_providers.dart';
 import '../../app_router.dart';
-import '../../kaspa/grpc/rpc.pb.dart';
 import '../../kaspa/kaspa.dart';
 import '../../l10n/l10n.dart';
 import '../../util/random_util.dart';
@@ -93,7 +92,7 @@ class NodeAddSheet extends HookConsumerWidget {
       final name = nameController.text;
       final url = urlController.text;
 
-      KaspaClient? client;
+      RpcService? rpc;
       bool cancelled = false;
 
       AppDialogs.showInProgressDialog(
@@ -105,20 +104,24 @@ class NodeAddSheet extends HookConsumerWidget {
 
       try {
         final port = int.tryParse(url.split(':').last) ?? kMainnetRpcPort;
+        final timeout = const Duration(seconds: 2);
+
+        ServerInfo serverInfo;
+        String networkId;
         bool isSecure;
-        GetInfoResponseMessage nodeInfo;
-        String networkName;
         try {
           // Try secure connection first
-          client = KaspaClient.url(url, isSecure: true);
-          nodeInfo = await client.getInfo();
-          networkName = (await client.getBlockDagInfo()).networkName;
+          rpc = GrpcService.url(url, tls: true, timeout: timeout);
+          await rpc.connect();
+          serverInfo = await rpc.getServerInfo();
+          networkId = serverInfo.networkId;
           isSecure = true;
         } catch (_) {
           // Fallback to insecure connection
-          client = KaspaClient.url(url, isSecure: false);
-          nodeInfo = await client.getInfo();
-          networkName = (await client.getBlockDagInfo()).networkName;
+          rpc = GrpcService.url(url, tls: false, timeout: timeout);
+          await rpc.connect();
+          serverInfo = await rpc.getServerInfo();
+          networkId = serverInfo.networkId;
           isSecure = false;
         }
 
@@ -126,7 +129,7 @@ class NodeAddSheet extends HookConsumerWidget {
 
         KaspaNetwork network;
         String suffix;
-        final parts = networkName.split('-');
+        final parts = networkId.split('-');
         if (parts.length > 1) {
           network = .tryParse(parts[1]) ?? networkForPort(port);
           suffix = parts.length == 3 ? parts[2] : '';
@@ -135,11 +138,11 @@ class NodeAddSheet extends HookConsumerWidget {
           suffix = '';
         }
 
-        if (!nodeInfo.isSynced) {
+        if (!serverInfo.isSynced) {
           throw Exception(l10n.nodeNotSyncedException);
         }
 
-        if (!nodeInfo.isUtxoIndexed) {
+        if (!serverInfo.hasUtxoIndex) {
           throw Exception(l10n.nodeNoUTXOIndexException);
         }
 
@@ -177,7 +180,7 @@ class NodeAddSheet extends HookConsumerWidget {
         final message = l10n.addNodeFailedMessage('$e');
         UIUtil.showSnackbar(message);
       } finally {
-        client?.close();
+        rpc?.disconnect();
       }
     }
 

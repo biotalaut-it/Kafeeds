@@ -13,7 +13,7 @@ String _utxoKey(Utxo utxo) => _outpointKey(utxo.outpoint);
 
 class UtxosNotifier extends SafeChangeNotifier {
   final TypedBox<Utxo> _utxoBox;
-  final KaspaClient client;
+  final RpcService rpc;
   final Logger log;
 
   final _utxosByAddress = <String, Set<Utxo>>{};
@@ -34,7 +34,7 @@ class UtxosNotifier extends SafeChangeNotifier {
 
   UtxosNotifier({
     required this._utxoBox,
-    required this.client,
+    required this.rpc,
     required this.log,
   }) {
     final utxos = _utxoBox.getAll().values;
@@ -79,10 +79,10 @@ class UtxosNotifier extends SafeChangeNotifier {
       oldUtxos[address] = Set.of(set);
     }
 
-    final utxos = await client.getUtxosByAddresses(addresses);
+    final utxos = await rpc.getUtxosByAddresses(addresses);
 
     final newUtxos = <String, Set<Utxo>>{};
-    for (final utxo in utxos.map(Utxo.fromRpc)) {
+    for (final utxo in utxos) {
       final set = newUtxos.putIfAbsent(utxo.address, () => <Utxo>{});
       set.add(utxo);
     }

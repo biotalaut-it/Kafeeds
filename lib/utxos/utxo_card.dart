@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
-import '../kaspa/transaction/types.dart';
 import '../kaspa/types.dart';
 import '../l10n/l10n.dart';
 import '../transactions/transaction_details_sheet.dart';

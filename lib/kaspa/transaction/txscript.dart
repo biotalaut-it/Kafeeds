@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
-import '../types/address.dart';
-import 'types.dart';
+import '../types.dart';
 
 // Script public key versions for address types.
 const kAddressPublicKeyScriptPublicKeyVersion = 0;

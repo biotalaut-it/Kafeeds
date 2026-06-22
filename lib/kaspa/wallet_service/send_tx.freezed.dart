@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SendTx {
 
- KaspaUri get uri; Transaction get tx; List<Utxo> get utxos; bool get userSelected; Amount get amount; Amount get baseFee; Amount get priorityFee; Amount get change; Address? get changeAddress; String? get note; BigInt get mass;
+ KaspaUri get uri; RawTransaction get tx; List<Utxo> get utxos; bool get userSelected; Amount get amount; Amount get baseFee; Amount get priorityFee; Amount get change; Address? get changeAddress; String? get note; BigInt get mass;
 /// Create a copy of SendTx
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,11 +45,11 @@ abstract mixin class $SendTxCopyWith<$Res>  {
   factory $SendTxCopyWith(SendTx value, $Res Function(SendTx) _then) = _$SendTxCopyWithImpl;
 @useResult
 $Res call({
- KaspaUri uri, Transaction tx, List<Utxo> utxos, bool userSelected, Amount amount, Amount baseFee, Amount priorityFee, Amount change, Address? changeAddress, String? note, BigInt mass
+ KaspaUri uri, RawTransaction tx, List<Utxo> utxos, bool userSelected, Amount amount, Amount baseFee, Amount priorityFee, Amount change, Address? changeAddress, String? note, BigInt mass
 });
 
 
-$KaspaUriCopyWith<$Res> get uri;$TransactionCopyWith<$Res> get tx;$AmountCopyWith<$Res> get amount;$AmountCopyWith<$Res> get baseFee;$AmountCopyWith<$Res> get priorityFee;$AmountCopyWith<$Res> get change;$AddressCopyWith<$Res>? get changeAddress;
+$KaspaUriCopyWith<$Res> get uri;$RawTransactionCopyWith<$Res> get tx;$AmountCopyWith<$Res> get amount;$AmountCopyWith<$Res> get baseFee;$AmountCopyWith<$Res> get priorityFee;$AmountCopyWith<$Res> get change;$AddressCopyWith<$Res>? get changeAddress;
 
 }
 /// @nodoc
@@ -66,7 +66,7 @@ class _$SendTxCopyWithImpl<$Res>
   return _then(_self.copyWith(
 uri: null == uri ? _self.uri : uri // ignore: cast_nullable_to_non_nullable
 as KaspaUri,tx: null == tx ? _self.tx : tx // ignore: cast_nullable_to_non_nullable
-as Transaction,utxos: null == utxos ? _self.utxos : utxos // ignore: cast_nullable_to_non_nullable
+as RawTransaction,utxos: null == utxos ? _self.utxos : utxos // ignore: cast_nullable_to_non_nullable
 as List<Utxo>,userSelected: null == userSelected ? _self.userSelected : userSelected // ignore: cast_nullable_to_non_nullable
 as bool,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as Amount,baseFee: null == baseFee ? _self.baseFee : baseFee // ignore: cast_nullable_to_non_nullable
@@ -91,9 +91,9 @@ $KaspaUriCopyWith<$Res> get uri {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$TransactionCopyWith<$Res> get tx {
+$RawTransactionCopyWith<$Res> get tx {
   
-  return $TransactionCopyWith<$Res>(_self.tx, (value) {
+  return $RawTransactionCopyWith<$Res>(_self.tx, (value) {
     return _then(_self.copyWith(tx: value));
   });
 }/// Create a copy of SendTx
@@ -223,7 +223,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( KaspaUri uri,  Transaction tx,  List<Utxo> utxos,  bool userSelected,  Amount amount,  Amount baseFee,  Amount priorityFee,  Amount change,  Address? changeAddress,  String? note,  BigInt mass)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( KaspaUri uri,  RawTransaction tx,  List<Utxo> utxos,  bool userSelected,  Amount amount,  Amount baseFee,  Amount priorityFee,  Amount change,  Address? changeAddress,  String? note,  BigInt mass)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SendTx() when $default != null:
 return $default(_that.uri,_that.tx,_that.utxos,_that.userSelected,_that.amount,_that.baseFee,_that.priorityFee,_that.change,_that.changeAddress,_that.note,_that.mass);case _:
@@ -244,7 +244,7 @@ return $default(_that.uri,_that.tx,_that.utxos,_that.userSelected,_that.amount,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( KaspaUri uri,  Transaction tx,  List<Utxo> utxos,  bool userSelected,  Amount amount,  Amount baseFee,  Amount priorityFee,  Amount change,  Address? changeAddress,  String? note,  BigInt mass)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( KaspaUri uri,  RawTransaction tx,  List<Utxo> utxos,  bool userSelected,  Amount amount,  Amount baseFee,  Amount priorityFee,  Amount change,  Address? changeAddress,  String? note,  BigInt mass)  $default,) {final _that = this;
 switch (_that) {
 case _SendTx():
 return $default(_that.uri,_that.tx,_that.utxos,_that.userSelected,_that.amount,_that.baseFee,_that.priorityFee,_that.change,_that.changeAddress,_that.note,_that.mass);}
@@ -261,7 +261,7 @@ return $default(_that.uri,_that.tx,_that.utxos,_that.userSelected,_that.amount,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( KaspaUri uri,  Transaction tx,  List<Utxo> utxos,  bool userSelected,  Amount amount,  Amount baseFee,  Amount priorityFee,  Amount change,  Address? changeAddress,  String? note,  BigInt mass)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( KaspaUri uri,  RawTransaction tx,  List<Utxo> utxos,  bool userSelected,  Amount amount,  Amount baseFee,  Amount priorityFee,  Amount change,  Address? changeAddress,  String? note,  BigInt mass)?  $default,) {final _that = this;
 switch (_that) {
 case _SendTx() when $default != null:
 return $default(_that.uri,_that.tx,_that.utxos,_that.userSelected,_that.amount,_that.baseFee,_that.priorityFee,_that.change,_that.changeAddress,_that.note,_that.mass);case _:
@@ -280,7 +280,7 @@ class _SendTx extends SendTx {
   
 
 @override final  KaspaUri uri;
-@override final  Transaction tx;
+@override final  RawTransaction tx;
  final  List<Utxo> _utxos;
 @override List<Utxo> get utxos {
   if (_utxos is EqualUnmodifiableListView) return _utxos;
@@ -327,11 +327,11 @@ abstract mixin class _$SendTxCopyWith<$Res> implements $SendTxCopyWith<$Res> {
   factory _$SendTxCopyWith(_SendTx value, $Res Function(_SendTx) _then) = __$SendTxCopyWithImpl;
 @override @useResult
 $Res call({
- KaspaUri uri, Transaction tx, List<Utxo> utxos, bool userSelected, Amount amount, Amount baseFee, Amount priorityFee, Amount change, Address? changeAddress, String? note, BigInt mass
+ KaspaUri uri, RawTransaction tx, List<Utxo> utxos, bool userSelected, Amount amount, Amount baseFee, Amount priorityFee, Amount change, Address? changeAddress, String? note, BigInt mass
 });
 
 
-@override $KaspaUriCopyWith<$Res> get uri;@override $TransactionCopyWith<$Res> get tx;@override $AmountCopyWith<$Res> get amount;@override $AmountCopyWith<$Res> get baseFee;@override $AmountCopyWith<$Res> get priorityFee;@override $AmountCopyWith<$Res> get change;@override $AddressCopyWith<$Res>? get changeAddress;
+@override $KaspaUriCopyWith<$Res> get uri;@override $RawTransactionCopyWith<$Res> get tx;@override $AmountCopyWith<$Res> get amount;@override $AmountCopyWith<$Res> get baseFee;@override $AmountCopyWith<$Res> get priorityFee;@override $AmountCopyWith<$Res> get change;@override $AddressCopyWith<$Res>? get changeAddress;
 
 }
 /// @nodoc
@@ -348,7 +348,7 @@ class __$SendTxCopyWithImpl<$Res>
   return _then(_SendTx(
 uri: null == uri ? _self.uri : uri // ignore: cast_nullable_to_non_nullable
 as KaspaUri,tx: null == tx ? _self.tx : tx // ignore: cast_nullable_to_non_nullable
-as Transaction,utxos: null == utxos ? _self._utxos : utxos // ignore: cast_nullable_to_non_nullable
+as RawTransaction,utxos: null == utxos ? _self._utxos : utxos // ignore: cast_nullable_to_non_nullable
 as List<Utxo>,userSelected: null == userSelected ? _self.userSelected : userSelected // ignore: cast_nullable_to_non_nullable
 as bool,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as Amount,baseFee: null == baseFee ? _self.baseFee : baseFee // ignore: cast_nullable_to_non_nullable
@@ -374,9 +374,9 @@ $KaspaUriCopyWith<$Res> get uri {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$TransactionCopyWith<$Res> get tx {
+$RawTransactionCopyWith<$Res> get tx {
   
-  return $TransactionCopyWith<$Res>(_self.tx, (value) {
+  return $RawTransactionCopyWith<$Res>(_self.tx, (value) {
     return _then(_self.copyWith(tx: value));
   });
 }/// Create a copy of SendTx

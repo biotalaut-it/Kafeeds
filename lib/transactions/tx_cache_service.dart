@@ -16,7 +16,7 @@ class TxCacheService {
   final LazyTypedBox<Tx> txBox;
 
   // A cache of transactions that are currently loaded in memory
-  final memCache = <String, ApiTransaction>{};
+  final memCache = <String, Transaction>{};
 
   late KaspaApiService api;
   final Logger log;
@@ -29,7 +29,7 @@ class TxCacheService {
     required this.log,
   }) : _txIndex = TxCacheIndex(txIndexBox);
 
-  Future<void> _cacheInputsFor(Iterable<ApiTransaction> txs) async {
+  Future<void> _cacheInputsFor(Iterable<Transaction> txs) async {
     final missingIds = <String>{};
     for (final tx in txs) {
       for (final input in tx.inputs) {
@@ -64,8 +64,8 @@ class TxCacheService {
     memCache.addEntries(extraTxs.map((e) => MapEntry(e.transactionId, e)));
   }
 
-  // Builds a Tx object from an ApiTransaction object using cached input txs
-  Tx _txForApiTx(ApiTransaction apiTx) {
+  // Builds a Tx object from an Transaction object using cached input txs
+  Tx _txForApiTx(Transaction apiTx) {
     final inputs = apiTx.inputs.map((input) {
       // use new available input amount and address from apiTx
       if (input.previousOutpointAmount != null &&
@@ -99,7 +99,7 @@ class TxCacheService {
     return tx;
   }
 
-  Future<Iterable<Tx>> txsForApiTxs(Iterable<ApiTransaction> apiTxs) async {
+  Future<Iterable<Tx>> txsForApiTxs(Iterable<Transaction> apiTxs) async {
     await _cacheInputsFor(apiTxs);
 
     final txs = apiTxs.map(_txForApiTx);
@@ -107,7 +107,7 @@ class TxCacheService {
     return txs;
   }
 
-  Future<List<Tx>> cacheWalletTxs(Iterable<ApiTransaction> apiTxs) async {
+  Future<List<Tx>> cacheWalletTxs(Iterable<Transaction> apiTxs) async {
     memCache.addEntries(apiTxs.map((e) => MapEntry(e.transactionId, e)));
 
     final txs = (await txsForApiTxs(apiTxs)).toList();
@@ -121,31 +121,30 @@ class TxCacheService {
 
     await _txIndex.addAll(txIndexes);
 
-    await txBox.setAll(Map.fromEntries(
-      txs.map((tx) => MapEntry(tx.id, tx)),
-    ));
+    await txBox.setAll({
+      for (final tx in txs) tx.id: tx,
+    });
 
     return txs;
   }
 
   Future<void> addWalletTxIds(Iterable<ApiTxId> apiTxIds) async {
-    await _txIndex.addAll(apiTxIds.map(
-      (e) => TxIndex(
-        txId: e.transactionId,
-        blockTime: e.blockTime ?? 0,
+    await _txIndex.addAll(
+      apiTxIds.map(
+        (e) => TxIndex(txId: e.transactionId, blockTime: e.blockTime ?? 0),
       ),
-    ));
+    );
   }
 
   bool isWalletTxId(String id) {
     return _txIndex.contains(id);
   }
 
-  void addToMemcache(ApiTransaction apiTx) {
+  void addToMemcache(Transaction apiTx) {
     memCache[apiTx.transactionId] = apiTx;
   }
 
-  Future<Tx> addWalletTx(ApiTransaction apiTx) async {
+  Future<Tx> addWalletTx(Transaction apiTx) async {
     addToMemcache(apiTx);
 
     final txIndex = TxIndex(
@@ -198,7 +197,7 @@ class TxCacheService {
     return txs.whereType<Tx>();
   }
 
-  Future<ApiTransaction?> _getApiTxWithId(String id) async {
+  Future<Transaction?> _getApiTxWithId(String id) async {
     if (memCache[id] case final apiTx?) {
       return apiTx;
     }
@@ -217,7 +216,7 @@ class TxCacheService {
     required String acceptingBlockHash,
     required int acceptingBlockBlueScore,
   }) async {
-    final walletTxs = <ApiTransaction>[];
+    final walletTxs = <Transaction>[];
     for (final id in acceptedTxIds) {
       final tx = await _getApiTxWithId(id);
       if (tx == null) {

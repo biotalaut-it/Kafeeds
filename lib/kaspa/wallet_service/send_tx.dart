@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../transaction.dart';
 import '../types.dart';
 
 part 'send_tx.freezed.dart';
@@ -11,7 +10,7 @@ sealed class SendTx with _$SendTx {
 
   factory SendTx({
     required KaspaUri uri,
-    required Transaction tx,
+    required RawTransaction tx,
     required List<Utxo> utxos,
     @Default(false) bool userSelected,
     required Amount amount,

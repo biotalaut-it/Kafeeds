@@ -82,12 +82,12 @@ class SetupWalletScreen extends HookConsumerWidget {
         }
 
         // address discovery
-        final client = ref.read(kaspaClientProvider);
+        final rpc = ref.read(kaspaRpcProvider);
         final api = ref.read(kaspaApiServiceProvider);
         final addressGenerator = auth.addressGenerator(network);
 
         final addressDiscovery = AddressDiscovery(
-          client: client,
+          rpc: rpc,
           api: api,
           addressGenerator: addressGenerator,
           addressNameCallback: (type, index) {

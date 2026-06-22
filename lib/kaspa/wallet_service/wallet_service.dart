@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../kaspa_client.dart';
+import '../rpc.dart';
 import '../transaction.dart';
 import '../transaction/mass_calculator.dart';
 import '../types.dart';
@@ -12,11 +12,11 @@ typedef SignatureDetails = ({String signature, String hash});
 
 class WalletService {
   final SignerBase signer;
-  final KaspaClient client;
+  final RpcService rpc;
 
   const WalletService({
     required this.signer,
-    required this.client,
+    required this.rpc,
   });
 
   SendTx createSendTx({
@@ -94,21 +94,19 @@ class WalletService {
     );
   }
 
-  Future<String> sendTransaction(Transaction tx, {bool rbf = false}) async {
+  Future<String> sendTransaction(RawTransaction tx, {bool rbf = false}) async {
     await _signTransaction(tx);
 
-    final rpcTx = tx.toRpc();
-
     if (rbf) {
-      final result = await client.submitTransactionReplacement(rpcTx);
-      return result.transactionId;
+      final result = await rpc.submitTransactionReplacement(tx);
+      return result.$1;
     }
 
-    final txId = await client.submitTransaction(rpcTx);
+    final txId = await rpc.submitTransaction(tx);
     return txId;
   }
 
-  Future<void> _signTransaction(Transaction tx) async {
+  Future<void> _signTransaction(RawTransaction tx) async {
     final hashType = SigHashType.sigHashAll;
     final reusedValues = SighashReusedValues();
 

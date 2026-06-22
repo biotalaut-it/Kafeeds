@@ -8,7 +8,7 @@ import '../wallet_address/wallet_address_aware.dart';
 class WalletBalanceNotifier extends SafeChangeNotifier {
   final TypedBox<AddressBalance> _balanceBox;
   final WalletAddressAware addressAware;
-  final KaspaClient client;
+  final RpcService rpc;
 
   final Map<String, BigInt> _balances = {};
   BigInt _totalBalance = .zero;
@@ -16,7 +16,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
   WalletBalanceNotifier({
     required this._balanceBox,
     required this.addressAware,
-    required this.client,
+    required this.rpc,
   }) {
     final balances = _balanceBox.getAll();
     for (final balance in balances.values) {
@@ -45,8 +45,7 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
     if (addresses.isEmpty) {
       return;
     }
-    final newBalances = await client.getBalancesByAddresses(addresses);
-    final entries = newBalances.map(AddressBalance.fromRpc);
+    final entries = await rpc.getBalancesByAddresses(addresses);
 
     final changes = <String, AddressBalance>{};
     for (final entry in entries) {

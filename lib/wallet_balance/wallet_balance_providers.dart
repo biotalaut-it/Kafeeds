@@ -3,16 +3,11 @@ import 'package:decimal/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../coingecko/coingecko_providers.dart';
-import '../core/core_providers.dart';
+import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
 import '../settings/available_currency.dart';
-import '../settings/settings_providers.dart';
 import '../util/formatters.dart';
 import '../util/numberutil.dart';
-import '../utxos/utxos_providers.dart';
-import '../wallet_address/wallet_address_providers.dart';
-import '../wallet_auth/wallet_auth_providers.dart';
 import 'wallet_balance_notifier.dart';
 
 final kaspaPriceProvider = Provider.autoDispose((ref) {
@@ -32,12 +27,12 @@ final _addressBalanceBoxProvider = Provider.autoDispose((ref) {
 final balanceNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
   final balanceBox = ref.watch(_addressBalanceBoxProvider);
   final addressNotifier = ref.watch(addressNotifierProvider.notifier);
-  final client = ref.watch(kaspaClientProvider);
+  final rpc = ref.watch(kaspaRpcProvider);
 
   final notifier = WalletBalanceNotifier(
     balanceBox: balanceBox,
     addressAware: addressNotifier,
-    client: client,
+    rpc: rpc,
   );
 
   // Listen to address changes and refresh balances

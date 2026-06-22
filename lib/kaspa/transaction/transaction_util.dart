@@ -5,6 +5,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:pointycastle/digests/blake2b.dart';
 
 import '../bip340/bip340.dart' as schnorr;
+import '../types.dart';
 import '../utils.dart';
 import 'types.dart';
 
@@ -34,7 +35,7 @@ void _addOutpoint(
 }
 
 Uint8List _getPreviousOutputsHash({
-  required Transaction tx,
+  required RawTransaction tx,
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
@@ -59,7 +60,7 @@ Uint8List _getPreviousOutputsHash({
 }
 
 Uint8List _getSequencesHash({
-  required Transaction tx,
+  required RawTransaction tx,
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
@@ -84,7 +85,7 @@ Uint8List _getSequencesHash({
 }
 
 Uint8List _getSigOpCountsHash({
-  required Transaction tx,
+  required RawTransaction tx,
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
 }) {
@@ -109,7 +110,7 @@ Uint8List _getSigOpCountsHash({
 }
 
 Uint8List _getOutputsHash({
-  required Transaction tx,
+  required RawTransaction tx,
   required int inputIndex,
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
@@ -139,9 +140,9 @@ Uint8List _getOutputsHash({
 }
 
 Uint8List calculateSignatureHash({
-  required Transaction tx,
+  required RawTransaction tx,
   required int inputIndex,
-  required TxInput txInput,
+  required RawInput txInput,
   required ScriptPublicKey prevScriptPublicKey,
   required SigHashType hashType,
   required SighashReusedValues reusedValues,
@@ -229,7 +230,7 @@ Uint8List calculateSignatureHash({
 }
 
 Uint8List calculateSignatureHashSchnorr({
-  required Transaction tx,
+  required RawTransaction tx,
   required int inputIndex,
   required SigHashType hashType,
   required SighashReusedValues sighashReusedValues,

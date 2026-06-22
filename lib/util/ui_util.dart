@@ -107,7 +107,7 @@ abstract class UIUtil {
         return;
       }
 
-      Transaction? replacementTx;
+      RawTransaction? replacementTx;
       if (tx.apiTx.outputs.length == 1 &&
           tx.apiTx.outputs.first.scriptPublicKeyAddress ==
               changeAddress.address.encoded) {

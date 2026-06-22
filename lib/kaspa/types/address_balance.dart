@@ -1,8 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../grpc/rpc.pb.dart';
-import '../utils.dart';
-
 part 'address_balance.freezed.dart';
 part 'address_balance.g.dart';
 
@@ -16,15 +13,4 @@ sealed class AddressBalance with _$AddressBalance {
 
   factory AddressBalance.fromJson(Map<String, dynamic> json) =>
       _$AddressBalanceFromJson(json);
-
-  factory AddressBalance.fromRpc(RpcBalancesByAddressesEntry rpc) =>
-      AddressBalance(
-        address: rpc.address,
-        balance: rpc.balance.toUnsignedBigInt(),
-      );
-
-  RpcBalancesByAddressesEntry toRpc() => RpcBalancesByAddressesEntry(
-    address: address,
-    balance: balance.toInt64(),
-  );
 }
