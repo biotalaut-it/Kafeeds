@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import 'l10n_gen.dart';
+import 'app_localizations/app_localizations.dart';
 
-export 'l10n_gen.dart';
+export 'app_localizations/app_localizations.dart';
 
 AppLocalizations l10nOf(BuildContext context) => AppLocalizations.of(context)!;
 

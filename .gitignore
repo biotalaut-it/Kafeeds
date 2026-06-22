@@ -81,10 +81,6 @@ build/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# Translations
-lib/l10n/*.json
-bin/settings.py
-
 # Fastlane
 android/fastlane/report.xml
 ios/fastlane/report.xml
