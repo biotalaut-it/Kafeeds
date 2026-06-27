@@ -108,6 +108,9 @@ final formatedTotalFiatProvider = Provider.autoDispose((ref) {
   final price = ref.watch(kaspaPriceProvider);
   final currency = ref.watch(currencyProvider);
   final fiat = balance.value * price.price;
+  if (fiat == .zero) {
+    return '';
+  }
   final decimals = fiat >= .parse('1')
       ? 2
       : fiat >= .parse('0.01')
