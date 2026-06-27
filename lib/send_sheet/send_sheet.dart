@@ -38,7 +38,6 @@ class SendSheet extends ConsumerStatefulWidget {
   final Contact? contact;
   final KaspaUri? uri;
   final BigInt? feeRaw;
-  final bool rbf;
 
   const SendSheet({
     super.key,
@@ -46,7 +45,6 @@ class SendSheet extends ConsumerStatefulWidget {
     this.contact,
     this.uri,
     this.feeRaw,
-    this.rbf = false,
   });
 
   @override
@@ -318,7 +316,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
         message: note,
       );
 
-      UIUtil.showSendFlow(context, ref: ref, uri: uri, useRbf: widget.rbf);
+      UIUtil.showSendFlow(context, ref: ref, uri: uri);
     }
 
     final viewInsets = MediaQuery.viewInsetsOf(context);
@@ -598,7 +596,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
     if (amountRaw! > maxSend.raw) {
       showAppDialog(
         context: context,
-        builder: (_) => CompoundUtxosDialog(lightMode: true, rbf: widget.rbf),
+        builder: (_) => CompoundUtxosDialog(lightMode: true),
       );
       return false;
     }

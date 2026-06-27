@@ -95,7 +95,6 @@ abstract class UIUtil {
           baseFee: fees.baseFee,
           priorityFee: priorityFee,
           txMass: mass,
-          rbf: true,
         ),
         theme: theme,
       );

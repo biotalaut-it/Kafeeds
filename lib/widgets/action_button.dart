@@ -5,7 +5,6 @@ import '../app_providers.dart';
 import '../l10n/l10n.dart';
 import '../receive/receive_sheet.dart';
 import '../send_sheet/send_sheet.dart';
-import '../util/ui_util.dart';
 import 'sheet_util.dart';
 
 class ActionButton extends ConsumerWidget {
@@ -92,14 +91,11 @@ class SendActionButton extends ConsumerWidget {
         return;
       }
 
-      final (:cont, :rbf) = await UIUtil.checkForPendingTx(context, ref: ref);
-      if (cont) {
-        Sheets.showAppHeightNineSheet(
-          context: context,
-          widget: SendSheet(rbf: rbf),
-          theme: theme,
-        );
-      }
+      Sheets.showAppHeightNineSheet(
+        context: context,
+        widget: const SendSheet(),
+        theme: theme,
+      );
     }
 
     return ActionButton(

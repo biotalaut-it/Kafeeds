@@ -12,12 +12,10 @@ import '../widgets/dialog.dart';
 
 class CompoundUtxosDialog extends ConsumerWidget {
   final bool lightMode;
-  final bool rbf;
 
   const CompoundUtxosDialog({
     super.key,
     this.lightMode = false,
-    required this.rbf,
   });
 
   @override
@@ -53,10 +51,6 @@ class CompoundUtxosDialog extends ConsumerWidget {
         }
 
         Amount? priorityFee;
-        if (rbf) {
-          final pendingTx = ref.read(txNotifierProvider).pendingTxs.first;
-          priorityFee = Amount.raw(pendingTx.fees.priorityFee.raw + BigInt.one);
-        }
 
         final compoundTx = walletService.createCompoundTx(
           compoundAddress: changeAddress.address,

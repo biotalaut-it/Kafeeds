@@ -71,16 +71,13 @@ class ContactDetails extends HookConsumerWidget {
       );
     }
 
-    Future<void> showSendSheet() async {
+    void showSendSheet() {
       appRouter.pop(context);
-      final (:cont, :rbf) = await UIUtil.checkForPendingTx(context, ref: ref);
-      if (cont) {
-        Sheets.showAppHeightNineSheet(
-          context: context,
-          theme: theme,
-          widget: SendSheet(contact: contact, rbf: rbf),
-        );
-      }
+      Sheets.showAppHeightNineSheet(
+        context: context,
+        theme: theme,
+        widget: SendSheet(contact: contact),
+      );
     }
 
     final size = MediaQuery.sizeOf(context);
