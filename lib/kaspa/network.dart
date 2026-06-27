@@ -6,7 +6,7 @@ const String kKaspaNetworkSimnet = 'simnet';
 const String kKaspaNetworkDevnet = 'devnet';
 
 const String kKaspaNetworkIdMainnet = kKaspaNetworkMainnet;
-const String kKaspaNetworkIdTestnet10 = '$kKaspaNetworkTestnet-10';
+const String kKaspaNetworkIdTestnet10 = kKaspaNetworkTestnet;
 const String kKaspaNetworkIdSimnet = kKaspaNetworkSimnet;
 const String kKaspaNetworkIdDevnet = kKaspaNetworkDevnet;
 
