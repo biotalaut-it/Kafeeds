@@ -69,6 +69,9 @@
   "buyKaspaSubtitle": "Via Topper by Uphold",
   "buyKaspaTitle": "Buy Kaspa",
   "cancel": "Cancel",
+  "cancelTransaction": "Cancel Transaction",
+  "cancelTransactionError": "Can't cancel transaction",
+  "cancelTransactionSuccess": "RBF cancel transaction sent",
   "change": "Change",
   "changeAddress": "Change Address",
   "changeAddressCopied": "Change address copied",
@@ -237,6 +240,19 @@
   "feeUpdateRebuildError": "Failed to rebuild transaction",
   "feeUpdateRebuildError2": "Failed to rebuild transaction with new fee",
   "feeUpdateTitle": "Updating fee",
+  "feeHighTitle":"High Fee",
+  "feeHighDescription": "Are you sure you want to send the transaction?",
+  "feeHighDescriptionAmount": "Transaction fee is {amount} {symbol}.",
+  "@feeHighDescriptionAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
   "fetchingTransactions": "Fetching Transactions",
   "fingerprintSeedBackup": "Authenticate to Backup Secret Phrase.",
   "getStarted": "Get Started",

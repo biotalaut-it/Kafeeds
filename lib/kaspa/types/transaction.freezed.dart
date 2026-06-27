@@ -314,7 +314,7 @@ $UtxoEntryCopyWith<$Res> get utxoEntry {
 /// @nodoc
 mixin _$UtxoEntry {
 
- BigInt get amount; ScriptPublicKey get scriptPublicKey; BigInt get blockDaaScore; bool get isCoinbase;
+ BigInt get amount; ScriptPublicKey get scriptPublicKey; BigInt get blockDaaScore; bool get isCoinbase;@JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex) Uint8List? get covenantId;
 /// Create a copy of UtxoEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -329,7 +329,7 @@ $UtxoEntryCopyWith<UtxoEntry> get copyWith => _$UtxoEntryCopyWithImpl<UtxoEntry>
 
 @override
 String toString() {
-  return 'UtxoEntry(amount: $amount, scriptPublicKey: $scriptPublicKey, blockDaaScore: $blockDaaScore, isCoinbase: $isCoinbase)';
+  return 'UtxoEntry(amount: $amount, scriptPublicKey: $scriptPublicKey, blockDaaScore: $blockDaaScore, isCoinbase: $isCoinbase, covenantId: $covenantId)';
 }
 
 
@@ -340,7 +340,7 @@ abstract mixin class $UtxoEntryCopyWith<$Res>  {
   factory $UtxoEntryCopyWith(UtxoEntry value, $Res Function(UtxoEntry) _then) = _$UtxoEntryCopyWithImpl;
 @useResult
 $Res call({
- BigInt amount, ScriptPublicKey scriptPublicKey, BigInt blockDaaScore, bool isCoinbase
+ BigInt amount, ScriptPublicKey scriptPublicKey, BigInt blockDaaScore, bool isCoinbase,@JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex) Uint8List? covenantId
 });
 
 
@@ -357,13 +357,14 @@ class _$UtxoEntryCopyWithImpl<$Res>
 
 /// Create a copy of UtxoEntry
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? amount = null,Object? scriptPublicKey = null,Object? blockDaaScore = null,Object? isCoinbase = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? amount = null,Object? scriptPublicKey = null,Object? blockDaaScore = null,Object? isCoinbase = null,Object? covenantId = freezed,}) {
   return _then(_self.copyWith(
 amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as BigInt,scriptPublicKey: null == scriptPublicKey ? _self.scriptPublicKey : scriptPublicKey // ignore: cast_nullable_to_non_nullable
 as ScriptPublicKey,blockDaaScore: null == blockDaaScore ? _self.blockDaaScore : blockDaaScore // ignore: cast_nullable_to_non_nullable
 as BigInt,isCoinbase: null == isCoinbase ? _self.isCoinbase : isCoinbase // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,covenantId: freezed == covenantId ? _self.covenantId : covenantId // ignore: cast_nullable_to_non_nullable
+as Uint8List?,
   ));
 }
 /// Create a copy of UtxoEntry
@@ -454,10 +455,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BigInt amount,  ScriptPublicKey scriptPublicKey,  BigInt blockDaaScore,  bool isCoinbase)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BigInt amount,  ScriptPublicKey scriptPublicKey,  BigInt blockDaaScore,  bool isCoinbase, @JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex)  Uint8List? covenantId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UtxoEntry() when $default != null:
-return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isCoinbase);case _:
+return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isCoinbase,_that.covenantId);case _:
   return orElse();
 
 }
@@ -475,10 +476,10 @@ return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isC
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BigInt amount,  ScriptPublicKey scriptPublicKey,  BigInt blockDaaScore,  bool isCoinbase)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BigInt amount,  ScriptPublicKey scriptPublicKey,  BigInt blockDaaScore,  bool isCoinbase, @JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex)  Uint8List? covenantId)  $default,) {final _that = this;
 switch (_that) {
 case _UtxoEntry():
-return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isCoinbase);}
+return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isCoinbase,_that.covenantId);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -492,10 +493,10 @@ return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isC
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BigInt amount,  ScriptPublicKey scriptPublicKey,  BigInt blockDaaScore,  bool isCoinbase)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BigInt amount,  ScriptPublicKey scriptPublicKey,  BigInt blockDaaScore,  bool isCoinbase, @JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex)  Uint8List? covenantId)?  $default,) {final _that = this;
 switch (_that) {
 case _UtxoEntry() when $default != null:
-return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isCoinbase);case _:
+return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isCoinbase,_that.covenantId);case _:
   return null;
 
 }
@@ -507,13 +508,14 @@ return $default(_that.amount,_that.scriptPublicKey,_that.blockDaaScore,_that.isC
 @JsonSerializable()
 
 class _UtxoEntry extends UtxoEntry {
-  const _UtxoEntry({required this.amount, required this.scriptPublicKey, required this.blockDaaScore, required this.isCoinbase}): super._();
+  const _UtxoEntry({required this.amount, required this.scriptPublicKey, required this.blockDaaScore, required this.isCoinbase, @JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex) this.covenantId}): super._();
   factory _UtxoEntry.fromJson(Map<String, dynamic> json) => _$UtxoEntryFromJson(json);
 
 @override final  BigInt amount;
 @override final  ScriptPublicKey scriptPublicKey;
 @override final  BigInt blockDaaScore;
 @override final  bool isCoinbase;
+@override@JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex) final  Uint8List? covenantId;
 
 /// Create a copy of UtxoEntry
 /// with the given fields replaced by the non-null parameter values.
@@ -530,7 +532,7 @@ Map<String, dynamic> toJson() {
 
 @override
 String toString() {
-  return 'UtxoEntry(amount: $amount, scriptPublicKey: $scriptPublicKey, blockDaaScore: $blockDaaScore, isCoinbase: $isCoinbase)';
+  return 'UtxoEntry(amount: $amount, scriptPublicKey: $scriptPublicKey, blockDaaScore: $blockDaaScore, isCoinbase: $isCoinbase, covenantId: $covenantId)';
 }
 
 
@@ -541,7 +543,7 @@ abstract mixin class _$UtxoEntryCopyWith<$Res> implements $UtxoEntryCopyWith<$Re
   factory _$UtxoEntryCopyWith(_UtxoEntry value, $Res Function(_UtxoEntry) _then) = __$UtxoEntryCopyWithImpl;
 @override @useResult
 $Res call({
- BigInt amount, ScriptPublicKey scriptPublicKey, BigInt blockDaaScore, bool isCoinbase
+ BigInt amount, ScriptPublicKey scriptPublicKey, BigInt blockDaaScore, bool isCoinbase,@JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex) Uint8List? covenantId
 });
 
 
@@ -558,13 +560,14 @@ class __$UtxoEntryCopyWithImpl<$Res>
 
 /// Create a copy of UtxoEntry
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? amount = null,Object? scriptPublicKey = null,Object? blockDaaScore = null,Object? isCoinbase = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? amount = null,Object? scriptPublicKey = null,Object? blockDaaScore = null,Object? isCoinbase = null,Object? covenantId = freezed,}) {
   return _then(_UtxoEntry(
 amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as BigInt,scriptPublicKey: null == scriptPublicKey ? _self.scriptPublicKey : scriptPublicKey // ignore: cast_nullable_to_non_nullable
 as ScriptPublicKey,blockDaaScore: null == blockDaaScore ? _self.blockDaaScore : blockDaaScore // ignore: cast_nullable_to_non_nullable
 as BigInt,isCoinbase: null == isCoinbase ? _self.isCoinbase : isCoinbase // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,covenantId: freezed == covenantId ? _self.covenantId : covenantId // ignore: cast_nullable_to_non_nullable
+as Uint8List?,
   ));
 }
 
@@ -1301,8 +1304,8 @@ return $default(_that.transactionId,_that.index,_that.previousOutpointHash,_that
 /// @nodoc
 
 @JsonSerializable(fieldRename: .snake)
-class _TransactionInput implements TransactionInput {
-  const _TransactionInput({required this.transactionId, required this.index, required this.previousOutpointHash, required this.previousOutpointIndex, required this.signatureScript, @JsonKey(fromJson: _sigOpCountFromJson) required this.sigOpCount, this.previousOutpointAddress, this.previousOutpointAmount});
+class _TransactionInput extends TransactionInput {
+  const _TransactionInput({required this.transactionId, required this.index, required this.previousOutpointHash, required this.previousOutpointIndex, required this.signatureScript, @JsonKey(fromJson: _sigOpCountFromJson) required this.sigOpCount, this.previousOutpointAddress, this.previousOutpointAmount}): super._();
   factory _TransactionInput.fromJson(Map<String, dynamic> json) => _$TransactionInputFromJson(json);
 
 @override final  String transactionId;
@@ -1658,7 +1661,8 @@ as String,
 /// @nodoc
 mixin _$Transaction {
 
- String? get subnetworkId; String get transactionId; List<String> get blockHash; int get blockTime; bool get isAccepted; String? get acceptingBlockHash; int? get acceptingBlockBlueScore; List<TransactionInput> get inputs; List<TransactionOutput> get outputs;
+ String? get subnetworkId; String get transactionId;// @Default([]) List<String> blockHash,
+ int get blockTime; bool get isAccepted; String? get acceptingBlockHash; int? get acceptingBlockBlueScore; List<TransactionInput> get inputs; List<TransactionOutput> get outputs; String get payload;
 /// Create a copy of Transaction
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1671,16 +1675,16 @@ $TransactionCopyWith<Transaction> get copyWith => _$TransactionCopyWithImpl<Tran
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Transaction&&(identical(other.subnetworkId, subnetworkId) || other.subnetworkId == subnetworkId)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&const DeepCollectionEquality().equals(other.blockHash, blockHash)&&(identical(other.blockTime, blockTime) || other.blockTime == blockTime)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted)&&(identical(other.acceptingBlockHash, acceptingBlockHash) || other.acceptingBlockHash == acceptingBlockHash)&&(identical(other.acceptingBlockBlueScore, acceptingBlockBlueScore) || other.acceptingBlockBlueScore == acceptingBlockBlueScore)&&const DeepCollectionEquality().equals(other.inputs, inputs)&&const DeepCollectionEquality().equals(other.outputs, outputs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Transaction&&(identical(other.subnetworkId, subnetworkId) || other.subnetworkId == subnetworkId)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.blockTime, blockTime) || other.blockTime == blockTime)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted)&&(identical(other.acceptingBlockHash, acceptingBlockHash) || other.acceptingBlockHash == acceptingBlockHash)&&(identical(other.acceptingBlockBlueScore, acceptingBlockBlueScore) || other.acceptingBlockBlueScore == acceptingBlockBlueScore)&&const DeepCollectionEquality().equals(other.inputs, inputs)&&const DeepCollectionEquality().equals(other.outputs, outputs)&&(identical(other.payload, payload) || other.payload == payload));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,subnetworkId,transactionId,const DeepCollectionEquality().hash(blockHash),blockTime,isAccepted,acceptingBlockHash,acceptingBlockBlueScore,const DeepCollectionEquality().hash(inputs),const DeepCollectionEquality().hash(outputs));
+int get hashCode => Object.hash(runtimeType,subnetworkId,transactionId,blockTime,isAccepted,acceptingBlockHash,acceptingBlockBlueScore,const DeepCollectionEquality().hash(inputs),const DeepCollectionEquality().hash(outputs),payload);
 
 @override
 String toString() {
-  return 'Transaction(subnetworkId: $subnetworkId, transactionId: $transactionId, blockHash: $blockHash, blockTime: $blockTime, isAccepted: $isAccepted, acceptingBlockHash: $acceptingBlockHash, acceptingBlockBlueScore: $acceptingBlockBlueScore, inputs: $inputs, outputs: $outputs)';
+  return 'Transaction(subnetworkId: $subnetworkId, transactionId: $transactionId, blockTime: $blockTime, isAccepted: $isAccepted, acceptingBlockHash: $acceptingBlockHash, acceptingBlockBlueScore: $acceptingBlockBlueScore, inputs: $inputs, outputs: $outputs, payload: $payload)';
 }
 
 
@@ -1691,7 +1695,7 @@ abstract mixin class $TransactionCopyWith<$Res>  {
   factory $TransactionCopyWith(Transaction value, $Res Function(Transaction) _then) = _$TransactionCopyWithImpl;
 @useResult
 $Res call({
- String? subnetworkId, String transactionId, List<String> blockHash, int blockTime, bool isAccepted, String? acceptingBlockHash, int? acceptingBlockBlueScore, List<TransactionInput> inputs, List<TransactionOutput> outputs
+ String? subnetworkId, String transactionId, int blockTime, bool isAccepted, String? acceptingBlockHash, int? acceptingBlockBlueScore, List<TransactionInput> inputs, List<TransactionOutput> outputs, String payload
 });
 
 
@@ -1708,18 +1712,18 @@ class _$TransactionCopyWithImpl<$Res>
 
 /// Create a copy of Transaction
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? subnetworkId = freezed,Object? transactionId = null,Object? blockHash = null,Object? blockTime = null,Object? isAccepted = null,Object? acceptingBlockHash = freezed,Object? acceptingBlockBlueScore = freezed,Object? inputs = null,Object? outputs = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? subnetworkId = freezed,Object? transactionId = null,Object? blockTime = null,Object? isAccepted = null,Object? acceptingBlockHash = freezed,Object? acceptingBlockBlueScore = freezed,Object? inputs = null,Object? outputs = null,Object? payload = null,}) {
   return _then(_self.copyWith(
 subnetworkId: freezed == subnetworkId ? _self.subnetworkId : subnetworkId // ignore: cast_nullable_to_non_nullable
 as String?,transactionId: null == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
-as String,blockHash: null == blockHash ? _self.blockHash : blockHash // ignore: cast_nullable_to_non_nullable
-as List<String>,blockTime: null == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
+as String,blockTime: null == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
 as int,isAccepted: null == isAccepted ? _self.isAccepted : isAccepted // ignore: cast_nullable_to_non_nullable
 as bool,acceptingBlockHash: freezed == acceptingBlockHash ? _self.acceptingBlockHash : acceptingBlockHash // ignore: cast_nullable_to_non_nullable
 as String?,acceptingBlockBlueScore: freezed == acceptingBlockBlueScore ? _self.acceptingBlockBlueScore : acceptingBlockBlueScore // ignore: cast_nullable_to_non_nullable
 as int?,inputs: null == inputs ? _self.inputs : inputs // ignore: cast_nullable_to_non_nullable
 as List<TransactionInput>,outputs: null == outputs ? _self.outputs : outputs // ignore: cast_nullable_to_non_nullable
-as List<TransactionOutput>,
+as List<TransactionOutput>,payload: null == payload ? _self.payload : payload // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -1801,10 +1805,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? subnetworkId,  String transactionId,  List<String> blockHash,  int blockTime,  bool isAccepted,  String? acceptingBlockHash,  int? acceptingBlockBlueScore,  List<TransactionInput> inputs,  List<TransactionOutput> outputs)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? subnetworkId,  String transactionId,  int blockTime,  bool isAccepted,  String? acceptingBlockHash,  int? acceptingBlockBlueScore,  List<TransactionInput> inputs,  List<TransactionOutput> outputs,  String payload)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Transaction() when $default != null:
-return $default(_that.subnetworkId,_that.transactionId,_that.blockHash,_that.blockTime,_that.isAccepted,_that.acceptingBlockHash,_that.acceptingBlockBlueScore,_that.inputs,_that.outputs);case _:
+return $default(_that.subnetworkId,_that.transactionId,_that.blockTime,_that.isAccepted,_that.acceptingBlockHash,_that.acceptingBlockBlueScore,_that.inputs,_that.outputs,_that.payload);case _:
   return orElse();
 
 }
@@ -1822,10 +1826,10 @@ return $default(_that.subnetworkId,_that.transactionId,_that.blockHash,_that.blo
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? subnetworkId,  String transactionId,  List<String> blockHash,  int blockTime,  bool isAccepted,  String? acceptingBlockHash,  int? acceptingBlockBlueScore,  List<TransactionInput> inputs,  List<TransactionOutput> outputs)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? subnetworkId,  String transactionId,  int blockTime,  bool isAccepted,  String? acceptingBlockHash,  int? acceptingBlockBlueScore,  List<TransactionInput> inputs,  List<TransactionOutput> outputs,  String payload)  $default,) {final _that = this;
 switch (_that) {
 case _Transaction():
-return $default(_that.subnetworkId,_that.transactionId,_that.blockHash,_that.blockTime,_that.isAccepted,_that.acceptingBlockHash,_that.acceptingBlockBlueScore,_that.inputs,_that.outputs);}
+return $default(_that.subnetworkId,_that.transactionId,_that.blockTime,_that.isAccepted,_that.acceptingBlockHash,_that.acceptingBlockBlueScore,_that.inputs,_that.outputs,_that.payload);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -1839,10 +1843,10 @@ return $default(_that.subnetworkId,_that.transactionId,_that.blockHash,_that.blo
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? subnetworkId,  String transactionId,  List<String> blockHash,  int blockTime,  bool isAccepted,  String? acceptingBlockHash,  int? acceptingBlockBlueScore,  List<TransactionInput> inputs,  List<TransactionOutput> outputs)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? subnetworkId,  String transactionId,  int blockTime,  bool isAccepted,  String? acceptingBlockHash,  int? acceptingBlockBlueScore,  List<TransactionInput> inputs,  List<TransactionOutput> outputs,  String payload)?  $default,) {final _that = this;
 switch (_that) {
 case _Transaction() when $default != null:
-return $default(_that.subnetworkId,_that.transactionId,_that.blockHash,_that.blockTime,_that.isAccepted,_that.acceptingBlockHash,_that.acceptingBlockBlueScore,_that.inputs,_that.outputs);case _:
+return $default(_that.subnetworkId,_that.transactionId,_that.blockTime,_that.isAccepted,_that.acceptingBlockHash,_that.acceptingBlockBlueScore,_that.inputs,_that.outputs,_that.payload);case _:
   return null;
 
 }
@@ -1854,18 +1858,12 @@ return $default(_that.subnetworkId,_that.transactionId,_that.blockHash,_that.blo
 
 @JsonSerializable(fieldRename: .snake)
 class _Transaction extends Transaction {
-   _Transaction({this.subnetworkId, required this.transactionId, final  List<String> blockHash = const [], required this.blockTime, required this.isAccepted, this.acceptingBlockHash, this.acceptingBlockBlueScore, final  List<TransactionInput> inputs = const [], final  List<TransactionOutput> outputs = const []}): _blockHash = blockHash,_inputs = inputs,_outputs = outputs,super._();
+   _Transaction({this.subnetworkId, required this.transactionId, required this.blockTime, required this.isAccepted, this.acceptingBlockHash, this.acceptingBlockBlueScore, final  List<TransactionInput> inputs = const [], final  List<TransactionOutput> outputs = const [], this.payload = ''}): _inputs = inputs,_outputs = outputs,super._();
   factory _Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
 
 @override final  String? subnetworkId;
 @override final  String transactionId;
- final  List<String> _blockHash;
-@override@JsonKey() List<String> get blockHash {
-  if (_blockHash is EqualUnmodifiableListView) return _blockHash;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_blockHash);
-}
-
+// @Default([]) List<String> blockHash,
 @override final  int blockTime;
 @override final  bool isAccepted;
 @override final  String? acceptingBlockHash;
@@ -1884,6 +1882,7 @@ class _Transaction extends Transaction {
   return EqualUnmodifiableListView(_outputs);
 }
 
+@override@JsonKey() final  String payload;
 
 /// Create a copy of Transaction
 /// with the given fields replaced by the non-null parameter values.
@@ -1898,16 +1897,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Transaction&&(identical(other.subnetworkId, subnetworkId) || other.subnetworkId == subnetworkId)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&const DeepCollectionEquality().equals(other._blockHash, _blockHash)&&(identical(other.blockTime, blockTime) || other.blockTime == blockTime)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted)&&(identical(other.acceptingBlockHash, acceptingBlockHash) || other.acceptingBlockHash == acceptingBlockHash)&&(identical(other.acceptingBlockBlueScore, acceptingBlockBlueScore) || other.acceptingBlockBlueScore == acceptingBlockBlueScore)&&const DeepCollectionEquality().equals(other._inputs, _inputs)&&const DeepCollectionEquality().equals(other._outputs, _outputs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Transaction&&(identical(other.subnetworkId, subnetworkId) || other.subnetworkId == subnetworkId)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.blockTime, blockTime) || other.blockTime == blockTime)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted)&&(identical(other.acceptingBlockHash, acceptingBlockHash) || other.acceptingBlockHash == acceptingBlockHash)&&(identical(other.acceptingBlockBlueScore, acceptingBlockBlueScore) || other.acceptingBlockBlueScore == acceptingBlockBlueScore)&&const DeepCollectionEquality().equals(other._inputs, _inputs)&&const DeepCollectionEquality().equals(other._outputs, _outputs)&&(identical(other.payload, payload) || other.payload == payload));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,subnetworkId,transactionId,const DeepCollectionEquality().hash(_blockHash),blockTime,isAccepted,acceptingBlockHash,acceptingBlockBlueScore,const DeepCollectionEquality().hash(_inputs),const DeepCollectionEquality().hash(_outputs));
+int get hashCode => Object.hash(runtimeType,subnetworkId,transactionId,blockTime,isAccepted,acceptingBlockHash,acceptingBlockBlueScore,const DeepCollectionEquality().hash(_inputs),const DeepCollectionEquality().hash(_outputs),payload);
 
 @override
 String toString() {
-  return 'Transaction(subnetworkId: $subnetworkId, transactionId: $transactionId, blockHash: $blockHash, blockTime: $blockTime, isAccepted: $isAccepted, acceptingBlockHash: $acceptingBlockHash, acceptingBlockBlueScore: $acceptingBlockBlueScore, inputs: $inputs, outputs: $outputs)';
+  return 'Transaction(subnetworkId: $subnetworkId, transactionId: $transactionId, blockTime: $blockTime, isAccepted: $isAccepted, acceptingBlockHash: $acceptingBlockHash, acceptingBlockBlueScore: $acceptingBlockBlueScore, inputs: $inputs, outputs: $outputs, payload: $payload)';
 }
 
 
@@ -1918,7 +1917,7 @@ abstract mixin class _$TransactionCopyWith<$Res> implements $TransactionCopyWith
   factory _$TransactionCopyWith(_Transaction value, $Res Function(_Transaction) _then) = __$TransactionCopyWithImpl;
 @override @useResult
 $Res call({
- String? subnetworkId, String transactionId, List<String> blockHash, int blockTime, bool isAccepted, String? acceptingBlockHash, int? acceptingBlockBlueScore, List<TransactionInput> inputs, List<TransactionOutput> outputs
+ String? subnetworkId, String transactionId, int blockTime, bool isAccepted, String? acceptingBlockHash, int? acceptingBlockBlueScore, List<TransactionInput> inputs, List<TransactionOutput> outputs, String payload
 });
 
 
@@ -1935,18 +1934,18 @@ class __$TransactionCopyWithImpl<$Res>
 
 /// Create a copy of Transaction
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? subnetworkId = freezed,Object? transactionId = null,Object? blockHash = null,Object? blockTime = null,Object? isAccepted = null,Object? acceptingBlockHash = freezed,Object? acceptingBlockBlueScore = freezed,Object? inputs = null,Object? outputs = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? subnetworkId = freezed,Object? transactionId = null,Object? blockTime = null,Object? isAccepted = null,Object? acceptingBlockHash = freezed,Object? acceptingBlockBlueScore = freezed,Object? inputs = null,Object? outputs = null,Object? payload = null,}) {
   return _then(_Transaction(
 subnetworkId: freezed == subnetworkId ? _self.subnetworkId : subnetworkId // ignore: cast_nullable_to_non_nullable
 as String?,transactionId: null == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
-as String,blockHash: null == blockHash ? _self._blockHash : blockHash // ignore: cast_nullable_to_non_nullable
-as List<String>,blockTime: null == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
+as String,blockTime: null == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
 as int,isAccepted: null == isAccepted ? _self.isAccepted : isAccepted // ignore: cast_nullable_to_non_nullable
 as bool,acceptingBlockHash: freezed == acceptingBlockHash ? _self.acceptingBlockHash : acceptingBlockHash // ignore: cast_nullable_to_non_nullable
 as String?,acceptingBlockBlueScore: freezed == acceptingBlockBlueScore ? _self.acceptingBlockBlueScore : acceptingBlockBlueScore // ignore: cast_nullable_to_non_nullable
 as int?,inputs: null == inputs ? _self._inputs : inputs // ignore: cast_nullable_to_non_nullable
 as List<TransactionInput>,outputs: null == outputs ? _self._outputs : outputs // ignore: cast_nullable_to_non_nullable
-as List<TransactionOutput>,
+as List<TransactionOutput>,payload: null == payload ? _self.payload : payload // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

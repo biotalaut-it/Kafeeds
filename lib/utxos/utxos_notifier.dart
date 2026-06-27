@@ -56,6 +56,9 @@ class UtxosNotifier extends SafeChangeNotifier {
     return _utxoIds.contains(key);
   }
 
+  Utxo? utxoForOutpoint(Outpoint outpoint) =>
+      _utxoBox.tryGet(_outpointKey(outpoint));
+
   Future<void> refreshWithBalances({
     required IMap<String, BigInt> balances,
   }) async {

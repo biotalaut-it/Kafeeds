@@ -1,3 +1,5 @@
-export 'transaction/transaction_builder.dart';
-export 'transaction/transaction_util.dart';
-export 'transaction/types.dart';
+export 'transaction/mass_calculator.dart';
+export 'transaction/sighash.dart';
+export 'transaction/sign.dart';
+export 'transaction/txbuilder.dart';
+export 'transaction/txscript.dart';

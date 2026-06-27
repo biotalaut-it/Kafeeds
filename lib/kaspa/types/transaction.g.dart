@@ -29,6 +29,7 @@ _UtxoEntry _$UtxoEntryFromJson(Map json) => _UtxoEntry(
   ),
   blockDaaScore: BigInt.parse(json['blockDaaScore'] as String),
   isCoinbase: json['isCoinbase'] as bool,
+  covenantId: maybeHexToBytes(json['covenantId'] as String?),
 );
 
 Map<String, dynamic> _$UtxoEntryToJson(_UtxoEntry instance) =>
@@ -37,6 +38,7 @@ Map<String, dynamic> _$UtxoEntryToJson(_UtxoEntry instance) =>
       'scriptPublicKey': instance.scriptPublicKey.toJson(),
       'blockDaaScore': instance.blockDaaScore.toString(),
       'isCoinbase': instance.isCoinbase,
+      'covenantId': ?maybeBytesToHex(instance.covenantId),
     };
 
 _ScriptPublicKey _$ScriptPublicKeyFromJson(Map json) => _ScriptPublicKey(
@@ -107,11 +109,6 @@ Map<String, dynamic> _$TransactionOutputToJson(_TransactionOutput instance) =>
 _Transaction _$TransactionFromJson(Map json) => _Transaction(
   subnetworkId: json['subnetwork_id'] as String?,
   transactionId: json['transaction_id'] as String,
-  blockHash:
-      (json['block_hash'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList() ??
-      const [],
   blockTime: (json['block_time'] as num).toInt(),
   isAccepted: json['is_accepted'] as bool,
   acceptingBlockHash: json['accepting_block_hash'] as String?,
@@ -133,17 +130,18 @@ _Transaction _$TransactionFromJson(Map json) => _Transaction(
           )
           .toList() ??
       const [],
+  payload: json['payload'] as String? ?? '',
 );
 
 Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
     <String, dynamic>{
       'subnetwork_id': ?instance.subnetworkId,
       'transaction_id': instance.transactionId,
-      'block_hash': instance.blockHash,
       'block_time': instance.blockTime,
       'is_accepted': instance.isAccepted,
       'accepting_block_hash': ?instance.acceptingBlockHash,
       'accepting_block_blue_score': ?instance.acceptingBlockBlueScore,
       'inputs': instance.inputs.map((e) => e.toJson()).toList(),
       'outputs': instance.outputs.map((e) => e.toJson()).toList(),
+      'payload': instance.payload,
     };

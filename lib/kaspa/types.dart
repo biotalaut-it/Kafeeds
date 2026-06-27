@@ -1,3 +1,5 @@
+export 'dart:typed_data' show Uint8List;
+
 export 'types/address.dart';
 export 'types/address_balance.dart';
 export 'types/address_prefix.dart';

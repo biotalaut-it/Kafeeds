@@ -28,7 +28,6 @@ import '../widgets/gradient_widgets.dart';
 import '../widgets/sheet_handle.dart';
 import '../widgets/sheet_wrapper.dart';
 import 'balance_text_widget.dart';
-import 'fee_widget.dart';
 import 'send_note_widget.dart';
 
 enum AddressStyle { TEXT60, TEXT90, PRIMARY }
@@ -37,14 +36,12 @@ class SendSheet extends ConsumerStatefulWidget {
   final String? title;
   final Contact? contact;
   final KaspaUri? uri;
-  final BigInt? feeRaw;
 
   const SendSheet({
     super.key,
     this.title,
     this.contact,
     this.uri,
-    this.feeRaw,
   });
 
   @override
@@ -86,7 +83,6 @@ class _SendSheetState extends ConsumerState<SendSheet> {
   bool _notePasteButtonVisible = true;
 
   late BigInt? amountRaw = widget.uri?.amount?.raw;
-  late BigInt? feeRaw = widget.feeRaw;
   String? get _note => widget.uri?.message;
 
   bool get hasNote => _note != null;
@@ -463,9 +459,6 @@ class _SendSheetState extends ConsumerState<SendSheet> {
                               ),
                             ),
                             // ******* Enter Address Error Container End ******* //
-                            if (feeRaw != null && feeRaw! > .zero) ...[
-                              FeeWidget(amount: .raw(feeRaw!)),
-                            ],
                             const SizedBox(height: 3),
                             Column(
                               children: [
@@ -566,6 +559,8 @@ class _SendSheetState extends ConsumerState<SendSheet> {
     _addressFocusNode.unfocus();
     _noteFocusNode.unfocus();
 
+    final amountRaw = this.amountRaw;
+
     // Validate amount
     if (amountRaw == null) {
       setState(() {
@@ -582,10 +577,8 @@ class _SendSheetState extends ConsumerState<SendSheet> {
     }
 
     final balanceRaw = ref.read(totalBalanceProvider).raw;
-    final utxoCount = ref.read(utxoListProvider).length;
-    final maxFees = BigInt.from(utxoCount) * kFeePerInput;
 
-    if (amountRaw! > balanceRaw - maxFees) {
+    if (amountRaw > balanceRaw) {
       setState(() {
         _amountValidationText = l10n.insufficientBalance;
       });
@@ -593,7 +586,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
     }
 
     final maxSend = ref.read(maxSendProvider);
-    if (amountRaw! > maxSend.raw) {
+    if (amountRaw > maxSend.raw) {
       showAppDialog(
         context: context,
         builder: (_) => CompoundUtxosDialog(lightMode: true),

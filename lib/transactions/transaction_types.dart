@@ -40,8 +40,11 @@ sealed class Tx with _$Tx {
 
   Amount get amount => .raw(.from(apiTx.outputs.first.amount));
 
-  ({Amount baseFee, Amount priorityFee}) get fees {
-    final baseFee = kFeePerInput * .from(apiTx.inputs.length);
+  bool get isAccepted => apiTx.isAccepted;
+
+  int? get acceptingBlockBlueScore => apiTx.acceptingBlockBlueScore;
+
+  Amount get fee {
     final totalInput = inputData.fold(
       BigInt.zero,
       (total, input) => total + .from(input?.amount ?? 0),
@@ -50,17 +53,11 @@ sealed class Tx with _$Tx {
       BigInt.zero,
       (total, output) => total + .from(output.amount),
     );
-    final totalFee = totalInput - totalOutput;
-
-    var priorityFee = totalFee - baseFee;
-    if (priorityFee < .zero) {
-      priorityFee = .zero;
+    final feeRaw = totalInput - totalOutput;
+    if (feeRaw < .zero) {
+      return .zero;
     }
-
-    return (
-      baseFee: .raw(baseFee),
-      priorityFee: .raw(priorityFee),
-    );
+    return .raw(feeRaw);
   }
 
   factory Tx.fromJson(Map<String, dynamic> json) => _$TxFromJson(json);

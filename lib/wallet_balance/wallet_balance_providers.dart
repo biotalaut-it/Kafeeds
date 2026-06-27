@@ -239,3 +239,31 @@ final fiatFormatterProvider = Provider.autoDispose((ref) {
 
   return formatter;
 });
+
+final maxSendProvider = Provider.autoDispose((ref) {
+  final walletService = ref.watch(walletServiceProvider);
+  final address = ref.watch(selectedAddressProvider);
+  final utxos = ref.watch(spendableUtxosProvider);
+  final feeRate = ref.watch(feeRateProvider);
+
+  if (utxos.isEmpty) {
+    return Amount.zero;
+  }
+
+  try {
+    final tx = walletService.createCompoundTx(
+      compoundAddress: address.address,
+      utxos: utxos,
+      feeRate: feeRate,
+    );
+
+    final maxSend = tx.amount;
+    if (maxSend.raw < .zero) {
+      return Amount.zero;
+    }
+
+    return maxSend;
+  } catch (_) {
+    return Amount.zero;
+  }
+});

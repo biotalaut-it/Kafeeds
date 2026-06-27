@@ -147,14 +147,14 @@ RpcTransactionInput encodeTxInput(RawInput input) {
   return RpcTransactionInput(
     previousOutpoint: encodeOutpoint(input.previousOutpoint),
     signatureScript: bytesToHex(input.signatureScript),
-    sequence: input.sequence,
+    sequence: input.sequence.toInt64(),
     sigOpCount: input.sigOpCount,
   );
 }
 
 RpcTransactionOutput encodeTxOutput(RawOutput output) {
   return RpcTransactionOutput(
-    amount: output.value,
+    amount: output.value.toInt64(),
     scriptPublicKey: encodeScriptPublicKey(output.scriptPublicKey),
   );
 }
@@ -163,9 +163,9 @@ RpcTransaction encodeTransaction(RawTransaction tx) => RpcTransaction(
   version: tx.version,
   inputs: tx.inputs.map(encodeTxInput),
   outputs: tx.outputs.map(encodeTxOutput),
-  lockTime: tx.lockTime,
+  lockTime: tx.lockTime.toInt64(),
   subnetworkId: tx.subnetworkId.hex,
-  gas: tx.gas,
+  gas: tx.gas.toInt64(),
   payload: tx.payload?.hex,
 );
 

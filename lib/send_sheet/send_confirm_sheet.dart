@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
 import '../app_router.dart';
+import '../fee/fee_sheet.dart';
 import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
-import '../utxos/utxos_selection_page.dart';
+// import '../utxos/utxos_selection_page.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_card.dart';
 import '../widgets/amount_card.dart';
@@ -22,7 +22,6 @@ import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/scrollable_wrapper.dart';
 import '../widgets/sheet_util.dart';
 import '../widgets/sheet_widget.dart';
-import 'fee_sheet.dart';
 import 'send_complete_sheet.dart';
 import 'send_note_widget.dart';
 
@@ -45,10 +44,13 @@ class SendConfirmSheet extends HookConsumerWidget {
     final sendTxState = useState(sendTx);
     final tx = sendTxState.value;
 
-    final toAddress = tx.toAddress;
+    final toAddress = tx.address;
+    final changeAddress = tx.changeAddress;
     final amount = tx.amount;
+    final payload = tx.payload;
     final fee = tx.fee;
     final note = tx.note;
+    final isCompoundTx = tx.isCompoundTx;
 
     Future<void> sendTransaction() async {
       final walletService = ref.read(walletServiceProvider);
@@ -73,21 +75,25 @@ class SendConfirmSheet extends HookConsumerWidget {
 
         appRouter.pop(context);
 
-        final sheet = SendCompleteSheet(
-          amount: amount,
-          toAddress: toAddress,
-          txId: txId,
-          note: tx.note,
-          rbf: rbf,
-        );
+        if (isCompoundTx) {
+          appRouter.pop(context);
+          UIUtil.showSnackbar(l10n.compoundSuccess);
+        } else {
+          final sheet = SendCompleteSheet(
+            amount: amount,
+            toAddress: toAddress,
+            txId: txId,
+            note: tx.note,
+          );
 
-        Sheets.showAppHeightNineSheet(
-          context: context,
-          theme: theme,
-          closeOnTap: true,
-          removeUntilHome: true,
-          widget: sheet,
-        );
+          Sheets.showAppHeightNineSheet(
+            context: context,
+            theme: theme,
+            closeOnTap: true,
+            removeUntilHome: true,
+            widget: sheet,
+          );
+        }
       } catch (e, st) {
         final log = ref.read(loggerProvider);
         log.e('Failed to send transaction', error: e, stackTrace: st);
@@ -100,7 +106,8 @@ class SendConfirmSheet extends HookConsumerWidget {
     String authMessage() {
       final symbol = ref.read(symbolProvider(amount));
       final formatedAmount = NumberUtil.formatedAmount(amount);
-      return '${l10n.sendConfirm} $formatedAmount $symbol';
+      final message = isCompoundTx ? l10n.compoundUppercased : l10n.sendConfirm;
+      return '$message $formatedAmount $symbol';
     }
 
     bool checkInsufficientBalance() {
@@ -109,78 +116,94 @@ class SendConfirmSheet extends HookConsumerWidget {
       return balance.raw < amount.raw + fee.raw;
     }
 
-    Future<void> updateTx({
+    void updateTx({
       List<Utxo>? selectedUtxos,
-      required Amount priorityFee,
-    }) async {
-      final addressNotifier = ref.read(addressNotifierProvider);
-      final changeAddress = await addressNotifier.nextChangeAddress;
+      required Amount minFee,
+    }) {
       final spendableUtxos = ref.read(spendableUtxosProvider);
-      final txBuilder = TransactionBuilder(
-        utxos: spendableUtxos,
-        feePerInput: kFeePerInput,
-        priorityFee: priorityFee,
-      );
+      final walletService = ref.read(walletServiceProvider);
+      final feeRate = ref.read(feeRateProvider);
 
-      final newTx = txBuilder.createUnsignedTransaction(
-        toAddress: toAddress,
-        amountRaw: amount.raw,
-        changeAddress: changeAddress.address,
-        preselectedUtxos: selectedUtxos,
-      );
-
-      sendTxState.value = tx.copyWith(
-        tx: newTx,
-        utxos: txBuilder.selectedUtxos,
-        userSelected: selectedUtxos != null,
-        change: txBuilder.change,
-        changeAddress: txBuilder.changeAddress,
-        baseFee: txBuilder.baseFee,
-        priorityFee: txBuilder.priorityFee,
-      );
+      try {
+        if (isCompoundTx) {
+          sendTxState.value = walletService.createCompoundTx(
+            compoundAddress: changeAddress,
+            utxos: spendableUtxos,
+            feeRate: feeRate,
+            minFee: minFee,
+          );
+        } else {
+          sendTxState.value = walletService.createSendTx(
+            toAddress: toAddress,
+            amount: amount,
+            spendableUtxos: spendableUtxos,
+            selectedUtxos: selectedUtxos,
+            feeRate: feeRate,
+            minFee: minFee,
+            changeAddress: changeAddress,
+            payload: payload,
+            note: note,
+          );
+        }
+      } catch (_) {
+        UIUtil.showSnackbar(l10n.feeUpdateError);
+      }
     }
 
-    Future<void> selectUtxos({required Amount priorityFee}) async {
-      final notifier = ref.read(selectedUtxosProvider.notifier);
-      notifier.state = ISet(tx.userSelectedUtxos);
+    // Future<void> selectUtxos({required Amount minFee}) async {
+    //   final notifier = ref.read(selectedUtxosProvider.notifier);
+    //   notifier.state = ISet(tx.userSelectedUtxos);
 
-      final selectedUtxos = await Sheets.showAppHeightNineSheet<List<Utxo>>(
-        context: context,
-        theme: theme,
-        widget: UtxosSelectionPage(tx: tx.copyWith(priorityFee: priorityFee)),
-      );
+    //   final selectedUtxos = await Sheets.showAppHeightNineSheet<List<Utxo>>(
+    //     context: context,
+    //     theme: theme,
+    //     widget: UtxosSelectionPage(tx: tx.copyWith(fee: minFee)),
+    //   );
 
-      if (selectedUtxos != null) {
-        await updateTx(
-          selectedUtxos: selectedUtxos,
-          priorityFee: priorityFee,
+    //   if (selectedUtxos != null) {
+    //     updateTx(selectedUtxos: selectedUtxos, minFee: minFee);
+    //   }
+    // }
+
+    Future<void> authAndSend() async {
+      // Authenticate
+      final message = authMessage();
+      final authUtil = ref.read(authUtilProvider);
+      final auth = await authUtil.authenticateForSecret(context, message);
+
+      if (auth) sendTransaction();
+    }
+
+    void checkFee() {
+      // soft cap on fee of 1 KAS
+      if (tx.fee.raw > kSompiPerKaspa) {
+        final symbol = ref.read(kasSymbolProvider);
+        final feeFormated = NumberUtil.formatedAmount(tx.fee);
+        final descAmount = l10n.feeHighDescriptionAmount(feeFormated, symbol);
+        AppDialogs.showConfirmDialog(
+          context,
+          l10n.feeHighTitle,
+          '$descAmount\n\n${l10n.feeHighDescription}',
+          l10n.send.toUpperCase(),
+          authAndSend,
         );
+      } else {
+        authAndSend();
       }
     }
 
-    Future<void> adjustFee({Amount? requiredPriorityFee}) async {
-      Amount priorityFee = tx.priorityFee;
-      if (requiredPriorityFee != null &&
-          requiredPriorityFee.raw > priorityFee.raw) {
-        priorityFee = requiredPriorityFee;
-      }
-
-      final newPriorityFee = await Sheets.showAppHeightNineSheet<Amount>(
+    Future<void> adjustFee({Amount? minFee}) async {
+      final newFee = await Sheets.showAppHeightNineSheet<Amount>(
         context: context,
-        widget: FeeSheet(
-          baseFee: tx.baseFee,
-          priorityFee: priorityFee,
-          txMass: tx.mass,
-          rbf: rbf,
-        ),
         theme: theme,
+        widget: FeeSheet(minFee: minFee ?? .zero, txMass: tx.mass),
       );
 
-      if (newPriorityFee != null) {
+      if (newFee != null && newFee != tx.fee) {
         try {
-          await updateTx(
+          updateTx(
             selectedUtxos: tx.userSelectedUtxos,
-            priorityFee: newPriorityFee,
+            minFee: newFee,
           );
         } catch (e) {
           // if (tx.userSelected) {
@@ -209,26 +232,21 @@ class SendConfirmSheet extends HookConsumerWidget {
 
       // handle RBF
       if (rbf) {
-        final pendingTx = ref.read(txNotifierProvider).pendingTxs.first;
-        final fees = pendingTx.fees;
-        if (tx.fee.raw <= fees.baseFee.raw + fees.priorityFee.raw) {
-          final requiredPriorityFee = Amount.raw(fees.priorityFee.raw + .one);
-          adjustFee(requiredPriorityFee: requiredPriorityFee);
-          return;
+        final txNotifier = ref.read(txNotifierProvider);
+        if (txNotifier.pendingTxs.firstOrNull case final pendingTx?) {
+          final minFee = Amount.raw(pendingTx.fee.raw + .one);
+          if (fee.raw < minFee.raw) {
+            adjustFee(minFee: minFee);
+            return;
+          }
         }
       }
 
-      // Authenticate
-      final message = authMessage();
-      final authUtil = ref.read(authUtilProvider);
-      final auth = await authUtil.authenticateForSecret(context, message);
-      if (auth) {
-        await sendTransaction();
-      }
+      checkFee();
     }
 
     return SheetWidget(
-      title: l10n.sendConfirm,
+      title: tx.isCompoundTx ? l10n.compoundUppercased : l10n.sendConfirm,
       mainWidget: ScrollableWrapper(
         child: SingleChildScrollView(
           padding: const .only(top: 20, bottom: 20),
@@ -239,7 +257,7 @@ class SendConfirmSheet extends HookConsumerWidget {
                 amount: amount,
                 // rightButton: TextFieldButton(
                 //   icon: Icons.sort,
-                //   onPressed: () => selectUtxos(priorityFee: tx.priorityFee),
+                //   onPressed: () => selectUtxos(minFee: tx.fee),
                 // ),
               ),
               // "TO" text

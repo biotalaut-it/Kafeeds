@@ -1,9 +1,5 @@
-import 'dart:typed_data';
-
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kaspium_wallet/kaspa/kaspa.dart';
-import 'package:kaspium_wallet/kaspa/transaction/mass_calculator.dart';
 
 void main() {
   RawTransaction generateTxFromAmounts(
@@ -25,29 +21,29 @@ void main() {
             transactionId: prevTxId,
             index: indexed.$1,
           ),
-          sequence: Int64(0),
+          sequence: .zero,
           sigOpCount: 0,
           signatureScript: Uint8List(0),
           address: address,
           utxoEntry: UtxoEntry(
             amount: indexed.$2,
             isCoinbase: false,
-            blockDaaScore: BigInt.zero,
+            blockDaaScore: .zero,
             scriptPublicKey: scriptPublicKey,
           ),
         );
       }).toList(),
       outputs: outs.map((out) {
         return RawOutput(
-          value: out.toInt64(),
+          value: out,
           scriptPublicKey: scriptPublicKey,
         );
       }).toList(),
-      lockTime: Int64(1615462089000),
-      subnetworkId: Uint8List.fromList(
+      lockTime: .from(1615462089000),
+      subnetworkId: .fromList(
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       ),
-      gas: Int64(0),
+      gas: .zero,
     );
 
     return tx;

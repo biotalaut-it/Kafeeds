@@ -1,14 +1,19 @@
 import 'dart:typed_data';
 
-import 'package:fixnum/fixnum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../transaction/types.dart';
-import '../utils.dart';
 import 'address.dart';
 import 'transaction.dart';
 
 part 'raw_transaction.freezed.dart';
+
+@freezed
+sealed class CovenantBinding with _$CovenantBinding {
+  const factory CovenantBinding({
+    /*uint16*/ required int authorizingInput,
+    required Uint8List covenantId,
+  }) = _CovenantBinding;
+}
 
 @freezed
 sealed class RawInput with _$RawInput {
@@ -17,8 +22,9 @@ sealed class RawInput with _$RawInput {
     required Address address,
     required Outpoint previousOutpoint,
     required Uint8List signatureScript,
-    /*uint64*/ required Int64 sequence,
-    /*byte*/ required int sigOpCount,
+    /*uint64*/ required BigInt sequence,
+    /*byte*/ @Default(0) int sigOpCount,
+    /*uint16*/ @Default(0) int computeBudget,
     required UtxoEntry utxoEntry,
   }) = _RawInput;
 }
@@ -27,8 +33,9 @@ sealed class RawInput with _$RawInput {
 sealed class RawOutput with _$RawOutput {
   const RawOutput._();
   const factory RawOutput({
-    /*uint64*/ required Int64 value,
+    /*uint64*/ required BigInt value,
     required ScriptPublicKey scriptPublicKey,
+    CovenantBinding? covenant,
   }) = _RawOutput;
 }
 
@@ -39,14 +46,13 @@ sealed class RawTransaction with _$RawTransaction {
     /*uint16*/ required int version,
     required List<RawInput> inputs,
     required List<RawOutput> outputs,
-    /*uint64*/ required Int64 lockTime,
+    /*uint64*/ required BigInt lockTime,
     /*byte[20]*/ required Uint8List subnetworkId,
-    /*uint64*/ required Int64 gas,
+    /*uint64*/ required BigInt gas,
     Uint8List? payload,
-    /*uint64*/ Int64? fee,
-    /*uint64*/ Int64? mass,
-    Uint8List? id,
   }) = _Transaction;
 
-  bool get isCoinbase => subnetworkId.hex == kSubnetworkIdCoinbaseHex;
+  BigInt get fee =>
+      inputs.fold<BigInt>(.zero, (t, i) => t + i.utxoEntry.amount) -
+      outputs.fold<BigInt>(.zero, (t, o) => t + o.value);
 }

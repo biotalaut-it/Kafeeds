@@ -11,7 +11,6 @@ import '../l10n/l10n.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
 import '../widgets/action_buttons_wrapper.dart';
-import '../widgets/amount_card.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
 import '../widgets/dismiss_action_buttons.dart';
@@ -20,17 +19,13 @@ import '../widgets/kas_icon_widget.dart';
 import '../widgets/sheet_widget.dart';
 
 class FeeSheet extends HookConsumerWidget {
-  final Amount baseFee;
-  final Amount priorityFee;
+  final Amount minFee;
   final BigInt txMass;
-  final bool rbf;
 
   const FeeSheet({
     super.key,
-    required this.baseFee,
-    required this.priorityFee,
+    required this.minFee,
     required this.txMass,
-    this.rbf = false,
   });
 
   @override
@@ -39,17 +34,13 @@ class FeeSheet extends HookConsumerWidget {
     final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
-    final kaspaFormatter = ref.watch(kaspaFormatterProvider);
-    //final symbol = ref.watch(kasSymbolProvider);
+    final kaspaFormatter = ref.watch(feeFormatterProvider);
+    final feeEstimate = ref.watch(feeEstimateProvider(txMass));
 
-    final feeEstimate = ref.watch(feeEstimateProvider((txMass, baseFee)));
-
-    final amount = useState<Amount?>(priorityFee);
+    final amount = useState<Amount?>(minFee);
 
     final controller = useTextEditingController(
-      text: priorityFee == .zero
-          ? null
-          : NumberUtil.textFieldFormatedAmount(priorityFee),
+      text: minFee == .zero ? null : NumberUtil.textFieldFormatedAmount(minFee),
     );
     final focusNode = useFocusNode();
 
@@ -71,7 +62,7 @@ class FeeSheet extends HookConsumerWidget {
         amount.value = null;
         return;
       }
-      amount.value = Amount.value(value);
+      amount.value = .value(value);
     }
 
     void clearAmount() {
@@ -80,13 +71,14 @@ class FeeSheet extends HookConsumerWidget {
     }
 
     void confirmFee() {
-      if (rbf && (amount.value ?? .zero).raw < priorityFee.raw) {
-        final symbol = ref.watch(kasSymbolProvider);
-        final amountStr = NumberUtil.formatedAmount(priorityFee);
+      final newFee = amount.value ?? .zero;
+      if (newFee.raw < minFee.raw) {
+        final symbol = ref.read(kasSymbolProvider);
+        final amountStr = NumberUtil.formatedAmount(minFee);
         UIUtil.showSnackbar(l10n.feeSheetPriorityFeeWarning(amountStr, symbol));
         return;
       }
-      appRouter.pop(context, withResult: amount.value ?? .zero);
+      appRouter.pop(context, withResult: newFee);
     }
 
     return SheetWidget(
@@ -94,13 +86,6 @@ class FeeSheet extends HookConsumerWidget {
       mainWidget: Column(
         children: [
           const SizedBox(height: 20),
-          Text(
-            l10n.feeBaseUppercase,
-            style: styles.textStyleSubHeader,
-          ),
-          const SizedBox(height: 15),
-          AmountCard(amount: baseFee),
-          const SizedBox(height: 40),
           Text(
             l10n.feePriorityUppsercase,
             style: styles.textStyleSubHeader,
@@ -149,9 +134,7 @@ class FeeSheet extends HookConsumerWidget {
                           Padding(
                             padding: const .symmetric(horizontal: 4),
                             child: ActionChip(
-                              label: Text(
-                                '${fee.$1}',
-                              ),
+                              label: Text('${fee.$1}'),
                               labelStyle:
                                   styles.textStyleTransactionAmountSmall,
                               padding: const .symmetric(
@@ -165,9 +148,9 @@ class FeeSheet extends HookConsumerWidget {
                               },
                             ),
                           ),
-                          if (fee.$2 != null)
+                          if (fee.$2 case final time?)
                             Text(
-                              '< ${max(fee.$2!, 1)} s',
+                              '< ${max(time, 1)} s',
                               style: styles.textStyleParagraphThinSuccess,
                             ),
                         ],
@@ -176,7 +159,7 @@ class FeeSheet extends HookConsumerWidget {
                 ),
               ),
             ),
-          ]
+          ],
         ],
       ),
       bottomWidget: ActionButtonsWrapper(

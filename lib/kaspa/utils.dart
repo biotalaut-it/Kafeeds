@@ -9,7 +9,24 @@ import 'package:pointycastle/src/utils.dart' as p_utils;
 
 import 'bip39/bip39.dart' as bip39;
 
-const kaspaDecimals = 8;
+final kSompiPerKaspa = BigInt.from(100_000_000);
+final kStorageMassParameter = kSompiPerKaspa * .from(10_000);
+
+final kMinChangeTarget = BigInt.from(20_000_000);
+const kMaxInputsPerTransaction = 84;
+final kMaximumStandardTransactionMass = BigInt.from(100_000);
+final kMinimumRelayTransactionFee = BigInt.from(100_000);
+const kDomainHashSize = 32;
+const kDomainSubnetworkIDSize = 20;
+
+final kSubnetworkIdNative = Uint8List(kDomainSubnetworkIDSize);
+final kSubnetworkIdCoinbase = Uint8List(kDomainSubnetworkIDSize)..[0] = 1;
+final kSubnetworkIdRegistry = Uint8List(kDomainSubnetworkIDSize)..[0] = 2;
+
+final kSubnetworkIdNativeHex = kSubnetworkIdNative.hex;
+final kSubnetworkIdCoinbaseHex = kSubnetworkIdCoinbase.hex;
+final kSubnetworkIdRegistryHex = kSubnetworkIdRegistry.hex;
+
 const _seedLength = 128;
 
 bool isValidSeed(String seed) {
@@ -18,10 +35,6 @@ bool isValidSeed(String seed) {
 
 extension ToBigInt on Int64 {
   BigInt toUnsignedBigInt() => .parse(toStringUnsigned());
-}
-
-extension BigIntExt on BigInt {
-  BigInt min(BigInt min) => this < min ? min : this;
 }
 
 extension ToInt64 on BigInt {
@@ -68,7 +81,17 @@ Uint8List rightPadBytes(Uint8List bytes, int size) {
 
 String bytesToHex(Uint8List bytes) => HEX.encode(bytes);
 
-Uint8List hexToBytes(String hex) => .fromList(HEX.decode(hex));
+String? maybeBytesToHex(Uint8List? bytes) {
+  if (bytes == null) return null;
+  return bytesToHex(bytes);
+}
+
+Uint8List hexToBytes(String hex) => HEX.decode(hex).asUint8List();
+
+Uint8List? maybeHexToBytes(String? hex) {
+  if (hex == null) return null;
+  return hexToBytes(hex);
+}
 
 String bytesToBase64(Uint8List bytes) => base64.encode(bytes);
 
@@ -91,14 +114,14 @@ RegExp _hexRegExp = RegExp(r'^[0-9a-fA-F]+$');
 
 bool isHex(String hex) => _hexRegExp.hasMatch(hex);
 
-Uint8List digest({required Uint8List data, int digestSize = 32}) {
+Uint8List blake2bDigest({required Uint8List data, int digestSize = 32}) {
   final blake2b = Blake2bDigest(digestSize: digestSize);
   final output = blake2b.process(data);
 
   return output;
 }
 
-String hash(String data) => digest(data: stringToBytesUtf8(data)).hex;
+String hash(String data) => blake2bDigest(data: stringToBytesUtf8(data)).hex;
 
 // mnemonic helpers
 

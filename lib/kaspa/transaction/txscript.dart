@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import '../types.dart';
 
 // Script public key versions for address types.

@@ -59,7 +59,7 @@ class WalletAddressNotifier extends SafeChangeNotifier
             .map((e) => e.encoded),
       );
 
-  Future<WalletAddress> get nextChangeAddress async {
+  Future<WalletAddress> get changeAddress async {
     final index = _change.nextUnusedIndex;
 
     final walletAddress = await _getWalletAddress(

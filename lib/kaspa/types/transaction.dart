@@ -28,6 +28,8 @@ sealed class UtxoEntry with _$UtxoEntry {
     required ScriptPublicKey scriptPublicKey,
     required BigInt blockDaaScore,
     required bool isCoinbase,
+    @JsonKey(fromJson: maybeHexToBytes, toJson: maybeBytesToHex)
+    Uint8List? covenantId,
   }) = _UtxoEntry;
 
   factory UtxoEntry.fromJson(Map<String, dynamic> json) =>
@@ -37,12 +39,14 @@ sealed class UtxoEntry with _$UtxoEntry {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is UtxoEntry &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.scriptPublicKey, scriptPublicKey) ||
-                other.scriptPublicKey == scriptPublicKey) &&
-            (identical(other.isCoinbase, isCoinbase) ||
-                other.isCoinbase == isCoinbase));
+                other is UtxoEntry &&
+                (identical(other.amount, amount) || other.amount == amount) &&
+                (identical(other.scriptPublicKey, scriptPublicKey) ||
+                    other.scriptPublicKey == scriptPublicKey) &&
+                (identical(other.isCoinbase, isCoinbase) ||
+                    other.isCoinbase == isCoinbase)) &&
+            (identical(other.covenantId, covenantId) ||
+                other.covenantId?.hex == covenantId?.hex);
   }
 
   @JsonKey(includeToJson: false, includeFromJson: false)
@@ -88,6 +92,7 @@ int _sigOpCountFromJson(Object? value) {
 
 @freezed
 sealed class TransactionInput with _$TransactionInput {
+  const TransactionInput._();
   @JsonSerializable(fieldRename: .snake)
   const factory TransactionInput({
     required String transactionId,
@@ -103,6 +108,11 @@ sealed class TransactionInput with _$TransactionInput {
 
   factory TransactionInput.fromJson(Map<String, dynamic> json) =>
       _$TransactionInputFromJson(json);
+
+  Outpoint get previousOutpoint => Outpoint(
+    transactionId: previousOutpointHash,
+    index: previousOutpointIndex.toInt(),
+  );
 }
 
 @freezed
@@ -129,13 +139,14 @@ sealed class Transaction with _$Transaction {
   factory Transaction({
     String? subnetworkId,
     required String transactionId,
-    @Default([]) List<String> blockHash,
+    // @Default([]) List<String> blockHash,
     required int blockTime,
     required bool isAccepted,
     String? acceptingBlockHash,
     int? acceptingBlockBlueScore,
     @Default([]) List<TransactionInput> inputs,
     @Default([]) List<TransactionOutput> outputs,
+    @Default('') String payload,
   }) = _Transaction;
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>

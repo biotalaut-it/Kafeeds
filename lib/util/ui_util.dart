@@ -5,19 +5,14 @@ import 'package:oktoast/oktoast.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../kaspa/kaspa.dart';
-import '../kaspa/transaction/mass_calculator.dart';
 import '../l10n/l10n.dart';
-import '../send_sheet/fee_sheet.dart';
-import '../send_sheet/send_complete_sheet.dart';
 import '../send_sheet/send_confirm_sheet.dart';
 import '../send_sheet/send_sheet.dart';
 import '../transactions/transaction_types.dart';
-import '../widgets/app_simpledialog.dart';
 import '../widgets/dialog.dart';
 import '../widgets/pending_tx_dialog.dart';
 import '../widgets/sheet_util.dart';
 import '../widgets/toast_widget.dart';
-import 'numberutil.dart';
 
 abstract class UIUtil {
   static double drawerWidth(BuildContext context) {
@@ -31,126 +26,47 @@ abstract class UIUtil {
     duration: Duration(milliseconds: 3000),
   );
 
-  static Future<void> showUpdateFeeFlow(
+  static Future<void> showCancelTransactionFlow(
     BuildContext context, {
     required WidgetRef ref,
     required Tx tx,
-    required String address,
   }) async {
-    final theme = ref.read(themeProvider);
     final l10n = l10nOf(context);
 
     try {
       final walletService = ref.read(walletServiceProvider);
-      final notes = ref.read(txNotesProvider);
-      final notifier = ref.read(addressNotifierProvider);
-      final spendableUtxos = ref.read(spendableUtxosProvider);
+      final utxoNotifier = ref.read(utxoNotifierProvider);
+      final feeRate = ref.read(feeRateProvider);
 
-      final amount = Amount.raw(.from(tx.apiTx.outputs.first.amount));
-      final fees = tx.fees;
+      Utxo? getUtxo() {
+        for (final input in tx.apiTx.inputs) {
+          final utxo = utxoNotifier.utxoForOutpoint(input.previousOutpoint);
+          if (utxo != null) return utxo;
+        }
+        return null;
+      }
 
-      final changeAddress = await notifier.nextChangeAddress;
-
-      if (!context.mounted) return;
-
-      final toAddress = Address.tryParse(
-        address,
-        expectedPrefix: changeAddress.address.prefix,
-      );
-
-      if (toAddress == null) {
-        UIUtil.showSnackbar(l10n.feeUpdateAddressError);
+      final utxo = getUtxo();
+      if (utxo == null) {
+        UIUtil.showSnackbar(l10n.cancelTransactionError);
         return;
       }
-
-      final txBuilder = TransactionBuilder(
-        utxos: spendableUtxos,
-        feePerInput: kFeePerInput,
-        priorityFee: fees.priorityFee,
+      final compoundAddress = Address.decodeAddress(utxo.address);
+      final minFee = Amount.raw(tx.fee.raw + .one);
+      final cancelTx = walletService.createCompoundTx(
+        compoundAddress: compoundAddress,
+        utxos: [utxo],
+        feeRate: feeRate,
+        minFee: minFee,
       );
-      final newTx = txBuilder.rebuildTransaction(
-        tx.apiTx,
-        toAddress: toAddress,
-        changeAddress: changeAddress.address,
-      );
-
-      if (newTx == null) {
-        UIUtil.showSnackbar(l10n.feeUpdateRebuildError);
-        return;
-      }
-
-      final massCalculator = MassCalculator(
-        massPerTxByte: 1,
-        massPerScriptPubKeyByte: 10,
-        massPerSigOp: 1000,
-        storageMassParameter: kStorageMassParameter,
-      );
-
-      final mass = massCalculator.calcTxOverallMass(tx: newTx);
-
-      final priorityFee = Amount.raw(fees.priorityFee.raw + .one);
-      final newPriorityFee = await Sheets.showAppHeightNineSheet<Amount>(
-        context: context,
-        widget: FeeSheet(
-          baseFee: fees.baseFee,
-          priorityFee: priorityFee,
-          txMass: mass,
-        ),
-        theme: theme,
-      );
-
-      if (!context.mounted) return;
-
-      if (newPriorityFee == null) {
-        // cancelled
-        return;
-      }
-
-      RawTransaction? replacementTx;
-      if (tx.apiTx.outputs.length == 1 &&
-          tx.apiTx.outputs.first.scriptPublicKeyAddress ==
-              changeAddress.address.encoded) {
-        // compound tx
-        final sendTx = walletService.createCompoundTx(
-          compoundAddress: changeAddress.address,
-          spendableUtxos: spendableUtxos,
-          feePerInput: kFeePerInput,
-          priorityFee: newPriorityFee,
-        );
-        replacementTx = sendTx.tx;
-      } else {
-        final newTxBuilder = TransactionBuilder(
-          utxos: spendableUtxos,
-          feePerInput: kFeePerInput,
-          priorityFee: newPriorityFee,
-        );
-        replacementTx = newTxBuilder.rebuildTransaction(
-          tx.apiTx,
-          toAddress: toAddress,
-          changeAddress: changeAddress.address,
-        );
-      }
-
-      if (replacementTx == null) {
-        UIUtil.showSnackbar(l10n.feeUpdateRebuildError2);
-        return;
-      }
-
-      final note = notes.getNoteForTxId(tx.id);
 
       // Authenticate
-      final symbol = ref.read(symbolProvider(amount));
-      final formatedAmount = NumberUtil.formatedAmount(amount);
-      final message = '${l10n.sendConfirm} $formatedAmount $symbol';
-
+      final message = l10n.cancelTransaction;
       final authUtil = ref.read(authUtilProvider);
       final auth = await authUtil.authenticateForSecret(context, message);
 
       if (!context.mounted) return;
-
-      if (!auth) {
-        return;
-      }
+      if (!auth) return;
 
       try {
         AppDialogs.showInProgressDialog(
@@ -159,33 +75,13 @@ abstract class UIUtil {
           l10n.sendTxProgressDescription,
         );
 
-        final txId = await walletService.sendTransaction(
-          replacementTx,
-          rbf: true,
-        );
-
-        if (!context.mounted) return;
-
+        await walletService.sendTransaction(cancelTx.tx, rbf: true);
         ref.invalidate(pendingTxsProvider);
 
-        if (note != null) {
-          notes.addNoteForTxId(txId, note.note);
-        }
+        UIUtil.showSnackbar(l10n.cancelTransactionSuccess);
 
-        final sheet = SendCompleteSheet(
-          amount: amount,
-          toAddress: toAddress,
-          txId: txId,
-          note: note?.note,
-        );
-
-        Sheets.showAppHeightNineSheet(
-          context: context,
-          theme: theme,
-          closeOnTap: true,
-          removeUntilHome: true,
-          widget: sheet,
-        );
+        if (!context.mounted) return;
+        appRouter.pop(context);
       } catch (e) {
         UIUtil.showSnackbar(l10n.feeUpdateError);
         appRouter.pop(context);
@@ -204,9 +100,10 @@ abstract class UIUtil {
 
     bool rbf = false;
     if (pendingTxs.isNotEmpty) {
-      rbf = await showAppDialog<bool>(
+      rbf =
+          await showDialog<bool>(
             context: context,
-            builder: (_) => PendingTxDialog(),
+            builder: (_) => const PendingTxDialog(),
           ) ??
           false;
       if (rbf == false) {
@@ -217,62 +114,84 @@ abstract class UIUtil {
     return (cont: true, rbf: rbf);
   }
 
+  static Future<void> showCompoundFlow(
+    BuildContext context, {
+    required WidgetRef ref,
+  }) => _showTxFlow(context, ref: ref, uri: null);
+
   static Future<void> showSendFlow(
     BuildContext context, {
     required WidgetRef ref,
     required KaspaUri uri,
-    bool useRbf = false,
+  }) => _showTxFlow(context, ref: ref, uri: uri);
+
+  static Future<void> _showTxFlow(
+    BuildContext context, {
+    required WidgetRef ref,
+    required KaspaUri? uri,
   }) async {
     final theme = ref.read(themeProvider);
+    final l10n = l10nOf(context);
 
-    final amount = uri.amount;
-    if (amount == null) {
-      final (:cont, :rbf) = useRbf
-          ? (cont: true, rbf: true)
-          : await UIUtil.checkForPendingTx(context, ref: ref);
-      if (cont) {
-        Sheets.showAppHeightNineSheet(
-          context: context,
-          theme: theme,
-          widget: SendSheet(uri: uri, rbf: rbf),
-        );
-      }
-
+    final amount = uri?.amount;
+    if (uri != null && amount == null) {
+      Sheets.showAppHeightNineSheet(
+        context: context,
+        theme: theme,
+        widget: SendSheet(uri: uri),
+      );
       return;
     }
 
     final spendableUtxos = ref.read(spendableUtxosProvider);
     final walletService = ref.read(walletServiceProvider);
     final addressNotifier = ref.read(addressNotifierProvider);
+    final feeRate = ref.read(feeRateProvider);
 
-    final (:cont, :rbf) = useRbf
-        ? (cont: true, rbf: true)
-        : await UIUtil.checkForPendingTx(context, ref: ref);
-
-    if (!cont) {
+    if (uri == null && spendableUtxos.length <= 1) {
+      UIUtil.showSnackbar(l10n.compoundTooFewUtxos);
       return;
     }
 
     try {
-      final changeAddress = await addressNotifier.nextChangeAddress;
+      final (:cont, :rbf) = await checkForPendingTx(context, ref: ref);
+      if (!cont) return;
+
+      final changeAddress = await addressNotifier.changeAddress;
 
       if (!context.mounted) return;
 
-      Amount? priorityFee;
+      Amount? minFee;
       if (rbf) {
-        final pendingTx = ref.read(txNotifierProvider).pendingTxs.first;
-        priorityFee = Amount.raw(pendingTx.fees.priorityFee.raw + BigInt.one);
+        final txNotifier = ref.read(txNotifierProvider);
+        if (txNotifier.pendingTxs.firstOrNull case final pendingTx?) {
+          minFee = .raw(pendingTx.fee.raw + .one);
+        }
       }
 
-      final sendTx = walletService.createSendTx(
-        toAddress: uri.address,
-        amount: amount,
-        spendableUtxos: spendableUtxos,
-        feePerInput: kFeePerInput,
-        priorityFee: priorityFee,
-        changeAddress: changeAddress.address,
-        note: uri.message,
-      );
+      SendTx sendTx;
+      if (uri case final uri?) {
+        if (amount == null) {
+          showSnackbar('Missing amount to send');
+          return;
+        }
+        sendTx = walletService.createSendTx(
+          toAddress: uri.address,
+          amount: amount,
+          spendableUtxos: spendableUtxos,
+          feeRate: feeRate,
+          minFee: minFee,
+          changeAddress: changeAddress.address,
+          note: uri.message,
+        );
+      } else {
+        sendTx = walletService.createCompoundTx(
+          compoundAddress: changeAddress.address,
+          utxos: spendableUtxos,
+          feeRate: feeRate,
+          minFee: minFee,
+        );
+      }
 
       Sheets.showAppHeightNineSheet(
         context: context,
@@ -280,35 +199,7 @@ abstract class UIUtil {
         widget: SendConfirmSheet(sendTx: sendTx, rbf: rbf),
       );
     } catch (e) {
-      UIUtil.showSnackbar(e.toString());
-      return;
+      showSnackbar(e.toString());
     }
-  }
-
-  static bool smallScreen(BuildContext context) {
-    final height = MediaQuery.heightOf(context);
-    return height < 667;
-  }
-
-  static String authMessage({
-    required BuildContext context,
-    required String action,
-    required Amount amount,
-    required String symbol,
-    BigInt? fee,
-  }) {
-    final l10n = l10nOf(context);
-    if (amount.raw != .zero) {
-      final amountStr = NumberUtil.formatedAmount(amount);
-      final amountConfirm = l10n.amountConfirm(amountStr, symbol);
-      action += '\n$amountConfirm';
-    }
-    if (fee != null && fee != .zero) {
-      final kaspa = TokenInfo.kaspa;
-      final feeStr = NumberUtil.approxAmountRaw(fee, kaspa.decimals);
-      final feeConfirm = l10n.feeConfirm(feeStr, symbol);
-      action += '\n$feeConfirm';
-    }
-    return action;
   }
 }

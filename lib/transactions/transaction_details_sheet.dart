@@ -58,17 +58,10 @@ class TransactionDetailsSheet extends ConsumerWidget {
       openUrl(explorer.urlForTx(transactionId));
     }
 
-    Future<void> updateFee() async {
+    Future<void> cancelTransaction() async {
       final txItem = this.txItem;
-      if (txItem == null) {
-        return;
-      }
-      UIUtil.showUpdateFeeFlow(
-        context,
-        ref: ref,
-        tx: txItem.tx,
-        address: address,
-      );
+      if (txItem == null || !txItem.pending) return;
+      UIUtil.showCancelTransactionFlow(context, ref: ref, tx: txItem.tx);
     }
 
     return SheetWrapper(
@@ -76,13 +69,15 @@ class TransactionDetailsSheet extends ConsumerWidget {
         mainAxisSize: .min,
         children: [
           const SheetHandle(),
-          if (txItem != null) ...[
-            Expanded(child: TransactionDetails(txItem: txItem!)),
-          ],
+          if (txItem case final txItem?)
+            Expanded(child: TransactionDetails(txItem: txItem)),
           ActionButtonsWrapper(
             buttons: [
               if (txItem?.pending ?? false)
-                PrimaryButton(title: l10n.feeUpdate, onPressed: updateFee)
+                PrimaryButton(
+                  title: l10n.cancelTransaction,
+                  onPressed: cancelTransaction,
+                )
               else if (displayAddressButton) ...[
                 Stack(
                   children: [
@@ -115,7 +110,7 @@ class TransactionDetailsSheet extends ConsumerWidget {
                   ],
                 ),
               ],
-              if (txItem == null)
+              if (txItem case final txItem? when !txItem.pending)
                 PrimaryOutlineButton(
                   title: l10n.viewTransaction,
                   onPressed: viewTransaction,

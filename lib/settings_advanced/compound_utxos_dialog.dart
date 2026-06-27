@@ -3,12 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_providers.dart';
 import '../app_router.dart';
-import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
 import '../widgets/app_simpledialog.dart';
-import '../widgets/dialog.dart';
 
 class CompoundUtxosDialog extends ConsumerWidget {
   final bool lightMode;
@@ -28,63 +26,9 @@ class CompoundUtxosDialog extends ConsumerWidget {
     final maxSend = NumberUtil.formatedAmount(ref.watch(maxSendProvider));
     final kasSymbol = ref.watch(kasSymbolProvider);
 
-    Future<void> sendCompoundTx() async {
-      AppDialogs.showInProgressDialog(
-        context,
-        l10n.compoundingUtxos,
-        l10n.compoundingMessage,
-      );
-
-      try {
-        final walletService = ref.read(walletServiceProvider);
-        final addressNotifier = ref.read(addressNotifierProvider);
-        final spendableUtxos = ref.read(spendableUtxosProvider);
-
-        final changeAddress = await addressNotifier.nextChangeAddress;
-
-        if (!context.mounted) return;
-
-        if (spendableUtxos.length <= 1) {
-          UIUtil.showSnackbar(l10n.compoundTooFewUtxos);
-          appRouter.pop(context);
-          return;
-        }
-
-        Amount? priorityFee;
-
-        final compoundTx = walletService.createCompoundTx(
-          compoundAddress: changeAddress.address,
-          spendableUtxos: spendableUtxos,
-          feePerInput: kFeePerInput,
-          priorityFee: priorityFee,
-        );
-        await walletService.sendTransaction(compoundTx.tx, rbf: rbf);
-        ref.invalidate(pendingTxsProvider);
-
-        if (lightMode) {
-          // give some time for compound tx to broadcast and get accepted
-          await Future.delayed(const Duration(seconds: 5));
-          if (!context.mounted) return;
-          // close both dialogs
-          appRouter.pop(context);
-        }
-
-        UIUtil.showSnackbar(l10n.compoundSuccess);
-      } catch (e) {
-        UIUtil.showSnackbar(l10n.compoundFailure);
-      }
-
-      if (!context.mounted) return;
-      appRouter.pop(context);
-    }
-
-    Future<void> compound() async {
-      final authUtil = ref.read(authUtilProvider);
-      final message = l10n.compoundUtxosConfirmation;
-      final auth = await authUtil.authenticateForSecret(context, message);
-      if (auth) {
-        await sendCompoundTx();
-      }
+    void compound() {
+      if (lightMode) appRouter.pop(context);
+      UIUtil.showCompoundFlow(context, ref: ref);
     }
 
     return AppAlertDialog(

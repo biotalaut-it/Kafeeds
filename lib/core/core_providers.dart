@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -158,25 +157,6 @@ final remoteRefreshProvider = StateProvider((ref) => 0);
 
 final lockDisabledProvider = StateProvider((ref) => false);
 final privacyOverlayDisabledProvider = StateProvider((ref) => false);
-
-final maxSendProvider = Provider.autoDispose((ref) {
-  final utxos = ref.watch(spendableUtxosProvider);
-  final maxInputs = min(utxos.length, kMaxInputsPerTransaction);
-
-  final maxWithFees = utxos.take(maxInputs).fold<BigInt>(BigInt.zero, (
-    total,
-    element,
-  ) {
-    return total + element.utxoEntry.amount;
-  });
-
-  final maxSend = maxWithFees - kFeePerInput * .from(maxInputs);
-  if (maxSend < .zero) {
-    return Amount.zero;
-  }
-
-  return Amount.raw(maxSend);
-});
 
 final appLinkProvider = StateProvider<String?>((ref) {
   return null;

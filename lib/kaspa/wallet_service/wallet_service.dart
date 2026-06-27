@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import '../rpc.dart';
 import '../transaction.dart';
-import '../transaction/mass_calculator.dart';
 import '../types.dart';
 import '../utils.dart';
 import 'send_tx.dart';
@@ -24,31 +21,25 @@ class WalletService {
     required Amount amount,
     required List<Utxo> spendableUtxos,
     List<Utxo>? selectedUtxos,
-    required BigInt feePerInput,
-    Amount? priorityFee,
+    required int feeRate,
+    Amount? minFee,
     required Address changeAddress,
+    Uint8List? payload,
     String? note,
   }) {
-    final txBuilder = TransactionBuilder(
+    final txBuilder = TxBuilder(
       utxos: spendableUtxos,
-      feePerInput: feePerInput,
-      priorityFee: priorityFee,
-    );
-    final tx = txBuilder.createUnsignedTransaction(
-      toAddress: toAddress,
-      amountRaw: amount.raw,
       changeAddress: changeAddress,
-      preselectedUtxos: selectedUtxos,
+      payload: payload,
+      feeRate: .from(feeRate),
+      minFee: minFee?.raw ?? .zero,
     );
 
-    final massCalculator = MassCalculator(
-      massPerTxByte: 1,
-      massPerScriptPubKeyByte: 10,
-      massPerSigOp: 1000,
-      storageMassParameter: kStorageMassParameter,
+    final tx = txBuilder.createTx(
+      selectedUtxos: selectedUtxos,
+      address: toAddress,
+      amount: amount.raw,
     );
-
-    final mass = massCalculator.calcTxOverallMass(tx: tx);
 
     return SendTx(
       uri: KaspaUri(
@@ -58,43 +49,52 @@ class WalletService {
       tx: tx,
       utxos: txBuilder.selectedUtxos,
       amount: amount,
-      change: txBuilder.change,
+      change: .raw(txBuilder.change),
       changeAddress: txBuilder.changeAddress,
-      baseFee: txBuilder.baseFee,
-      priorityFee: txBuilder.priorityFee,
       note: note,
-      mass: mass,
+      mass: txBuilder.mass,
     );
   }
 
   SendTx createCompoundTx({
     required Address compoundAddress,
-    required List<Utxo> spendableUtxos,
-    required BigInt feePerInput,
-    Amount? priorityFee,
+    required List<Utxo> utxos,
+    required int feeRate,
+    Amount? minFee,
   }) {
-    final selectedUtxos =
-        spendableUtxos.take(kMaxInputsPerTransaction).toList();
-    final fee = BigInt.from(selectedUtxos.length) * feePerInput +
-        (priorityFee?.raw ?? .zero);
-    final selectedTotal = selectedUtxos.fold<BigInt>(
-      .zero,
-      (sum, utxo) => sum + utxo.utxoEntry.amount,
-    );
-    final amountRaw = selectedTotal - fee;
-
-    return createSendTx(
-      toAddress: compoundAddress,
-      amount: .raw(amountRaw),
-      spendableUtxos: spendableUtxos,
-      selectedUtxos: selectedUtxos,
-      feePerInput: feePerInput,
-      priorityFee: priorityFee,
+    final txBuilder = TxBuilder(
+      utxos: utxos,
       changeAddress: compoundAddress,
+      feeRate: .from(feeRate),
+      minFee: minFee?.raw ?? .zero,
+    );
+
+    final tx = txBuilder.createCompoundTx();
+
+    return SendTx(
+      uri: KaspaUri(
+        address: compoundAddress,
+        amount: .raw(txBuilder.amount),
+      ),
+      tx: tx,
+      utxos: txBuilder.selectedUtxos,
+      amount: .raw(txBuilder.amount),
+      change: .raw(txBuilder.change),
+      changeAddress: txBuilder.changeAddress,
+      mass: txBuilder.mass,
     );
   }
 
+  void _validateFee(RawTransaction tx) {
+    // hard cap on fee of 100 KAS
+    if (tx.fee > kSompiPerKaspa * .from(100)) {
+      throw Exception('Abnormal fee');
+    }
+  }
+
   Future<String> sendTransaction(RawTransaction tx, {bool rbf = false}) async {
+    _validateFee(tx);
+
     await _signTransaction(tx);
 
     if (rbf) {
@@ -108,17 +108,17 @@ class WalletService {
 
   Future<void> _signTransaction(RawTransaction tx) async {
     final hashType = SigHashType.sigHashAll;
-    final reusedValues = SighashReusedValues();
+    final reusedValues = SigHashReusedValues();
 
     // Sign all inputs
     for (int index = 0; index < tx.inputs.length; ++index) {
       final input = tx.inputs[index];
 
-      final hash = calculateSignatureHashSchnorr(
+      final hash = getSchnorrSignatureHash(
         tx: tx,
         inputIndex: index,
         hashType: hashType,
-        sighashReusedValues: reusedValues,
+        reusedValues: reusedValues,
       );
 
       final signature = await signer.sign(hash, input.address);

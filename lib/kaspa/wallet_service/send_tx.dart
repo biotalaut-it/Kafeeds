@@ -14,17 +14,22 @@ sealed class SendTx with _$SendTx {
     required List<Utxo> utxos,
     @Default(false) bool userSelected,
     required Amount amount,
-    required Amount baseFee,
-    required Amount priorityFee,
     required Amount change,
-    Address? changeAddress,
+    required Address changeAddress,
     String? note,
     required BigInt mass,
   }) = _SendTx;
 
-  Amount get fee => .raw(baseFee.raw + priorityFee.raw);
+  Address get address => uri.address;
 
-  Address get toAddress => uri.address;
+  Amount get fee => .raw(tx.fee);
+
+  Uint8List? get payload => tx.payload;
 
   List<Utxo>? get userSelectedUtxos => userSelected ? utxos : null;
+
+  bool get isCompoundTx =>
+      tx.inputs.length > 1 &&
+      tx.outputs.length == 1 &&
+      address == changeAddress;
 }

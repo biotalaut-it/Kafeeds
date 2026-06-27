@@ -12,52 +12,24 @@ import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/sheet_widget.dart';
 import 'utxos_widget.dart';
 
-final selectionSummaryProvider = Provider.family
-    .autoDispose<SendTx, (SendTx, Address)>((ref, state) {
-      final spendableUtxos = ref.watch(spendableUtxosProvider);
-      final selectedUtxos = ref.watch(selectedUtxosProvider).toList();
+final _summaryProvider = Provider.family.autoDispose((ref, SendTx sendTx) {
+  final spendableUtxos = ref.watch(spendableUtxosProvider);
+  final selectedUtxos = ref.watch(selectedUtxosProvider).toList();
+  final walletService = ref.watch(walletServiceProvider);
+  final feeRate = ref.watch(feeRateProvider);
 
-      final tx = state.$1;
-      final changeAddress = state.$2;
-
-      final totalAmountRaw = selectedUtxos.fold(
-        BigInt.zero,
-        (total, utxo) => total + utxo.utxoEntry.amount,
-      );
-      final txBuilder = TransactionBuilder(
-        utxos: spendableUtxos,
-        priorityFee: tx.priorityFee,
-      );
-
-      var amountRaw =
-          totalAmountRaw -
-          tx.priorityFee.raw -
-          kFeePerInput * BigInt.from(selectedUtxos.length);
-      if (amountRaw > tx.amount.raw) {
-        amountRaw = tx.amount.raw;
-      }
-      try {
-        final newTx = txBuilder.createUnsignedTransaction(
-          toAddress: tx.toAddress,
-          amountRaw: amountRaw,
-          changeAddress: changeAddress,
-          preselectedUtxos: selectedUtxos,
-        );
-
-        final newSendTx = tx.copyWith(
-          amount: Amount.raw(totalAmountRaw),
-          tx: newTx,
-          utxos: txBuilder.selectedUtxos,
-          change: txBuilder.change,
-          baseFee: txBuilder.baseFee,
-          priorityFee: txBuilder.priorityFee,
-        );
-
-        return newSendTx;
-      } catch (e) {
-        rethrow;
-      }
-    });
+  return walletService.createSendTx(
+    toAddress: sendTx.address,
+    amount: sendTx.amount,
+    spendableUtxos: spendableUtxos,
+    selectedUtxos: selectedUtxos,
+    feeRate: feeRate,
+    minFee: sendTx.fee,
+    changeAddress: sendTx.changeAddress,
+    payload: sendTx.payload,
+    note: sendTx.note,
+  );
+});
 
 class UtxosSelectionSummary extends HookConsumerWidget {
   final SendTx tx;
@@ -67,9 +39,7 @@ class UtxosSelectionSummary extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final styles = ref.watch(stylesProvider);
 
-    final pendingTx = ref.watch(
-      selectionSummaryProvider((tx, tx.changeAddress!)),
-    );
+    final pendingTx = ref.watch(_summaryProvider(tx));
 
     final spendableUtxos = ref.watch(spendableUtxosProvider);
     final symbol = ref.watch(kasSymbolProvider);
@@ -148,24 +118,19 @@ class UtxosSelectionPage extends HookConsumerWidget {
 
     Future<void> onConfirm() async {
       try {
-        final addressNotifier = ref.read(addressNotifierProvider);
         final spendableUtxos = ref.read(spendableUtxosProvider);
         final selectedUtxos = ref.read(selectedUtxosProvider).toList();
+        final walletService = ref.read(walletServiceProvider);
+        final feeRate = ref.read(feeRateProvider);
 
-        final changeAddress = await addressNotifier.nextChangeAddress;
-
-        if (!context.mounted) return;
-
-        final txBuilder = TransactionBuilder(
-          utxos: spendableUtxos,
-          feePerInput: kFeePerInput,
-          priorityFee: tx.priorityFee,
-        );
-        txBuilder.createUnsignedTransaction(
-          toAddress: tx.toAddress,
-          amountRaw: tx.amount.raw,
-          preselectedUtxos: selectedUtxos,
-          changeAddress: changeAddress.address,
+        walletService.createSendTx(
+          toAddress: tx.address,
+          amount: tx.amount,
+          spendableUtxos: spendableUtxos,
+          selectedUtxos: selectedUtxos,
+          feeRate: feeRate,
+          minFee: tx.fee,
+          changeAddress: tx.changeAddress,
         );
         appRouter.pop(context, withResult: selectedUtxos);
       } catch (e) {
