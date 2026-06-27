@@ -10,7 +10,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app_icons.dart';
 import '../app_providers.dart';
-import '../app_router.dart';
 import '../contacts/contact.dart';
 import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
@@ -18,10 +17,12 @@ import '../settings_advanced/compound_utxos_dialog.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
 import '../util/user_data_util.dart';
+import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_widgets.dart';
 import '../widgets/app_simpledialog.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/fiat_mode_icon.dart';
 import '../widgets/fiat_value_container.dart';
 import '../widgets/gradient_widgets.dart';
@@ -480,27 +481,17 @@ class _SendSheetState extends ConsumerState<SendSheet> {
               ),
             ),
           ),
-          Padding(
-            padding: const .symmetric(horizontal: 28),
-            child: Column(
-              children: [
-                PrimaryButton(
-                  title: l10n.send,
-                  onPressed: sendAction,
-                ),
-                const SizedBox(height: 16),
-                if (widget.uri == null)
-                  PrimaryOutlineButton(
-                    title: l10n.scanQrCode,
-                    onPressed: scanQrCode,
-                  )
-                else
-                  PrimaryOutlineButton(
-                    title: l10n.cancel,
-                    onPressed: () => appRouter.pop(context),
-                  ),
-              ],
-            ),
+          ActionButtonsWrapper(
+            buttons: [
+              PrimaryButton(title: l10n.send, onPressed: sendAction),
+              if (widget.uri == null)
+                PrimaryOutlineButton(
+                  title: l10n.scanQrCode,
+                  onPressed: scanQrCode,
+                )
+              else
+                const CancelActionButton(),
+            ],
           ),
         ],
       ),

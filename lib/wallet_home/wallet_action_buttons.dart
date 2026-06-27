@@ -15,16 +15,10 @@ class WalletActionButtons extends ConsumerWidget {
       padding: const .only(left: 14, right: 14, bottom: 16),
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: const ReceiveActionButton(),
-          ),
+          Expanded(child: const ReceiveActionButton()),
           if (!wallet.isViewOnly) ...[
             const SizedBox(width: 20),
-            Expanded(
-              flex: 1,
-              child: const SendActionButton(),
-            ),
+            Expanded(child: const SendActionButton()),
           ],
         ],
       ),

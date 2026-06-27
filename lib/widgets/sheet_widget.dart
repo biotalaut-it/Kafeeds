@@ -64,7 +64,6 @@ class SheetWidget extends ConsumerWidget {
             ],
           ),
           Expanded(child: mainWidget),
-          const SizedBox(height: 16),
           bottomWidget,
         ],
       ),

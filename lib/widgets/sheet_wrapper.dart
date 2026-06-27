@@ -13,10 +13,8 @@ class SheetWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bottom = MediaQuery.heightOf(context) * 0.035;
     return TapOutsideUnfocus(
       child: SafeArea(
-        minimum: .only(bottom: bottom),
         maintainBottomViewPadding: true,
         child: child,
       ),

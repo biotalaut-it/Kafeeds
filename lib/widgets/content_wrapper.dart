@@ -13,14 +13,11 @@ class ContentWrapper extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
 
-    final bottom = MediaQuery.heightOf(context) * 0.035;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.backgroundDark,
       body: TapOutsideUnfocus(
         child: SafeArea(
-          minimum: .only(bottom: bottom),
           maintainBottomViewPadding: true,
           child: child,
         ),
