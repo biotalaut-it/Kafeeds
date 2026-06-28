@@ -40,11 +40,7 @@ final _newWalletTransactionProvider = StreamProvider.autoDispose((ref) {
               return addressNotifier.containsAddress(address);
             }) ||
             tx.inputs.any((input) {
-              final outpoint = Outpoint(
-                transactionId: input.previousOutpointHash,
-                index: input.previousOutpointIndex.toInt(),
-              );
-              return utxosNotifier.isWalletOutpoint(outpoint);
+              return utxosNotifier.isWalletOutpoint(input.previousOutpoint);
             });
         return isWalletTx ? tx : null;
       },
