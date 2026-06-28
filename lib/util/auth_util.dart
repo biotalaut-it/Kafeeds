@@ -5,7 +5,6 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../screens/password_lock_page.dart';
-import '../settings/authentication_method.dart';
 import '../widgets/pin_screen.dart';
 import 'routes.dart';
 
@@ -27,11 +26,12 @@ class AuthUtil {
 
     if (!context.mounted) return false;
 
-    if (authMethod.method == AuthMethod.BIOMETRICS && hasBiometrics) {
+    if (authMethod.method == .BIOMETRICS && hasBiometrics) {
       try {
         ref.read(privacyOverlayDisabledProvider.notifier).state = true;
-        final authenticated =
-            await biometricUtil.authenticateWithBiometrics(biometricsMessage);
+        final authenticated = await biometricUtil.authenticateWithBiometrics(
+          biometricsMessage,
+        );
 
         if (!context.mounted) return false;
 
@@ -41,15 +41,8 @@ class AuthUtil {
           return true;
         }
         return false;
-      } catch (e, st) {
-        final logger = ref.read(loggerProvider);
-        logger.e('Failed to authenticate with biometrics',
-            error: e, stackTrace: st);
+      } catch (e) {
         return authenticateWithPin(context, description: pinMessage);
-      } finally {
-        Future.delayed(Duration(milliseconds: 200), () {
-          ref.read(privacyOverlayDisabledProvider.notifier).state = false;
-        });
       }
     }
     return authenticateWithPin(context, description: pinMessage);

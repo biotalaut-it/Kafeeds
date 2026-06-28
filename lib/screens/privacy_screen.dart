@@ -27,12 +27,20 @@ class PrivacyScreen extends HookConsumerWidget {
       return null;
     }, const []);
 
-    useOnAppLifecycleStateChange((previous, state) {
+    useEffect(() {
+      if (inactive.value) {
+        Future.microtask(() => FocusManager.instance.primaryFocus?.unfocus());
+      }
+      return null;
+    }, [inactive.value]);
+
+    useOnAppLifecycleStateChange((_, state) {
       switch (state) {
         case .detached:
           break;
         case .resumed:
           inactive.value = false;
+          ref.read(privacyOverlayDisabledProvider.notifier).state = false;
           break;
         case .inactive:
           if (kInDebugMode && kPlatformIsMacOS) {

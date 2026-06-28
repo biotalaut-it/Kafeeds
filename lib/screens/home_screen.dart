@@ -11,7 +11,6 @@ import '../l10n/l10n.dart';
 import '../main_card/main_card.dart';
 import '../settings_drawer/settings_drawer.dart';
 import '../util/routes.dart';
-import '../util/ui_util.dart';
 import '../wallet_home/wallet_home.dart';
 import '../widgets/network_banner.dart';
 import 'lock_screen.dart';
@@ -49,7 +48,7 @@ class HomeScreen extends HookConsumerWidget {
       }
     });
 
-    Future<void> checkAutoLock() async {
+    void autoLock() {
       // whether we should avoid locking the app
       final lockDisabled = ref.read(lockDisabledProvider);
       if (lockDisabled) return;
@@ -70,28 +69,23 @@ class HomeScreen extends HookConsumerWidget {
       );
     }
 
-    useOnAppLifecycleStateChange((previous, state) async {
-      final log = ref.read(loggerProvider);
-      log.d('didChangeAppLifecycleState $state');
-
+    useOnAppLifecycleStateChange((_, state) {
       switch (state) {
         case .inactive:
-          await saveChainState();
+          saveChainState();
           break;
         case .hidden:
           break;
         case .paused:
-          final inBackground = ref.read(inBackgroundProvider.notifier);
-          inBackground.state = true;
-          await checkAutoLock();
+          ref.read(inBackgroundProvider.notifier).state = true;
+          autoLock();
           break;
         case .resumed:
           // refresh remote data
           final remote = ref.read(remoteRefreshProvider.notifier);
           remote.update((state) => state + 1);
 
-          final inBackground = ref.read(inBackgroundProvider.notifier);
-          inBackground.state = false;
+          ref.read(inBackgroundProvider.notifier).state = false;
           break;
         case .detached:
           break;

@@ -8,7 +8,6 @@ import '../app_icons.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
-import '../settings/authentication_method.dart';
 import '../util/caseconverter.dart';
 import '../util/pin_lockout.dart';
 import '../util/routes.dart';
@@ -37,13 +36,15 @@ class _LockScreenState extends ConsumerState<LockScreen> {
   void initState() {
     super.initState();
 
-    _appStateListener = AppLifecycleListener(onResume: () {
-      if (appRouter.isTopRoute<BarrierRoute>(context)) {
-        _authenticate(useTransition: true);
-      }
-    });
+    _appStateListener = AppLifecycleListener(
+      onResume: () {
+        if (appRouter.isTopRoute<BarrierRoute>(context)) {
+          _authenticate(useTransition: true);
+        }
+      },
+    );
 
-    if (SchedulerBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+    if (SchedulerBinding.instance.lifecycleState == .resumed) {
       _authenticate(useTransition: true);
     }
   }
@@ -142,34 +143,19 @@ class _LockScreenState extends ConsumerState<LockScreen> {
   Future<void> _authenticateWithBiometrics() async {
     final l10n = l10nOf(context);
 
-    final privacyOverlayDisabled =
-        ref.read(privacyOverlayDisabledProvider.notifier);
-    privacyOverlayDisabled.state = true;
-
+    ref.read(privacyOverlayDisabledProvider.notifier).state = true;
     final biometricUtil = ref.read(biometricUtilProvider);
-    bool authenticated = false;
+    final authenticated = await biometricUtil.authenticateWithBiometrics(
+      l10n.unlockBiometrics,
+    );
 
-    try {
-      authenticated = await biometricUtil.authenticateWithBiometrics(
-        l10n.unlockBiometrics,
-      );
-
-      if (authenticated) {
-        _unlock();
-      } else {
-        setState(() {
-          _showUnlockButton = true;
-        });
-        throw Exception('Authentication failed');
-      }
-    } catch (_) {
-      rethrow;
-    } finally {
-      final privacyOverlayDisabled =
-          ref.read(privacyOverlayDisabledProvider.notifier);
-      Future.delayed(Duration(milliseconds: 500), () {
-        privacyOverlayDisabled.state = false;
+    if (authenticated) {
+      _unlock();
+    } else {
+      setState(() {
+        _showUnlockButton = true;
       });
+      throw Exception('Authentication failed');
     }
   }
 
@@ -217,7 +203,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
       _lockedOut = false;
     });
     final authMethod = sharedPrefUtil.getAuthMethod();
-    if (authMethod.method == AuthMethod.BIOMETRICS) {
+    if (authMethod.method == .BIOMETRICS) {
       final biometricsUtil = ref.read(biometricUtilProvider);
       final hasBiometrics = await biometricsUtil.hasBiometrics();
       if (hasBiometrics) {
@@ -225,8 +211,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
           _showLock = true;
           _showUnlockButton = true;
         });
-        if (SchedulerBinding.instance.lifecycleState ==
-            AppLifecycleState.resumed) {
+        if (SchedulerBinding.instance.lifecycleState == .resumed) {
           try {
             await _authenticateWithBiometrics();
           } catch (e) {
