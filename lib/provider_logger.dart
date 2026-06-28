@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProviderLogger extends ProviderObserver {
@@ -9,12 +10,14 @@ class ProviderLogger extends ProviderObserver {
     Object? value,
     ProviderContainer container,
   ) {
-    print('''
+    if (kDebugMode) {
+      debugPrint('''
 didAdd
 {
   "provider": "${provider.name ?? provider.runtimeType}",
   "value": "$value"
 }''');
+    }
   }
 
   @override
@@ -24,13 +27,15 @@ didAdd
     Object? newValue,
     ProviderContainer container,
   ) {
-    print('''
+    if (kDebugMode) {
+      debugPrint('''
 didUpdate
 {
   "provider": "${provider.name ?? provider.runtimeType}",
   "previousValue": "$previousValue",
   "newValue": "$newValue"
 }''');
+    }
   }
 
   @override
@@ -38,10 +43,12 @@ didUpdate
     ProviderBase provider,
     ProviderContainer container,
   ) {
-    print('''
+    if (kDebugMode) {
+      debugPrint('''
 didDispose
 {
   "provider": "${provider.name ?? provider.runtimeType}"
 }''');
+    }
   }
 }
