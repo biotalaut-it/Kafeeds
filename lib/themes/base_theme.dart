@@ -58,5 +58,5 @@ abstract class BaseTheme {
   BoxShadow get boxShadow;
   BoxShadow get boxShadowButton;
 
-  bool get isLightTheme;
+  Brightness get brightness;
 }

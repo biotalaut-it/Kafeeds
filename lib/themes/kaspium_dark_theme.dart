@@ -23,9 +23,6 @@ class KaspiumDarkTheme extends BaseTheme {
   static const black = Color(0xff000000);
 
   @override
-  bool isLightTheme = false;
-
-  @override
   Color primary = brightBlue;
   @override
   Color primary60 = brightBlue.withValues(alpha: 0.6);
@@ -117,12 +114,22 @@ class KaspiumDarkTheme extends BaseTheme {
   @override
   Color animationOverlayStrong = black.withValues(alpha: 0.85);
 
-  //Brightness brightness = Brightness.dark;
   @override
-  SystemUiOverlayStyle systemOverlayStyle = .light;
+  Brightness brightness = .dark;
+
   @override
-  SystemUiOverlayStyle statusBar =
-      .light.copyWith(statusBarColor: Colors.transparent);
+  SystemUiOverlayStyle systemOverlayStyle = .light.copyWith(
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: .light,
+    systemNavigationBarContrastEnforced: false,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: .light,
+    statusBarBrightness: .dark,
+  );
+  @override
+  SystemUiOverlayStyle statusBar = .light.copyWith(
+    statusBarColor: Colors.transparent,
+  );
 
   @override
   BoxShadow boxShadow = BoxShadow(color: Colors.transparent);

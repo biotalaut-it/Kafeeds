@@ -20,9 +20,12 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(.edgeToEdge);
 
   runApp(
-    MaterialApp(
-      home: Scaffold(
-        backgroundColor: theme.backgroundDark,
+    AnnotatedRegion(
+      value: theme.systemOverlayStyle,
+      child: MaterialApp(
+        home: Scaffold(
+          backgroundColor: theme.backgroundDark,
+        ),
       ),
     ),
   );

@@ -1,6 +1,5 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,7 +11,6 @@ import 'app_router.dart';
 import 'app_styles.dart';
 import 'l10n/l10n.dart';
 import 'screens/privacy_screen.dart';
-import 'themes/themes.dart';
 import 'util/platform.dart';
 
 class App extends HookConsumerWidget {
@@ -23,10 +21,6 @@ class App extends HookConsumerWidget {
     final theme = ref.watch(themeProvider);
     final language = ref.watch(languageProvider);
     final styles = ref.watch(stylesProvider);
-
-    ref.listen<BaseTheme>(themeProvider, (_, theme) {
-      SystemChrome.setSystemUIOverlayStyle(theme.statusBar);
-    });
 
     // Setup hight refresh rate on Android devices
     useEffect(() {
@@ -65,40 +59,42 @@ class App extends HookConsumerWidget {
               position: ToastPosition(align: .topCenter, offset: 40),
               textStyle: styles.textStyleSnackbar,
               backgroundColor: theme.backgroundDark,
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: kWalletTitle,
-                theme: ThemeData(
-                  useMaterial3: false,
-                  primaryColor: theme.primary,
-                  fontFamily: kDefaultFontFamily,
-                  brightness: .dark,
-                  tooltipTheme: TooltipThemeData(
-                    preferBelow: false,
-                    margin: .symmetric(vertical: 10),
-                    padding: .symmetric(vertical: 4, horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: theme.backgroundDarkest,
-                      borderRadius: .circular(25),
+              child: AnnotatedRegion(
+                value: theme.systemOverlayStyle,
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: kWalletTitle,
+                  theme: ThemeData(
+                    useMaterial3: false,
+                    primaryColor: theme.primary,
+                    fontFamily: kDefaultFontFamily,
+                    brightness: theme.brightness,
+                    tooltipTheme: TooltipThemeData(
+                      preferBelow: false,
+                      margin: .symmetric(vertical: 10),
+                      padding: .symmetric(vertical: 4, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: theme.backgroundDarkest,
+                        borderRadius: .circular(25),
+                      ),
+                      textStyle: styles.textStyleAddressText60,
                     ),
-                    textStyle: styles.textStyleAddressText60,
+                    dialogTheme: DialogThemeData(
+                      backgroundColor: theme.backgroundDark,
+                    ),
+                    colorScheme: ThemeData().colorScheme.copyWith(
+                      brightness: theme.brightness,
+                      secondary: theme.primary10,
+                      surface: theme.backgroundDark,
+                    ),
                   ),
-                  dialogTheme: DialogThemeData(
-                    backgroundColor: theme.backgroundDark,
-                  ),
-                  colorScheme: ThemeData()
-                      .colorScheme
-                      .copyWith(
-                        brightness: .dark,
-                        secondary: theme.primary10,
-                      )
-                      .copyWith(surface: theme.backgroundDark),
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: language.getLocale(),
+                  initialRoute: appRouter.initialRoute,
+                  onGenerateRoute: appRouter.onGenerateRoute,
                 ),
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                locale: language.getLocale(),
-                initialRoute: appRouter.initialRoute,
-                onGenerateRoute: appRouter.onGenerateRoute,
               ),
             ),
           ),
