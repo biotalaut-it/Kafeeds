@@ -1,5 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 import '../app_providers.dart';
 import '../database/boxes.dart';
@@ -26,7 +27,22 @@ final utxosChangedProvider = StreamProvider.autoDispose((ref) {
     } catch (_) {}
   });
 
-  return rpc.notifyUtxosChanged(addresses);
+  return rpc
+      .notifyUtxosChanged(addresses)
+      .debounceBuffer(const Duration(milliseconds: 500))
+      .map((changes) {
+        final added = <Utxo>{};
+        final removed = <Utxo>{};
+
+        for (final change in changes) {
+          added.removeAll(change.removed);
+          added.addAll(change.added);
+
+          removed.removeAll(change.added);
+          removed.addAll(change.removed);
+        }
+        return UtxosChanged(added: added, removed: removed);
+      });
 });
 
 final utxoNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
