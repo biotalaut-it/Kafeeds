@@ -6,7 +6,7 @@ import '../app_providers.dart';
 import '../l10n/l10n.dart';
 import '../settings/block_explorer.dart';
 import '../settings/kaspa_api_settings.dart';
-import '../settings/kasplex_settings.dart';
+// import '../settings/kasplex_settings.dart';
 import '../settings/node_settings.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/drawer_wrapper.dart';
@@ -56,8 +56,8 @@ class NetworkMenu extends ConsumerWidget {
                     const NodeSettingsEntry(),
                     const ItemDivider(),
                     const KaspaApiSettingsUrlEntry(),
-                    const ItemDivider(),
-                    const KasplexSettingsApiUrlEntry(),
+                    // const ItemDivider(),
+                    // const KasplexSettingsApiUrlEntry(),
                     const ItemDivider(),
                     const BlockExplorerEntry(),
                   ],

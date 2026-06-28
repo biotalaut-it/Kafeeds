@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../app_icons.dart';
 import '../app_providers.dart';
 import '../l10n/l10n.dart';
-import '../settings/kasplex_settings.dart';
+// import '../settings/kasplex_settings.dart';
 import '../settings_drawer/settings_header.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/drawer_wrapper.dart';
@@ -36,7 +36,7 @@ class AdvancedMenu extends ConsumerWidget {
       if (wallet.hasValidKpub) const KpubSettingsEntry(),
       const TxReportSettingsEntry(),
       const TxFilterSettingsEntry(),
-      const Krc20SettingsEntry(),
+      // const Krc20SettingsEntry(),
       if (!wallet.isViewOnly) const SignMessageSettingsEntry(),
     ];
 
