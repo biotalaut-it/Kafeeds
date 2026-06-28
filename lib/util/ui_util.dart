@@ -15,11 +15,6 @@ import '../widgets/sheet_util.dart';
 import '../widgets/toast_widget.dart';
 
 abstract class UIUtil {
-  static double drawerWidth(BuildContext context) {
-    final width = MediaQuery.widthOf(context);
-    return (width < 375) ? width * 0.94 : width * 0.85;
-  }
-
   static void showSnackbar(String content) => showToastWidget(
     ToastWidget(content: content),
     dismissOtherToast: true,

@@ -98,6 +98,9 @@ class HomeScreen extends HookConsumerWidget {
       }
     });
 
+    final width = MediaQuery.widthOf(context);
+    final drawerWidth = (width < 375) ? width * 0.94 : width * 0.85;
+
     return Scaffold(
       key: scaffoldKey,
       drawerEdgeDragWidth: 60,
@@ -105,7 +108,7 @@ class HomeScreen extends HookConsumerWidget {
       backgroundColor: theme.background,
       drawerScrimColor: theme.barrierWeaker,
       drawer: SizedBox(
-        width: UIUtil.drawerWidth(context),
+        width: drawerWidth,
         child: const Drawer(child: SettingsSheet()),
       ),
       extendBody: true,
