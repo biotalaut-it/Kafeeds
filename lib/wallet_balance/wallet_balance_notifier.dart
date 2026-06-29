@@ -45,31 +45,34 @@ class WalletBalanceNotifier extends SafeChangeNotifier {
     if (addresses.isEmpty) {
       return;
     }
-    final entries = await rpc.getBalancesByAddresses(addresses);
 
-    final changes = <String, AddressBalance>{};
-    for (final entry in entries) {
-      final newBalance = entry.balance;
-      final oldBalance = _balances[entry.address] ?? .zero;
+    try {
+      final entries = await rpc.getBalancesByAddresses(addresses);
 
-      if (newBalance != oldBalance) {
-        changes[entry.address] = entry;
-        _balances[entry.address] = newBalance;
-        _totalBalance += newBalance - oldBalance;
+      final changes = <String, AddressBalance>{};
+      for (final entry in entries) {
+        final newBalance = entry.balance;
+        final oldBalance = _balances[entry.address] ?? .zero;
+
+        if (newBalance != oldBalance) {
+          changes[entry.address] = entry;
+          _balances[entry.address] = newBalance;
+          _totalBalance += newBalance - oldBalance;
+        }
       }
-    }
 
-    if (changes.isNotEmpty) {
-      final balanceChanges = changes.map((_, value) {
-        final key = addressAware.keyForAddress(value.address) ?? '';
-        return MapEntry(key, value);
-      });
-      balanceChanges.remove('');
-      await _balanceBox.setAll(balanceChanges);
+      if (changes.isNotEmpty) {
+        final balanceChanges = changes.map((_, value) {
+          final key = addressAware.keyForAddress(value.address) ?? '';
+          return MapEntry(key, value);
+        });
+        balanceChanges.remove('');
+        await _balanceBox.setAll(balanceChanges);
 
-      _lastRefreshChanges = changes.toIMap();
-      _cachedBalances = null;
-      notifyListeners();
-    }
+        _lastRefreshChanges = changes.toIMap();
+        _cachedBalances = null;
+        notifyListeners();
+      }
+    } catch (_) {}
   }
 }
