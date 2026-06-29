@@ -45,9 +45,7 @@ class SendConfirmSheet extends HookConsumerWidget {
     final tx = sendTxState.value;
 
     final toAddress = tx.address;
-    final changeAddress = tx.changeAddress;
     final amount = tx.amount;
-    final payload = tx.payload;
     final fee = tx.fee;
     final note = tx.note;
     final isCompoundTx = tx.isCompoundTx;
@@ -116,40 +114,6 @@ class SendConfirmSheet extends HookConsumerWidget {
       return balance.raw < amount.raw + fee.raw;
     }
 
-    void updateTx({
-      List<Utxo>? selectedUtxos,
-      required Amount minFee,
-    }) {
-      final spendableUtxos = ref.read(spendableUtxosProvider);
-      final walletService = ref.read(walletServiceProvider);
-      final feeRate = ref.read(feeRateProvider);
-
-      try {
-        if (isCompoundTx) {
-          sendTxState.value = walletService.createCompoundTx(
-            compoundAddress: changeAddress,
-            utxos: spendableUtxos,
-            feeRate: feeRate,
-            minFee: minFee,
-          );
-        } else {
-          sendTxState.value = walletService.createSendTx(
-            toAddress: toAddress,
-            amount: amount,
-            spendableUtxos: spendableUtxos,
-            selectedUtxos: selectedUtxos,
-            feeRate: feeRate,
-            minFee: minFee,
-            changeAddress: changeAddress,
-            payload: payload,
-            note: note,
-          );
-        }
-      } catch (_) {
-        UIUtil.showSnackbar(l10n.feeUpdateError);
-      }
-    }
-
     // Future<void> selectUtxos({required Amount minFee}) async {
     //   final notifier = ref.read(selectedUtxosProvider.notifier);
     //   notifier.state = ISet(tx.userSelectedUtxos);
@@ -179,11 +143,11 @@ class SendConfirmSheet extends HookConsumerWidget {
       if (tx.fee.raw > kSompiPerKaspa) {
         final symbol = ref.read(kasSymbolProvider);
         final feeFormated = NumberUtil.formatedAmount(tx.fee);
-        final descAmount = l10n.feeHighDescriptionAmount(feeFormated, symbol);
+        final feeAmount = l10n.feeHighDescriptionAmount(feeFormated, symbol);
         AppDialogs.showConfirmDialog(
           context,
           l10n.feeHighTitle,
-          '$descAmount\n\n${l10n.feeHighDescription}',
+          '$feeAmount\n\n${l10n.feeHighDescription}',
           l10n.send.toUpperCase(),
           authAndSend,
         );
@@ -193,28 +157,14 @@ class SendConfirmSheet extends HookConsumerWidget {
     }
 
     Future<void> adjustFee({Amount? minFee}) async {
-      final newFee = await Sheets.showAppHeightNineSheet<Amount>(
+      final newTx = await Sheets.showAppHeightNineSheet<SendTx>(
         context: context,
         theme: theme,
-        widget: FeeSheet(minFee: minFee ?? .zero, txMass: tx.mass),
+        widget: FeeSheet(minFee: minFee ?? .zero, tx: tx),
       );
 
-      if (newFee != null && newFee != tx.fee) {
-        try {
-          updateTx(
-            selectedUtxos: tx.userSelectedUtxos,
-            minFee: newFee,
-          );
-        } catch (e) {
-          // if (tx.userSelected) {
-          //   selectUtxos(priorityFee: newPriorityFee);
-          // } else {
-          UIUtil.showSnackbar(l10n.insufficientBalance);
-
-          if (!context.mounted) return;
-          appRouter.pop(context);
-          //}
-        }
+      if (newTx != null) {
+        sendTxState.value = newTx;
       }
     }
 

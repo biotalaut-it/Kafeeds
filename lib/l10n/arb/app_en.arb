@@ -219,9 +219,9 @@
     }
   },
   "feeManageTitle": "Manage Fee",
-  "feePriorityHint": "Enter Priority Fee",
-  "feePriorityUppsercase": "PRIORITY FEE",
-  "feeSheetPriorityFeeWarning": "New priority fee must be at least {amount} {symbol}",
+  "feePriorityHint": "Enter Fee",
+  "feePriorityUppsercase": "NEW FEE",
+  "feeSheetPriorityFeeWarning": "New fee must be at least {amount} {symbol}",
   "@feeSheetPriorityFeeWarning": {
     "placeholders": {
       "amount": {
@@ -253,6 +253,27 @@
       }
     }
   },
+  "feeCompoundAmountAdjusted": "Compound amount adjusted to account for new fee",
+  "feeAmountAdjustmentTitle":"Amount adjustment required",
+  "feeAmountAdjustmentDescription": "The new fee requires that the transaction amount is adjusted from {currentAmount} {symbol} to {newAmount} {symbol}",
+  "@feeAmountAdjustmentDescription": {
+    "placeholders": {
+      "currentAmount": {
+        "type": "String"
+      },
+      "newAmount":{
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
+  "feeAmountNotEnough": "Current amount can't cover new fee",
+  "feePriorityMin":"Min",
+  "feePriorityLow":"Low",
+  "feePriorityNormal":"Economic",
+  "feePriorityHigh":"Priority",
   "fetchingTransactions": "Fetching Transactions",
   "fingerprintSeedBackup": "Authenticate to Backup Secret Phrase.",
   "getStarted": "Get Started",

@@ -13,19 +13,22 @@ import '../util/ui_util.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
+import '../widgets/dialog.dart';
 import '../widgets/dismiss_action_buttons.dart';
 import '../widgets/fiat_value_container.dart';
 import '../widgets/kas_icon_widget.dart';
 import '../widgets/sheet_widget.dart';
 
+BigInt _max(BigInt a, BigInt b) => a > b ? a : b;
+
 class FeeSheet extends HookConsumerWidget {
   final Amount minFee;
-  final BigInt txMass;
+  final SendTx tx;
 
   const FeeSheet({
     super.key,
     required this.minFee,
-    required this.txMass,
+    required this.tx,
   });
 
   @override
@@ -35,12 +38,12 @@ class FeeSheet extends HookConsumerWidget {
     final l10n = l10nOf(context);
 
     final kaspaFormatter = ref.watch(feeFormatterProvider);
-    final feeEstimate = ref.watch(feeEstimateProvider(txMass));
+    final feeEstimate = ref.watch(feeEstimateProvider(tx.mass));
 
-    final amount = useState<Amount?>(minFee);
+    final amount = useState<Amount?>(tx.fee);
 
     final controller = useTextEditingController(
-      text: minFee == .zero ? null : NumberUtil.textFieldFormatedAmount(minFee),
+      text: NumberUtil.textFieldFormatedAmount(tx.fee),
     );
     final focusNode = useFocusNode();
 
@@ -70,15 +73,89 @@ class FeeSheet extends HookConsumerWidget {
       controller.clear();
     }
 
-    void confirmFee() {
+    Future<void> confirmFee() async {
+      if (amount.value == null) {
+        appRouter.pop(context);
+        return;
+      }
+
       final newFee = amount.value ?? .zero;
-      if (newFee.raw < minFee.raw) {
+      final minFeeRaw = _max(minFee.raw, tx.mass * .from(kMinFeeRate));
+      if (newFee.raw < minFeeRaw) {
         final symbol = ref.read(kasSymbolProvider);
-        final amountStr = NumberUtil.formatedAmount(minFee);
+        final amountStr = NumberUtil.formatedAmount(.raw(minFeeRaw));
         UIUtil.showSnackbar(l10n.feeSheetPriorityFeeWarning(amountStr, symbol));
         return;
       }
-      appRouter.pop(context, withResult: newFee);
+
+      final spendableUtxos = ref.read(spendableUtxosProvider);
+      final walletService = ref.read(walletServiceProvider);
+
+      SendTx newTx;
+      try {
+        if (tx.isCompoundTx) {
+          newTx = walletService.createCompoundTx(
+            compoundAddress: tx.changeAddress,
+            utxos: spendableUtxos,
+            feeRate: kMinFeeRate,
+            minFee: newFee,
+          );
+
+          if (newTx.amount != tx.amount) {
+            UIUtil.showSnackbar(l10n.feeCompoundAmountAdjusted);
+          }
+        } else {
+          final inputCount = tx.tx.inputs.length;
+          final hasMaxInputs =
+              inputCount == kMaxInputsPerTransaction ||
+              inputCount == spendableUtxos.length;
+          final needsAmountAdjustment =
+              (tx.tx.outputs.length == 1 && hasMaxInputs) &&
+              newFee.raw != tx.fee.raw;
+
+          Amount newAmount = tx.amount;
+          if (needsAmountAdjustment) {
+            newAmount = .raw(tx.amount.raw + tx.fee.raw - newFee.raw);
+            if (newAmount.raw <= .zero) {
+              UIUtil.showSnackbar(l10n.feeAmountNotEnough);
+              return;
+            }
+
+            final currentAmountStr = NumberUtil.formatedAmount(tx.amount);
+            final newAmountStr = NumberUtil.formatedAmount(newAmount);
+            final symbol = ref.read(kasSymbolProvider);
+            bool confirmed = false;
+            await AppDialogs.showConfirmDialog(
+              context,
+              l10n.feeAmountAdjustmentTitle,
+              l10n.feeAmountAdjustmentDescription(
+                currentAmountStr,
+                newAmountStr,
+                symbol,
+              ),
+              l10n.confirm.toUpperCase(),
+              () => confirmed = true,
+            );
+            if (!confirmed) return;
+          }
+          newTx = walletService.createSendTx(
+            toAddress: tx.address,
+            amount: newAmount,
+            spendableUtxos: spendableUtxos,
+            feeRate: kMinFeeRate,
+            minFee: newFee,
+            changeAddress: tx.changeAddress,
+            payload: tx.payload,
+            note: tx.note,
+          );
+        }
+      } catch (_) {
+        UIUtil.showSnackbar(l10n.feeUpdateError);
+        return;
+      }
+
+      if (!context.mounted) return;
+      appRouter.pop(context, withResult: newTx);
     }
 
     return SheetWidget(
@@ -131,6 +208,15 @@ class FeeSheet extends HookConsumerWidget {
                     for (final fee in feeEstimate)
                       Column(
                         children: [
+                          Text(
+                            switch (fee.$3) {
+                              .min => l10n.feePriorityMin,
+                              .low => l10n.feePriorityLow,
+                              .normal => l10n.feePriorityNormal,
+                              .high => l10n.feePriorityHigh,
+                            },
+                            style: styles.textStyleParagraphSuccess,
+                          ),
                           Padding(
                             padding: const .symmetric(horizontal: 4),
                             child: ActionChip(

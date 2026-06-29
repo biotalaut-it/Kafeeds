@@ -5,6 +5,15 @@ import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
 import '../util/formatters.dart';
 
+const kMinFeeRate = 100;
+
+enum FeePriority {
+  min,
+  low,
+  normal,
+  high,
+}
+
 final rpcFeeEstimateProvider = FutureProvider.autoDispose((ref) async {
   // refresh once every 10 seconds
   ref.watch(timeProvider);
@@ -20,26 +29,34 @@ final rpcFeeEstimateProvider = FutureProvider.autoDispose((ref) async {
 
 final feeEstimateProvider = Provider.family.autoDispose((ref, BigInt mass) {
   final feeEstimate = ref.watch(rpcFeeEstimateProvider).valueOrNull;
-  final kMinFeePerGram = BigInt.from(100);
+
   if (feeEstimate == null) {
-    return <(Amount, int?)>[
-      (.raw(mass * kMinFeePerGram), null),
+    return <(Amount, int?, FeePriority)>[
+      (.raw(mass * .from(kMinFeeRate)), null, .min),
     ];
   }
 
   Amount feeFor(double feeRate, BigInt mass) {
-    final estimate = feeRate * mass.toDouble();
-    return .raw(.from(estimate));
+    return .raw(mass * .from(feeRate.ceil()));
   }
 
-  final fees = [
+  final fees = <(Amount, int?, FeePriority)>[
     if (feeEstimate.lowBuckets.firstOrNull case final bucket?)
-      (feeFor(bucket.feerate, mass), bucket.estimatedSeconds),
+      (
+        feeFor(bucket.feerate, mass),
+        bucket.estimatedSeconds,
+        .low,
+      ),
     if (feeEstimate.normalBuckets.firstOrNull case final bucket?)
-      (feeFor(bucket.feerate, mass), bucket.estimatedSeconds),
+      (
+        feeFor(bucket.feerate, mass),
+        bucket.estimatedSeconds,
+        .normal,
+      ),
     (
       feeFor(feeEstimate.priorityBucket.feerate, mass),
       feeEstimate.priorityBucket.estimatedSeconds,
+      .high,
     ),
   ].where((fee) => fee.$1.raw > .zero).toList();
   return fees;
@@ -58,6 +75,16 @@ final feeFormatterProvider = Provider((ref) {
   return formatter;
 });
 
-final minFeeRateProvider = Provider<int>((ref) => 100);
+final feeRateProvider = Provider.autoDispose<int>((ref) {
+  final feeEstimate = ref.watch(rpcFeeEstimateProvider);
 
-final feeRateProvider = Provider<int>((ref) => ref.watch(minFeeRateProvider));
+  if (feeEstimate.valueOrNull case final estimate?) {
+    return (estimate.lowBuckets.firstOrNull ??
+            estimate.normalBuckets.firstOrNull ??
+            estimate.priorityBucket)
+        .feerate
+        .ceil();
+  }
+
+  return kMinFeeRate;
+});

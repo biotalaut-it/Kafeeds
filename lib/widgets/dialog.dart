@@ -9,20 +9,20 @@ import '../l10n/l10n.dart';
 import 'app_simpledialog.dart';
 
 class AppDialogs {
-  static void showInProgressDialog(
+  static Future<void> showInProgressDialog(
     BuildContext context,
     String title,
     String content, {
     Widget? contentWidget,
     String? cancelText,
     Function? onCancel,
-  }) {
-    showAppDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: Consumer(builder: (context, ref, _) {
+  }) => showAppDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => PopScope(
+      canPop: false,
+      child: Consumer(
+        builder: (context, ref, _) {
           final l10n = l10nOf(context);
           final styles = ref.watch(stylesProvider);
 
@@ -34,7 +34,8 @@ class AppDialogs {
             title: Text(title, style: styles.textStyleButtonPrimaryOutline),
             contentPadding: contentPadding,
             content: SingleChildScrollView(
-              child: contentWidget ??
+              child:
+                  contentWidget ??
                   Text(content, style: styles.textStyleParagraph),
             ),
             actions: onCancel != null
@@ -56,25 +57,25 @@ class AppDialogs {
                   ]
                 : null,
           );
-        }),
+        },
       ),
-    );
-  }
+    ),
+  );
 
-  static void showInfoDialog(
+  static Future<void> showInfoDialog(
     BuildContext context,
     String title,
     String content, {
     Widget? contentWidget,
     String? closeText,
     Function? onClose,
-  }) {
-    showAppDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: Consumer(builder: (context, ref, _) {
+  }) => showAppDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => PopScope(
+      canPop: false,
+      child: Consumer(
+        builder: (context, ref, _) {
           final l10n = l10nOf(context);
           final styles = ref.watch(stylesProvider);
 
@@ -86,7 +87,8 @@ class AppDialogs {
             title: Text(title, style: styles.textStyleButtonPrimaryOutline),
             contentPadding: contentPadding,
             content: SingleChildScrollView(
-              child: contentWidget ??
+              child:
+                  contentWidget ??
                   Text(content, style: styles.textStyleParagraph),
             ),
             actions: [
@@ -106,12 +108,12 @@ class AppDialogs {
               ),
             ],
           );
-        }),
+        },
       ),
-    );
-  }
+    ),
+  );
 
-  static void showConfirmDialog(
+  static Future<void> showConfirmDialog(
     BuildContext context,
     String title,
     String content,
@@ -120,12 +122,12 @@ class AppDialogs {
     Widget? contentWidget,
     String? cancelText,
     Function? cancelAction,
-  }) {
-    showAppDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Consumer(builder: (context, ref, _) {
+  }) => showAppDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Consumer(
+        builder: (context, ref, _) {
           if (cancelText == null) {
             final l10n = l10nOf(context);
             cancelText = l10n.cancel.toUpperCase();
@@ -143,7 +145,8 @@ class AppDialogs {
             ),
             contentPadding: contentPadding,
             content: SingleChildScrollView(
-              child: contentWidget ??
+              child:
+                  contentWidget ??
                   Text(content, style: styles.textStyleParagraph),
             ),
             actions: [
@@ -177,8 +180,8 @@ class AppDialogs {
               ),
             ],
           );
-        });
-      },
-    );
-  }
+        },
+      );
+    },
+  );
 }
