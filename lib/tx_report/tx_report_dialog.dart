@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
+import '../transactions/transaction_notifier.dart';
 import '../util/ui_util.dart';
 import '../widgets/app_simpledialog.dart';
 import 'tx_report_options.dart';
@@ -48,18 +49,13 @@ class DownloadTxsDialog extends HookConsumerWidget {
           if (options.refreshTxs) {
             message.value = l10n.txReportStatusRefreshing;
 
-            final balanceNotifier = ref.read(balanceNotifierProvider);
-            final addressNotifier = ref.read(addressNotifierProvider);
-            final pendingAddresses = addressNotifier.receiveAddresses
-                .followedBy(addressNotifier.changeAddresses)
-                .where((address) => !address.used)
-                .map((e) => e.encoded)
-                .toIList();
-
-            await txNotifier.refreshWalletTxs(
-              balances: balanceNotifier.balances,
-              pendingAddresses: pendingAddresses,
+            final allAddresses = ref.read(allAddressesProvider);
+            final activeAddresses = await txNotifier.refreshWalletTxs(
+              allAddresses,
             );
+            await addresses.markUsed(activeAddresses);
+
+            await txNotifier.syncer.drain();
 
             if (!context.mounted) {
               return;
@@ -71,11 +67,12 @@ class DownloadTxsDialog extends HookConsumerWidget {
           while (txNotifier.hasMore) {
             final loadedCount = txNotifier.loadedTxs.length;
             subMessage.value = l10n.txReportNoLoadedTxs(loadedCount, txCount);
-            await txNotifier.loadMore(50);
+            await txNotifier.loadMore(TransactionNotifier.kBulkLoadCount);
 
             if (!context.mounted) {
               return;
             }
+            if (txNotifier.loadedTxs.length == loadedCount) break;
           }
 
           final reportItems = txNotifier.loadedTxs.reversed

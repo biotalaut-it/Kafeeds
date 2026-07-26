@@ -16,6 +16,12 @@ class TypedBox<T> {
 
   Map<String, T> getAll() => box.toMap().cast<String, T>();
 
+  int get length => box.length;
+
+  bool get isEmpty => box.isEmpty;
+
+  bool get isNotEmpty => box.isNotEmpty;
+
   Future<void> set(String key, T value) => box.put(key, value);
 
   Future<void> setAll(Map<String, T> entries) => box.putAll(entries);

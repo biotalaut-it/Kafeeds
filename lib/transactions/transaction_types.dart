@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../kaspa/kaspa.dart';
+import 'tx_sync/tx_sync_types.dart';
 
 part 'transaction_types.freezed.dart';
 part 'transaction_types.g.dart';
@@ -93,12 +94,15 @@ sealed class TxItem with _$TxItem {
 @freezed
 sealed class TxListItem with _$TxListItem {
   TxListItem._();
+  factory TxListItem.syncStatus(TxSyncProgress progress) =
+      _TxListItemSyncStatus;
   factory TxListItem.pendingTxItem(TxItem tx) = _TxListItemPendingTxItem;
   factory TxListItem.txItem(TxItem tx) = _TxListItemTxItem;
   factory TxListItem.loader(bool hasMore) = _TxListItemLoader;
 
   @override
   late final id = when(
+    syncStatus: (_) => 'syncStatus',
     pendingTxItem: (item) => '${item.tx.id}:${item.outputIndex}:${item.type}',
     txItem: (item) => '${item.tx.id}:${item.outputIndex}:${item.type}',
     loader: (_) => 'loader',

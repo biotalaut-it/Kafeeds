@@ -4,6 +4,7 @@ import '../database/database.dart';
 import '../kaspa/kaspa.dart';
 import '../settings/settings_repository.dart';
 import '../transactions/transaction_types.dart';
+import '../transactions/tx_sync/tx_sync_types.dart';
 import '../util/vault.dart';
 import '../wallet_address/wallet_address.dart';
 import 'box_info_repository.dart';
@@ -66,7 +67,7 @@ class WalletRepository {
   }) async {
     await boxInfos.migrateIfNeeded(wallet);
 
-    final boxInfo = boxInfos.getBoxInfo(wallet.wid, networkId);
+    final boxInfo = await boxInfos.ensureBoxInfo(wallet.wid, networkId);
     // open wallet boxes
     await Database.openBox<WalletAddress>(
       boxInfo.address.boxKey,
@@ -93,6 +94,11 @@ class WalletRepository {
       encryptionKey: boxInfo.tx.encryptionKey,
       lazy: true,
     );
+
+    await Database.openBox<AddressTxSync>(
+      boxInfo.txSyncKeys.boxKey,
+      encryptionKey: boxInfo.txSyncKeys.encryptionKey,
+    );
   }
 
   Future<void> closeWalletBoxes(
@@ -106,6 +112,7 @@ class WalletRepository {
     await Database.closeBox<Utxo>(boxInfo.utxo.boxKey);
     await Database.closeBox<TxIndex>(boxInfo.txIndex.boxKey);
     await Database.closeBox<Tx>(boxInfo.tx.boxKey, lazy: true);
+    await Database.closeBox<AddressTxSync>(boxInfo.txSyncKeys.boxKey);
   }
 
   Future<void> removeWalletBoxes(WalletInfo wallet) async {
@@ -117,6 +124,9 @@ class WalletRepository {
       await Database.removeBox(boxInfo.utxo.boxKey);
       await Database.removeBox(boxInfo.txIndex.boxKey);
       await Database.removeBox(boxInfo.tx.boxKey);
+      if (boxInfo.txSync case final txSync?) {
+        await Database.removeBox(txSync.boxKey);
+      }
     }
 
     await boxInfos.removeBoxInfoBundle(wallet.wid);

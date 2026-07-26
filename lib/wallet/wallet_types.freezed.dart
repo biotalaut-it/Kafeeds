@@ -275,7 +275,9 @@ as String,
 /// @nodoc
 mixin _$BoxInfo {
 
- BoxKeys get address; BoxKeys get balance; BoxKeys get utxo; BoxKeys get txIndex; BoxKeys get tx;
+ BoxKeys get address; BoxKeys get balance; BoxKeys get utxo; BoxKeys get txIndex; BoxKeys get tx;// Added after release, so it is missing from bundles created by older
+// versions. BoxInfoRepository.getBoxInfo backfills it.
+ BoxKeys? get txSync;
 /// Create a copy of BoxInfo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -288,16 +290,16 @@ $BoxInfoCopyWith<BoxInfo> get copyWith => _$BoxInfoCopyWithImpl<BoxInfo>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BoxInfo&&(identical(other.address, address) || other.address == address)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.utxo, utxo) || other.utxo == utxo)&&(identical(other.txIndex, txIndex) || other.txIndex == txIndex)&&(identical(other.tx, tx) || other.tx == tx));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BoxInfo&&(identical(other.address, address) || other.address == address)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.utxo, utxo) || other.utxo == utxo)&&(identical(other.txIndex, txIndex) || other.txIndex == txIndex)&&(identical(other.tx, tx) || other.tx == tx)&&(identical(other.txSync, txSync) || other.txSync == txSync));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,address,balance,utxo,txIndex,tx);
+int get hashCode => Object.hash(runtimeType,address,balance,utxo,txIndex,tx,txSync);
 
 @override
 String toString() {
-  return 'BoxInfo(address: $address, balance: $balance, utxo: $utxo, txIndex: $txIndex, tx: $tx)';
+  return 'BoxInfo(address: $address, balance: $balance, utxo: $utxo, txIndex: $txIndex, tx: $tx, txSync: $txSync)';
 }
 
 
@@ -308,11 +310,11 @@ abstract mixin class $BoxInfoCopyWith<$Res>  {
   factory $BoxInfoCopyWith(BoxInfo value, $Res Function(BoxInfo) _then) = _$BoxInfoCopyWithImpl;
 @useResult
 $Res call({
- BoxKeys address, BoxKeys balance, BoxKeys utxo, BoxKeys txIndex, BoxKeys tx
+ BoxKeys address, BoxKeys balance, BoxKeys utxo, BoxKeys txIndex, BoxKeys tx, BoxKeys? txSync
 });
 
 
-$BoxKeysCopyWith<$Res> get address;$BoxKeysCopyWith<$Res> get balance;$BoxKeysCopyWith<$Res> get utxo;$BoxKeysCopyWith<$Res> get txIndex;$BoxKeysCopyWith<$Res> get tx;
+$BoxKeysCopyWith<$Res> get address;$BoxKeysCopyWith<$Res> get balance;$BoxKeysCopyWith<$Res> get utxo;$BoxKeysCopyWith<$Res> get txIndex;$BoxKeysCopyWith<$Res> get tx;$BoxKeysCopyWith<$Res>? get txSync;
 
 }
 /// @nodoc
@@ -325,14 +327,15 @@ class _$BoxInfoCopyWithImpl<$Res>
 
 /// Create a copy of BoxInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? address = null,Object? balance = null,Object? utxo = null,Object? txIndex = null,Object? tx = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? address = null,Object? balance = null,Object? utxo = null,Object? txIndex = null,Object? tx = null,Object? txSync = freezed,}) {
   return _then(_self.copyWith(
 address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as BoxKeys,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
 as BoxKeys,utxo: null == utxo ? _self.utxo : utxo // ignore: cast_nullable_to_non_nullable
 as BoxKeys,txIndex: null == txIndex ? _self.txIndex : txIndex // ignore: cast_nullable_to_non_nullable
 as BoxKeys,tx: null == tx ? _self.tx : tx // ignore: cast_nullable_to_non_nullable
-as BoxKeys,
+as BoxKeys,txSync: freezed == txSync ? _self.txSync : txSync // ignore: cast_nullable_to_non_nullable
+as BoxKeys?,
   ));
 }
 /// Create a copy of BoxInfo
@@ -379,6 +382,18 @@ $BoxKeysCopyWith<$Res> get tx {
   
   return $BoxKeysCopyWith<$Res>(_self.tx, (value) {
     return _then(_self.copyWith(tx: value));
+  });
+}/// Create a copy of BoxInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BoxKeysCopyWith<$Res>? get txSync {
+    if (_self.txSync == null) {
+    return null;
+  }
+
+  return $BoxKeysCopyWith<$Res>(_self.txSync!, (value) {
+    return _then(_self.copyWith(txSync: value));
   });
 }
 }
@@ -459,10 +474,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BoxKeys address,  BoxKeys balance,  BoxKeys utxo,  BoxKeys txIndex,  BoxKeys tx)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BoxKeys address,  BoxKeys balance,  BoxKeys utxo,  BoxKeys txIndex,  BoxKeys tx,  BoxKeys? txSync)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BoxInfo() when $default != null:
-return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx);case _:
+return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx,_that.txSync);case _:
   return orElse();
 
 }
@@ -480,10 +495,10 @@ return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BoxKeys address,  BoxKeys balance,  BoxKeys utxo,  BoxKeys txIndex,  BoxKeys tx)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BoxKeys address,  BoxKeys balance,  BoxKeys utxo,  BoxKeys txIndex,  BoxKeys tx,  BoxKeys? txSync)  $default,) {final _that = this;
 switch (_that) {
 case _BoxInfo():
-return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx);}
+return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx,_that.txSync);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -497,10 +512,10 @@ return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BoxKeys address,  BoxKeys balance,  BoxKeys utxo,  BoxKeys txIndex,  BoxKeys tx)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BoxKeys address,  BoxKeys balance,  BoxKeys utxo,  BoxKeys txIndex,  BoxKeys tx,  BoxKeys? txSync)?  $default,) {final _that = this;
 switch (_that) {
 case _BoxInfo() when $default != null:
-return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx);case _:
+return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx,_that.txSync);case _:
   return null;
 
 }
@@ -511,8 +526,8 @@ return $default(_that.address,_that.balance,_that.utxo,_that.txIndex,_that.tx);c
 /// @nodoc
 @JsonSerializable()
 
-class _BoxInfo implements BoxInfo {
-  const _BoxInfo({required this.address, required this.balance, required this.utxo, required this.txIndex, required this.tx});
+class _BoxInfo extends BoxInfo {
+  const _BoxInfo({required this.address, required this.balance, required this.utxo, required this.txIndex, required this.tx, this.txSync}): super._();
   factory _BoxInfo.fromJson(Map<String, dynamic> json) => _$BoxInfoFromJson(json);
 
 @override final  BoxKeys address;
@@ -520,6 +535,9 @@ class _BoxInfo implements BoxInfo {
 @override final  BoxKeys utxo;
 @override final  BoxKeys txIndex;
 @override final  BoxKeys tx;
+// Added after release, so it is missing from bundles created by older
+// versions. BoxInfoRepository.getBoxInfo backfills it.
+@override final  BoxKeys? txSync;
 
 /// Create a copy of BoxInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -534,16 +552,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BoxInfo&&(identical(other.address, address) || other.address == address)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.utxo, utxo) || other.utxo == utxo)&&(identical(other.txIndex, txIndex) || other.txIndex == txIndex)&&(identical(other.tx, tx) || other.tx == tx));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BoxInfo&&(identical(other.address, address) || other.address == address)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.utxo, utxo) || other.utxo == utxo)&&(identical(other.txIndex, txIndex) || other.txIndex == txIndex)&&(identical(other.tx, tx) || other.tx == tx)&&(identical(other.txSync, txSync) || other.txSync == txSync));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,address,balance,utxo,txIndex,tx);
+int get hashCode => Object.hash(runtimeType,address,balance,utxo,txIndex,tx,txSync);
 
 @override
 String toString() {
-  return 'BoxInfo(address: $address, balance: $balance, utxo: $utxo, txIndex: $txIndex, tx: $tx)';
+  return 'BoxInfo(address: $address, balance: $balance, utxo: $utxo, txIndex: $txIndex, tx: $tx, txSync: $txSync)';
 }
 
 
@@ -554,11 +572,11 @@ abstract mixin class _$BoxInfoCopyWith<$Res> implements $BoxInfoCopyWith<$Res> {
   factory _$BoxInfoCopyWith(_BoxInfo value, $Res Function(_BoxInfo) _then) = __$BoxInfoCopyWithImpl;
 @override @useResult
 $Res call({
- BoxKeys address, BoxKeys balance, BoxKeys utxo, BoxKeys txIndex, BoxKeys tx
+ BoxKeys address, BoxKeys balance, BoxKeys utxo, BoxKeys txIndex, BoxKeys tx, BoxKeys? txSync
 });
 
 
-@override $BoxKeysCopyWith<$Res> get address;@override $BoxKeysCopyWith<$Res> get balance;@override $BoxKeysCopyWith<$Res> get utxo;@override $BoxKeysCopyWith<$Res> get txIndex;@override $BoxKeysCopyWith<$Res> get tx;
+@override $BoxKeysCopyWith<$Res> get address;@override $BoxKeysCopyWith<$Res> get balance;@override $BoxKeysCopyWith<$Res> get utxo;@override $BoxKeysCopyWith<$Res> get txIndex;@override $BoxKeysCopyWith<$Res> get tx;@override $BoxKeysCopyWith<$Res>? get txSync;
 
 }
 /// @nodoc
@@ -571,14 +589,15 @@ class __$BoxInfoCopyWithImpl<$Res>
 
 /// Create a copy of BoxInfo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? address = null,Object? balance = null,Object? utxo = null,Object? txIndex = null,Object? tx = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? address = null,Object? balance = null,Object? utxo = null,Object? txIndex = null,Object? tx = null,Object? txSync = freezed,}) {
   return _then(_BoxInfo(
 address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as BoxKeys,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
 as BoxKeys,utxo: null == utxo ? _self.utxo : utxo // ignore: cast_nullable_to_non_nullable
 as BoxKeys,txIndex: null == txIndex ? _self.txIndex : txIndex // ignore: cast_nullable_to_non_nullable
 as BoxKeys,tx: null == tx ? _self.tx : tx // ignore: cast_nullable_to_non_nullable
-as BoxKeys,
+as BoxKeys,txSync: freezed == txSync ? _self.txSync : txSync // ignore: cast_nullable_to_non_nullable
+as BoxKeys?,
   ));
 }
 
@@ -626,6 +645,18 @@ $BoxKeysCopyWith<$Res> get tx {
   
   return $BoxKeysCopyWith<$Res>(_self.tx, (value) {
     return _then(_self.copyWith(tx: value));
+  });
+}/// Create a copy of BoxInfo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BoxKeysCopyWith<$Res>? get txSync {
+    if (_self.txSync == null) {
+    return null;
+  }
+
+  return $BoxKeysCopyWith<$Res>(_self.txSync!, (value) {
+    return _then(_self.copyWith(txSync: value));
   });
 }
 }

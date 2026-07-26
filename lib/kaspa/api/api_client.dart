@@ -3,11 +3,18 @@ import 'json_client.dart';
 
 typedef JsonObject = Map<String, Object?>;
 
+typedef JsonPage = ({
+  Iterable<JsonObject> data,
+  int? nextBefore,
+  int? nextAfter,
+});
+
 class ApiClient {
-  final String baseUrl;
   final JsonClient _client;
 
-  ApiClient(this.baseUrl)
+  const ApiClient(this._client);
+
+  ApiClient.url(String baseUrl)
     : _client = baseUrl.isNotEmpty ? JsonClient(baseUrl) : VoidJsonClient();
 
   /// Kaspa Addresses
@@ -35,26 +42,41 @@ class ApiClient {
     return (result as Iterable).cast<JsonObject>();
   }
 
-  Future<Iterable<JsonObject>> getFullTransactionsPage({
+  Future<JsonPage> getFullTransactionsPage({
     required String address,
     int limit = 50,
-    int before = 0,
-    int after = 0,
+    int? before,
+    int? after,
     List<String> fields = const [],
     ResolvePreviousOutpoints resolvePreviousOutpoints = .light,
   }) async {
+    assert(
+      before == null || after == null,
+      'The api takes one of before and after, not both',
+    );
+
     final params = [
       'limit=$limit',
-      'before=$before',
-      'after=$after',
+      if (before != null) 'before=$before',
+      if (after != null) 'after=$after',
       if (fields.isNotEmpty) 'fields=${fields.join(',')}',
       'resolve_previous_outpoints=${resolvePreviousOutpoints.name}',
     ];
     final path =
         '/addresses/$address/full-transactions-page?${params.join("&")}';
-    final data = await _client.get(path);
+    final response = await _client.getResponse(path);
 
-    return (data as Iterable).cast<JsonObject>();
+    if (response.data == null) {
+      throw Exception('Null result for $path');
+    }
+
+    int? cursor(String header) => int.tryParse(response.headers[header] ?? '');
+
+    return (
+      data: (response.data as Iterable).cast<JsonObject>(),
+      nextBefore: cursor('x-next-page-before'),
+      nextAfter: cursor('x-next-page-after'),
+    );
   }
 
   Future<int> getTransactionsCount({required String address}) async {

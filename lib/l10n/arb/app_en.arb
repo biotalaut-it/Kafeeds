@@ -26,6 +26,15 @@
   "addressCopied": "Address Copied",
   "addressCopiedFailed": "Failed to copy address",
   "addressDiscovery": "Address Discovery",
+  "addressesChecked": "{count} checked",
+  "@addressesChecked": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "300"
+      }
+    }
+  },
   "addressFilterDialogOptionAllAddresses": "View All Addresses",
   "addressFilterDialogOptionNonZeroBalances": "View Addresses With Balance",
   "addressFilterDialogTitle": "Address Filter",
@@ -333,6 +342,7 @@
   "kpubDescription": "The extended public key can be used to import your wallet as a 'watch only' wallet.",
   "kpubTitle": "Extended Public Key",
   "language": "Language",
+  "lastUsedIndex": "Last used",
   "loadingTransactions": "Loading Transactions...",
   "lockAppSetting": "Authenticate on Launch",
   "locked": "Locked",
@@ -427,13 +437,27 @@
   "requireAPasswordToOpenHeader": "Require a password to open this wallet?",
   "restartSetupButton": "Restart Setup",
   "scanFailedMessage": "Scan failed, please try again later",
+  "scanFoundAddresses": "{count, plural, =1{1 new address found} other{{count} new addresses found}}",
+  "@scanFoundAddresses": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "scanFoundNoAddresses": "No new addresses found",
   "scanMore": "SCAN MORE",
   "scanMoreAddresses": "Scan For More Addresses",
   "scannedIndex": "Scanned",
+  "scanningChangeAddresses": "Scanning change addresses",
   "scanningDescription": "Scanning for new addresses...",
+  "scanningReceiveAddresses": "Scanning receive addresses",
   "scanningTitle": "Scanning",
   "scanQrCode": "Scan QR Code",
   "scanQrCodeError": "Failed to parse qr code",
+  "scanStopped": "Scan stopped",
+  "scanSyncingTransactions": "Syncing their transactions…",
   "secretInfo": "In the next screen, you will see your secret phrase. It is a password to access your funds. It is crucial that you back it up and never share it with anyone.",
   "secretInfoHeader": "Safety First!",
   "secretPhrase": "Secret Phrase",
@@ -464,6 +488,20 @@
   "shareKaspiumSubject": "Check out Kaspium Wallet",
   "shareKaspiumText": "Check out Kaspium - Kaspa Mobile Wallet.\nWebsite - kaspium.io",
   "somethingWentWrong": "Something went wrong",
+  "syncingAddresses": "{completed} of {total} addresses",
+  "@syncingAddresses": {
+    "placeholders": {
+      "completed": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "syncingTransactions": "Syncing Transactions...",
   "systemDefault": "System Default",
   "tapToHide": "Tap to hide",
   "tapToReveal": "Tap to reveal",

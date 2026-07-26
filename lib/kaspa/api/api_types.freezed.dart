@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ApiActiveAddress {
 
- String get address; bool get active;
+ String get address; bool get active;// Block time of the address' newest transaction, null when never active
+ int? get lastTxBlockTime;
 /// Create a copy of ApiActiveAddress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,16 @@ $ApiActiveAddressCopyWith<ApiActiveAddress> get copyWith => _$ApiActiveAddressCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiActiveAddress&&(identical(other.address, address) || other.address == address)&&(identical(other.active, active) || other.active == active));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiActiveAddress&&(identical(other.address, address) || other.address == address)&&(identical(other.active, active) || other.active == active)&&(identical(other.lastTxBlockTime, lastTxBlockTime) || other.lastTxBlockTime == lastTxBlockTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,address,active);
+int get hashCode => Object.hash(runtimeType,address,active,lastTxBlockTime);
 
 @override
 String toString() {
-  return 'ApiActiveAddress(address: $address, active: $active)';
+  return 'ApiActiveAddress(address: $address, active: $active, lastTxBlockTime: $lastTxBlockTime)';
 }
 
 
@@ -48,7 +49,7 @@ abstract mixin class $ApiActiveAddressCopyWith<$Res>  {
   factory $ApiActiveAddressCopyWith(ApiActiveAddress value, $Res Function(ApiActiveAddress) _then) = _$ApiActiveAddressCopyWithImpl;
 @useResult
 $Res call({
- String address, bool active
+ String address, bool active, int? lastTxBlockTime
 });
 
 
@@ -65,11 +66,12 @@ class _$ApiActiveAddressCopyWithImpl<$Res>
 
 /// Create a copy of ApiActiveAddress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? address = null,Object? active = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? address = null,Object? active = null,Object? lastTxBlockTime = freezed,}) {
   return _then(_self.copyWith(
 address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,lastTxBlockTime: freezed == lastTxBlockTime ? _self.lastTxBlockTime : lastTxBlockTime // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -151,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String address,  bool active)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String address,  bool active,  int? lastTxBlockTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ApiActiveAddress() when $default != null:
-return $default(_that.address,_that.active);case _:
+return $default(_that.address,_that.active,_that.lastTxBlockTime);case _:
   return orElse();
 
 }
@@ -172,10 +174,10 @@ return $default(_that.address,_that.active);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String address,  bool active)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String address,  bool active,  int? lastTxBlockTime)  $default,) {final _that = this;
 switch (_that) {
 case _ApiActiveAddress():
-return $default(_that.address,_that.active);}
+return $default(_that.address,_that.active,_that.lastTxBlockTime);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +191,10 @@ return $default(_that.address,_that.active);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String address,  bool active)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String address,  bool active,  int? lastTxBlockTime)?  $default,) {final _that = this;
 switch (_that) {
 case _ApiActiveAddress() when $default != null:
-return $default(_that.address,_that.active);case _:
+return $default(_that.address,_that.active,_that.lastTxBlockTime);case _:
   return null;
 
 }
@@ -204,11 +206,13 @@ return $default(_that.address,_that.active);case _:
 @JsonSerializable()
 
 class _ApiActiveAddress implements ApiActiveAddress {
-  const _ApiActiveAddress({required this.address, required this.active});
+  const _ApiActiveAddress({required this.address, required this.active, this.lastTxBlockTime});
   factory _ApiActiveAddress.fromJson(Map<String, dynamic> json) => _$ApiActiveAddressFromJson(json);
 
 @override final  String address;
 @override final  bool active;
+// Block time of the address' newest transaction, null when never active
+@override final  int? lastTxBlockTime;
 
 /// Create a copy of ApiActiveAddress
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiActiveAddress&&(identical(other.address, address) || other.address == address)&&(identical(other.active, active) || other.active == active));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiActiveAddress&&(identical(other.address, address) || other.address == address)&&(identical(other.active, active) || other.active == active)&&(identical(other.lastTxBlockTime, lastTxBlockTime) || other.lastTxBlockTime == lastTxBlockTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,address,active);
+int get hashCode => Object.hash(runtimeType,address,active,lastTxBlockTime);
 
 @override
 String toString() {
-  return 'ApiActiveAddress(address: $address, active: $active)';
+  return 'ApiActiveAddress(address: $address, active: $active, lastTxBlockTime: $lastTxBlockTime)';
 }
 
 
@@ -243,7 +247,7 @@ abstract mixin class _$ApiActiveAddressCopyWith<$Res> implements $ApiActiveAddre
   factory _$ApiActiveAddressCopyWith(_ApiActiveAddress value, $Res Function(_ApiActiveAddress) _then) = __$ApiActiveAddressCopyWithImpl;
 @override @useResult
 $Res call({
- String address, bool active
+ String address, bool active, int? lastTxBlockTime
 });
 
 
@@ -260,11 +264,12 @@ class __$ApiActiveAddressCopyWithImpl<$Res>
 
 /// Create a copy of ApiActiveAddress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? address = null,Object? active = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? address = null,Object? active = null,Object? lastTxBlockTime = freezed,}) {
   return _then(_ApiActiveAddress(
 address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,lastTxBlockTime: freezed == lastTxBlockTime ? _self.lastTxBlockTime : lastTxBlockTime // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -275,7 +280,11 @@ as bool,
 /// @nodoc
 mixin _$ApiTxId {
 
- String get transactionId; int? get blockTime;
+ String get transactionId;// The id projection asks for this by name. Required rather than defaulted
+// because a zero here would be written to the index and never revisited,
+// stranding a real transaction at the bottom of the history; failing the
+// parse instead leaves the address to be retried by the next sync.
+ int get blockTime;
 /// Create a copy of ApiTxId
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -308,7 +317,7 @@ abstract mixin class $ApiTxIdCopyWith<$Res>  {
   factory $ApiTxIdCopyWith(ApiTxId value, $Res Function(ApiTxId) _then) = _$ApiTxIdCopyWithImpl;
 @useResult
 $Res call({
- String transactionId, int? blockTime
+ String transactionId, int blockTime
 });
 
 
@@ -325,11 +334,11 @@ class _$ApiTxIdCopyWithImpl<$Res>
 
 /// Create a copy of ApiTxId
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? transactionId = null,Object? blockTime = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? transactionId = null,Object? blockTime = null,}) {
   return _then(_self.copyWith(
 transactionId: null == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
-as String,blockTime: freezed == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
-as int?,
+as String,blockTime: null == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -411,7 +420,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String transactionId,  int? blockTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String transactionId,  int blockTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ApiTxId() when $default != null:
 return $default(_that.transactionId,_that.blockTime);case _:
@@ -432,7 +441,7 @@ return $default(_that.transactionId,_that.blockTime);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String transactionId,  int? blockTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String transactionId,  int blockTime)  $default,) {final _that = this;
 switch (_that) {
 case _ApiTxId():
 return $default(_that.transactionId,_that.blockTime);}
@@ -449,7 +458,7 @@ return $default(_that.transactionId,_that.blockTime);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String transactionId,  int? blockTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String transactionId,  int blockTime)?  $default,) {final _that = this;
 switch (_that) {
 case _ApiTxId() when $default != null:
 return $default(_that.transactionId,_that.blockTime);case _:
@@ -464,11 +473,15 @@ return $default(_that.transactionId,_that.blockTime);case _:
 
 @JsonSerializable(fieldRename: .snake)
 class _ApiTxId implements ApiTxId {
-  const _ApiTxId({required this.transactionId, this.blockTime});
+  const _ApiTxId({required this.transactionId, required this.blockTime});
   factory _ApiTxId.fromJson(Map<String, dynamic> json) => _$ApiTxIdFromJson(json);
 
 @override final  String transactionId;
-@override final  int? blockTime;
+// The id projection asks for this by name. Required rather than defaulted
+// because a zero here would be written to the index and never revisited,
+// stranding a real transaction at the bottom of the history; failing the
+// parse instead leaves the address to be retried by the next sync.
+@override final  int blockTime;
 
 /// Create a copy of ApiTxId
 /// with the given fields replaced by the non-null parameter values.
@@ -503,7 +516,7 @@ abstract mixin class _$ApiTxIdCopyWith<$Res> implements $ApiTxIdCopyWith<$Res> {
   factory _$ApiTxIdCopyWith(_ApiTxId value, $Res Function(_ApiTxId) _then) = __$ApiTxIdCopyWithImpl;
 @override @useResult
 $Res call({
- String transactionId, int? blockTime
+ String transactionId, int blockTime
 });
 
 
@@ -520,11 +533,11 @@ class __$ApiTxIdCopyWithImpl<$Res>
 
 /// Create a copy of ApiTxId
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? transactionId = null,Object? blockTime = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? transactionId = null,Object? blockTime = null,}) {
   return _then(_ApiTxId(
 transactionId: null == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
-as String,blockTime: freezed == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
-as int?,
+as String,blockTime: null == blockTime ? _self.blockTime : blockTime // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

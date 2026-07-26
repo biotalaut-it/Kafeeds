@@ -19,16 +19,27 @@ sealed class BoxKeys with _$BoxKeys {
 
 @freezed
 sealed class BoxInfo with _$BoxInfo {
+  const BoxInfo._();
+
   const factory BoxInfo({
     required BoxKeys address,
     required BoxKeys balance,
     required BoxKeys utxo,
     required BoxKeys txIndex,
     required BoxKeys tx,
+    BoxKeys? txSync,
   }) = _BoxInfo;
 
   factory BoxInfo.fromJson(Map<String, dynamic> json) =>
       _$BoxInfoFromJson(json);
+
+  BoxKeys get txSyncKeys {
+    final keys = txSync;
+    if (keys == null) {
+      throw StateError('Missing txSync box keys, expected getBoxInfo backfill');
+    }
+    return keys;
+  }
 }
 
 @freezed

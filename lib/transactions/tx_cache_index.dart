@@ -54,6 +54,8 @@ class TxCacheIndex {
   int get length => _indexList.length;
   Iterable<String> get txIds => _indexList.keys.map((index) => index.txId);
 
+  int get newestBlockTime => tryGetAt(0)?.blockTime ?? 0;
+
   Future<void> add(TxIndex txIndex) async {
     if (contains(txIndex.txId)) {
       return;

@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../kaspa/kaspa.dart';
 import '../wallet_address.dart';
 
 part 'address_discovery_types.freezed.dart';
@@ -22,14 +21,14 @@ sealed class ScanIndexes with _$ScanIndexes {
 
 typedef ScanIndexesPair = ({ScanIndexes receive, ScanIndexes change});
 
+typedef AddressCheck = ({Set<String> used, bool apiAnswered});
+
 class DiscoveryResult {
   final Map<int, WalletAddress> addresses;
-  final Set<ApiTxId> txIds;
   final ScanIndexes scanIndexes;
 
   const DiscoveryResult({
     required this.addresses,
-    required this.txIds,
     required this.scanIndexes,
   });
 }
@@ -42,7 +41,6 @@ typedef WalletDiscoveryResult = ({
 extension WalletDiscoveryResultHelper on WalletDiscoveryResult {
   Iterable<WalletAddress> get addresses =>
       receive.addresses.values.followedBy(change.addresses.values);
-  Set<ApiTxId> get txIds => receive.txIds.union(change.txIds);
 
   bool get isEmpty => receive.addresses.isEmpty && change.addresses.isEmpty;
   bool get isNotEmpty => !isEmpty;

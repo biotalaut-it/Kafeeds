@@ -22,6 +22,9 @@ _BoxInfo _$BoxInfoFromJson(Map json) => _BoxInfo(
   utxo: BoxKeys.fromJson(Map<String, dynamic>.from(json['utxo'] as Map)),
   txIndex: BoxKeys.fromJson(Map<String, dynamic>.from(json['txIndex'] as Map)),
   tx: BoxKeys.fromJson(Map<String, dynamic>.from(json['tx'] as Map)),
+  txSync: json['txSync'] == null
+      ? null
+      : BoxKeys.fromJson(Map<String, dynamic>.from(json['txSync'] as Map)),
 );
 
 Map<String, dynamic> _$BoxInfoToJson(_BoxInfo instance) => <String, dynamic>{
@@ -30,6 +33,7 @@ Map<String, dynamic> _$BoxInfoToJson(_BoxInfo instance) => <String, dynamic>{
   'utxo': instance.utxo.toJson(),
   'txIndex': instance.txIndex.toJson(),
   'tx': instance.tx.toJson(),
+  'txSync': ?instance.txSync?.toJson(),
 };
 
 _BoxInfoBundle _$BoxInfoBundleFromJson(Map json) => _BoxInfoBundle(

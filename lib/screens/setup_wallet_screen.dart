@@ -6,6 +6,7 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../intro/intro_providers.dart';
 import '../kaspa/kaspa.dart';
+import '../kaspa/rpc/void_service.dart';
 import '../l10n/l10n.dart';
 import '../wallet/wallet_types.dart';
 import '../wallet_address/address_discovery.dart';
@@ -122,49 +123,64 @@ class SetupWalletScreen extends HookConsumerWidget {
         }
 
         // address discovery
-        final rpc = ref.read(kaspaRpcProvider);
-        final api = ref.read(kaspaApiServiceProvider);
-        final addressGenerator = auth.addressGenerator(network);
-
-        final addressDiscovery = AddressDiscovery(
-          rpc: rpc,
-          api: api,
-          addressGenerator: addressGenerator,
-          addressNameCallback: (type, index) {
-            return type == .receive
-                ? l10n.receiveIndexParam('$index')
-                : l10n.changeIndexParam('$index');
-          },
-        );
+        final nodeConfig = ref.read(kaspaNodeConfigProvider);
+        RpcService rpc;
+        try {
+          rpc = GrpcService.url(
+            nodeConfig.url,
+            tls: nodeConfig.isSecure,
+            timeout: const Duration(seconds: 10),
+          );
+          await rpc.connect();
+        } catch (e) {
+          ref.read(loggerProvider).w('Scanning without a node', error: e);
+          rpc = VoidRpcService();
+        }
 
         WalletDiscoveryResult discovery;
+        try {
+          final api = ref.read(kaspaApiServiceProvider);
+          final addressGenerator = auth.addressGenerator(network);
 
-        if (network == .mainnet && !introData.generated) {
-          message.value = l10n.walletSetupAddressDiscovery;
-          discovery = await addressDiscovery.addressDiscovery(
-            startReceiveIndex: 0,
-            startChangeIndex: 0,
-            onProgress: (type, index) {
-              final name = type == .receive
-                  ? l10n.receiveIndex
-                  : l10n.changeIndex;
-              details.value = '$name $index';
-              return true;
+          final addressDiscovery = AddressDiscovery(
+            rpc: rpc,
+            api: api,
+            addressGenerator: addressGenerator,
+            addressNameCallback: (type, index) => switch (type) {
+              .receive => l10n.receiveIndexParam('$index'),
+              .change => l10n.changeIndexParam('$index'),
             },
           );
 
-          if (discovery.receive.addresses.isEmpty) {
-            discovery = (
-              receive: DiscoveryResult(
-                addresses: {0: addressDiscovery.mainAddress},
-                txIds: {},
-                scanIndexes: discovery.receive.scanIndexes,
-              ),
-              change: discovery.change,
+          if (network == .mainnet && !introData.generated) {
+            message.value = l10n.walletSetupAddressDiscovery;
+            discovery = await addressDiscovery.addressDiscovery(
+              startReceiveIndex: 0,
+              startChangeIndex: 0,
+              onProgress: (type, index) {
+                message.value = switch (type) {
+                  .receive => l10n.scanningReceiveAddresses,
+                  .change => l10n.scanningChangeAddresses,
+                };
+                details.value = l10n.addressesChecked(index);
+                return true;
+              },
             );
+
+            if (discovery.receive.addresses.isEmpty) {
+              discovery = (
+                receive: DiscoveryResult(
+                  addresses: {0: addressDiscovery.mainAddress},
+                  scanIndexes: discovery.receive.scanIndexes,
+                ),
+                change: discovery.change,
+              );
+            }
+          } else {
+            discovery = addressDiscovery.newWalletDiscoveryResult;
           }
-        } else {
-          discovery = addressDiscovery.newWalletDiscoveryResult;
+        } finally {
+          await rpc.disconnect();
         }
 
         final walletRepository = ref.read(walletRepositoryProvider);
@@ -172,14 +188,9 @@ class SetupWalletScreen extends HookConsumerWidget {
 
         final addressBox = ref.read(addressBoxProvider(wallet));
 
-        await addressBox.setAll(Map.fromEntries(
-          discovery.addresses.map(
-            (address) => MapEntry(address.key, address),
-          ),
-        ));
-
-        final txCache = ref.read(txCacheServiceProvider(wallet));
-        await txCache.addWalletTxIds(discovery.txIds);
+        await addressBox.setAll({
+          for (final address in discovery.addresses) address.key: address,
+        });
 
         await walletRepository.closeWalletBoxes(wallet, networkId: networkId);
 

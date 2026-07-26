@@ -1,15 +1,35 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:logger/logger.dart';
 
 import '../kaspa/kaspa.dart';
+import '../util/async_lock.dart';
 import '../util/safe_change_notifier.dart';
 import 'transaction_types.dart';
 import 'tx_cache_service.dart';
+import 'tx_sync/address_tx_sync_store.dart';
+import 'tx_sync/address_tx_syncer.dart';
+import 'tx_sync/tx_sync_types.dart';
 
 class TransactionNotifier extends SafeChangeNotifier {
+  static const kLoadCount = 10;
+
+  static const kBulkLoadCount = ApiService.kMaxTxIdBatch;
+
   final TxCacheService cache;
+  final AddressTxSyncStore syncStore;
+  final int pageSize;
+  final Duration addressGap;
+
+  late final AddressTxSyncer syncer = AddressTxSyncer(
+    cache: cache,
+    store: syncStore,
+    pageSize: pageSize,
+    addressGap: addressGap,
+    onTxsCached: _onTxsCached,
+  );
 
   ApiService get api => cache.api;
   Logger get log => cache.log;
@@ -19,14 +39,36 @@ class TransactionNotifier extends SafeChangeNotifier {
 
   var pendingTxs = IList<Tx>();
 
-  bool _loading = false;
-  bool get loading => _loading;
+  final _loadLock = AsyncLock();
+
+  int _pending = 0;
+  bool get loading => _pending > 0;
+
+  bool _reloadQueued = false;
+  Future<void> _reloading = .value();
+
   String? _lastLoadedTxId;
 
   bool _firstLoad = true;
   bool get firstLoad => _firstLoad;
 
-  TransactionNotifier({required this.cache});
+  TxSyncProgress get syncProgress => syncer.progress;
+
+  TransactionNotifier({
+    required this.cache,
+    required this.syncStore,
+    this.pageSize = AddressTxSyncer.kPageSize,
+    this.addressGap = AddressTxSyncer.kAddressGap,
+  }) {
+    syncer.addListener(notifyListeners);
+  }
+
+  @override
+  void dispose() {
+    syncer.cancel();
+    syncer.disposed = true;
+    super.dispose();
+  }
 
   Future<void> updatePendingTxs(Iterable<Transaction> pendingTxs) async {
     if (pendingTxs.isEmpty) {
@@ -55,9 +97,23 @@ class TransactionNotifier extends SafeChangeNotifier {
     log.d('Adding wallet transaction ${apiTx.transactionId}');
 
     final tx = await cache.addWalletTx(apiTx);
-    loadedTxs = loadedTxs.insert(0, tx);
 
-    notifyListeners();
+    // The balance change this tx is about to cause is already accounted for
+    syncer.markExplained({
+      for (final input in tx.inputData.nonNulls) input.address,
+      for (final output in apiTx.outputs) output.scriptPublicKeyAddress,
+    });
+
+    // Queued with the loads, so a rebuild that read the cache before this was
+    // written cannot land on top of it and drop it again
+    await _run(() async {
+      // A rebuild that read the cache after it was written already has it
+      if (loadedTxs.any((it) => it.id == tx.id)) return;
+
+      loadedTxs = loadedTxs.insert(0, tx);
+
+      notifyListeners();
+    });
   }
 
   Future<void> processAcceptedTxIds(
@@ -84,143 +140,76 @@ class TransactionNotifier extends SafeChangeNotifier {
     await reload();
   }
 
-  Future<void> fetchNewTxsForAddresses(Iterable<String> addresses) async {
-    final apiTxs = <Transaction>[];
-    try {
-      for (final address in addresses) {
-        final txsForAddress = await api.getTxsForAddress(
-          address,
-          pageSize: 20,
-          maxPages: 100,
-          shouldLoadMore: (txs) {
-            return !cache.isWalletTxId(txs.last.transactionId);
-          },
-        );
-        apiTxs.addAll(txsForAddress);
-      }
-    } catch (e) {
-      log.e('Failed to update transactions', error: e);
-    }
-
-    if (apiTxs.isEmpty) {
-      return;
-    }
-
-    try {
-      final newTxs = await cache.cacheWalletTxs(apiTxs);
-
-      loadedTxs = await _loadTxs(count: loadedTxs.length + newTxs.length);
-      _lastLoadedTxId = loadedTxs.lastOrNull?.id;
-
-      notifyListeners();
-    } catch (e) {
-      log.e('Failed to update transactions', error: e);
-    }
-  }
-
-  Future<IList<Tx>> _loadTxs({String? startId, int count = 10}) async {
+  Future<IList<Tx>> _loadTxs({String? startId, int count = kLoadCount}) async {
     final it = await cache.getWalletTxsAfter(txId: startId, count: count);
     final txs = it.toIList();
 
     return txs;
   }
 
-  Future<void> loadMore([int count = 10]) async {
-    if (_loading || !hasMore) {
-      return;
-    }
-    _loading = true;
-    _firstLoad = loadedTxs.isEmpty;
-    try {
+  Future<void> _run(Future<void> Function() action) {
+    _pending += 1;
+    return _loadLock
+        .synchronized(() async {
+          try {
+            await action();
+          } catch (e) {
+            log.e(e);
+          }
+        })
+        .whenComplete(() => _pending -= 1);
+  }
+
+  Future<void> loadMore([int count = kLoadCount]) {
+    return _run(() async {
+      if (!hasMore) return;
+
+      _firstLoad = loadedTxs.isEmpty;
+
       final txs = await _loadTxs(startId: _lastLoadedTxId, count: count);
 
       loadedTxs = loadedTxs.addAll(txs);
       _lastLoadedTxId = txs.lastOrNull?.id ?? _lastLoadedTxId;
 
       notifyListeners();
-    } catch (e) {
-      log.e(e);
-    }
-    _loading = false;
+    });
   }
 
-  Future<void> reload() async {
-    if (_loading) {
-      return;
+  Future<void> _onTxsCached(int newestBlockTime) {
+    final oldestLoaded = loadedTxs.lastOrNull?.apiTx.blockTime;
+    if (oldestLoaded != null && newestBlockTime < oldestLoaded) {
+      return .value();
     }
-    _loading = true;
-    _firstLoad = loadedTxs.isEmpty;
-    try {
-      loadedTxs = await _loadTxs(count: loadedTxs.length);
+
+    return reload();
+  }
+
+  Future<void> reload() {
+    if (_reloadQueued) return _reloading;
+
+    _reloadQueued = true;
+    return _reloading = _run(() async {
+      _reloadQueued = false;
+
+      _firstLoad = loadedTxs.isEmpty;
+
+      loadedTxs = await _loadTxs(count: max(loadedTxs.length, kLoadCount));
       _lastLoadedTxId = loadedTxs.lastOrNull?.id;
 
       notifyListeners();
-    } catch (e) {
-      log.e(e);
-    }
-    _loading = false;
+    });
   }
 
-  Future<IList<String>> refreshWalletTxs({
-    required IMap<String, BigInt> balances,
-    required IList<String> pendingAddresses,
-  }) async {
-    if (_loading) {
-      return IList();
-    }
-    _loading = true;
-
-    final refreshAddresses = <String>{};
-
-    try {
-      final cachedBalances = await cache.getCachedBalances();
-
-      for (final address in pendingAddresses) {
-        final balance = balances[address] ?? .zero;
-        final cached = cachedBalances[address] ?? (.zero, 0);
-
-        if (balance == cached.$1 && (balance != .zero || cached.$2 != 0)) {
-          continue;
-        }
-
-        final txCount = await api.getTxCountForAddress(address);
-        if (txCount != cached.$2) {
-          refreshAddresses.add(address);
-        }
-      }
-
-      if (refreshAddresses.isNotEmpty) {
-        await fetchNewTxsForAddresses(refreshAddresses);
-      }
-    } catch (e) {
-      log.e(e);
-    }
-    _loading = false;
-
-    return refreshAddresses.toIList();
+  Future<IList<String>> refreshWalletTxs(Iterable<String> addresses) async {
+    final active = await syncer.reconcile(addresses, recheck: true);
+    return active.toIList();
   }
 
-  Future<void> checkForMissingTxs(Iterable<String> tdIds) async {
-    if (tdIds.isEmpty) {
-      return;
-    }
+  Future<void> checkForMissingTxs(Iterable<String> txIds) async {
+    if (txIds.isEmpty) return;
 
-    final missingTxs = <String>{};
-    for (final txId in tdIds) {
-      if (!cache.isWalletTxId(txId)) {
-        missingTxs.add(txId);
-      }
-    }
-
-    if (missingTxs.isEmpty) {
-      return;
-    }
-
-    final txs = await api.getTxsWithIds(missingTxs);
-    if (txs.isEmpty) {
-      return;
-    }
-    await cache.cacheWalletTxs(txs);
+    final txs = await cache.cacheMissingWalletTxs(txIds);
+    if (txs.isEmpty) return;
 
     await reload();
   }

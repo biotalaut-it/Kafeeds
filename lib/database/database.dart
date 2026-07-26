@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../contacts/contact.dart';
 import '../kaspa/kaspa.dart';
 import '../transactions/transaction_types.dart';
+import '../transactions/tx_sync/tx_sync_types.dart';
 import '../txnotes/txnotes_types.dart';
 import '../util/vault.dart';
 import '../wallet_address/wallet_address.dart';
@@ -43,6 +44,10 @@ class Database {
     );
     Hive.registerAdapter(
       JsonTypeAdapter(typeId: 6, fromJson: TxIndex.fromJson),
+    );
+    // 7 is reserved for PushSettings on the push branch
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 8, fromJson: AddressTxSync.fromJson),
     );
   }
 

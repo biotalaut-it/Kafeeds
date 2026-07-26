@@ -1,5 +1,4 @@
 import 'package:automatic_animated_list/automatic_animated_list.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -14,6 +13,7 @@ import '../wallet_address/wallet_address_notifier.dart';
 import 'transaction_card.dart';
 import 'transaction_empty_list.dart';
 import 'transaction_types.dart';
+import 'tx_sync_card.dart';
 
 List<TxListItem> _txListItemsFromTxs(
   Iterable<Tx> txs, {
@@ -125,7 +125,14 @@ final _txListItemsProvider = Provider.autoDispose
         utxoNotifier: utxoNotifier,
       );
 
-      return [...pendingItems, ...txItems, .loader(txNotifier.hasMore)];
+      final syncProgress = txNotifier.syncProgress;
+
+      return [
+        if (syncProgress.isSyncing) .syncStatus(syncProgress),
+        ...pendingItems,
+        ...txItems,
+        .loader(txNotifier.hasMore),
+      ];
     });
 
 class TransactionsWidget extends ConsumerWidget {
@@ -164,17 +171,8 @@ class TransactionsWidget extends ConsumerWidget {
       await utxosNotifier.refresh(addresses: addresses);
 
       final addressNotifier = ref.read(addressNotifierProvider);
-      final pendingAddresses = addressNotifier.receiveAddresses
-          .followedBy(addressNotifier.changeAddresses)
-          .where((address) => address.used == false)
-          .map((e) => e.encoded)
-          .toIList();
-
-      final usedAddresses = await txNotifier.refreshWalletTxs(
-        balances: balanceNotifier.balances,
-        pendingAddresses: pendingAddresses,
-      );
-      await addressNotifier.markUsed(usedAddresses);
+      final activeAddresses = await txNotifier.refreshWalletTxs(addresses);
+      await addressNotifier.markUsed(activeAddresses);
     }
 
     void loadMore() {
@@ -202,6 +200,7 @@ class TransactionsWidget extends ConsumerWidget {
                 items: items,
                 itemBuilder: (context, item, animation) {
                   final card = item.when(
+                    syncStatus: (progress) => TxSyncCard(progress: progress),
                     pendingTxItem: (item) => TransactionCard(item: item),
                     txItem: (item) => TransactionCard(item: item),
                     loader: (hasMore) {

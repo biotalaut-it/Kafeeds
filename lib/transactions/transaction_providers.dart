@@ -9,6 +9,8 @@ import '../wallet/wallet_types.dart';
 import 'transaction_notifier.dart';
 import 'transaction_types.dart';
 import 'tx_cache_service.dart';
+import 'tx_sync/address_tx_sync_store.dart';
+import 'tx_sync/tx_sync_types.dart';
 
 // All new transactions from kaspa node
 final _newTransactionProvider = StreamProvider.autoDispose((ref) {
@@ -90,6 +92,22 @@ final _txIndexBoxProvider = Provider.autoDispose
       return db.getIndexedTypedBox<TxIndex>(txIndexBoxKey);
     });
 
+final _txSyncBoxProvider = Provider.autoDispose
+    .family<TypedBox<AddressTxSync>, WalletInfo>((ref, wallet) {
+      final db = ref.watch(dbProvider);
+      final networkId = ref.watch(networkIdProvider);
+      final repository = ref.watch(boxInfoRepositoryProvider);
+      final boxInfo = repository.getBoxInfo(wallet.wid, networkId);
+      final txSyncBoxKey = boxInfo.txSyncKeys.boxKey;
+      return db.getTypedBox<AddressTxSync>(txSyncBoxKey);
+    });
+
+final addressTxSyncStoreProvider = Provider.autoDispose
+    .family<AddressTxSyncStore, WalletInfo>((ref, wallet) {
+      final txSyncBox = ref.watch(_txSyncBoxProvider(wallet));
+      return AddressTxSyncStore(txSyncBox);
+    });
+
 final txCacheServiceProvider = Provider.autoDispose
     .family<TxCacheService, WalletInfo>((ref, wallet) {
       final txIndexBox = ref.watch(_txIndexBoxProvider(wallet));
@@ -113,19 +131,26 @@ final txCacheServiceProvider = Provider.autoDispose
 
 final txNotifierForWalletProvider = ChangeNotifierProvider.autoDispose
     .family<TransactionNotifier, WalletInfo>((ref, wallet) {
-      final service = ref.watch(txCacheServiceProvider(wallet));
+      final cache = ref.watch(txCacheServiceProvider(wallet));
+      final syncStore = ref.watch(addressTxSyncStoreProvider(wallet));
       final log = ref.watch(loggerProvider);
 
-      final notifier = TransactionNotifier(cache: service);
+      final notifier = TransactionNotifier(
+        cache: cache,
+        syncStore: syncStore,
+      );
       notifier.loadMore();
 
-      // Refresh transactions when balance changes
+      ref.listen(activeAddressesProvider, (_, addresses) {
+        notifier.syncer.reconcile(addresses);
+      }, fireImmediately: true);
+
       ref.listen(lastBalanceChangesProvider, (_, next) {
         if (next.isEmpty) {
           return;
         }
-        notifier.fetchNewTxsForAddresses(next.keys);
-      }, fireImmediately: true);
+        notifier.syncer.scheduleFetch(next.keys);
+      });
 
       // Check for missing transactions in UTXOs
       ref.listen(utxoListProvider, (_, utxos) {
@@ -170,6 +195,7 @@ final txNotifierForWalletProvider = ChangeNotifierProvider.autoDispose
       });
 
       ref.onDispose(() {
+        notifier.syncer.cancel();
         notifier.disposed = true;
       });
 

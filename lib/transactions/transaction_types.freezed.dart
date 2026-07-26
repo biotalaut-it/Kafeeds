@@ -1126,10 +1126,11 @@ extension TxListItemPatterns on TxListItem {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _TxListItemPendingTxItem value)?  pendingTxItem,TResult Function( _TxListItemTxItem value)?  txItem,TResult Function( _TxListItemLoader value)?  loader,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _TxListItemSyncStatus value)?  syncStatus,TResult Function( _TxListItemPendingTxItem value)?  pendingTxItem,TResult Function( _TxListItemTxItem value)?  txItem,TResult Function( _TxListItemLoader value)?  loader,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _TxListItemPendingTxItem() when pendingTxItem != null:
+case _TxListItemSyncStatus() when syncStatus != null:
+return syncStatus(_that);case _TxListItemPendingTxItem() when pendingTxItem != null:
 return pendingTxItem(_that);case _TxListItemTxItem() when txItem != null:
 return txItem(_that);case _TxListItemLoader() when loader != null:
 return loader(_that);case _:
@@ -1150,10 +1151,11 @@ return loader(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _TxListItemPendingTxItem value)  pendingTxItem,required TResult Function( _TxListItemTxItem value)  txItem,required TResult Function( _TxListItemLoader value)  loader,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _TxListItemSyncStatus value)  syncStatus,required TResult Function( _TxListItemPendingTxItem value)  pendingTxItem,required TResult Function( _TxListItemTxItem value)  txItem,required TResult Function( _TxListItemLoader value)  loader,}){
 final _that = this;
 switch (_that) {
-case _TxListItemPendingTxItem():
+case _TxListItemSyncStatus():
+return syncStatus(_that);case _TxListItemPendingTxItem():
 return pendingTxItem(_that);case _TxListItemTxItem():
 return txItem(_that);case _TxListItemLoader():
 return loader(_that);}
@@ -1170,10 +1172,11 @@ return loader(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _TxListItemPendingTxItem value)?  pendingTxItem,TResult? Function( _TxListItemTxItem value)?  txItem,TResult? Function( _TxListItemLoader value)?  loader,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _TxListItemSyncStatus value)?  syncStatus,TResult? Function( _TxListItemPendingTxItem value)?  pendingTxItem,TResult? Function( _TxListItemTxItem value)?  txItem,TResult? Function( _TxListItemLoader value)?  loader,}){
 final _that = this;
 switch (_that) {
-case _TxListItemPendingTxItem() when pendingTxItem != null:
+case _TxListItemSyncStatus() when syncStatus != null:
+return syncStatus(_that);case _TxListItemPendingTxItem() when pendingTxItem != null:
 return pendingTxItem(_that);case _TxListItemTxItem() when txItem != null:
 return txItem(_that);case _TxListItemLoader() when loader != null:
 return loader(_that);case _:
@@ -1193,9 +1196,10 @@ return loader(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( TxItem tx)?  pendingTxItem,TResult Function( TxItem tx)?  txItem,TResult Function( bool hasMore)?  loader,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( TxSyncProgress progress)?  syncStatus,TResult Function( TxItem tx)?  pendingTxItem,TResult Function( TxItem tx)?  txItem,TResult Function( bool hasMore)?  loader,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _TxListItemPendingTxItem() when pendingTxItem != null:
+case _TxListItemSyncStatus() when syncStatus != null:
+return syncStatus(_that.progress);case _TxListItemPendingTxItem() when pendingTxItem != null:
 return pendingTxItem(_that.tx);case _TxListItemTxItem() when txItem != null:
 return txItem(_that.tx);case _TxListItemLoader() when loader != null:
 return loader(_that.hasMore);case _:
@@ -1216,9 +1220,10 @@ return loader(_that.hasMore);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( TxItem tx)  pendingTxItem,required TResult Function( TxItem tx)  txItem,required TResult Function( bool hasMore)  loader,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( TxSyncProgress progress)  syncStatus,required TResult Function( TxItem tx)  pendingTxItem,required TResult Function( TxItem tx)  txItem,required TResult Function( bool hasMore)  loader,}) {final _that = this;
 switch (_that) {
-case _TxListItemPendingTxItem():
+case _TxListItemSyncStatus():
+return syncStatus(_that.progress);case _TxListItemPendingTxItem():
 return pendingTxItem(_that.tx);case _TxListItemTxItem():
 return txItem(_that.tx);case _TxListItemLoader():
 return loader(_that.hasMore);}
@@ -1235,9 +1240,10 @@ return loader(_that.hasMore);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( TxItem tx)?  pendingTxItem,TResult? Function( TxItem tx)?  txItem,TResult? Function( bool hasMore)?  loader,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( TxSyncProgress progress)?  syncStatus,TResult? Function( TxItem tx)?  pendingTxItem,TResult? Function( TxItem tx)?  txItem,TResult? Function( bool hasMore)?  loader,}) {final _that = this;
 switch (_that) {
-case _TxListItemPendingTxItem() when pendingTxItem != null:
+case _TxListItemSyncStatus() when syncStatus != null:
+return syncStatus(_that.progress);case _TxListItemPendingTxItem() when pendingTxItem != null:
 return pendingTxItem(_that.tx);case _TxListItemTxItem() when txItem != null:
 return txItem(_that.tx);case _TxListItemLoader() when loader != null:
 return loader(_that.hasMore);case _:
@@ -1246,6 +1252,81 @@ return loader(_that.hasMore);case _:
 }
 }
 
+}
+
+/// @nodoc
+
+
+class _TxListItemSyncStatus extends TxListItem {
+   _TxListItemSyncStatus(this.progress): super._();
+  
+
+ final  TxSyncProgress progress;
+
+/// Create a copy of TxListItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TxListItemSyncStatusCopyWith<_TxListItemSyncStatus> get copyWith => __$TxListItemSyncStatusCopyWithImpl<_TxListItemSyncStatus>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TxListItemSyncStatus&&(identical(other.progress, progress) || other.progress == progress));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,progress);
+
+@override
+String toString() {
+  return 'TxListItem.syncStatus(progress: $progress)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$TxListItemSyncStatusCopyWith<$Res> implements $TxListItemCopyWith<$Res> {
+  factory _$TxListItemSyncStatusCopyWith(_TxListItemSyncStatus value, $Res Function(_TxListItemSyncStatus) _then) = __$TxListItemSyncStatusCopyWithImpl;
+@useResult
+$Res call({
+ TxSyncProgress progress
+});
+
+
+$TxSyncProgressCopyWith<$Res> get progress;
+
+}
+/// @nodoc
+class __$TxListItemSyncStatusCopyWithImpl<$Res>
+    implements _$TxListItemSyncStatusCopyWith<$Res> {
+  __$TxListItemSyncStatusCopyWithImpl(this._self, this._then);
+
+  final _TxListItemSyncStatus _self;
+  final $Res Function(_TxListItemSyncStatus) _then;
+
+/// Create a copy of TxListItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? progress = null,}) {
+  return _then(_TxListItemSyncStatus(
+null == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
+as TxSyncProgress,
+  ));
+}
+
+/// Create a copy of TxListItem
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TxSyncProgressCopyWith<$Res> get progress {
+  
+  return $TxSyncProgressCopyWith<$Res>(_self.progress, (value) {
+    return _then(_self.copyWith(progress: value));
+  });
+}
 }
 
 /// @nodoc

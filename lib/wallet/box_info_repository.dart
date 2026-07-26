@@ -5,37 +5,30 @@ import '../kaspa/kaspa.dart';
 import '../settings/settings_repository.dart';
 import '../wallet/wallet_types.dart';
 
+BoxKeys _genBoxKeys(String name, {
+  required String wid,
+  required String networkId,
+}) {
+  return BoxKeys(
+    boxKey: hash('$name#KaspaNetwork.$networkId#$wid'),
+    encryptionKey: Database.generateSecureKey(),
+  );
+}
+
 BoxInfo _genBoxInfo({
   required String wid,
   required String networkId,
 }) {
-  final addressBoxKey = hash('addressBoxKey#KaspaNetwork.$networkId#$wid');
-  final balanceBoxKey = hash('balanceBoxKey#KaspaNetwork.$networkId#$wid');
-  final utxoBoxKey = hash('utxoBoxKey#KaspaNetwork.$networkId#$wid');
-  final txIndexBoxKey = hash('txIndexBoxKey#KaspaNetwork.$networkId#$wid');
-  final txBoxKey = hash('txBoxKey#KaspaNetwork.$networkId#$wid');
+  BoxKeys keysFor(String name) =>
+      _genBoxKeys(name, wid: wid, networkId: networkId);
 
   return BoxInfo(
-    address: BoxKeys(
-      boxKey: addressBoxKey,
-      encryptionKey: Database.generateSecureKey(),
-    ),
-    balance: BoxKeys(
-      boxKey: balanceBoxKey,
-      encryptionKey: Database.generateSecureKey(),
-    ),
-    utxo: BoxKeys(
-      boxKey: utxoBoxKey,
-      encryptionKey: Database.generateSecureKey(),
-    ),
-    txIndex: BoxKeys(
-      boxKey: txIndexBoxKey,
-      encryptionKey: Database.generateSecureKey(),
-    ),
-    tx: BoxKeys(
-      boxKey: txBoxKey,
-      encryptionKey: Database.generateSecureKey(),
-    ),
+    address: keysFor('addressBoxKey'),
+    balance: keysFor('balanceBoxKey'),
+    utxo: keysFor('utxoBoxKey'),
+    txIndex: keysFor('txIndexBoxKey'),
+    tx: keysFor('txBoxKey'),
+    txSync: keysFor('txSyncBoxKey'),
   );
 }
 
@@ -55,24 +48,43 @@ extension BoxInfoExtension on SettingsRepository {
     return bundle;
   }
 
+  Future<void> setBoxInfoBundle(String wid, BoxInfoBundle bundle) {
+    return box.set(_boxInfoBundleKey(wid), bundle);
+  }
+
   Future<void> removeBoxInfoBundle(String wid) {
     return box.remove(_boxInfoBundleKey(wid));
   }
 
-  BoxInfo getBoxInfo(String wid, String networkId) {
+  (BoxInfo, Future<void>?) _resolveBoxInfo(String wid, String networkId) {
     var bundle = getBoxInfoBundle(wid);
 
     var boxInfo = bundle.byNetworkId[networkId];
     if (boxInfo == null) {
       boxInfo = _genBoxInfo(wid: wid, networkId: networkId);
-
-      bundle = bundle.copyWith(byNetworkId: {
-        ...bundle.byNetworkId,
-        networkId: boxInfo,
-      });
-      box.set(_boxInfoBundleKey(wid), bundle);
+    } else if (boxInfo.txSync == null) {
+      boxInfo = boxInfo.copyWith(
+        txSync: _genBoxKeys('txSyncBoxKey', wid: wid, networkId: networkId),
+      );
+    } else {
+      return (boxInfo, null);
     }
 
+    bundle = bundle.copyWith(byNetworkId: {
+      ...bundle.byNetworkId,
+      networkId: boxInfo,
+    });
+
+    return (boxInfo, setBoxInfoBundle(wid, bundle));
+  }
+
+  BoxInfo getBoxInfo(String wid, String networkId) {
+    return _resolveBoxInfo(wid, networkId).$1;
+  }
+
+  Future<BoxInfo> ensureBoxInfo(String wid, String networkId) async {
+    final (boxInfo, pendingWrite) = _resolveBoxInfo(wid, networkId);
+    await pendingWrite;
     return boxInfo;
   }
 
@@ -90,7 +102,7 @@ extension BoxInfoExtension on SettingsRepository {
             : bundle.byNetworkId,
         wasMigrated: true,
       );
-      await box.set(_boxInfoBundleKey(wallet.wid), bundle);
+      await setBoxInfoBundle(wallet.wid, bundle);
     }
   }
 }
@@ -102,6 +114,9 @@ class BoxInfoRepository {
 
   BoxInfo getBoxInfo(String wid, String networkId) =>
       settings.getBoxInfo(wid, networkId);
+
+  Future<BoxInfo> ensureBoxInfo(String wid, String networkId) =>
+      settings.ensureBoxInfo(wid, networkId);
 
   BoxInfoBundle getBoxInfoBundle(String wid) => settings.getBoxInfoBundle(wid);
 

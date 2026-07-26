@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:logger/logger.dart';
 
 import '../database/boxes.dart';
 import '../kaspa/kaspa.dart';
+import '../util/async_lock.dart';
 import 'transaction_types.dart';
 import 'tx_cache_index.dart';
 
@@ -18,10 +18,16 @@ class TxCacheService {
   // A cache of transactions that are currently loaded in memory
   final memCache = <String, Transaction>{};
 
+  final _lock = AsyncLock();
+
+  final _fetchingTxIds = <String>{};
+
   late ApiService api;
   final Logger log;
 
   int get txCount => _txIndex.length;
+
+  int get newestIndexedBlockTime => _txIndex.newestBlockTime;
 
   TxCacheService({
     required IndexedTypedBox<TxIndex> txIndexBox,
@@ -107,7 +113,11 @@ class TxCacheService {
     return txs;
   }
 
-  Future<List<Tx>> cacheWalletTxs(Iterable<Transaction> apiTxs) async {
+  Future<List<Tx>> cacheWalletTxs(Iterable<Transaction> apiTxs) {
+    return _lock.synchronized(() => _cacheWalletTxs(apiTxs));
+  }
+
+  Future<List<Tx>> _cacheWalletTxs(Iterable<Transaction> apiTxs) async {
     memCache.addEntries(apiTxs.map((e) => MapEntry(e.transactionId, e)));
 
     final txs = (await txsForApiTxs(apiTxs)).toList();
@@ -128,10 +138,32 @@ class TxCacheService {
     return txs;
   }
 
-  Future<void> addWalletTxIds(Iterable<ApiTxId> apiTxIds) async {
-    await _txIndex.addAll(
-      apiTxIds.map(
-        (e) => TxIndex(txId: e.transactionId, blockTime: e.blockTime ?? 0),
+  Future<List<Tx>> cacheMissingWalletTxs(Iterable<String> txIds) async {
+    final missing = <String>{};
+    for (final txId in txIds) {
+      if (_txIndex.contains(txId)) continue;
+      if (_fetchingTxIds.contains(txId)) continue;
+      missing.add(txId);
+    }
+
+    if (missing.isEmpty) return const [];
+
+    _fetchingTxIds.addAll(missing);
+    try {
+      final txs = await api.getTxsWithIds(missing);
+      if (txs.isEmpty) return const [];
+      return await cacheWalletTxs(txs);
+    } finally {
+      _fetchingTxIds.removeAll(missing);
+    }
+  }
+
+  Future<void> addWalletTxIds(Iterable<ApiTxId> apiTxIds) {
+    return _lock.synchronized(
+      () => _txIndex.addAll(
+        apiTxIds.map(
+          (e) => TxIndex(txId: e.transactionId, blockTime: e.blockTime),
+        ),
       ),
     );
   }
@@ -144,7 +176,20 @@ class TxCacheService {
     memCache[apiTx.transactionId] = apiTx;
   }
 
-  Future<Tx> addWalletTx(Transaction apiTx) async {
+  void trimMemCache({int maxSize = 1000}) {
+    final excess = memCache.length - maxSize;
+    if (excess <= 0) {
+      return;
+    }
+    final oldest = memCache.keys.take(excess).toList(growable: false);
+    oldest.forEach(memCache.remove);
+  }
+
+  Future<Tx> addWalletTx(Transaction apiTx) {
+    return _lock.synchronized(() => _addWalletTx(apiTx));
+  }
+
+  Future<Tx> _addWalletTx(Transaction apiTx) async {
     addToMemcache(apiTx);
 
     final txIndex = TxIndex(
@@ -161,7 +206,7 @@ class TxCacheService {
     return tx;
   }
 
-  int get _refreshTimestamp => DateTime.now().toUtc().millisecondsSinceEpoch;
+  int get _refreshTimestamp => DateTime.now().millisecondsSinceEpoch;
 
   bool _needsRefresh(Tx tx) {
     final delta = Duration(seconds: 100).inMilliseconds;
@@ -172,26 +217,37 @@ class TxCacheService {
         (!tx.apiTx.isAccepted || tx.apiTx.isCoinbase);
   }
 
-  Future<Iterable<Tx>> getWalletTxsAfter({String? txId, int count = 10}) async {
+  Future<Iterable<Tx>> getWalletTxsAfter({String? txId, int count = 10}) {
+    return _lock.synchronized(() => _getWalletTxsAfter(txId, count));
+  }
+
+  Future<Iterable<Tx>> _getWalletTxsAfter(String? txId, int count) async {
     final txs = <Tx?>[];
     final missingTxIds = <String, int>{};
     for (final index in _txIndex.indexAfter(txId).take(count)) {
       final tx = await txBox.tryGet(index.txId);
-      if (tx == null || _needsRefresh(tx)) {
+      if ((tx == null || _needsRefresh(tx)) &&
+          !_fetchingTxIds.contains(index.txId)) {
         missingTxIds[index.txId] = txs.length;
       }
       txs.add(tx);
     }
     if (missingTxIds.isNotEmpty) {
-      final missingTxs = await api.getTxsWithIds(missingTxIds.keys);
-      for (final tx in missingTxs) {
-        final index = missingTxIds[tx.transactionId];
-        if (index == null) {
-          log.e('Missing tx index for ${tx.transactionId}');
-          continue;
+      _fetchingTxIds.addAll(missingTxIds.keys);
+      try {
+        final missingTxs = await api.getTxsWithIds(missingTxIds.keys);
+        for (final tx in missingTxs) {
+          final index = missingTxIds[tx.transactionId];
+          if (index == null) {
+            log.e('Missing tx index for ${tx.transactionId}');
+            continue;
+          }
+          txs[index] = await _addWalletTx(tx);
         }
-        txs[index] = await addWalletTx(tx);
+      } finally {
+        _fetchingTxIds.removeAll(missingTxIds.keys);
       }
+      trimMemCache();
     }
 
     return txs.whereType<Tx>();
@@ -215,67 +271,25 @@ class TxCacheService {
     Iterable<String> acceptedTxIds, {
     required String acceptingBlockHash,
     required int acceptingBlockBlueScore,
-  }) async {
-    final walletTxs = <Transaction>[];
-    for (final id in acceptedTxIds) {
-      final tx = await _getApiTxWithId(id);
-      if (tx == null) {
-        continue;
-      }
-      walletTxs.add(tx);
-    }
-
-    for (final tx in walletTxs) {
-      final newTx = tx.copyWith(
-        isAccepted: true,
-        acceptingBlockHash: acceptingBlockHash,
-        acceptingBlockBlueScore: acceptingBlockBlueScore,
-      );
-      await addWalletTx(newTx);
-    }
-  }
-
-  // Returns cached balances and tx count for each address
-  Future<Map<String, (BigInt, int)>> getCachedBalances() async {
-    final balanceMap = <String, (BigInt, int)>{};
-
-    for (final id in _txIndex.txIds) {
-      final tx = await txBox.tryGet(id);
-      if (tx == null || tx.apiTx.isAccepted == false) {
-        continue;
-      }
-
-      for (final output in tx.apiTx.outputs) {
-        balanceMap.update(
-          output.scriptPublicKeyAddress,
-          (value) => (value.$1 + .from(output.amount), value.$2),
-          ifAbsent: () => (.from(output.amount), 0),
-        );
-      }
-      for (final input in tx.inputData) {
-        if (input == null) {
+  }) {
+    return _lock.synchronized(() async {
+      final walletTxs = <Transaction>[];
+      for (final id in acceptedTxIds) {
+        final tx = await _getApiTxWithId(id);
+        if (tx == null) {
           continue;
         }
-        balanceMap.update(
-          input.address,
-          (value) => (value.$1 - .from(input.amount), value.$2),
-          ifAbsent: () => (.from(-input.amount), 0),
-        );
+        walletTxs.add(tx);
       }
 
-      final addresses = Set.of(
-        tx.apiTx.outputs
-            .map((e) => e.scriptPublicKeyAddress)
-            .followedBy(tx.inputData.mapNotNull((e) => e?.address)),
-      );
-      for (final address in addresses) {
-        balanceMap.update(
-          address,
-          (value) => (value.$1, value.$2 + 1),
-          ifAbsent: () => (.zero, 1),
+      for (final tx in walletTxs) {
+        final newTx = tx.copyWith(
+          isAccepted: true,
+          acceptingBlockHash: acceptingBlockHash,
+          acceptingBlockBlueScore: acceptingBlockBlueScore,
         );
+        await _addWalletTx(newTx);
       }
-    }
-    return balanceMap;
+    });
   }
 }

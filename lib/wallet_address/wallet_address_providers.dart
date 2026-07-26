@@ -73,7 +73,7 @@ final addressMonitorProvider = Provider.autoDispose((ref) {
     }
     if (addresses.isNotEmpty) {
       final txNotifier = ref.read(txNotifierProvider);
-      await txNotifier.fetchNewTxsForAddresses(addresses);
+      txNotifier.syncer.scheduleFetch(addresses);
     }
   });
   ref.listen(
@@ -92,7 +92,7 @@ final addressMonitorProvider = Provider.autoDispose((ref) {
     }
     if (addresses.isNotEmpty) {
       final txNotifier = ref.read(txNotifierProvider);
-      await txNotifier.fetchNewTxsForAddresses(addresses);
+      txNotifier.syncer.scheduleFetch(addresses);
     }
   });
 
