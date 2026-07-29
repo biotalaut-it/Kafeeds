@@ -97,9 +97,14 @@ final _txListItemsProvider = Provider.autoDispose
       final txNotifier = ref.watch(txNotifierForWalletProvider(wallet));
       final txFilter = ref.watch(txFilterProvider);
 
+      final loadedIds = txNotifier.loadedTxs.map((tx) => tx.id).toSet();
+      final pendingTxs = txNotifier.pendingTxs.where(
+        (tx) => !loadedIds.contains(tx.id),
+      );
+
       final pendingItems =
           _txListItemsFromTxs(
-                txNotifier.pendingTxs,
+                pendingTxs,
                 txFilter: txFilter,
                 addressNotifier: addressNotifier,
                 utxoNotifier: utxoNotifier,
