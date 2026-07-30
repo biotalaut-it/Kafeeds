@@ -113,14 +113,35 @@ class TxCacheService {
     return txs;
   }
 
+  Future<Transaction> _withCachedAcceptance(Transaction apiTx) async {
+    if (apiTx.isAccepted && apiTx.acceptingBlockBlueScore != null) {
+      return apiTx;
+    }
+    final cached =
+        memCache[apiTx.transactionId] ??
+        (await txBox.tryGet(apiTx.transactionId))?.apiTx;
+    if (cached == null || !cached.isAccepted) {
+      return apiTx;
+    }
+    return apiTx.copyWith(
+      isAccepted: true,
+      acceptingBlockHash: apiTx.acceptingBlockHash ?? cached.acceptingBlockHash,
+      acceptingBlockBlueScore:
+          apiTx.acceptingBlockBlueScore ?? cached.acceptingBlockBlueScore,
+    );
+  }
+
   Future<List<Tx>> cacheWalletTxs(Iterable<Transaction> apiTxs) {
     return _lock.synchronized(() => _cacheWalletTxs(apiTxs));
   }
 
   Future<List<Tx>> _cacheWalletTxs(Iterable<Transaction> apiTxs) async {
-    memCache.addEntries(apiTxs.map((e) => MapEntry(e.transactionId, e)));
+    final freshTxs = [
+      for (final apiTx in apiTxs) await _withCachedAcceptance(apiTx),
+    ];
+    memCache.addEntries(freshTxs.map((e) => MapEntry(e.transactionId, e)));
 
-    final txs = (await txsForApiTxs(apiTxs)).toList();
+    final txs = (await txsForApiTxs(freshTxs)).toList();
 
     final txIndexes = txs.map(
       (tx) => TxIndex(
@@ -189,18 +210,19 @@ class TxCacheService {
     return _lock.synchronized(() => _addWalletTx(apiTx));
   }
 
-  Future<Tx> _addWalletTx(Transaction apiTx) async {
-    addToMemcache(apiTx);
+  Future<Tx> _addWalletTx(Transaction walletTx) async {
+    walletTx = await _withCachedAcceptance(walletTx);
+    addToMemcache(walletTx);
 
     final txIndex = TxIndex(
-      txId: apiTx.transactionId,
-      blockTime: apiTx.blockTime,
+      txId: walletTx.transactionId,
+      blockTime: walletTx.blockTime,
     );
     await _txIndex.add(txIndex);
 
-    await _cacheInputsFor([apiTx]);
+    await _cacheInputsFor([walletTx]);
 
-    final tx = _txForApiTx(apiTx);
+    final tx = _txForApiTx(walletTx);
     await txBox.set(tx.id, tx);
 
     return tx;
@@ -224,7 +246,9 @@ class TxCacheService {
   Future<Iterable<Tx>> _getWalletTxsAfter(String? txId, int count) async {
     final txs = <Tx?>[];
     final missingTxIds = <String, int>{};
-    for (final index in _txIndex.indexAfter(txId).take(count)) {
+
+    final indexes = _txIndex.indexAfter(txId).take(count).toList();
+    for (final index in indexes) {
       final tx = await txBox.tryGet(index.txId);
       if ((tx == null || _needsRefresh(tx)) &&
           !_fetchingTxIds.contains(index.txId)) {
@@ -265,6 +289,29 @@ class TxCacheService {
 
     final remote = await api.getTxWithId(id);
     return remote;
+  }
+
+  Future<void> unacceptTxs(Iterable<String> txIds) {
+    return _lock.synchronized(() async {
+      for (final id in txIds) {
+        final tx = await txBox.tryGet(id);
+        if (tx == null) continue;
+
+        final apiTx = tx.apiTx.copyWith(
+          isAccepted: false,
+          acceptingBlockHash: null,
+          acceptingBlockBlueScore: null,
+        );
+        memCache[id] = apiTx;
+        await txBox.set(
+          id,
+          tx.copyWith(
+            apiTx: apiTx,
+            lastUpdate: _refreshTimestamp,
+          ),
+        );
+      }
+    });
   }
 
   Future<void> updateAcceptedTxs(

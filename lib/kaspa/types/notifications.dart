@@ -10,6 +10,23 @@ sealed class UtxosChanged with _$UtxosChanged {
     required Iterable<Utxo> added,
     required Iterable<Utxo> removed,
   }) = _UtxosChanged;
+
+  static UtxosChanged merge(Iterable<UtxosChanged> changes) {
+    final added = <Outpoint, Utxo>{};
+    final removed = <Outpoint, Utxo>{};
+
+    for (final change in changes) {
+      for (final utxo in change.removed) {
+        added.remove(utxo.outpoint);
+        removed[utxo.outpoint] = utxo;
+      }
+      for (final utxo in change.added) {
+        removed.remove(utxo.outpoint);
+        added[utxo.outpoint] = utxo;
+      }
+    }
+    return UtxosChanged(added: added.values, removed: removed.values);
+  }
 }
 
 @freezed

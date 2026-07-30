@@ -70,74 +70,68 @@ class TransactionNotifier extends SafeChangeNotifier {
     super.dispose();
   }
 
+  var _serial = Future<void>.value();
+  Future<T> _synchronized<T>(Future<T> Function() action) {
+    final result = _serial.then((_) => action());
+    _serial = result.then((_) {}, onError: (_) {});
+    return result;
+  }
+
+  static const _mempoolRetention = Duration(seconds: 10);
+
   Future<void> updatePendingTxs(Iterable<Transaction> pendingTxs) async {
-    if (pendingTxs.isEmpty) {
-      this.pendingTxs = this.pendingTxs.clear();
-    } else {
-      final txs = await cache.txsForApiTxs(pendingTxs);
-      this.pendingTxs = txs.toIList();
-    }
+    final mempoolIds = Set.of(pendingTxs.map((tx) => tx.transactionId));
+    final cutoff =
+        DateTime.now().millisecondsSinceEpoch -
+        _mempoolRetention.inMilliseconds;
+    final kept = this.pendingTxs.where(
+      (tx) =>
+          !mempoolIds.contains(tx.id) &&
+          !cache.isWalletTxId(tx.id) &&
+          tx.lastUpdate > cutoff,
+    );
+
+    final txs = await cache.txsForApiTxs(pendingTxs);
+    this.pendingTxs = txs.followedBy(kept).toIList();
 
     notifyListeners();
   }
 
-  void addToMemcache(Transaction tx) {
-    // Don't cache coinbase transactions
-    if (tx.inputs.isEmpty) {
-      return;
-    }
-    cache.addToMemcache(tx);
-  }
+  Future<void> processAcceptedTxs(Iterable<Transaction> txs) =>
+      _synchronized(() async {
+        try {
+          final cached = <Tx>[];
+          for (final tx in txs) {
+            cached.add(await cache.addWalletTx(tx));
+          }
 
-  Future<void> addWalletTx(Transaction apiTx) async {
-    if (cache.isWalletTxId(apiTx.transactionId)) {
-      return;
-    }
+          syncer.markExplained({
+            for (final tx in cached)
+              for (final input in tx.inputData.nonNulls) input.address,
+            for (final apiTx in txs)
+              for (final output in apiTx.outputs)
+                output.scriptPublicKeyAddress,
+          });
 
-    log.d('Adding wallet transaction ${apiTx.transactionId}');
+          await _run(() async {
+            loadedTxs = await _loadTxs(count: loadedTxs.length + txs.length);
+            _lastLoadedTxId = loadedTxs.lastOrNull?.id;
 
-    final tx = await cache.addWalletTx(apiTx);
+            notifyListeners();
+          });
+        } catch (e) {
+          log.e('Failed to process accepted transactions', error: e);
+        }
+      });
 
-    // The balance change this tx is about to cause is already accounted for
-    syncer.markExplained({
-      for (final input in tx.inputData.nonNulls) input.address,
-      for (final output in apiTx.outputs) output.scriptPublicKeyAddress,
-    });
+  Future<void> processUnacceptedTxs(Iterable<String> txIds) =>
+      _synchronized(() async {
+        await cache.unacceptTxs(txIds);
+        await reload();
+      });
 
-    // Queued with the loads, so a rebuild that read the cache before this was
-    // written cannot land on top of it and drop it again
-    await _run(() async {
-      // A rebuild that read the cache after it was written already has it
-      if (loadedTxs.any((it) => it.id == tx.id)) return;
-
-      loadedTxs = loadedTxs.insert(0, tx);
-
-      notifyListeners();
-    });
-  }
-
-  Future<void> processAcceptedTxIds(
-    Iterable<String> acceptedTxIds, {
-    required String acceptingBlockHash,
-    required RpcService rpc,
-  }) async {
-    final walletIds = acceptedTxIds.where(cache.isWalletTxId);
-    if (walletIds.isEmpty) {
-      return;
-    }
-
-    final block = await rpc.getBlock(
-      acceptingBlockHash,
-      includeTransactions: false,
-    );
-
-    await cache.updateAcceptedTxs(
-      walletIds,
-      acceptingBlockHash: acceptingBlockHash,
-      acceptingBlockBlueScore: block.verboseData?.blueScore ?? 0,
-    );
-
-    await reload();
+  Future<void> fetchNewTxsForAddresses(Iterable<String> addresses) async {
+    syncer.scheduleFetch(addresses);
   }
 
   Future<IList<Tx>> _loadTxs({String? startId, int count = kLoadCount}) async {
@@ -205,12 +199,28 @@ class TransactionNotifier extends SafeChangeNotifier {
     return active.toIList();
   }
 
-  Future<void> checkForMissingTxs(Iterable<String> txIds) async {
-    if (txIds.isEmpty) return;
+  Future<void> checkForMissingTxs(Iterable<String> txIds) =>
+      _synchronized(() async {
+        if (txIds.isEmpty) return;
 
-    final txs = await cache.cacheMissingWalletTxs(txIds);
-    if (txs.isEmpty) return;
+        final unresolved = <String>{};
+        for (final txId in txIds) {
+          if (!cache.isWalletTxId(txId)) continue;
 
-    await reload();
-  }
+          final tx = await cache.txBox.tryGet(txId);
+          if (tx == null || !tx.isAccepted) unresolved.add(txId);
+        }
+
+        final cached = await cache.cacheMissingWalletTxs(txIds);
+
+        var refreshed = const <Tx>[];
+        if (unresolved.isNotEmpty) {
+          final txs = await api.getTxsWithIds(unresolved);
+          if (txs.isNotEmpty) refreshed = await cache.cacheWalletTxs(txs);
+        }
+
+        if (cached.isEmpty && refreshed.isEmpty) return;
+
+        await reload();
+      });
 }

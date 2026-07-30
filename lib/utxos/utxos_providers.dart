@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -27,22 +29,23 @@ final utxosChangedProvider = StreamProvider.autoDispose((ref) {
     } catch (_) {}
   });
 
-  return rpc
-      .notifyUtxosChanged(addresses)
+  return rpc.notifyUtxosChanged(addresses);
+});
+
+final utxosChangedDebouncedProvider = StreamProvider.autoDispose((ref) {
+  final controller = StreamController<UtxosChanged>();
+  ref.listen(utxosChangedProvider, (_, next) {
+    if (next.asData?.value case final message?) {
+      controller.add(message);
+    }
+  });
+
+  ref.onDispose(controller.close);
+
+  return controller.stream
       .debounceBuffer(const Duration(milliseconds: 500))
-      .map((changes) {
-        final added = <Utxo>{};
-        final removed = <Utxo>{};
-
-        for (final change in changes) {
-          added.removeAll(change.removed);
-          added.addAll(change.added);
-
-          removed.removeAll(change.added);
-          removed.addAll(change.removed);
-        }
-        return UtxosChanged(added: added, removed: removed);
-      });
+      .map(UtxosChanged.merge)
+      .where((merged) => merged.added.isNotEmpty || merged.removed.isNotEmpty);
 });
 
 final utxoNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
@@ -64,7 +67,7 @@ final utxoNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
     },
   );
 
-  ref.listen(utxosChangedProvider, (_, next) {
+  ref.listen(utxosChangedDebouncedProvider, (_, next) {
     if (next.asData?.value case final message?) {
       final addresses = Set.of(
         message.removed.followedBy(message.added).map((utxo) => utxo.address),

@@ -304,7 +304,7 @@ void main() {
       ]);
 
       final reloading = notifier.reload();
-      final adding = notifier.addWalletTx(arrived.single);
+      final adding = notifier.processAcceptedTxs([arrived.single]);
       await Future.wait([reloading, adding]);
 
       final ids = notifier.loadedTxs.map((tx) => tx.id).toList();
@@ -361,7 +361,7 @@ void main() {
 
     api.history[kAddressA]!.insert(0, 600);
     final arrived = await api.service.getTxsWithIds([txId(kAddressA, 600)]);
-    await notifier.addWalletTx(arrived.single);
+    await notifier.processAcceptedTxs([arrived.single]);
     notifier.syncer.scheduleFetch([kAddressA]);
     await notifier.syncer.drain();
 
@@ -380,7 +380,7 @@ void main() {
     final notifier = notifierFor(api);
 
     final arrived = await api.service.getTxsWithIds([txId(kAddressA, 500)]);
-    await notifier.addWalletTx(arrived.single);
+    await notifier.processAcceptedTxs([arrived.single]);
     notifier.syncer.scheduleFetch([kAddressA]);
     await notifier.syncer.drain();
 

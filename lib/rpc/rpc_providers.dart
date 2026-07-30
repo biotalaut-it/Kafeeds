@@ -22,7 +22,7 @@ final pendingTxsProvider = FutureProvider.autoDispose((ref) async {
   final rpc = ref.watch(kaspaRpcProvider);
   final addresses = ref.watch(activeAddressesProvider);
   // refresh when utxos change
-  ref.watch(utxosChangedProvider);
+  ref.watch(utxosChangedDebouncedProvider);
 
   final pendingTxs = await rpc.getMempoolEntriesByAddresses(
     addresses,

@@ -55,7 +55,7 @@ final balanceNotifierProvider = ChangeNotifierProvider.autoDispose((ref) {
     },
   );
 
-  ref.listen(utxosChangedProvider, (_, next) async {
+  ref.listen(utxosChangedDebouncedProvider, (_, next) async {
     if (next.asData?.value case final message?) {
       final addresses = Set.of(message.removed
           .followedBy(message.added)

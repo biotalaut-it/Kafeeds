@@ -68,6 +68,7 @@ class SendConfirmSheet extends HookConsumerWidget {
 
         if (!context.mounted) return;
 
+        ref.read(txMonitorProvider).watch(txId);
         ref.invalidate(pendingTxsProvider);
 
         if (tx.note case final txNote?) {

@@ -1,64 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
 import '../database/boxes.dart';
-import '../kaspa/kaspa.dart';
 import '../wallet/wallet_types.dart';
 import 'transaction_notifier.dart';
 import 'transaction_types.dart';
 import 'tx_cache_service.dart';
+import 'tx_monitor.dart';
 import 'tx_sync/address_tx_sync_store.dart';
 import 'tx_sync/tx_sync_types.dart';
 
-// All new transactions from kaspa node
-final _newTransactionProvider = StreamProvider.autoDispose((ref) {
-  final rpc = ref.watch(kaspaRpcProvider);
-
-  final newBlock = rpc.notifyBlockAdded();
-
-  ref.onDispose(() async {
-    try {
-      await rpc.stopNotifyingBlockAdded();
-    } catch (_) {}
-  });
-
-  return newBlock.expand((block) => block.transactions);
-});
-
-// New transactions associated with this wallet
-final _newWalletTransactionProvider = StreamProvider.autoDispose((ref) {
-  final controller = StreamController<Transaction>();
-  ref.listen(_newTransactionProvider, (_, next) {
-    final result = next.whenOrNull(
-      data: (tx) {
-        final addressNotifier = ref.read(addressNotifierProvider);
-        final utxosNotifier = ref.read(utxoNotifierProvider);
-
-        final isWalletTx =
-            tx.outputs.any((output) {
-              final address = output.scriptPublicKeyAddress;
-              return addressNotifier.containsAddress(address);
-            }) ||
-            tx.inputs.any((input) {
-              return utxosNotifier.isWalletOutpoint(input.previousOutpoint);
-            });
-        return isWalletTx ? tx : null;
-      },
-    );
-
-    if (result != null) {
-      controller.add(result);
-    }
-  });
-
-  ref.onDispose(controller.close);
-
-  return controller.stream;
-});
-
-final _acceptedTransactionIdsProvider = StreamProvider.autoDispose((ref) {
+final _virtualChainChangedProvider = StreamProvider.autoDispose((ref) {
   final rpc = ref.watch(kaspaRpcProvider);
 
   ref.onDispose(() async {
@@ -67,9 +19,7 @@ final _acceptedTransactionIdsProvider = StreamProvider.autoDispose((ref) {
     } catch (_) {}
   });
 
-  return rpc
-      .notifyVirtualChainChanged(includeAcceptedTransactionIds: true)
-      .expand((message) => message.acceptedTransactionIds);
+  return rpc.notifyVirtualChainChanged(includeAcceptedTransactionIds: true);
 });
 
 final _txBoxProvider = Provider.autoDispose
@@ -133,7 +83,6 @@ final txNotifierForWalletProvider = ChangeNotifierProvider.autoDispose
     .family<TransactionNotifier, WalletInfo>((ref, wallet) {
       final cache = ref.watch(txCacheServiceProvider(wallet));
       final syncStore = ref.watch(addressTxSyncStoreProvider(wallet));
-      final log = ref.watch(loggerProvider);
 
       final notifier = TransactionNotifier(
         cache: cache,
@@ -159,34 +108,6 @@ final txNotifierForWalletProvider = ChangeNotifierProvider.autoDispose
         );
       }, fireImmediately: true);
 
-      // Cache new transactions
-      ref.listen(_newTransactionProvider, (_, next) {
-        if (next.asData?.value case final tx?) {
-          notifier.addToMemcache(tx);
-        }
-      });
-
-      // Add new wallet transactions
-      ref.listen(_newWalletTransactionProvider, (_, next) {
-        if (next.asData?.value case final tx?) {
-          log.d('New wallet tx: $tx');
-          notifier.addWalletTx(tx);
-        }
-      });
-
-      // Update transaction status
-      ref.listen(_acceptedTransactionIdsProvider, (_, next) {
-        if (next.asData?.value case final ids?) {
-          final rpc = ref.read(kaspaRpcProvider);
-
-          notifier.processAcceptedTxIds(
-            ids.acceptedTransactionIds,
-            acceptingBlockHash: ids.acceptingBlockHash,
-            rpc: rpc,
-          );
-        }
-      });
-
       // Update pending transactions
       ref.listen(pendingTxsProvider, (_, next) {
         if (next.asData?.value case final pendingTxs?) {
@@ -201,6 +122,75 @@ final txNotifierForWalletProvider = ChangeNotifierProvider.autoDispose
 
       return notifier;
     });
+
+final txMonitorForWalletProvider = Provider.autoDispose
+    .family<TxMonitor, WalletInfo>((ref, wallet) {
+      final rpc = ref.watch(kaspaRpcProvider);
+      final notifier = ref.watch(txNotifierForWalletProvider(wallet).notifier);
+      final cache = notifier.cache;
+
+      final log = ref.watch(loggerProvider);
+      final monitor = TxMonitor(
+        rpc: rpc,
+        log: log,
+        isWalletTxId: cache.isWalletTxId,
+        isWalletTx: (tx) {
+          final addressNotifier = ref.read(addressNotifierProvider);
+          final utxosNotifier = ref.read(utxoNotifierProvider);
+          return tx.outputs.any((output) {
+                return addressNotifier.containsAddress(
+                  output.scriptPublicKeyAddress,
+                );
+              }) ||
+              tx.inputs.any((input) {
+                return utxosNotifier.isWalletOutpoint(input.previousOutpoint);
+              });
+        },
+        onTxsAccepted: notifier.processAcceptedTxs,
+        onTxsUnaccepted: notifier.processUnacceptedTxs,
+        onWatchesExpired: notifier.checkForMissingTxs,
+        onOutpointsExpired: notifier.fetchNewTxsForAddresses,
+      );
+
+      ref.listen(_virtualChainChangedProvider, (_, next) {
+        if (next.asData?.value case final message?) {
+          monitor.onVirtualChainChanged(message);
+        }
+      });
+
+      ref.listen(utxosChangedProvider, (_, next) {
+        if (next.asData?.value case final message?) {
+          final added = message.added.toList();
+          final removed = message.removed.toList();
+          for (final utxo in added) {
+            monitor.watch(utxo.outpoint.transactionId);
+          }
+
+          final addedOutpoints = added.map((u) => u.outpoint).toSet();
+          final reallyRemoved = removed
+              .where((utxo) => !addedOutpoints.contains(utxo.outpoint))
+              .toList();
+          monitor.watchSpentUtxos(reallyRemoved);
+        }
+      });
+
+      ref.listen(pendingTxsProvider, (_, next) {
+        if (next.asData?.value case final txs?) {
+          for (final tx in txs) {
+            monitor.watch(tx.transactionId);
+          }
+        }
+      });
+
+      ref.onDispose(monitor.dispose);
+
+      return monitor;
+    });
+
+final txMonitorProvider = Provider.autoDispose((ref) {
+  final wallet = ref.watch(walletProvider);
+  return ref.watch(txMonitorForWalletProvider(wallet));
+});
 
 final txNotifierProvider = Provider.autoDispose((ref) {
   final wallet = ref.watch(walletProvider);

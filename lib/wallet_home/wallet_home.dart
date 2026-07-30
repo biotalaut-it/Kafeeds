@@ -28,6 +28,7 @@ final _walletWatcherProvider = Provider.autoDispose((ref) {
 
   ref.watch(addressMonitorProvider);
   ref.watch(pushSyncProvider);
+  ref.watch(txMonitorProvider);
 });
 
 class WalletHome extends HookConsumerWidget {

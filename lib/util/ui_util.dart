@@ -70,7 +70,8 @@ abstract class UIUtil {
           l10n.sendTxProgressDescription,
         );
 
-        await walletService.sendTransaction(cancelTx.tx, rbf: true);
+        final txId = await walletService.sendTransaction(cancelTx.tx, rbf: true);
+        ref.read(txMonitorProvider).watch(txId);
         ref.invalidate(pendingTxsProvider);
 
         UIUtil.showSnackbar(l10n.cancelTransactionSuccess);

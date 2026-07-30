@@ -84,11 +84,20 @@ sealed class TxItem with _$TxItem {
             (identical(other.tx.id, tx.id) || other.tx.id == tx.id) &&
             (identical(other.outputIndex, outputIndex) ||
                 other.outputIndex == outputIndex) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.type, type) || other.type == type) &&
+            other.pending == pending &&
+            other.tx.isAccepted == tx.isAccepted);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, tx, outputIndex, type);
+  int get hashCode => Object.hash(
+    runtimeType,
+    tx.id,
+    outputIndex,
+    type,
+    pending,
+    tx.isAccepted,
+  );
 }
 
 @freezed
