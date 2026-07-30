@@ -13,3 +13,4 @@ export 'types/notifications.dart';
 export 'types/raw_transaction.dart';
 export 'types/token_info.dart';
 export 'types/transaction.dart';
+export 'types/vspc.dart';

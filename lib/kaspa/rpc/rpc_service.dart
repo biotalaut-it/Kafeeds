@@ -12,6 +12,13 @@ abstract class RpcService {
   /// Blocks
   Future<Block> getBlock(String hash, {bool includeTransactions});
 
+  /// Virtual Chain From Block (vspc v2)
+  Future<VirtualChainSegment> getVirtualChainFromBlockV2(
+    String startHash, {
+    DataVerbosity verbosity,
+    int? minConfirmationCount,
+  });
+
   /// Balances
   Future<Iterable<AddressBalance>> getBalancesByAddresses(
     Iterable<String> addresses,

@@ -91,6 +91,35 @@ class GrpcService implements RpcService {
     return decodeBlock(message.block);
   }
 
+  /// Virtual Chain From Block (vspc v2)
+  @override
+  Future<VirtualChainSegment> getVirtualChainFromBlockV2(
+    String startHash, {
+    DataVerbosity verbosity = .high,
+    int? minConfirmationCount,
+  }) async {
+    final request = KaspadRequest(
+      id: _generateId(),
+      getVirtualChainFromBlockV2Request:
+          GetVirtualChainFromBlockV2RequestMessage(
+            startHash: startHash,
+            dataVerbosityLevel: encodeDataVerbosity(verbosity),
+            minConfirmationCount: minConfirmationCount != null
+                ? Int64(minConfirmationCount)
+                : null,
+          ),
+    );
+
+    final response = await client.call(request);
+    final message = response.getVirtualChainFromBlockV2Response;
+
+    if (message.hasError()) {
+      throw RpcException(message.error);
+    }
+
+    return decodeVirtualChainSegment(message);
+  }
+
   /// Balances
   @override
   Future<Iterable<AddressBalance>> getBalancesByAddresses(

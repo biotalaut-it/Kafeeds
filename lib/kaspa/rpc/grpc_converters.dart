@@ -44,6 +44,101 @@ VirtualChainChanged decodeVirtualChainChanged(
   );
 }
 
+RpcDataVerbosityLevel encodeDataVerbosity(DataVerbosity verbosity) =>
+    switch (verbosity) {
+      .none => .NONE,
+      .low => .LOW,
+      .high => .HIGH,
+      .full => .FULL,
+    };
+
+Transaction decodeOptionalTransaction(
+  RpcOptionalTransaction tx, {
+  required String acceptingBlockHash,
+  required int acceptingBlockBlueScore,
+  required int fallbackBlockTime,
+}) {
+  final txId = tx.verboseData.transactionId;
+  final blockTime = tx.verboseData.hasBlockTime()
+      ? tx.verboseData.blockTime.toInt()
+      : fallbackBlockTime;
+
+  return Transaction(
+    subnetworkId: tx.hasSubnetworkId() ? tx.subnetworkId : null,
+    transactionId: txId,
+    blockTime: blockTime,
+    isAccepted: true,
+    acceptingBlockHash: acceptingBlockHash,
+    acceptingBlockBlueScore: acceptingBlockBlueScore,
+    inputs: tx.inputs.mapIndexed((index, e) {
+      final verboseData = e.verboseData;
+      final utxoEntry = verboseData.hasUtxoEntry()
+          ? verboseData.utxoEntry
+          : null;
+      final address = utxoEntry?.verboseData.scriptPublicKeyAddress;
+
+      return TransactionInput(
+        transactionId: txId,
+        index: index,
+        previousOutpointHash: e.previousOutpoint.transactionId,
+        previousOutpointIndex: BigInt.from(e.previousOutpoint.index),
+        signatureScript: e.signatureScript,
+        sigOpCount: e.sigOpCount,
+        previousOutpointAddress: address?.isNotEmpty == true ? address : null,
+        previousOutpointAmount: utxoEntry?.amount.toInt(),
+      );
+    }).toList(),
+    outputs: tx.outputs.mapIndexed((index, e) {
+      return TransactionOutput(
+        transactionId: txId,
+        index: index,
+        amount: e.value.toInt(),
+        scriptPublicKey: e.scriptPublicKey.scriptPublicKey,
+        scriptPublicKeyAddress: e.verboseData.scriptPublicKeyAddress,
+        scriptPublicKeyType: e.verboseData.scriptPublicKeyType,
+      );
+    }).toList(),
+    payload: tx.payload,
+  );
+}
+
+ChainAcceptedTransactions decodeChainBlockAcceptedTransactions(
+  RpcChainBlockAcceptedTransactions rpc,
+) {
+  final header = rpc.chainBlockHeader;
+  final blueScore = header.blueScore.toInt();
+  final timestamp = header.timestamp.toInt();
+
+  return ChainAcceptedTransactions(
+    chainBlockHash: header.hash,
+    blueScore: blueScore,
+    daaScore: header.daaScore.toInt(),
+    timestamp: timestamp,
+    acceptedTransactions: rpc.acceptedTransactions
+        .map(
+          (tx) => decodeOptionalTransaction(
+            tx,
+            acceptingBlockHash: header.hash,
+            acceptingBlockBlueScore: blueScore,
+            fallbackBlockTime: timestamp,
+          ),
+        )
+        .toList(),
+  );
+}
+
+VirtualChainSegment decodeVirtualChainSegment(
+  GetVirtualChainFromBlockV2ResponseMessage message,
+) {
+  return VirtualChainSegment(
+    removedChainBlockHashes: message.removedChainBlockHashes,
+    addedChainBlockHashes: message.addedChainBlockHashes,
+    chainBlocks: message.chainBlockAcceptedTransactions
+        .map(decodeChainBlockAcceptedTransactions)
+        .toList(),
+  );
+}
+
 BlockHeader decodeBlockHeader(RpcBlockHeader header, String hash) {
   return BlockHeader(
     version: header.version,
