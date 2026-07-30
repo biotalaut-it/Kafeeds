@@ -48,6 +48,7 @@ class WalletService {
       ),
       tx: tx,
       utxos: txBuilder.selectedUtxos,
+      userSelected: selectedUtxos?.isNotEmpty ?? false,
       amount: amount,
       change: .raw(txBuilder.change),
       changeAddress: txBuilder.changeAddress,

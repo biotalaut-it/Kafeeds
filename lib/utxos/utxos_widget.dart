@@ -6,12 +6,7 @@ import 'utxo_card.dart';
 import 'utxos_empty_card.dart';
 
 class UtxosWidget extends ConsumerWidget {
-  final bool selectionMode;
-
-  const UtxosWidget({
-    super.key,
-    this.selectionMode = false,
-  });
+  const UtxosWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,7 +42,7 @@ class UtxosWidget extends ConsumerWidget {
               itemCount: utxoList.length,
               itemBuilder: (context, index) {
                 final item = utxoList[index];
-                return UtxoCard(item: item, selectable: selectionMode);
+                return UtxoCard(item: item);
               },
             ),
     );

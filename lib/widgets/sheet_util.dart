@@ -14,6 +14,7 @@ class Sheets {
     int animationDurationMs = 250,
     bool removeUntilHome = false,
     bool closeOnTap = false,
+    bool fullHeight = false,
     Function? onDisposed,
     Color? backgroundColor,
   }) {
@@ -30,6 +31,7 @@ class Sheets {
       barrier: barrier,
       animationDurationMs: animationDurationMs,
       closeOnTap: closeOnTap,
+      fullHeight: fullHeight,
       onDisposed: onDisposed,
     );
     if (removeUntilHome) {
@@ -111,6 +113,34 @@ class _AppHeightNineSheetLayout extends SingleChildLayoutDelegate {
   }
 }
 
+class _AppFullHeightSheetLayout extends SingleChildLayoutDelegate {
+  _AppFullHeightSheetLayout(this.progress, this.topPadding);
+
+  final double progress;
+  final double topPadding;
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    return BoxConstraints(
+      minWidth: constraints.maxWidth,
+      maxWidth: constraints.maxWidth,
+      minHeight: 0,
+      maxHeight: constraints.maxHeight - topPadding,
+    );
+  }
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    return Offset(0, size.height - childSize.height * progress);
+  }
+
+  @override
+  bool shouldRelayout(_AppFullHeightSheetLayout oldDelegate) {
+    return progress != oldDelegate.progress ||
+        topPadding != oldDelegate.topPadding;
+  }
+}
+
 class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
   _AppHeightNineModalRoute({
     this.builder,
@@ -121,6 +151,7 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
     this.barrier,
     this.animationDurationMs,
     this.closeOnTap = false,
+    this.fullHeight = false,
     this.onDisposed,
   });
 
@@ -130,6 +161,7 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
   final Color? barrier;
   final int? animationDurationMs;
   final bool closeOnTap;
+  final bool fullHeight;
   final Function? onDisposed;
 
   @override
@@ -174,6 +206,9 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
+    // captured before removePadding strips the status bar inset
+    final topPadding = MediaQuery.paddingOf(context).top;
+
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -189,7 +224,12 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
           child: AnimatedBuilder(
             animation: appSheetAnimation,
             builder: (context, child) => CustomSingleChildLayout(
-              delegate: _AppHeightNineSheetLayout(appSheetAnimation.value),
+              delegate: fullHeight
+                  ? _AppFullHeightSheetLayout(
+                      appSheetAnimation.value,
+                      topPadding,
+                    )
+                  : _AppHeightNineSheetLayout(appSheetAnimation.value),
               child: BottomSheet(
                 animationController: _animationController,
                 onClosing: () => appRouter.pop(context),

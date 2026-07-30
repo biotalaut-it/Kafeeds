@@ -11,7 +11,7 @@ import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
-// import '../utxos/utxos_selection_page.dart';
+import '../utxos/utxos_selection_page.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_card.dart';
 import '../widgets/amount_card.dart';
@@ -43,6 +43,8 @@ class SendConfirmSheet extends HookConsumerWidget {
 
     final sendTxState = useState(sendTx);
     final tx = sendTxState.value;
+    // fee floor explicitly chosen by the user in the fee sheet
+    final userMinFee = useState(Amount.zero);
 
     final toAddress = tx.address;
     final amount = tx.amount;
@@ -114,20 +116,41 @@ class SendConfirmSheet extends HookConsumerWidget {
       return balance.raw < amount.raw + fee.raw;
     }
 
-    // Future<void> selectUtxos({required Amount minFee}) async {
-    //   final notifier = ref.read(selectedUtxosProvider.notifier);
-    //   notifier.state = ISet(tx.userSelectedUtxos);
+    void updateTx({required List<Utxo> selectedUtxos, required Amount minFee}) {
+      final spendableUtxos = ref.read(spendableUtxosProvider);
+      final walletService = ref.read(walletServiceProvider);
+      final feeRate = ref.read(feeRateProvider);
 
-    //   final selectedUtxos = await Sheets.showAppHeightNineSheet<List<Utxo>>(
-    //     context: context,
-    //     theme: theme,
-    //     widget: UtxosSelectionPage(tx: tx.copyWith(fee: minFee)),
-    //   );
+      try {
+        sendTxState.value = walletService.createSendTx(
+          toAddress: tx.address,
+          amount: tx.amount,
+          spendableUtxos: spendableUtxos,
+          selectedUtxos: selectedUtxos,
+          feeRate: feeRate,
+          minFee: minFee,
+          changeAddress: tx.changeAddress,
+          payload: tx.payload,
+          note: tx.note,
+        );
+      } catch (_) {
+        UIUtil.showSnackbar(l10n.utxoSelectionHint);
+      }
+    }
 
-    //   if (selectedUtxos != null) {
-    //     updateTx(selectedUtxos: selectedUtxos, minFee: minFee);
-    //   }
-    // }
+    Future<void> selectUtxos() async {
+      final minFee = userMinFee.value;
+      final selectedUtxos = await Sheets.showAppHeightNineSheet<List<Utxo>>(
+        context: context,
+        theme: theme,
+        fullHeight: true,
+        widget: UtxosSelectionPage(tx: tx, minFee: minFee),
+      );
+
+      if (selectedUtxos != null) {
+        updateTx(selectedUtxos: selectedUtxos, minFee: minFee);
+      }
+    }
 
     Future<void> authAndSend() async {
       // Authenticate
@@ -165,6 +188,7 @@ class SendConfirmSheet extends HookConsumerWidget {
 
       if (newTx != null) {
         sendTxState.value = newTx;
+        userMinFee.value = newTx.fee;
       }
     }
 
@@ -205,10 +229,12 @@ class SendConfirmSheet extends HookConsumerWidget {
             children: [
               AmountCard(
                 amount: amount,
-                // rightButton: TextFieldButton(
-                //   icon: Icons.sort,
-                //   onPressed: () => selectUtxos(minFee: tx.fee),
-                // ),
+                rightButton: isCompoundTx || rbf
+                    ? null
+                    : TextFieldButton(
+                        icon: Icons.sort,
+                        onPressed: selectUtxos,
+                      ),
               ),
               // "TO" text
               Container(

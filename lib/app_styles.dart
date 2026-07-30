@@ -793,6 +793,20 @@ class AppStyles {
     );
   }
 
+  ButtonStyle get rowButtonStyle {
+    return TextButton.styleFrom(
+      padding: .zero,
+      shape: const RoundedRectangleBorder(),
+    ).copyWith(
+      overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.focused)) return theme.text15;
+        if (states.contains(WidgetState.hovered)) return theme.text05;
+        if (states.contains(WidgetState.pressed)) return theme.text15;
+        return null;
+      }),
+    );
+  }
+
   ButtonStyle get defaultTextButtonStyle {
     return TextButton.styleFrom(padding: .zero).copyWith(
       overlayColor: .resolveWith<Color?>((Set<WidgetState> states) {

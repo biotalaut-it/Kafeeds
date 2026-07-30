@@ -142,6 +142,7 @@ class FeeSheet extends HookConsumerWidget {
             toAddress: tx.address,
             amount: newAmount,
             spendableUtxos: spendableUtxos,
+            selectedUtxos: tx.userSelectedUtxos,
             feeRate: kMinFeeRate,
             minFee: newFee,
             changeAddress: tx.changeAddress,

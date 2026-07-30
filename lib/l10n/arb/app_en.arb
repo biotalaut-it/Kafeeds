@@ -611,7 +611,19 @@
   "unlockBiometrics": "Authenticate to Unlock Wallet",
   "unlockPin": "Enter PIN to Unlock Wallet",
   "utxoSelectionHint": "Please select more UTXOs",
+  "utxoSelectionMaxInputs": "A transaction can use at most {count} UTXOs",
+  "@utxoSelectionMaxInputs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "utxoSelectionSelectedAmount": "Selected Amount",
+  "utxoSelectionSelectedCount": "Selected UTXOs",
+  "utxoSelectionTargetAmount": "Target Amount",
   "utxoSelectionTitle": "Select UTXOs",
+  "utxoSelectionTotalFee": "Total Fee",
   "utxosUppercase": "UTXOs",
   "viewAddress": "View Address",
   "viewTransaction": "View Transaction",

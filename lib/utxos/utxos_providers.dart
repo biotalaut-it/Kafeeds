@@ -105,4 +105,5 @@ final spendableUtxosProvider = Provider.autoDispose((ref) {
   return spendableUtxos;
 });
 
-final selectedUtxosProvider = StateProvider<ISet<Utxo>>((ref) => ISet());
+final selectedUtxosProvider =
+    StateProvider.autoDispose<ISet<Utxo>>((ref) => ISet());
