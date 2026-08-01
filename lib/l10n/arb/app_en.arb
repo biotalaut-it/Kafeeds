@@ -610,6 +610,15 @@
   "unlock": "Unlock",
   "unlockBiometrics": "Authenticate to Unlock Wallet",
   "unlockPin": "Enter PIN to Unlock Wallet",
+  "utxoCompoundCardDescription": "You have {count} UTXOs — tap to compound.",
+  "@utxoCompoundCardDescription": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "utxoCompoundCardTitle": "Compound recommended",
   "utxoSelectionHint": "Please select more UTXOs",
   "utxoSelectionMaxInputs": "A transaction can use at most {count} UTXOs",
   "@utxoSelectionMaxInputs": {

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_providers.dart';
+import '../kaspa/utils.dart';
 import 'utxo_card.dart';
+import 'utxos_compound_card.dart';
 import 'utxos_empty_card.dart';
 
 class UtxosWidget extends ConsumerWidget {
@@ -13,6 +15,11 @@ class UtxosWidget extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
 
     final utxoList = ref.watch(utxoListProvider);
+    final showCompoundCard = ref.watch(
+      spendableUtxosProvider.select(
+        (utxos) => utxos.length > kMaxInputsPerTransaction,
+      ),
+    );
 
     Future<void> refresh() async {
       ref.read(hapticUtilProvider).success();
@@ -39,8 +46,12 @@ class UtxosWidget extends ConsumerWidget {
           : ListView.builder(
               key: const PageStorageKey('utxo-list'),
               padding: const .only(top: 6, bottom: 28),
-              itemCount: utxoList.length,
+              itemCount: utxoList.length + (showCompoundCard ? 1 : 0),
               itemBuilder: (context, index) {
+                if (showCompoundCard) {
+                  if (index == 0) return const UtxosCompoundCard();
+                  index -= 1;
+                }
                 final item = utxoList[index];
                 return UtxoCard(item: item);
               },
