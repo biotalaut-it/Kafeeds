@@ -122,6 +122,17 @@ class SendConfirmSheet extends HookConsumerWidget {
       final feeRate = ref.read(feeRateProvider);
 
       try {
+        if (isCompoundTx) {
+          sendTxState.value = walletService
+              .createCompoundTx(
+                compoundAddress: tx.changeAddress,
+                utxos: selectedUtxos.isEmpty ? spendableUtxos : selectedUtxos,
+                feeRate: feeRate,
+                minFee: minFee,
+              )
+              .copyWith(userSelected: selectedUtxos.isNotEmpty);
+          return;
+        }
         sendTxState.value = walletService.createSendTx(
           toAddress: tx.address,
           amount: tx.amount,
@@ -229,7 +240,7 @@ class SendConfirmSheet extends HookConsumerWidget {
             children: [
               AmountCard(
                 amount: amount,
-                rightButton: isCompoundTx || rbf
+                rightButton: rbf
                     ? null
                     : TextFieldButton(
                         icon: Icons.sort,

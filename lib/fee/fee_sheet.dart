@@ -94,12 +94,14 @@ class FeeSheet extends HookConsumerWidget {
       SendTx newTx;
       try {
         if (tx.isCompoundTx) {
-          newTx = walletService.createCompoundTx(
-            compoundAddress: tx.changeAddress,
-            utxos: spendableUtxos,
-            feeRate: kMinFeeRate,
-            minFee: newFee,
-          );
+          newTx = walletService
+              .createCompoundTx(
+                compoundAddress: tx.changeAddress,
+                utxos: tx.userSelectedUtxos ?? spendableUtxos,
+                feeRate: kMinFeeRate,
+                minFee: newFee,
+              )
+              .copyWith(userSelected: tx.userSelected);
 
           if (newTx.amount != tx.amount) {
             UIUtil.showSnackbar(l10n.feeCompoundAmountAdjusted);

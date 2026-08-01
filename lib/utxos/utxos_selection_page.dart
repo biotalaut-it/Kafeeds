@@ -29,6 +29,16 @@ final _summaryProvider = Provider.family.autoDispose<SendTx?, _SummaryParams>((
 
   final sendTx = params.tx;
   try {
+    if (sendTx.isCompoundTx) {
+      if (selectedUtxos.length == 1) return null;
+      final utxos = selectedUtxos.isEmpty ? spendableUtxos : selectedUtxos;
+      return walletService.createCompoundTx(
+        compoundAddress: sendTx.changeAddress,
+        utxos: utxos,
+        feeRate: feeRate,
+        minFee: params.minFee,
+      );
+    }
     return walletService.createSendTx(
       toAddress: sendTx.address,
       amount: sendTx.amount,
@@ -115,7 +125,10 @@ class UtxosSelectionSummary extends ConsumerWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              cell(l10n.utxoSelectionTargetAmount, formated(tx.amount)),
+              cell(
+                l10n.utxoSelectionTargetAmount,
+                formated(tx.isCompoundTx ? pendingTx?.amount : tx.amount),
+              ),
               cell(
                 l10n.utxoSelectionSelectedAmount,
                 formated(selectedAmount),
