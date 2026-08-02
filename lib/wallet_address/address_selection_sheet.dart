@@ -19,10 +19,12 @@ import 'wallet_address.dart';
 
 class AddressSelectionSheet extends HookConsumerWidget {
   final AddressType? addressType;
+  final bool showNewAddressButton;
 
   const AddressSelectionSheet({
     super.key,
     this.addressType,
+    this.showNewAddressButton = true,
   });
 
   @override
@@ -136,7 +138,7 @@ class AddressSelectionSheet extends HookConsumerWidget {
             },
             bottomWidget: ActionButtonsWrapper(
               buttons: [
-                if (addressType != .change)
+                if (showNewAddressButton && addressType != .change)
                   PrimaryButton(
                     title: l10n.newAddress,
                     disabled: addingAddress.value,

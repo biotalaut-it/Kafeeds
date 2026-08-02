@@ -103,7 +103,8 @@ class SignMessageSheet extends HookConsumerWidget {
       final selected = await Sheets.showAppHeightNineSheet<WalletAddress>(
         context: context,
         theme: theme,
-        widget: const AddressSelectionSheet(addressType: .receive),
+        fullHeight: true,
+        widget: const AddressSelectionSheet(showNewAddressButton: false),
       );
 
       if (selected == null || !context.mounted) return;
