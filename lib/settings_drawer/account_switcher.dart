@@ -18,6 +18,7 @@ class AccountSwitcher extends ConsumerWidget {
       Sheets.showAppHeightNineSheet(
         context: context,
         theme: theme,
+        fullHeight: true,
         widget: const WalletAddressesSheet(),
       );
     }
