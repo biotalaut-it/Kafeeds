@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import '../app_providers.dart';
-import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../settings/tx_settings.dart';
 import '../utxos/utxos_notifier.dart';
@@ -34,22 +33,17 @@ List<TxListItem> _txListItemsFromTxs(
               (input) => addressNotifier.containsAddress(input.address),
             ) ||
             tx.apiTx.inputs.any(
-              (input) => utxoNotifier.isWalletOutpoint(
-                Outpoint(
-                  transactionId: input.previousOutpointHash,
-                  index: input.previousOutpointIndex.toInt(),
-                ),
-              ),
+              (input) => utxoNotifier.isWalletOutpoint(input.previousOutpoint),
             );
 
         final outputs = tx.apiTx.outputs;
-        final hasSingleChangeOutput =
-            tx.apiTx.outputs.length == 1 &&
-            addressNotifier.containsChangeAddress(
-              tx.apiTx.outputs.first.scriptPublicKeyAddress,
+        final hasSingleWalletOutput =
+            outputs.length == 1 &&
+            addressNotifier.containsAddress(
+              outputs.first.scriptPublicKeyAddress,
             );
 
-        if (hasWalletInputs && hasSingleChangeOutput) {
+        if (hasWalletInputs && hasSingleWalletOutput) {
           return [
             TxListItem.txItem(
               TxItem(tx: tx, outputIndex: 0, type: .compound),
