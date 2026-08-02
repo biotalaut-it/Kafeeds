@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
 import '../wallet_address/address_selection_sheet.dart';
+import '../wallet_address/wallet_address.dart';
 import 'address_widgets.dart';
 import 'sheet_util.dart';
 
@@ -47,12 +48,15 @@ class ReceiveAddressCard extends HookConsumerWidget {
       ),
       child: TextButton(
         style: styles.fieldCardButtonStyle,
-        onPressed: () {
-          Sheets.showAppHeightNineSheet(
+        onPressed: () async {
+          final selected = await Sheets.showAppHeightNineSheet<WalletAddress>(
             context: context,
             theme: ref.read(themeProvider),
-            widget: AddressSelectionSheet(addressType: .receive),
+            widget: const AddressSelectionSheet(addressType: .receive),
           );
+
+          if (selected == null || !context.mounted) return;
+          ref.read(selectedAddressProvider.notifier).state = selected;
         },
         child: Padding(
           padding: const .symmetric(horizontal: 25, vertical: 15),

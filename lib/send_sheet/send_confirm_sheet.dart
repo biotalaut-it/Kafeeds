@@ -12,6 +12,8 @@ import '../l10n/l10n.dart';
 import '../util/numberutil.dart';
 import '../util/ui_util.dart';
 import '../utxos/utxos_selection_page.dart';
+import '../wallet_address/address_selection_sheet.dart';
+import '../wallet_address/wallet_address.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/address_card.dart';
 import '../widgets/amount_card.dart';
@@ -163,6 +165,33 @@ class SendConfirmSheet extends HookConsumerWidget {
       }
     }
 
+    Future<void> selectAddress() async {
+      final selected = await Sheets.showAppHeightNineSheet<WalletAddress>(
+        context: context,
+        theme: theme,
+        fullHeight: true,
+        widget: const AddressSelectionSheet(),
+      );
+
+      if (selected == null || selected.address == tx.changeAddress) return;
+      if (!context.mounted) return;
+
+      final walletService = ref.read(walletServiceProvider);
+
+      try {
+        sendTxState.value = walletService
+            .createCompoundTx(
+              compoundAddress: selected.address,
+              utxos: tx.utxos,
+              feeRate: kMinFeeRate,
+              minFee: tx.fee,
+            )
+            .copyWith(userSelected: tx.userSelected);
+      } catch (_) {
+        UIUtil.showSnackbar(l10n.sendError);
+      }
+    }
+
     Future<void> authAndSend() async {
       // Authenticate
       final message = authMessage();
@@ -255,7 +284,10 @@ class SendConfirmSheet extends HookConsumerWidget {
                   style: styles.textStyleSubHeader,
                 ),
               ),
-              AddressCard(address: toAddress),
+              AddressCard(
+                address: toAddress,
+                onPressed: isCompoundTx && !rbf ? selectAddress : null,
+              ),
               Container(
                 margin: const .only(top: 30, bottom: 10),
                 child: Text(

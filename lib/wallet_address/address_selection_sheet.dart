@@ -18,20 +18,23 @@ import 'address_list_widget.dart';
 import 'wallet_address.dart';
 
 class AddressSelectionSheet extends HookConsumerWidget {
-  final AddressType addressType;
+  final AddressType? addressType;
 
   const AddressSelectionSheet({
     super.key,
-    required this.addressType,
+    this.addressType,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeProvider);
+    final styles = ref.watch(stylesProvider);
     final l10n = l10nOf(context);
 
     final addressNotifier = ref.watch(addressNotifierProvider);
 
-    final scrollController = useScrollController();
+    final receiveScrollController = useScrollController();
+    final changeScrollController = useScrollController();
     final addingAddress = useState(false);
 
     Future<void> showAddressFilterOptions() async {
@@ -45,46 +48,105 @@ class AddressSelectionSheet extends HookConsumerWidget {
       }
     }
 
-    Future<void> newReceiveAddress() async {
-      if (addingAddress.value) return;
-      addingAddress.value = true;
-      await addressNotifier.addNewReceiveAddress();
-      addingAddress.value = false;
+    void onSelection(WalletAddress address) {
+      appRouter.pop(context, withResult: address);
+    }
 
-      scrollController.animateTo(
-        0,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
+    Widget addressList(AddressType type) {
+      return ScrollableWrapper(
+        child: AddressListWidget(
+          addressType: type,
+          scrollController: switch (type) {
+            .receive => receiveScrollController,
+            .change => changeScrollController,
+          },
+          onSelection: onSelection,
+        ),
       );
     }
 
-    return SheetWidget(
-      title: l10n.selectAddress,
-      rightWidget: SheetHeaderButton(
-        icon: Icons.remove_red_eye,
-        onPressed: showAddressFilterOptions,
-      ),
-      mainWidget: ScrollableWrapper(
-        child: AddressListWidget(
-          addressType: .receive,
-          scrollController: scrollController,
-          onSelection: (address) {
-            final notifier = ref.read(selectedAddressProvider.notifier);
-            notifier.state = address;
-            appRouter.pop(context);
-          },
-        ),
-      ),
-      bottomWidget: ActionButtonsWrapper(
-        buttons: [
-          if (addressType == .receive)
-            PrimaryButton(
-              title: l10n.newAddress,
-              disabled: addingAddress.value,
-              onPressed: newReceiveAddress,
+    return DefaultTabController(
+      length: 2,
+      child: Builder(
+        builder: (context) {
+          Future<void> newReceiveAddress() async {
+            if (addingAddress.value) return;
+            addingAddress.value = true;
+            await addressNotifier.addNewReceiveAddress();
+            addingAddress.value = false;
+
+            if (!context.mounted) return;
+            if (addressType == null) {
+              DefaultTabController.of(context).animateTo(0);
+            }
+            receiveScrollController.animateTo(
+              0,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOut,
+            );
+          }
+
+          return SheetWidget(
+            title: l10n.selectAddress,
+            rightWidget: SheetHeaderButton(
+              icon: Icons.remove_red_eye,
+              onPressed: showAddressFilterOptions,
             ),
-          const CloseActionButton(),
-        ],
+            mainWidget: switch (addressType) {
+              final type? => addressList(type),
+              null => Column(
+                children: [
+                  Padding(
+                    padding: const .symmetric(horizontal: 16),
+                    child: TabBar(
+                      indicatorWeight: 3,
+                      indicatorColor: theme.primary60,
+                      indicatorPadding: const .only(left: 20, right: 20),
+                      tabs: [
+                        Tab(
+                          height: 32,
+                          child: Text(
+                            l10n.receive.toUpperCase(),
+                            textAlign: .center,
+                            style: styles.textStyleTabLabel,
+                          ),
+                        ),
+                        Tab(
+                          height: 32,
+                          child: Text(
+                            l10n.change.toUpperCase(),
+                            textAlign: .center,
+                            style: styles.textStyleTabLabel,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        addressList(.receive),
+                        addressList(.change),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            },
+            bottomWidget: ActionButtonsWrapper(
+              buttons: [
+                if (addressType != .change)
+                  PrimaryButton(
+                    title: l10n.newAddress,
+                    disabled: addingAddress.value,
+                    onPressed: newReceiveAddress,
+                  ),
+                const CloseActionButton(),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

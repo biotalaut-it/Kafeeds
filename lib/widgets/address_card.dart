@@ -10,17 +10,20 @@ class AddressCard extends HookConsumerWidget {
   final Address address;
   final bool showLabel;
   final AddressTextType type;
+  final VoidCallback? onPressed;
 
   const AddressCard({
     super.key,
     required this.address,
     this.showLabel = true,
     this.type = .PRIMARY,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
+    final styles = ref.watch(stylesProvider);
 
     final label = useMemoized(() {
       if (!showLabel) return null;
@@ -43,19 +46,30 @@ class AddressCard extends HookConsumerWidget {
 
     final horizontal = MediaQuery.widthOf(context) * 0.105;
 
-    return Container(
+    final content = Padding(
       padding: const .symmetric(horizontal: 25, vertical: 15),
+      child: AddressThreeLineText(
+        address: address.encoded,
+        label: label,
+        type: type,
+      ),
+    );
+
+    return Container(
       margin: .symmetric(horizontal: horizontal),
       width: .infinity,
       decoration: BoxDecoration(
         color: theme.backgroundDarkest,
         borderRadius: .circular(25),
       ),
-      child: AddressThreeLineText(
-        address: address.encoded,
-        label: label,
-        type: type,
-      ),
+      child: switch (onPressed) {
+        final onPressed? => TextButton(
+          style: styles.fieldCardButtonStyle,
+          onPressed: onPressed,
+          child: content,
+        ),
+        null => content,
+      },
     );
   }
 }

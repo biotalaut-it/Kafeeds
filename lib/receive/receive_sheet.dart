@@ -14,6 +14,7 @@ import '../l10n/l10n.dart';
 import '../send_sheet/account_address_widget.dart';
 import '../util/ui_util.dart';
 import '../wallet_address/address_selection_sheet.dart';
+import '../wallet_address/wallet_address.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/buttons/primary_outline_button.dart';
 import '../widgets/qr_code_widget.dart';
@@ -45,19 +46,23 @@ class ReceiveSheet extends HookConsumerWidget {
       if (shareCardKey.value.currentContext == null) {
         return null;
       }
-      RenderRepaintBoundary boundary = shareCardKey.value.currentContext!
-          .findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary =
+          shareCardKey.value.currentContext!.findRenderObject()
+              as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 5);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       return byteData?.buffer.asUint8List();
     }
 
-    void selectAddress() {
-      Sheets.showAppHeightNineSheet(
+    Future<void> selectAddress() async {
+      final selected = await Sheets.showAppHeightNineSheet<WalletAddress>(
         context: context,
         theme: theme,
         widget: const AddressSelectionSheet(addressType: .receive),
       );
+
+      if (selected == null || !context.mounted) return;
+      ref.read(selectedAddressProvider.notifier).state = selected;
     }
 
     Future<void> copyAddress() async {

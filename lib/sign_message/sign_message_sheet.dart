@@ -13,6 +13,7 @@ import '../send_sheet/account_address_widget.dart';
 import '../util/ui_util.dart';
 import '../util/user_data_util.dart';
 import '../wallet_address/address_selection_sheet.dart';
+import '../wallet_address/wallet_address.dart';
 import '../widgets/action_buttons_wrapper.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/buttons.dart';
@@ -97,13 +98,16 @@ class SignMessageSheet extends HookConsumerWidget {
       onMessageChanged('');
     }
 
-    void selectAddress() {
+    Future<void> selectAddress() async {
       final theme = ref.read(themeProvider);
-      Sheets.showAppHeightNineSheet(
+      final selected = await Sheets.showAppHeightNineSheet<WalletAddress>(
         context: context,
         theme: theme,
         widget: const AddressSelectionSheet(addressType: .receive),
       );
+
+      if (selected == null || !context.mounted) return;
+      ref.read(selectedAddressProvider.notifier).state = selected;
     }
 
     Future<void> signMessage() async {
