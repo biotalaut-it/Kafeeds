@@ -26,8 +26,10 @@ class HomeScreen extends HookConsumerWidget {
 
     final scaffoldKey = ref.watch(homePageScaffoldKeyProvider);
 
-    ref.listen(walletAuthProvider.select((walletAuth) => walletAuth.isLocked),
-        (wasLocked, isLocked) {
+    ref.listen(walletAuthProvider.select((walletAuth) => walletAuth.isLocked), (
+      wasLocked,
+      isLocked,
+    ) {
       if (wasLocked == isLocked) {
         return;
       }
@@ -81,9 +83,10 @@ class HomeScreen extends HookConsumerWidget {
           autoLock();
           break;
         case .resumed:
-          // refresh remote data
-          final remote = ref.read(remoteRefreshProvider.notifier);
-          remote.update((state) => state + 1);
+          if (ref.read(inBackgroundProvider)) {
+            final remote = ref.read(remoteRefreshProvider.notifier);
+            remote.update((state) => state + 1);
+          }
 
           ref.read(inBackgroundProvider.notifier).state = false;
           break;

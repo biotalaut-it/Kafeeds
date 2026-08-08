@@ -119,11 +119,7 @@ final formatedTotalFiatProvider = Provider.autoDispose((ref) {
       ? 6
       : 8;
 
-  final format = NumberFormat.currency(
-    symbol: currency.symbol,
-    name: currency.name,
-    decimalDigits: decimals,
-  );
+  final format = currency.numberFormat(decimalDigits: decimals);
   final formatter = DecimalFormatter(format);
 
   return formatter.format(fiat);
@@ -140,11 +136,7 @@ final formatedKaspaPriceProvider = Provider.autoDispose((ref) {
       : price >= .parse('0.0001')
       ? 6
       : 8;
-  final format = NumberFormat.currency(
-    symbol: currency.symbol,
-    name: currency.name,
-    decimalDigits: decimals,
-  );
+  final format = currency.numberFormat(decimalDigits: decimals);
   final formatter = DecimalFormatter(format);
   final priceStr = formatter.format(price);
 
@@ -164,10 +156,7 @@ final formatedFiatForAddressProvider =
   final balance = ref.watch(fiatValueForAddressProvider(address));
   final currency = ref.watch(currencyProvider);
 
-  final format = NumberFormat.currency(
-    symbol: currency.symbol,
-    name: currency.name,
-  );
+  final format = currency.numberFormat();
   final formatter = DecimalFormatter(format);
 
   return formatter.format(balance);
@@ -179,10 +168,7 @@ final formatedFiatForAmountProvider =
   final currency = ref.watch(currencyProvider);
 
   final fiatValue = value.value * price.price;
-  final format = NumberFormat.currency(
-    symbol: currency.symbol,
-    name: currency.name,
-  );
+  final format = currency.numberFormat();
   final formatter = DecimalFormatter(format);
 
   return formatter.format(fiatValue);
@@ -197,12 +183,12 @@ final fiatForAmountProvider =
   if (fiatValue == .zero) {
     return '0';
   }
-  final format = NumberFormat.currency(
-    symbol: currency.symbol,
-    name: currency.name,
-  );
+  final format = currency.numberFormat();
   final formatter = DecimalFormatter(format);
-  return formatter.format(fiatValue).replaceAll(format.currencySymbol, '');
+  return formatter
+      .format(fiatValue)
+      .replaceAll(format.currencySymbol, '')
+      .trim();
 });
 
 final kaspaFormatterProvider = Provider((ref) {

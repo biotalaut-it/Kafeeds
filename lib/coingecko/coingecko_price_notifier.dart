@@ -7,11 +7,15 @@ const _kCoinGeckoPriceKey = '_coingeckoPriceKey';
 
 extension CoinGeckoPriceExtension on SettingsRepository {
   CoinGeckoPrice getCoinGeckoPrice() {
-    return box.tryGet(
-          _kCoinGeckoPriceKey,
-          typeFactory: CoinGeckoPrice.fromJson,
-        ) ??
-        .empty;
+    try {
+      return box.tryGet(
+            _kCoinGeckoPriceKey,
+            typeFactory: CoinGeckoPrice.fromJson,
+          ) ??
+          .empty;
+    } catch (_) {
+      return .empty;
+    }
   }
 
   Future<void> setCoinGeckoPrice(CoinGeckoPrice price) {
@@ -25,7 +29,7 @@ class CoinGeckoPriceNotifier extends StateNotifier<CoinGeckoPrice> {
   CoinGeckoPrice get price => state;
 
   CoinGeckoPriceNotifier(this.repository)
-      : super(repository.getCoinGeckoPrice());
+    : super(repository.getCoinGeckoPrice());
 
   Future<void> updatePrice(CoinGeckoPrice price) {
     state = price;

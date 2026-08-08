@@ -5,7 +5,7 @@ import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
 import '../settings/available_language.dart';
-import '../widgets/app_simpledialog.dart';
+import '../widgets/scrollable_options_dialog.dart';
 
 class LanguageDialog extends ConsumerWidget {
   const LanguageDialog({super.key});
@@ -18,31 +18,27 @@ class LanguageDialog extends ConsumerWidget {
     final style = styles.textStyleDialogOptions;
     final uStyle = style.copyWith(color: Colors.grey);
 
-    return AppSimpleDialog(
-      title: Padding(
-        padding: const .only(bottom: 10),
-        child: Text(
-          l10n.language,
-          style: styles.textStyleDialogHeader,
-        ),
-      ),
-      children: [
+    return ScrollableOptionsDialog(
+      title: l10n.language,
+      options: [
         for (final value in AvailableLanguage.values)
-          Builder(builder: (context) {
-            final isAvailable = LanguageSetting.isAvailable(value);
-            return SimpleDialogOption(
-              onPressed: isAvailable
-                  ? () => appRouter.pop(context, withResult: value)
-                  : null,
-              child: Padding(
-                padding: const .symmetric(vertical: 8),
-                child: Text(
-                  LanguageSetting(value).getDisplayName(context),
-                  style: isAvailable ? style : uStyle,
+          Builder(
+            builder: (context) {
+              final isAvailable = LanguageSetting.isAvailable(value);
+              return SimpleDialogOption(
+                onPressed: isAvailable
+                    ? () => appRouter.pop(context, withResult: value)
+                    : null,
+                child: Padding(
+                  padding: const .symmetric(vertical: 8),
+                  child: Text(
+                    LanguageSetting(value).getDisplayName(context),
+                    style: isAvailable ? style : uStyle,
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            },
+          ),
       ],
     );
   }

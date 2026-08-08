@@ -83,6 +83,12 @@ class SharedPrefsUtil {
 
   Future<void> remove(String key) => sharedPrefs.remove(key);
 
+  /// Enums are stored by name
+  T getEnum<T extends Enum>(String key, List<T> values, T defaultValue) {
+    final name = get(key, defaultValue: defaultValue.name);
+    return values.asNameMap()[name] ?? defaultValue;
+  }
+
   // Key-specific helpers
 
   Future<void> setHasSeenRootWarning() {
@@ -106,41 +112,28 @@ class SharedPrefsUtil {
   Future<void> setAuthMethod(AuthenticationMethod method) =>
       set(auth_method, method.getId());
 
-  AuthenticationMethod getAuthMethod() =>
-      AuthenticationMethod(AuthMethod.values.byName(get(
-        auth_method,
-        defaultValue: AuthMethod.BIOMETRICS.name,
-      )));
+  AuthenticationMethod getAuthMethod() => AuthenticationMethod(
+    getEnum(auth_method, AuthMethod.values, .BIOMETRICS),
+  );
 
   Future<void> setCurrency(AvailableCurrency currency) =>
       set(cur_currency, currency.getId());
 
-  AvailableCurrency getCurrency() =>
-      AvailableCurrency(AvailableCurrencies.values.byName(get(
-        cur_currency,
-        defaultValue: AvailableCurrencies.USD.name,
-      )));
+  AvailableCurrency getCurrency() => AvailableCurrency(
+    getEnum(cur_currency, AvailableCurrencies.values, .USD),
+  );
 
   Future<void> setLanguage(LanguageSetting language) =>
       set(cur_language, language.getId());
 
-  LanguageSetting getLanguage() {
-    final language = AvailableLanguage.values.byName(
-      get(
-        cur_language,
-        defaultValue: AvailableLanguage.DEFAULT.name,
-      ),
-    );
-    return LanguageSetting(language);
-  }
+  LanguageSetting getLanguage() => LanguageSetting(
+    getEnum(cur_language, AvailableLanguage.values, .DEFAULT),
+  );
 
   Future<void> setTheme(ThemeSetting theme) => set(cur_theme, theme.getId());
-  ThemeSetting getTheme() {
-    return ThemeSetting(ThemeOptions.values.byName(get(
-      cur_theme,
-      defaultValue: ThemeOptions.KASPIUM_DARK.name,
-    )));
-  }
+  ThemeSetting getTheme() => ThemeSetting(
+    getEnum(cur_theme, ThemeOptions.values, .KASPIUM_DARK),
+  );
 
   // For logging out
   Future<void> deleteAll() {

@@ -398,6 +398,20 @@ class AppStyles {
     color: theme.primary,
   );
 
+  // Text style for a dialog footer, sized to fit on one line
+  late final textStyleDialogFooter = TextStyle(
+    fontFamily: kDefaultFontFamily,
+    fontSize: AppFontSizes.small,
+    fontWeight: .w400,
+    color: theme.primary,
+  );
+
+  // Text style for a tappable link in a dialog footer
+  late final textStyleDialogFooterLink = textStyleDialogFooter.copyWith(
+    decoration: TextDecoration.underline,
+    decorationColor: theme.primary,
+  );
+
   // Text style for app text field
   late final textStyleAppTextField = TextStyle(
     fontFamily: kDefaultFontFamily,

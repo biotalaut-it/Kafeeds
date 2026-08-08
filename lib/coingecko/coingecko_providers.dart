@@ -19,30 +19,35 @@ final _kaspaPriceRemoteProvider = FutureProvider.autoDispose((ref) async {
   final fiat = currency.name.toLowerCase();
 
   final log = ref.read(loggerProvider);
-  final cached = ref.read(_kaspaPriceCacheProvider);
+  final cache = ref.read(_kaspaPriceCacheProvider.notifier);
+  final cached = cache.price;
 
   // 60 seconds
   final maxCacheAge = 60 * 1000;
   final timestamp = DateTime.now().millisecondsSinceEpoch;
   if (cached.currency == currency.currency &&
       timestamp - cached.timestamp < maxCacheAge) {
-    log.d('Using cached CoinGecko exchange rates');
     return cached;
   }
 
   try {
-    var price = await getCoinGeckoApiPrice(fiat);
-    // fallback to Kaspium API if CoinGecko API fails
+    var price = currency.currency.kaspiumApiOnly
+        ? null
+        : await getCoinGeckoApiPrice(fiat);
+    // fallback to Kaspium API if CoinGecko API fails or doesn't have the currency
     price ??= await getKaspiumApiPrice(fiat);
     if (price == null) {
       throw Exception('Failed to fetch remote exchange rate');
     }
 
-    return CoinGeckoPrice(
+    final result = CoinGeckoPrice(
       currency: currency.currency,
       price: .parse(price.toString()),
       timestamp: timestamp,
     );
+    // Cache here rather than downstream
+    cache.updatePrice(result);
+    return result;
   } catch (e, st) {
     log.e('Failed to fetch KAS exchange rate', error: e, stackTrace: st);
     if (cached.currency == currency.currency) {
@@ -57,12 +62,8 @@ final _kaspaPriceRemoteProvider = FutureProvider.autoDispose((ref) async {
 });
 
 final coingeckoKaspaPriceProvider = Provider.autoDispose((ref) {
-  final cache = ref.watch(_kaspaPriceCacheProvider.notifier);
+  final cached = ref.watch(_kaspaPriceCacheProvider);
   final remote = ref.watch(_kaspaPriceRemoteProvider);
 
-  remote.whenOrNull(
-    data: (price) => Future.microtask(() => cache.updatePrice(price)),
-  );
-
-  return remote.asData?.value ?? cache.price;
+  return remote.asData?.value ?? cached;
 });
