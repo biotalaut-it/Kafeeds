@@ -7,7 +7,6 @@
   "accounts": "Accounts",
   "ackBackedUp": "Are you sure that you've backed up your secret phrase?",
   "add": "Add",
-  "addAccount": "Add Account",
   "addContact": "Add Contact",
   "addingNodeMessage": "Please wait while contacting node",
   "addingNodeTitle": "Adding Node",
@@ -43,17 +42,6 @@
   "addressShare": "Share Address",
   "advancedHeader": "Advanced",
   "amount": "Amount",
-  "amountConfirm": "Amount {amount} {coin}",
-  "@amountConfirm": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      },
-      "coin": {
-        "type": "String"
-      }
-    }
-  },
   "amountMissing": "Please Enter an Amount",
   "amountZero": "Amount can't be zero",
   "areYouSure": "Are you sure?",
@@ -99,9 +87,6 @@
   "clipboardEmpty": "Clipboard is empty",
   "close": "Close",
   "closeUppercased": "CLOSE",
-  "compoundFailure": "Failed to compound transactions",
-  "compoundingMessage": "Please wait...",
-  "compoundingUtxos": "Compounding transactions",
   "compoundRequired": "Compound required",
   "compoundRequiredDescription": "The transaction amount requires too many UTXOs. Compounding will reduce the number of UTXOs.",
   "compoundSuccess": "Compound successful",
@@ -175,23 +160,12 @@
   "createPasswordSheetHeader": "Create",
   "currency": "Currency",
   "currencyPoweredBy": "Powered by CoinGecko",
-  "currentIndex": "Current",
-  "defaultAccountName": "Address 1",
-  "defaultNewAccountName": "Receive {addressIndex}",
-  "@defaultNewAccountName": {
-    "placeholders": {
-      "addressIndex": {
-        "type": "int"
-      }
-    }
-  },
   "defaultWalletName": "My Wallet",
   "disablePasswordSheetHeader": "Disable",
   "disablePasswordSuccess": "Password has been disabled",
   "disableWalletPassword": "Disable Wallet Password",
   "doContinue": "Continue",
   "donate": "Donate",
-  "donateTo": "Donate To",
   "dontShowAgain": "Don't show again",
   "emailAction": "Email {email}",
   "@emailAction": {
@@ -215,19 +189,6 @@
   "export": "Export",
   "fee": "Fee",
   "@fee": {},
-  "feeBaseUppercase": "BASE FEE",
-  "feeConfirm": "Fee {amount} {coin}",
-  "@feeConfirm": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      },
-      "coin": {
-        "type": "String"
-      }
-    }
-  },
-  "feeManageTitle": "Manage Fee",
   "feePriorityHint": "Enter Fee",
   "feePriorityUppsercase": "NEW FEE",
   "feeSheetPriorityFeeWarning": "New fee must be at least {amount} {symbol}",
@@ -243,13 +204,9 @@
   },
   "feeSheetRecommendedPriority": "Recommended Priority Fees",
   "feeTitle": "FEE",
-  "feeUpdate": "Update Fee",
-  "feeUpdateAddressError": "Failed to recognise destination address",
   "feeUpdateError": "Failed to update fee",
-  "feeUpdateRebuildError": "Failed to rebuild transaction",
-  "feeUpdateRebuildError2": "Failed to rebuild transaction with new fee",
   "feeUpdateTitle": "Updating fee",
-  "feeHighTitle":"High Fee",
+  "feeHighTitle": "High Fee",
   "feeHighDescription": "Are you sure you want to send the transaction?",
   "feeHighDescriptionAmount": "Transaction fee is {amount} {symbol}.",
   "@feeHighDescriptionAmount": {
@@ -263,14 +220,14 @@
     }
   },
   "feeCompoundAmountAdjusted": "Compound amount adjusted to account for new fee",
-  "feeAmountAdjustmentTitle":"Amount adjustment required",
+  "feeAmountAdjustmentTitle": "Amount adjustment required",
   "feeAmountAdjustmentDescription": "The new fee requires that the transaction amount is adjusted from {currentAmount} {symbol} to {newAmount} {symbol}",
   "@feeAmountAdjustmentDescription": {
     "placeholders": {
       "currentAmount": {
         "type": "String"
       },
-      "newAmount":{
+      "newAmount": {
         "type": "String"
       },
       "symbol": {
@@ -279,17 +236,15 @@
     }
   },
   "feeAmountNotEnough": "Current amount can't cover new fee",
-  "feePriorityMin":"Min",
-  "feePriorityLow":"Low",
-  "feePriorityNormal":"Economic",
-  "feePriorityHigh":"Priority",
+  "feePriorityMin": "Min",
+  "feePriorityLow": "Low",
+  "feePriorityNormal": "Economic",
+  "feePriorityHigh": "Priority",
   "fetchingTransactions": "Fetching Transactions",
   "fingerprintSeedBackup": "Authenticate to Backup Secret Phrase.",
   "getStarted": "Get Started",
   "goBackButton": "Go Back",
   "gotItButton": "Got It!",
-  "hideAccountHeader": "Hide Account?",
-  "hideAccountText": "Are you sure you want to hide this account? You can re-add it later by tapping the \"Add Account\" button.",
   "hintAddressListEmpty": "Check address filter from the top right corner",
   "import": "Import",
   "importAsLegacyWallet": "Import as Legacy Wallet",
@@ -297,41 +252,29 @@
   "importKpub": "Import Watch Only Wallet",
   "importKpubClipboardError": "Clipboard content is not a valid extended public key",
   "importKpubHint": "Please enter your extended public key.",
-  "importKpubInvalidMessage": "Please check that your extended public key is entered correctly!",
   "importKpubQrCodeError": "QR code does not contain a valid extended public key",
   "importLegacyWalletDetectedDetails": "Do you want to import your wallet in legacy mode?",
   "importLegacyWalletDetectedTitle": "Legacy Wallet Detected",
-  "importOption12WordsDescription": "Compatible with Web Wallet and KDX",
-  "importOption12WordsTitle": "Import 12 Word Secret Phrase",
-  "importOption24WordsDescription": "Compatible with Cli Wallet and Ledger",
-  "importOption24WordsTitle": "Import 24 Word Secret Phrase",
   "importOptionKpubDescription": "Monitor the balance and transactions of a wallet using an extended public key",
   "importOptionKpubTitle": "Import Watch Only Wallet",
   "importOptionLegacyWalletDescription": "Legacy derivation 12 word wallets compatible with legacy Web Wallet and KDX",
   "importOptionLegacyWalletTitle": "Import Legacy Wallet",
   "importOptionStandardWalletDescription": "Standard derivation 12 or 24 word wallets with optional BIP39 passphrase",
   "importOptionStandardWalletTitle": "Import Standard Wallet",
-  "importSecretPhrase": "Import Secret Phrase",
-  "importSecretPhraseHint": "Please enter your 24 word secret phrase below.",
   "importSecretPhraseHintCombo": "Please enter your 12 or 24 word secret phrase below.",
   "importSecretPhraseHintLegacy": "Please enter your 12 word secret phrase below.",
   "importWallet": "Import Wallet",
   "importWalletAdvancedOptions": "Advanced Options",
   "importWalletDescription": "Please select an option below.",
-  "indexHeader": "Index",
-  "instantly": "Instantly",
   "insufficientBalance": "Insufficient Balance",
   "insufficientBalanceDetails": "You don't have enough KAS for this transaction",
   "invalidAddress": "Address entered was invalid",
-  "invalidAmount": "Invalid Amount",
   "invalidChecksumMessage": "Please check that your Secret Phrase\n is entered correctly!",
-  "invalidDestinationAddress": "Invalid Destination Address",
   "invalidKpubMessage": "Please check that your extended public key is entered correctly!",
   "invalidPassword": "Invalid Password",
   "invalidSecretPhrase": "Invalid Secret Phrase",
   "invalidSecretPhraseConfirmation": "I know what I'm doing",
   "invalidSecretPhraseDetails": "The Secret Phrase you entered has an invalid checksum.",
-  "kaspaDevFund": "Kaspa Dev Fund",
   "kaspaUriCopied": "Kaspa URI Copied",
   "kaspaUriCopyFailed": "Failed to copy Kaspa URI",
   "kaspaUriInvalid": "Invalid Kaspa URI",
@@ -351,13 +294,11 @@
   "logoutDialogContent": "Are you sure you want to logout from this wallet?",
   "logoutOrSwitchWallet": "Logout / Switch Wallet",
   "manage": "Manage",
-  "manualEntry": "Manual Entry",
   "maxSend": "Max Send",
   "missingSecretPhrase": "Missing Secret Phrase",
   "moreInfo": "More Info",
   "networkHeader": "Network",
   "newAddress": "New Address",
-  "newIndex": "New",
   "newWallet": "New Wallet",
   "nextButton": "Next",
   "no": "No",
@@ -382,7 +323,6 @@
   "off": "Off",
   "on": "On",
   "optionalLabel": "(Optional)",
-  "paperWallet": "Paper Wallet",
   "passwordBlank": "Password cannot be empty",
   "passwordNoLongerRequiredToOpenParagraph": "You will not need a password to open this wallet.",
   "passwordsDontMatch": "Passwords do not match",
@@ -399,7 +339,6 @@
   "preferences": "Preferences",
   "privacyPolicy": "Privacy Policy",
   "qrInvalidAddress": "QR code does not contain a valid address",
-  "qrInvalidSeed": "QR code does not contain a valid seed or private key",
   "qrMnemonicError": "QR code does not contain a valid secret phrase",
   "receive": "Receive",
   "receiveAddress": "Receive Address",
@@ -430,10 +369,6 @@
   "removeWalletDetail": "Removing this wallet will remove the Secret Phrase and all wallet-related data from this device. If the Secret Phrase is not backed up, you will never be able to access your funds again.",
   "removeWalletPinMessage": "Enter PIN to Remove Wallet",
   "removeWalletReassurance": "As long as you've backed up the Secret Phrase you have nothing to worry about.",
-  "requestPasswordAtLaunch": "At Launch",
-  "requestPasswordHeader": "Request Password",
-  "requestPasswordWhenLocked": "When Locked",
-  "requestPasswordWhenSigning": "When Signing",
   "requireAPasswordToOpenHeader": "Require a password to open this wallet?",
   "restartSetupButton": "Restart Setup",
   "scanFailedMessage": "Scan failed, please try again later",
@@ -447,13 +382,10 @@
     }
   },
   "scanFoundNoAddresses": "No new addresses found",
-  "scanMore": "SCAN MORE",
   "scanMoreAddresses": "Scan For More Addresses",
   "scannedIndex": "Scanned",
   "scanningChangeAddresses": "Scanning change addresses",
-  "scanningDescription": "Scanning for new addresses...",
   "scanningReceiveAddresses": "Scanning receive addresses",
-  "scanningTitle": "Scanning",
   "scanQrCode": "Scan QR Code",
   "scanQrCodeError": "Failed to parse qr code",
   "scanStopped": "Scan stopped",
@@ -466,7 +398,6 @@
   "secretWarning": "If you lose your device or uninstall the application, you'll need your secret phrase to recover your funds!",
   "securityHeader": "Security",
   "seed": "Seed",
-  "seedInvalid": "Seed is Invalid",
   "selectAddress": "Select Address",
   "send": "Send",
   "sendConfirm": "Send",
@@ -480,8 +411,6 @@
   "sentTo": "Sent to",
   "setPassword": "Set Password",
   "setPasswordSuccess": "Wallet password has been set",
-  "settingsHeader": "Settings",
-  "settingsTransfer": "Load from Paper Wallet",
   "setupFailedMessage": "Something went wrong",
   "setWalletPassword": "Set Wallet Password",
   "shareKaspium": "Share Kaspium",
@@ -512,51 +441,15 @@
   "to": "To",
   "toAddress": "To Address",
   "tooManyFailedAttempts": "Too many failed unlock attempts.",
-  "totalValue": "Total Value",
   "transactionId": "Transaction ID",
   "transactionsUppercase": "TRANSACTIONS",
   "transfer": "Transfer",
-  "transferClose": "Tap anywhere to close the window.",
-  "transferComplete": "{amount} KAS successfully transferred to your Kaspium Wallet.\n",
-  "@transferComplete": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "transferConfirmInfo": "A wallet with a balance of {amount} KAS has been detected.",
-  "@transferConfirmInfo": {
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "transferConfirmInfoSecond": "Tap confirm to transfer the funds.\n",
-  "transferConfirmInfoThird": "Transfer may take several seconds to complete.",
-  "transferError": "An error has occurred during the transfer. Please try again later.",
-  "transferHeader": "Transfer Funds",
-  "transferIntro": "This process will transfer the funds from a paper wallet to your Kaspium wallet.\n\nTap the \"{button}\" button to start.",
-  "@transferIntro": {
-    "placeholders": {
-      "button": {
-        "type": "String"
-      }
-    }
-  },
-  "transferLoading": "Transferring",
-  "transferManualHint": "Please enter the seed below.",
-  "transferNoFunds": "This seed does not have any KAS on it",
-  "transferQrScanError": "This QR code does not contain a valid seed.",
-  "transferQrScanHint": "Scan a Kaspa \nseed or private key",
   "txFilterDialogOptionAllTxs": "Show All Transactions",
   "txFilterDialogOptionHideNotAcceptedCoinbase": "Hide Not Accepted Coinbase Transactions",
   "txFilterDialogTitle": "Transaction Filter",
   "txInMempool": "in mempool",
   "txPending": "PENDING",
   "txPendingActionRbf": "Replace By Fee",
-  "txPendingActionUpdateFee": "Update Tx Fee",
   "txPendingContent": "There is a pending transactions in the mempool.",
   "txPendingMessage": "This transaction is pending",
   "txPendingTitle": "Pending Transaction",
@@ -572,7 +465,6 @@
   "txReportGenerate": "Generate",
   "txReportGetReport": "Get Report",
   "txReportLabel": "Label",
-  "txReportLabelCost": "cost",
   "txReportNoLoadedTxs": "({loadedTxs} of {totalTxs})",
   "@txReportNoLoadedTxs": {
     "placeholders": {
@@ -595,7 +487,6 @@
   },
   "txReportOptionIgnoreCompound": "Ignore compound transactions",
   "txReportOptionIgnoreSelfTxs": "Ignore transactions sent to self",
-  "txReportOptionRefreshTxs": "Refresh transactions",
   "txReportReceivedAmount": "Received Amount",
   "txReportReceivedCurrency": "Received Currency",
   "txReportSentAmount": "Sent Amount",
@@ -747,10 +638,10 @@
   "signMessageSigned": "Message Signed",
   "signMessageHint": "Enter Message to Sign",
   "signMessageToLong": "Message is too long",
-  "signMessageCopySignature":"Copy Signature" ,
+  "signMessageCopySignature": "Copy Signature",
   "signMessageSignatureCopied": "Signature Copied",
   "signMessageSignature": "Signature",
   "signMessageQrCode": "QR Code",
   "signMessageMessageHashCopied": "Message Hash Copied",
-  "signMessageMessageHash": "Message Hash" 
+  "signMessageMessageHash": "Message Hash"
 }
