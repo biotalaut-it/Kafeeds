@@ -115,6 +115,14 @@ final txNotifierForWalletProvider = ChangeNotifierProvider.autoDispose
         }
       });
 
+      ref.listen(inBackgroundProvider, (_, inBackground) {
+        if (inBackground) {
+          notifier.syncer.pause();
+        } else {
+          notifier.syncer.resume();
+        }
+      }, fireImmediately: true);
+
       ref.onDispose(() {
         notifier.syncer.cancel();
         notifier.disposed = true;

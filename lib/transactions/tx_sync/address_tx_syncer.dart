@@ -35,6 +35,8 @@ class AddressTxSyncer extends SafeChangeNotifier {
 
   bool _running = false;
   bool _cancelled = false;
+  bool _paused = false;
+  Completer<void>? _resumed;
   bool _seeded = false;
   Future<void>? _worker;
   Future<void>? _seeding;
@@ -79,6 +81,12 @@ class AddressTxSyncer extends SafeChangeNotifier {
           _enqueue(address, action, record.newestBlockTime);
         }
         _checked.add(address);
+      }
+
+      await _waitIfPaused();
+      if (_cancelled) {
+        _releaseSeed(seed);
+        return const [];
       }
 
       final List<ApiActiveAddress> results;
@@ -164,6 +172,26 @@ class AddressTxSyncer extends SafeChangeNotifier {
     _queue.clear();
   }
 
+  void pause() {
+    if (_paused) return;
+    _paused = true;
+    _resumed = Completer<void>();
+  }
+
+  void resume() {
+    if (!_paused) return;
+    _paused = false;
+    _resumed?.complete();
+    _resumed = null;
+    _pump();
+  }
+
+  Future<void> _waitIfPaused() async {
+    while (_paused) {
+      if (_resumed case final resumed?) await resumed.future;
+    }
+  }
+
   ({Completer<void> done, int head})? _claimSeed() {
     if (_seeded || !store.isEmpty) {
       return null;
@@ -247,7 +275,7 @@ class AddressTxSyncer extends SafeChangeNotifier {
   }
 
   void _pump() {
-    if (_running || _cancelled || _queue.isEmpty) {
+    if (_running || _cancelled || _paused || _queue.isEmpty) {
       return;
     }
     _running = true;
@@ -261,6 +289,9 @@ class AddressTxSyncer extends SafeChangeNotifier {
       await _seeding;
 
       while (!_cancelled && _queue.isNotEmpty) {
+        await _waitIfPaused();
+        if (_cancelled) break;
+
         final (:address, :action, :quiet) = _takeNext();
 
         try {
@@ -306,6 +337,9 @@ class AddressTxSyncer extends SafeChangeNotifier {
     var before = record.oldestBlockTime > 0 ? record.oldestBlockTime : null;
 
     while (!_cancelled) {
+      await _waitIfPaused();
+      if (_cancelled) return;
+
       final page = await api.getTxIdPageForAddress(
         record.address,
         limit: pageSize,
@@ -357,6 +391,9 @@ class AddressTxSyncer extends SafeChangeNotifier {
     var newest = record.newestBlockTime;
 
     while (!_cancelled) {
+      await _waitIfPaused();
+      if (_cancelled) return;
+
       final page = await api.getTxIdPageForAddress(
         record.address,
         limit: pageSize,

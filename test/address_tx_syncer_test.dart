@@ -710,4 +710,81 @@ void main() {
       expect(cache.isWalletTxId('tx-$kAddressB-400'), isFalse);
     });
   });
+
+  group('pause', () {
+    test('a paused syncer asks the api nothing until resumed', () async {
+      final api = FakeKaspaApi({
+        kAddressA: [500, 400, 300],
+      });
+      final syncer = syncerFor(api);
+
+      syncer.pause();
+      final reconciled = syncer.reconcile([kAddressA]);
+      await pumpEventQueue();
+
+      expect(api.activeChecks, 0);
+      expect(api.requests, isEmpty);
+
+      syncer.resume();
+      await reconciled;
+      await syncer.drain();
+
+      expect(api.activeChecks, 1);
+      expect(cache.txCount, 3);
+    });
+
+    test('a fetch scheduled while paused waits for resume', () async {
+      final api = FakeKaspaApi({
+        kAddressA: [500],
+      });
+      final syncer = syncerFor(api, pageSize: 10);
+
+      syncer.pause();
+      syncer.scheduleFetch([kAddressA]);
+      await pumpEventQueue();
+
+      expect(api.requests, isEmpty);
+
+      syncer.resume();
+      await syncer.drain();
+
+      expect(cache.isWalletTxId(txId(kAddressA, 500)), isTrue);
+    });
+
+    test('resumes a page walk from where pause held it', () async {
+      final api = FakeKaspaApi({
+        kAddressA: [500, 400, 300, 200, 100],
+      });
+      cache.api = api.service;
+      late final AddressTxSyncer syncer;
+      var paused = false;
+      syncer = AddressTxSyncer(
+        cache: cache,
+        store: store,
+        pageSize: 2,
+        addressGap: .zero,
+        onTxsCached: (_) async {
+          if (paused) return;
+          paused = true;
+          syncer.pause();
+        },
+      );
+
+      await syncer.reconcile([kAddressA]);
+      await pumpEventQueue();
+
+      expect(api.cursorsFor(kAddressA), [(null, null)]);
+      expect(cache.txCount, 2);
+
+      syncer.resume();
+      await syncer.drain();
+
+      expect(api.cursorsFor(kAddressA), [
+        (null, null),
+        (400, null),
+        (200, null),
+      ]);
+      expect(cache.txCount, 5);
+    });
+  });
 }
