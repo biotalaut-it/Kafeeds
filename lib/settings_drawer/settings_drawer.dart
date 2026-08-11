@@ -15,6 +15,7 @@ import 'currency_settings_item.dart';
 import 'language_settings_item.dart';
 import 'logout_settings_item.dart';
 import 'network_menu.dart';
+import 'push_settings_item.dart';
 import 'secret_phrase_settings_item.dart';
 import 'security_menu.dart';
 import 'settings_header.dart';
@@ -191,12 +192,14 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
           walletAuthProvider.select((auth) => auth.hasMnemonic),
         );
 
+        final pushAvailable = ref.watch(pushAvailableProvider);
         //final canBuy = ref.watch(networkProvider) == .mainnet;
 
         final items = <Widget>[
           SettingsHeader(title: l10n.preferences),
           const CurrencySettingsItem(),
           const LanguageSettingsItem(),
+          if (pushAvailable) const PushSettingsItem(),
           const ThemeSettingsItem(),
 
           SingleLineItem(

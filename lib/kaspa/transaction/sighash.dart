@@ -9,6 +9,7 @@ const kTransactionHashDomain = 'TransactionHash';
 const kTransactionIdDomain = 'TransactionID';
 const kTransactionSigningDomain = 'TransactionSigningHash';
 const kPersonalMessageSigningDomain = 'PersonalMessageSigningHash';
+const kPushRequestSigningDomain = 'PushRequestSigningHash';
 
 const kSigHashAll = 1;
 const kSigHashNone = 1 << 1;
@@ -365,4 +366,9 @@ Uint8List getSchnorrSignatureHash({
 Uint8List hashPersonalMessage(String message) => _blake2bHash(
   stringToBytesUtf8(message),
   domain: kPersonalMessageSigningDomain,
+);
+
+Uint8List hashPushRequest(String body) => _blake2bHash(
+  stringToBytesUtf8(body),
+  domain: kPushRequestSigningDomain,
 );

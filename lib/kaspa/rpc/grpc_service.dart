@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:kaspium_wallet/kaspa/kaspa.dart';
 
+import '../network.dart';
+import '../types.dart';
+import '../utils.dart';
 import 'grpc/grpc_client.dart';
 import 'grpc/messages.pbgrpc.dart';
 import 'grpc/rpc.pb.dart';
 import 'grpc_converters.dart';
+import 'rpc_service.dart';
 
 class RpcException implements Exception {
   final RPCError error;

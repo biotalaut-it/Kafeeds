@@ -6,6 +6,7 @@ import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
 import '../l10n/l10n.dart';
 import '../main_card/main_card.dart';
+import '../push/push_tap_handler.dart';
 import '../transactions/transactions_widget.dart';
 import '../transactions/tx_filter_dialog.dart';
 import '../util/ui_util.dart';
@@ -26,6 +27,7 @@ final _walletWatcherProvider = Provider.autoDispose((ref) {
   ref.watch(rpcFeeEstimateProvider);
 
   ref.watch(addressMonitorProvider);
+  ref.watch(pushSyncProvider);
 });
 
 class WalletHome extends HookConsumerWidget {
@@ -64,6 +66,24 @@ class WalletHome extends HookConsumerWidget {
           UIUtil.showSendFlow(context, ref: ref, uri: uri);
         });
       }, fireImmediately: true);
+    }, const []);
+
+    ref.listen(notificationTapProvider, (_, tap) {
+      if (tap != null) handlePendingNotificationTap(context, ref);
+    });
+
+    ref.listen(walletAuthProvider.select((walletAuth) => walletAuth.isLocked), (
+      _,
+      isLocked,
+    ) {
+      if (!isLocked) handlePendingNotificationTap(context, ref);
+    });
+
+    useEffect(() {
+      Future.microtask(() {
+        if (context.mounted) handlePendingNotificationTap(context, ref);
+      });
+      return null;
     }, const []);
 
     return Column(

@@ -24,7 +24,7 @@ class Sheets {
     final barrier = theme.barrier;
 
     var route = _AppHeightNineModalRoute<T>(
-      builder: (BuildContext context) => widget,
+      builder: (context) => widget,
       color: color,
       radius: radius,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -60,8 +60,9 @@ class Sheets {
         builder: (BuildContext context) => widget,
         color: color,
         radius: radius,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(
+          context,
+        ).modalBarrierDismissLabel,
         barrier: barrier,
         animationDurationMs: animationDurationMs,
       ),
@@ -143,23 +144,23 @@ class _AppFullHeightSheetLayout extends SingleChildLayoutDelegate {
 
 class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
   _AppHeightNineModalRoute({
-    this.builder,
+    required this.builder,
     this.barrierLabel,
     this.color,
     required this.radius,
     super.settings,
     this.barrier,
-    this.animationDurationMs,
+    required this.animationDurationMs,
     this.closeOnTap = false,
     this.fullHeight = false,
     this.onDisposed,
   });
 
-  final WidgetBuilder? builder;
+  final WidgetBuilder builder;
   final double radius;
   final Color? color;
   final Color? barrier;
-  final int? animationDurationMs;
+  final int animationDurationMs;
   final bool closeOnTap;
   final bool fullHeight;
   final Function? onDisposed;
@@ -187,25 +188,31 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController =
-        BottomSheet.createAnimationController(navigator!.overlay!);
-    _animationController!.duration =
-        Duration(milliseconds: animationDurationMs!);
-    appSheetAnimation = CurvedAnimation(
-        parent: _animationController!,
-        curve: Curves.easeOut,
-        reverseCurve: Curves.linear)
-      ..addStatusListener((animationStatus) {
-        if (animationStatus == .completed) {
-          appSheetAnimation.curve = Curves.linear;
-        }
-      });
+    _animationController = BottomSheet.createAnimationController(
+      navigator!.overlay!,
+    );
+    _animationController!.duration = Duration(
+      milliseconds: animationDurationMs,
+    );
+    appSheetAnimation =
+        CurvedAnimation(
+          parent: _animationController!,
+          curve: Curves.easeOut,
+          reverseCurve: Curves.linear,
+        )..addStatusListener((animationStatus) {
+          if (animationStatus == .completed) {
+            appSheetAnimation.curve = Curves.linear;
+          }
+        });
     return _animationController!;
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     // captured before removePadding strips the status bar inset
     final topPadding = MediaQuery.paddingOf(context).top;
 
@@ -232,7 +239,14 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
                   : _AppHeightNineSheetLayout(appSheetAnimation.value),
               child: BottomSheet(
                 animationController: _animationController,
-                onClosing: () => appRouter.pop(context),
+                onClosing: () {
+                  if (popDisposition == .doNotPop) {
+                    onPopInvokedWithResult(false, null);
+                    _animationController?.forward();
+                  } else {
+                    appRouter.pop(context);
+                  }
+                },
                 builder: (context) => Container(
                   decoration: BoxDecoration(
                     color: color,
@@ -241,7 +255,7 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
                       topRight: .circular(radius),
                     ),
                   ),
-                  child: Builder(builder: builder!),
+                  child: Builder(builder: builder),
                 ),
               ),
             ),
@@ -259,7 +273,7 @@ class _AppHeightNineModalRoute<T> extends PopupRoute<T> {
 
   @override
   Duration get transitionDuration =>
-      Duration(milliseconds: animationDurationMs!);
+      Duration(milliseconds: animationDurationMs);
 }
 //App Height Nine Sheet End
 
@@ -308,20 +322,20 @@ class _AppHeightEightSheetLayout extends SingleChildLayoutDelegate {
 
 class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
   _AppHeightEightModalRoute({
-    this.builder,
+    required this.builder,
     this.barrierLabel,
     this.color,
-    this.radius,
+    required this.radius,
     super.settings,
     this.barrier,
-    this.animationDurationMs,
+    required this.animationDurationMs,
   });
 
-  final WidgetBuilder? builder;
-  final double? radius;
+  final WidgetBuilder builder;
+  final double radius;
   final Color? color;
   final Color? barrier;
-  final int? animationDurationMs;
+  final int animationDurationMs;
 
   @override
   Color? get barrierColor => barrier;
@@ -338,25 +352,31 @@ class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController =
-        BottomSheet.createAnimationController(navigator!.overlay!);
-    _animationController!.duration =
-        Duration(milliseconds: animationDurationMs!);
-    appSheetAnimation = CurvedAnimation(
-        parent: _animationController!,
-        curve: Curves.easeOut,
-        reverseCurve: Curves.linear)
-      ..addStatusListener((animationStatus) {
-        if (animationStatus == .completed) {
-          appSheetAnimation.curve = Curves.linear;
-        }
-      });
+    _animationController = BottomSheet.createAnimationController(
+      navigator!.overlay!,
+    );
+    _animationController!.duration = Duration(
+      milliseconds: animationDurationMs,
+    );
+    appSheetAnimation =
+        CurvedAnimation(
+          parent: _animationController!,
+          curve: Curves.easeOut,
+          reverseCurve: Curves.linear,
+        )..addStatusListener((animationStatus) {
+          if (animationStatus == .completed) {
+            appSheetAnimation.curve = Curves.linear;
+          }
+        });
     return _animationController!;
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -368,16 +388,23 @@ class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
             delegate: _AppHeightEightSheetLayout(appSheetAnimation.value),
             child: BottomSheet(
               animationController: _animationController,
-              onClosing: () => appRouter.pop(context),
+              onClosing: () {
+                if (popDisposition == .doNotPop) {
+                  onPopInvokedWithResult(false, null);
+                  _animationController?.forward();
+                } else {
+                  appRouter.pop(context);
+                }
+              },
               builder: (context) => Container(
                 decoration: BoxDecoration(
                   color: color,
                   borderRadius: .only(
-                    topLeft: .circular(radius!),
-                    topRight: .circular(radius!),
+                    topLeft: .circular(radius),
+                    topRight: .circular(radius),
                   ),
                 ),
-                child: Builder(builder: builder!),
+                child: Builder(builder: builder),
               ),
             ),
           ),
@@ -394,5 +421,5 @@ class _AppHeightEightModalRoute<T> extends PopupRoute<T> {
 
   @override
   Duration get transitionDuration =>
-      Duration(milliseconds: animationDurationMs!);
+      Duration(milliseconds: animationDurationMs);
 }

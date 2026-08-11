@@ -13,7 +13,7 @@ class CloseActionButton extends StatelessWidget {
 
     return PrimaryOutlineButton(
       title: l10n.close,
-      onPressed: () => appRouter.pop(context),
+      onPressed: () => appRouter.maybePop(context),
     );
   }
 }
@@ -27,7 +27,7 @@ class CancelActionButton extends StatelessWidget {
 
     return PrimaryOutlineButton(
       title: l10n.cancel,
-      onPressed: () => appRouter.pop(context),
+      onPressed: () => appRouter.maybePop(context),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../contacts/contact.dart';
 import '../kaspa/kaspa.dart';
+import '../push/push_types.dart';
 import '../transactions/transaction_types.dart';
 import '../transactions/tx_sync/tx_sync_types.dart';
 import '../txnotes/txnotes_types.dart';
@@ -45,7 +46,9 @@ class Database {
     Hive.registerAdapter(
       JsonTypeAdapter(typeId: 6, fromJson: TxIndex.fromJson),
     );
-    // 7 is reserved for PushSettings on the push branch
+    Hive.registerAdapter(
+      JsonTypeAdapter(typeId: 7, fromJson: PushSettings.fromJson),
+    );
     Hive.registerAdapter(
       JsonTypeAdapter(typeId: 8, fromJson: AddressTxSync.fromJson),
     );
@@ -68,7 +71,7 @@ class Database {
   }
 
   late final BoxKey contactsBox;
-  late final BoxKey pushInfoBox;
+  late final BoxKey pushSettingsBox;
   late final BoxKey settingsBox;
   late final BoxKey txNotesBox;
 
@@ -89,7 +92,7 @@ class Database {
 
     contactsBox = hash('_contactsBox#$dbKey');
     settingsBox = hash('_settingsBox#$dbKey');
-    pushInfoBox = hash('_pushInfoBox#$dbKey');
+    pushSettingsBox = hash('_pushSettingsBox#$dbKey');
     txNotesBox = hash('_txNotesBox#$dbKey');
 
     Future<Box> open<T>(String box, {bool encrypted = false}) async {
@@ -101,6 +104,7 @@ class Database {
       // typed boxes
       open<Contact>(contactsBox, encrypted: true),
       open<TxNote>(txNotesBox, encrypted: true),
+      open<PushSettings>(pushSettingsBox, encrypted: true),
 
       // generic boxes
       open(settingsBox, encrypted: true),

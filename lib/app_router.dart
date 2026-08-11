@@ -14,6 +14,7 @@ class _AppScreens {
   static const passwordLocked = '/password_locked';
   static const logout = '/logout';
   static const setupWallet = '/setup_wallet';
+  static const switchWallet = '/switch_wallet';
 }
 
 class AppRouter {
@@ -41,6 +42,9 @@ class AppRouter {
   void logout(BuildContext context) =>
       _replaceWith(_AppScreens.logout, context);
 
+  void switchWallet(BuildContext context, String walletId) =>
+      _replaceWith(_AppScreens.switchWallet, context, arguments: walletId);
+
   bool isTopRoute<T>(BuildContext context) {
     bool isTopRoute = false;
     Navigator.of(context).popUntil((route) {
@@ -50,10 +54,15 @@ class AppRouter {
     return isTopRoute;
   }
 
-  Future<T?> _replaceWith<T>(String screenName, BuildContext context) {
+  Future<T?> _replaceWith<T>(
+    String screenName,
+    BuildContext context, {
+    Object? arguments,
+  }) {
     return Navigator.of(context).pushNamedAndRemoveUntil(
       screenName,
       (_) => false,
+      arguments: arguments,
     );
   }
 
@@ -63,6 +72,10 @@ class AppRouter {
 
   void pop<T>(BuildContext context, {T? withResult}) {
     Navigator.of(context).pop(withResult);
+  }
+
+  void maybePop<T>(BuildContext context, {T? withResult}) {
+    Navigator.of(context).maybePop(withResult);
   }
 
   Future<T?> pushAndRemoveUntilHome<T>(BuildContext context, Route<T> route) {
@@ -109,6 +122,13 @@ class AppRouter {
       case _AppScreens.setupWallet:
         return NoTransitionRoute(
           builder: (_) => const SetupWalletScreen(),
+          settings: settings,
+        );
+      case _AppScreens.switchWallet when settings.arguments is String:
+        return NoTransitionRoute(
+          builder: (_) => SwitchWalletScreen(
+            walletId: settings.arguments as String,
+          ),
           settings: settings,
         );
       default:

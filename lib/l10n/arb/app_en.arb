@@ -675,6 +675,73 @@
   "yes": "Yes",
   "yesButton": "Yes",
   "yesUppercase": "YES",
+  "notifications": "Notifications",
+  "notificationsDescription": "Receive notifications for incoming transactions.",
+  "notificationsSettingTitle": "Setting Notifications",
+  "notificationsSettingMessage": "Please wait...",
+  "notificationsResettingTitle": "Resetting Notifications",
+  "notificationsEnableFailed": "Failed to Enable Notifications",
+  "notificationsDisableFailed": "Failed to Disable Notifications",
+  "notificationsResetFailed": "Failed to Reset Notifications",
+  "notificationsEnablePin": "Enter PIN to Enable Notifications",
+  "notificationsEnableBiometrics": "Authenticate to Enable Notifications",
+  "notificationsDisablePin": "Enter PIN to Disable Notifications",
+  "notificationsDisableBiometrics": "Authenticate to Disable Notifications",
+  "notificationsResetPin": "Enter PIN to Reset Notifications",
+  "notificationsResetBiometrics": "Authenticate to Reset Notifications",
+  "notificationsInfoPin": "Enter PIN to Show Notifications Info",
+  "notificationsInfoBiometrics": "Authenticate to Show Notifications Info",
+  "notificationsDisabledTitle": "Notifications Disabled",
+  "notificationsDisabledMessage": "Please allow notifications from device settings",
+  "notificationsResetConfirmTitle": "Reset Notifications?",
+  "notificationsResetConfirmMessage": "This will reset all Kaspium notification settings for this device.",
+  "notificationsInfoTitle": "Notifications Info",
+  "notificationsDisclosure": "While notifications are on, Kaspium shares the addresses you choose to watch, your device's push token and random identifiers with the Kaspium notification service. They are used only to deliver notifications for incoming transactions, are not linked to any other data, and are deleted when you turn notifications off for all wallets or reset them.",
+  "notificationsClaimPending": "Verifying this device, please try again in a moment",
+  "notificationsSupportId": "Support Id",
+  "notificationsSupportIdCopied": "Support Id copied!",
+  "notificationsAccountId": "Account Id",
+  "notificationsAccountIdCopied": "Account Id copied!",
+  "resetNotifications": "Reset Notifications",
+  "turnOn": "Turn ON",
+  "turnOff": "Turn OFF",
+  "watchedAddresses": "Watched Addresses",
+  "watchedAddressesCount": "Watching {count, plural, =1{1 address} other{{count} addresses}} (max {max})",
+  "@watchedAddressesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "watchedAddressesHint": "Tap an address to cycle between auto, pinned and excluded. Pinned addresses are always monitored, excluded addresses never. Auto addresses are monitored while among the newest.",
+  "watchedAddressesEmptyTitle": "No Watched Addresses",
+  "watchedAddressesEmptyMessage": "Notifications require at least one watched address. Turn off notifications, or cancel to keep editing.",
+  "pinLimitReached": "At most {max} addresses can be pinned",
+  "@pinLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "resetUppercase": "RESET",
+  "switchUppercase": "SWITCH",
+  "switchToMainnetMessage": "Switch to mainnet to view the transaction",
+  "switchWalletTitle": "Switch Wallet?",
+  "switchWalletMessageParam": "Switch to \"{walletName}\" to view transaction?",
+  "@switchWalletMessageParam": {
+    "placeholders": {
+      "walletName": {
+        "type": "String",
+        "example": "Kaspium"
+      }
+    }
+  },
+  "switchingWalletMessage": "Switching wallet",
   "signMessage": "Sign Message",
   "signMessageDescription": "Sign a text message",
   "signMessageSigned": "Message Signed",

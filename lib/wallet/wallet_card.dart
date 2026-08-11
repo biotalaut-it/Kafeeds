@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../l10n/l10n.dart';
+import '../push/push_wallet_cleanup.dart';
 import '../util/caseconverter.dart';
 import '../widgets/dialog.dart';
 import 'wallet_types.dart';
@@ -35,6 +36,7 @@ class WalletCard extends ConsumerWidget {
 
     Future<void> removeWallet() async {
       final notifier = ref.read(walletBundleProvider.notifier);
+      await disablePushForWallet(ref, wallet: wallet);
       await notifier.removeWallet(wallet);
     }
 

@@ -22,6 +22,10 @@ Android:
 flutter build apk
 ```
 
+Push notifications need a Firebase project: place your own `google-services.json`
+in `android/app/`. Without it the app builds and works normally, but enabling
+notifications will fail.
+
 iOS: 
 ```bash
 flutter build ios

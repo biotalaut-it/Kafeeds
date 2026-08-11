@@ -10,6 +10,7 @@ import 'app_providers.dart';
 import 'app_router.dart';
 import 'app_styles.dart';
 import 'l10n/l10n.dart';
+import 'push/push_notifications.dart';
 import 'screens/privacy_screen.dart';
 import 'util/platform.dart';
 
@@ -26,7 +27,7 @@ class App extends HookConsumerWidget {
     useEffect(() {
       if (kPlatformIsAndroid) {
         final log = ref.read(loggerProvider);
-        Future.delayed(Duration.zero, () {
+        Future.delayed(.zero, () {
           try {
             FlutterDisplayMode.setHighRefreshRate();
           } catch (e) {
@@ -43,6 +44,13 @@ class App extends HookConsumerWidget {
         ref.read(appLinkProvider.notifier).state = appLink;
       });
       return sub.cancel;
+    }, const []);
+
+    useEffect(() {
+      if (kPlatformIsAndroid || kPlatformIsIOS) {
+        return setupPushNotifications(ref);
+      }
+      return null;
     }, const []);
 
     return Container(

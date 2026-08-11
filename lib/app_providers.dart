@@ -2,6 +2,7 @@ export 'coingecko/coingecko_providers.dart';
 export 'contacts/contacts_providers.dart';
 export 'core/core_providers.dart';
 export 'fee/fee_providers.dart';
+export 'push/push_providers.dart';
 export 'rpc/rpc_providers.dart';
 export 'settings/node_settings/node_settings_providers.dart';
 export 'settings/settings_providers.dart';
