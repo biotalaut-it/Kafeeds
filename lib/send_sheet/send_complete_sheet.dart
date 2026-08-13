@@ -39,6 +39,7 @@ class SendCompleteSheet extends HookConsumerWidget {
       child: Column(
         children: [
           const SheetHandle(),
+          const SizedBox(height: 15),
           //A main container that holds the amount, address and "SENT TO" texts
           Expanded(
             child: ScrollableWrapper(

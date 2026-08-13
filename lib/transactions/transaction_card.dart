@@ -65,14 +65,15 @@ class TransactionCard extends ConsumerWidget {
     void showTxDetails() {
       Sheets.showAppHeightNineSheet(
         context: context,
+        theme: theme,
+        animationDurationMs: 175,
+        fullHeight: true,
         widget: TransactionDetailsSheet(
           transactionId: tx.id,
           address: address,
           displayContactButton: !isContact,
           txItem: item,
         ),
-        theme: theme,
-        animationDurationMs: 175,
       );
     }
 
@@ -113,8 +114,9 @@ class TransactionCard extends ConsumerWidget {
                               ),
                               TextSpan(
                                 text: ' $kasSymbol',
-                                style: styles.textStyleTransactionUnit
-                                    .copyWith(fontSize: AppFontSizes.small),
+                                style: styles.textStyleTransactionUnit.copyWith(
+                                  fontSize: AppFontSizes.small,
+                                ),
                               ),
                             ],
                           ),
@@ -141,21 +143,24 @@ class TransactionCard extends ConsumerWidget {
                               l10n.transactionId,
                               style: styles.textStyleTransactionAmountSmall,
                             ),
-                            Consumer(builder: (context, ref, _) {
-                              final txState = ref.watch(
-                                txConfirmationStatusProvider(item),
-                              );
-                              return Container(
-                                margin: const .only(top: 0, bottom: 4),
-                                child: TransactionStateTag(state: txState),
-                              );
-                            }),
+                            Consumer(
+                              builder: (context, ref, _) {
+                                final txState = ref.watch(
+                                  txConfirmationStatusProvider(item),
+                                );
+                                return Container(
+                                  margin: const .only(top: 0, bottom: 4),
+                                  child: TransactionStateTag(state: txState),
+                                );
+                              },
+                            ),
                           ],
                         ),
                         Text(
                           tx.id,
-                          style: styles.textStyleTransactionType
-                              .copyWith(color: theme.text60),
+                          style: styles.textStyleTransactionType.copyWith(
+                            color: theme.text60,
+                          ),
                           maxLines: 2,
                           overflow: .ellipsis,
                         ),

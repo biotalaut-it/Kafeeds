@@ -92,6 +92,7 @@ class SendConfirmSheet extends HookConsumerWidget {
           Sheets.showAppHeightNineSheet(
             context: context,
             theme: theme,
+            fullHeight: true,
             closeOnTap: true,
             removeUntilHome: true,
             widget: sheet,

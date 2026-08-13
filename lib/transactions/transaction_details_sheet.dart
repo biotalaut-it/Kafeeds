@@ -69,8 +69,10 @@ class TransactionDetailsSheet extends ConsumerWidget {
         mainAxisSize: .min,
         children: [
           const SheetHandle(),
-          if (txItem case final txItem?)
+          if (txItem case final txItem?) ...[
+            const SizedBox(height: 15),
             Expanded(child: TransactionDetails(txItem: txItem)),
+          ],
           ActionButtonsWrapper(
             buttons: [
               if (txItem?.pending ?? false)
