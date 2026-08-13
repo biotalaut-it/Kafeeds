@@ -397,6 +397,8 @@
   "secretPhrase24Words": "24 WORDS",
   "secretWarning": "If you lose your device or uninstall the application, you'll need your secret phrase to recover your funds!",
   "securityHeader": "Security",
+  "securitySettingsBiometrics": "Authenticate to Access Security Settings",
+  "securitySettingsPin": "Enter PIN to Access Security Settings",
   "seed": "Seed",
   "selectAddress": "Select Address",
   "send": "Send",

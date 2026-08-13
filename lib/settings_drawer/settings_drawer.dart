@@ -205,7 +205,14 @@ class _SettingsSheetState extends ConsumerState<SettingsSheet>
           SingleLineItem(
             heading: l10n.securityHeader,
             settingIcon: AppIcons.security,
-            onPressed: () {
+            onPressed: () async {
+              final authUtil = ref.read(authUtilProvider);
+              final auth = await authUtil.authenticate(
+                context,
+                l10n.securitySettingsPin,
+                l10n.securitySettingsBiometrics,
+              );
+              if (!auth || !context.mounted) return;
               setState(() => _securityOpen = true);
               _securityController.forward();
             },
