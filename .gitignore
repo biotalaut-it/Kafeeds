@@ -92,3 +92,6 @@ ios/Flutter/Flutter.podspec
 
 # FVM Version Cache
 .fvm/.android-adk/
+
+.android-sdk/
+.dart_tool/nbuild/
