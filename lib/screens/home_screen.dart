@@ -7,11 +7,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../app_providers.dart';
 import '../app_router.dart';
 import '../chain_state/chain_state.dart';
+import '../kafeeds/kafeeds_home.dart';
 import '../l10n/l10n.dart';
 import '../main_card/main_card.dart';
 import '../settings_drawer/settings_drawer.dart';
 import '../util/routes.dart';
-import '../wallet_home/wallet_home.dart';
 import '../widgets/network_banner.dart';
 import 'lock_screen.dart';
 import 'password_lock_screen.dart';
@@ -115,7 +115,7 @@ class HomeScreen extends HookConsumerWidget {
           child: NetworkBanner(
             child: Padding(
               padding: const .only(top: 4),
-              child: const WalletHome(),
+              child: const KafeedsHome(),
             ),
           ),
         ),

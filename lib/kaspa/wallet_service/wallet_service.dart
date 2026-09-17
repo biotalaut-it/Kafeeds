@@ -57,6 +57,23 @@ class WalletService {
     );
   }
 
+  SendTx createKaPostsTx({
+    required Address selfAddress,
+    required List<Utxo> spendableUtxos,
+    required int feeRate,
+    required Address changeAddress,
+    required Uint8List payload,
+  }) {
+    return createSendTx(
+      toAddress: selfAddress,
+      amount: Amount.zero,
+      spendableUtxos: spendableUtxos,
+      feeRate: feeRate,
+      changeAddress: changeAddress,
+      payload: payload,
+    );
+  }
+
   SendTx createCompoundTx({
     required Address compoundAddress,
     required List<Utxo> utxos,

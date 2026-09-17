@@ -31,4 +31,15 @@ class WalletSigner implements SignerBase {
     );
     return signature;
   }
+
+  Future<Uint8List> publicKey(Address address) async {
+    int typeIndex = 0;
+    var index = _wallet.indexOfReceiveAddress(address.encoded);
+    if (index == null) {
+      index = _wallet.indexOfChangeAddress(address.encoded);
+      typeIndex = 1;
+      if (index == null) throw Exception('Address not found');
+    }
+    return _walletAuth.publicKey(typeIndex: typeIndex, index: index);
+  }
 }

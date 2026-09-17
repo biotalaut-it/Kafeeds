@@ -94,8 +94,7 @@ class TxBuilder {
 
       final tx = _createRawTx(
         payments: [
-          // use change address as placeholder
-          (changeAddress, amount),
+          if (amount > .zero) (changeAddress, amount),
           if (hasChange) (changeAddress, change),
         ],
       );
@@ -155,7 +154,7 @@ class TxBuilder {
 
     final tx = _createRawTx(
       payments: [
-        (address, amount),
+        if (amount > .zero) (address, amount),
         if (hasChange) (changeAddress, change),
       ],
     );

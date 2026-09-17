@@ -4,7 +4,7 @@ import '../app_providers.dart';
 import '../kaspa/kaspa.dart';
 import 'wallet_signer.dart';
 
-final _walletSignerProvider = Provider.autoDispose((ref) {
+final walletSignerProvider = Provider.autoDispose((ref) {
   final addressNotifier = ref.watch(addressNotifierProvider);
   final walletAuth = ref.watch(walletAuthProvider.notifier);
 
@@ -12,11 +12,16 @@ final _walletSignerProvider = Provider.autoDispose((ref) {
 });
 
 final walletServiceProvider = Provider.autoDispose((ref) {
-  final signer = ref.watch(_walletSignerProvider);
+  final signer = ref.watch(walletSignerProvider);
   final rpc = ref.watch(kaspaRpcProvider);
 
   return WalletService(
     signer: signer,
     rpc: rpc,
   );
+});
+
+final walletPublicKeyProvider = Provider.autoDispose.family<Future<Uint8List>, String>((ref, address) async {
+  final signer = ref.watch(walletSignerProvider);
+  return signer.publicKey(Address.decodeAddress(address));
 });

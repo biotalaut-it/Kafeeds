@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pointycastle/ecc/curves/secp256k1.dart';
 
 import '../kaspa/kaspa.dart';
 import '../util/encryption_util.dart';
@@ -11,6 +12,11 @@ import 'wallet_auth_types.dart';
 
 Uint8List _computeSignDataSchnorr(List<Uint8List> params) {
   return signSchnorr(hash: params.first, privateKey: params.last);
+}
+
+Uint8List compressedPublicKeyFromPrivateKey(Uint8List privateKey) {
+  final scalar = BigInt.parse(bytesToHex(privateKey), radix: 16);
+  return (ECCurve_secp256k1().G * scalar)!.getEncoded(true);
 }
 
 class WalletAuthNotifier extends StateNotifier<WalletAuth> {
@@ -101,6 +107,16 @@ class WalletAuthNotifier extends StateNotifier<WalletAuth> {
     final keyPair = wallet.deriveKeyPair(typeIndex: typeIndex, index: index);
     final signature = await computeSignDataSchnorr(data, keyPair.privateKey);
     return signature;
+  }
+
+  Future<Uint8List> publicKey({
+    required int typeIndex,
+    required int index,
+  }) async {
+    final seed = await _getSeed();
+    final wallet = HdWallet.forSeedHex(seed, type: state.wallet.kind.type);
+    final keyPair = wallet.deriveKeyPair(typeIndex: typeIndex, index: index);
+    return compressedPublicKeyFromPrivateKey(keyPair.privateKey);
   }
 
   Future<List<String>> getMnemonic({String? password}) async {

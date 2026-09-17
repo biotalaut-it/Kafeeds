@@ -69,7 +69,7 @@ class KaspaApiSettingsSheet extends HookConsumerWidget {
           if (!context.mounted) return;
           appRouter.pop(context);
         }
-      } catch (e, _) {
+      } catch (e) {
         if (!cancelled) {
           // pop dialog
           appRouter.pop(context);
