@@ -19,7 +19,7 @@ const kDonationAddresses = [
     address: kCommunityMarketingFundAddress,
   ),
   Contact(
-    name: 'Kaspium Team',
+    name: 'Kafeeds Team',
     address: kKaspiumTeamAddress,
   ),
 ];

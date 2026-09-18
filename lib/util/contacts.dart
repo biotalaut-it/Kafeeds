@@ -36,7 +36,7 @@ Future<void> exportContacts(WidgetRef ref, BuildContext context) async {
   try {
     final exportTime = DateTime.now();
     final format = DateFormat('yyyyMMdd_HHmmss');
-    final filename = "kaspium_contacts_${format.format(exportTime)}.txt";
+    final filename = "kafeeds_contacts_${format.format(exportTime)}.txt";
     final file = XFile.fromData(
       stringToBytesUtf8(json.encode(jsonList)),
       mimeType: 'text/plain',

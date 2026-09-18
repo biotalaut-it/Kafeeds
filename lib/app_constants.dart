@@ -1,2 +1,2 @@
-const kWalletTitle = 'Kaspium';
-const kSupportEmail = 'support@kaspium.io';
+const kWalletTitle = 'Kafeeds';
+const kSupportEmail = 'support@kafeeds.io';

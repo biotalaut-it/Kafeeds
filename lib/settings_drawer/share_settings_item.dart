@@ -23,7 +23,7 @@ class ShareSettingsItem extends StatelessWidget {
         );
         SharePlus.instance.share(params);
       } catch (e) {
-        UIUtil.showSnackbar('Could not share Kaspium');
+        UIUtil.showSnackbar('Could not share Kafeeds');
       }
     }
 

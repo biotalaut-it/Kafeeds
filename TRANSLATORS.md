@@ -1,6 +1,6 @@
 # Translations and translators
 
-To make Kaspium usable to a broad audience, the Kaspa translators team provided translations for a lot of different languages. At this point a big **Thank You** to all involved parties!
+To make Kafeeds usable to a broad audience, the Kaspa translators team provided translations for a lot of different languages. At this point a big **Thank You** to all involved parties!
 
 ## Available translations and their translators
 

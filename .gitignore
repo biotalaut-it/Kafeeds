@@ -95,3 +95,12 @@ ios/Flutter/Flutter.podspec
 
 .android-sdk/
 .dart_tool/nbuild/
+.gradle/
+.build/
+.idea/
+.node_modules/
+*.apk
+*.aab
+.dart_tool/
+.pub_cached/
+.pub/

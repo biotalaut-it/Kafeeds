@@ -26,7 +26,7 @@ class KasplexConfirmDialog extends HookConsumerWidget {
             Padding(
               padding: const .directional(start: 12),
               child: Text(
-                'Do you want to enable Kasplex KRC20 features in Kaspium?',
+                'Do you want to enable Kasplex KRC20 features in Kafeeds?',
                 style: styles.textStyleParagraph,
               ),
             ),

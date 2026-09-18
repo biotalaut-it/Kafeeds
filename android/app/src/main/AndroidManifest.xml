@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <application
         android:name="${applicationName}"
-        android:label="Kaspium"
+        android:label="Kafeeds"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false">
         <activity

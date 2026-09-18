@@ -22,6 +22,20 @@ class SocialService {
     return api.fetchFeed(cursor: cursor, limit: limit);
   }
 
+  Future<List<KafeedsPost>> fetchProfilePosts(
+    String userId, {
+    int limit = 100,
+  }) async {
+    return api.fetchProfilePosts(userId, limit: limit);
+  }
+
+  Future<List<KafeedsPost>> fetchReplies(
+    String postId, {
+    int limit = 100,
+  }) async {
+    return api.fetchReplies(postId, limit: limit);
+  }
+
   Future<List<KafeedsPost>> searchPosts(String query) async {
     return api.searchPosts(query);
   }
@@ -152,6 +166,14 @@ final feedProvider = FutureProvider<List<KafeedsPost>>((ref) async {
   return service.fetchFeed();
 });
 
+final postRepliesProvider = FutureProvider.family<List<KafeedsPost>, String>((
+  ref,
+  postId,
+) async {
+  final service = ref.watch(socialServiceProvider);
+  return service.fetchReplies(postId);
+});
+
 final searchPostsProvider = FutureProvider.family<List<KafeedsPost>, String>(
   (ref, query) async {
     final service = ref.watch(socialServiceProvider);
@@ -166,7 +188,16 @@ final profileProvider = FutureProvider.family<KafeedsProfile, String>(
   },
 );
 
-final notificationsProvider = FutureProvider<List<KafeedsNotification>>((ref) async {
+final profilePostsProvider = FutureProvider.family<List<KafeedsPost>, String>(
+  (ref, userId) async {
+    final service = ref.watch(socialServiceProvider);
+    return service.fetchProfilePosts(userId);
+  },
+);
+
+final notificationsProvider = FutureProvider<List<KafeedsNotification>>((
+  ref,
+) async {
   final service = ref.watch(socialServiceProvider);
   return service.fetchNotifications();
 });

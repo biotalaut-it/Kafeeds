@@ -25,7 +25,7 @@ class ContactSupportSettingsItem extends StatelessWidget {
     final l10n = l10nOf(context);
 
     void contactSupport() =>
-        openUrl('mailto:$kSupportEmail?subject=Kaspium support');
+        openUrl('mailto:$kSupportEmail?subject=Kafeeds support');
 
     return DoubleLineItem(
       heading: l10n.contactSupport,

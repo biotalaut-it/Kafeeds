@@ -77,12 +77,14 @@ class DownloadTxsDialog extends HookConsumerWidget {
 
           final reportItems = txNotifier.loadedTxs.reversed
               .where((tx) => tx.apiTx.isAccepted)
-              .map((tx) => convertTx(
-                    tx,
-                    addresses: addresses,
-                    txNotes: txNotes,
-                    l10n: l10n,
-                  ));
+              .map(
+                (tx) => convertTx(
+                  tx,
+                  addresses: addresses,
+                  txNotes: txNotes,
+                  l10n: l10n,
+                ),
+              );
 
           final csvLines = reportItems
               .map<String?>((item) {
@@ -115,7 +117,7 @@ class DownloadTxsDialog extends HookConsumerWidget {
         final exportTime = DateTime.now();
         final format = DateFormat('yyyyMMdd_HHmmss');
         final fileName =
-            "kaspium_transactions_${format.format(exportTime)}.csv";
+            "kafeeds_transactions_${format.format(exportTime)}.csv";
         final baseDiractory = await getTemporaryDirectory();
         final txFile = File('${baseDiractory.path}/$fileName');
         await txFile.writeAsString(csv.value);

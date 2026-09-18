@@ -278,7 +278,7 @@
   "kaspaUriCopied": "Kaspa URI Copied",
   "kaspaUriCopyFailed": "Failed to copy Kaspa URI",
   "kaspaUriInvalid": "Invalid Kaspa URI",
-  "kaspiumWallet": "Kaspium Wallet",
+  "kaspiumWallet": "Kafeeds Wallet",
   "kpubAuth": "View Extended Public Key",
   "kpubCopied": "Extended Public Key Copied",
   "kpubCopyFailed": "Failed to copy Extended Public Key",
@@ -415,9 +415,9 @@
   "setPasswordSuccess": "Wallet password has been set",
   "setupFailedMessage": "Something went wrong",
   "setWalletPassword": "Set Wallet Password",
-  "shareKaspium": "Share Kaspium",
-  "shareKaspiumSubject": "Check out Kaspium Wallet",
-  "shareKaspiumText": "Check out Kaspium - Kaspa Mobile Wallet.\nWebsite - kaspium.io",
+  "shareKaspium": "Share Kafeeds",
+  "shareKaspiumSubject": "Check out Kafeeds Wallet",
+  "shareKaspiumText": "Check out Kafeeds - Kaspa Mobile Wallet.\nWebsite - kafeeds.io",
   "somethingWentWrong": "Something went wrong",
   "syncingAddresses": "{completed} of {total} addresses",
   "@syncingAddresses": {
@@ -556,7 +556,7 @@
   "walletSetupMessage": "Setting up wallet",
   "walletsTitle": "Wallets",
   "warning": "Warning",
-  "welcomeMessage": "Welcome!\n\nThis is version {version} of Kaspium - the mobile wallet for Kaspa",
+  "welcomeMessage": "Welcome!\n\nThis is version {version} of Kafeeds - the mobile wallet for Kaspa",
   "@welcomeMessage": {
     "placeholders": {
       "version": {
@@ -564,7 +564,7 @@
       }
     }
   },
-  "welcomeText": "Welcome to Kaspium. To begin, you may create a new wallet or import an existing one.",
+  "welcomeText": "Welcome to Kafeeds. To begin, you may create a new wallet or import an existing one.",
   "yes": "Yes",
   "yesButton": "Yes",
   "yesUppercase": "YES",
@@ -587,9 +587,9 @@
   "notificationsDisabledTitle": "Notifications Disabled",
   "notificationsDisabledMessage": "Please allow notifications from device settings",
   "notificationsResetConfirmTitle": "Reset Notifications?",
-  "notificationsResetConfirmMessage": "This will reset all Kaspium notification settings for this device.",
+  "notificationsResetConfirmMessage": "This will reset all Kafeeds notification settings for this device.",
   "notificationsInfoTitle": "Notifications Info",
-  "notificationsDisclosure": "While notifications are on, Kaspium shares the addresses you choose to watch, your device's push token and random identifiers with the Kaspium notification service. They are used only to deliver notifications for incoming transactions, are not linked to any other data, and are deleted when you turn notifications off for all wallets or reset them.",
+  "notificationsDisclosure": "While notifications are on, Kafeeds shares the addresses you choose to watch, your device's push token and random identifiers with the Kafeeds notification service. They are used only to deliver notifications for incoming transactions, are not linked to any other data, and are deleted when you turn notifications off for all wallets or reset them.",
   "notificationsClaimPending": "Verifying this device, please try again in a moment",
   "notificationsSupportId": "Support Id",
   "notificationsSupportIdCopied": "Support Id copied!",
@@ -630,7 +630,7 @@
     "placeholders": {
       "walletName": {
         "type": "String",
-        "example": "Kaspium"
+        "example": "Kafeeds"
       }
     }
   },

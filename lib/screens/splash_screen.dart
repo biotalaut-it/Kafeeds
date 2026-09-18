@@ -14,16 +14,21 @@ class SplashScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final splashController = useAnimationController(
-      duration: const Duration(milliseconds: 1700),
-    );
     final isExiting = useState(false);
+    final splashStartedAt = useRef(DateTime.now());
 
     Future<void> finishSplash(VoidCallback route) async {
       if (isExiting.value) return;
+
+      final elapsed = DateTime.now().difference(splashStartedAt.value);
+      final remaining = const Duration(seconds: 3) - elapsed;
+      if (remaining > Duration.zero) {
+        await Future<void>.delayed(remaining);
+      }
+
+      if (!context.mounted) return;
       isExiting.value = true;
-      await Future<void>.delayed(const Duration(milliseconds: 1200));
-      await Future<void>.delayed(const Duration(milliseconds: 320));
+      await Future<void>.delayed(const Duration(milliseconds: 360));
       if (!context.mounted) return;
       route();
     }
@@ -81,7 +86,6 @@ class SplashScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      splashController.forward();
       Future.microtask(() async {
         //await checkNotice();
         checkWalletStatus();
@@ -89,105 +93,34 @@ class SplashScreen extends HookConsumerWidget {
       return;
     }, const []);
 
-    final logoCurve = CurvedAnimation(
-      parent: splashController,
-      curve: const Interval(0, 0.32, curve: Curves.easeOutCubic),
-    );
-    final titleCurve = CurvedAnimation(
-      parent: splashController,
-      curve: const Interval(0.20, 0.52, curve: Curves.easeOut),
-    );
-    final taglineCurve = CurvedAnimation(
-      parent: splashController,
-      curve: const Interval(0.32, 0.64, curve: Curves.easeOut),
-    );
-    final exitCurve = CurvedAnimation(
-      parent: splashController,
-      curve: const Interval(0.78, 1, curve: Curves.easeIn),
-    );
-
     return Scaffold(
       backgroundColor: const Color(0xFF050B12),
       body: AnimatedOpacity(
         duration: const Duration(milliseconds: 320),
         opacity: isExiting.value ? 0 : 1,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            const DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF050B12), Color(0xFF071521)],
+        child: const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 120,
+                height: 120,
+                child: Image(
+                  image: AssetImage('assets/icon/icon.png'),
+                  fit: BoxFit.contain,
                 ),
               ),
-            ),
-            SafeArea(
-              child: Center(
-                child: FractionallySizedBox(
-                  heightFactor: 0.90,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ScaleTransition(
-                        scale: Tween<double>(begin: 0.88, end: 1).animate(logoCurve),
-                        child: FadeTransition(
-                          opacity: logoCurve,
-                          child: Container(
-                            width: 96,
-                            height: 96,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF18D8E8).withValues(alpha: 0.16),
-                                  blurRadius: 34,
-                                  spreadRadius: 8,
-                                ),
-                              ],
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/kaspa_transparent_180.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      FadeTransition(
-                        opacity: titleCurve,
-                        child: const Text(
-                          'Kafeeds',
-                          style: TextStyle(
-                            color: Color(0xFFF2FBFF),
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      FadeTransition(
-                        opacity: taglineCurve,
-                        child: const Text(
-                          'POWERED BY KASPA',
-                          style: TextStyle(
-                            color: Color(0xFF25D9E8),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.8,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              SizedBox(height: 16),
+              Text(
+                'Powered by Kaspa',
+                style: TextStyle(
+                  color: Color(0xFFF2FBFF),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ),
-            IgnorePointer(child: FadeTransition(opacity: exitCurve, child: const SizedBox.expand())),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -28,6 +28,12 @@ class KafeedsUser {
   final bool following;
 
   String get label => displayName ?? username;
+
+  String get handle {
+    final value = username.trim();
+    if (value.isEmpty) return '';
+    return value.startsWith('@') ? value : '@$value';
+  }
 }
 
 class KafeedsPost {
@@ -63,6 +69,25 @@ class KafeedsPost {
   final bool isLiked;
   final bool isFollowed;
 
+  KafeedsPost copyWith({KafeedsUser? author}) {
+    return KafeedsPost(
+      id: id,
+      author: author ?? this.author,
+      text: text,
+      timestamp: timestamp,
+      replyToId: replyToId,
+      quotedPostId: quotedPostId,
+      urlPreviewTitle: urlPreviewTitle,
+      urlPreviewHost: urlPreviewHost,
+      likes: likes,
+      replies: replies,
+      reposts: reposts,
+      bookmarked: bookmarked,
+      isLiked: isLiked,
+      isFollowed: isFollowed,
+    );
+  }
+
   String get timeLabel {
     final diff = DateTime.now().difference(timestamp);
     if (diff.inMinutes < 1) return 'now';
@@ -94,18 +119,62 @@ class KafeedsProfile {
     required this.username,
     this.displayName,
     this.bio,
+    this.location,
+    this.website,
     this.followers = 0,
     this.following = 0,
     this.posts = 0,
+    this.avatarUrl,
+    this.coverUrl,
+    this.birthDate,
+    this.joinedAt,
   });
 
   final String id;
   final String username;
   final String? displayName;
   final String? bio;
+  final String? location;
+  final String? website;
   final int followers;
   final int following;
   final int posts;
+  final String? avatarUrl;
+  final String? coverUrl;
+  final DateTime? birthDate;
+  final DateTime? joinedAt;
+
+  KafeedsProfile copyWith({
+    String? id,
+    String? username,
+    String? displayName,
+    String? bio,
+    String? location,
+    String? website,
+    int? followers,
+    int? following,
+    int? posts,
+    String? avatarUrl,
+    String? coverUrl,
+    DateTime? birthDate,
+    DateTime? joinedAt,
+  }) {
+    return KafeedsProfile(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      displayName: displayName ?? this.displayName,
+      bio: bio ?? this.bio,
+      location: location ?? this.location,
+      website: website ?? this.website,
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
+      posts: posts ?? this.posts,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      coverUrl: coverUrl ?? this.coverUrl,
+      birthDate: birthDate ?? this.birthDate,
+      joinedAt: joinedAt ?? this.joinedAt,
+    );
+  }
 }
 
 class KafeedsWriteResult {

@@ -1,12 +1,12 @@
-# Kaspium - a non-custodial wallet for Kaspa blockDAG
+# Kafeeds - a non-custodial wallet for Kaspa blockDAG
 
-## What is Kaspium?
+## What is Kafeeds?
 
-Kaspium is a non-custodial wallet for Kaspa, available for Android and iOS. It is written in [Dart](https://dart.dev) using [Flutter](https://flutter.dev).
+Kafeeds is a non-custodial wallet for Kaspa, available for Android and iOS. It is written in [Dart](https://dart.dev) using [Flutter](https://flutter.dev).
 
 | Link | Description |
 | :----- | :------ |
-[kaspium.io](https://kaspium.io) | Kaspium Homepage
+Kafeeds | Kafeeds Homepage
 [kaspa.org](https://kaspa.org) | Kaspa Blockchain Homepage
 
 ## Contributing
@@ -53,6 +53,6 @@ If you need any help, feel free to [file a feature request or an issue](https://
 
 ## License
 
-Kaspium started as a fork of Natrium - https://github.com/appditto/natrium_wallet_flutter
+Kafeeds started as a fork of Natrium - https://github.com/appditto/natrium_wallet_flutter
 
-Kaspium is released under the MIT License. For more details see the [LICENSE](LICENSE)
+Kafeeds is released under the MIT License. For more details see the [LICENSE](LICENSE)
